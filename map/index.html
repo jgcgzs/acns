@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>地图库 - 极光创工作室</title>
     <meta name="description" content="极光创工作室地图库 - 迷你世界地图作品展示">
-    <meta name="keywords" content="极光创,迷你世界,地图,江都市,永昌市,安州市">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -161,7 +160,6 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
-        /* 地图库专用 */
         .page-header {
             padding: 24px 0 12px;
             border-bottom: 1px solid var(--border-light);
@@ -178,7 +176,6 @@
             opacity: 0.6;
         }
 
-        /* 搜索栏 */
         .search-bar {
             display: flex;
             gap: 12px;
@@ -215,7 +212,6 @@
             background: var(--blue-primary-dark);
         }
 
-        /* 标签栏 - 横向滚动 */
         .tag-bar {
             display: flex;
             flex-wrap: nowrap;
@@ -256,7 +252,6 @@
             background: var(--blue-bg-light);
         }
 
-        /* 预告横向滚动 */
         .preview-section {
             margin: 16px 0 32px;
         }
@@ -361,7 +356,6 @@
             font-size: 14px;
         }
 
-        /* 全部地图卡片网格 */
         .map-grid-container {
             margin-top: 8px;
         }
@@ -486,7 +480,6 @@
             min-height: 48px;
         }
 
-        /* 分页 */
         .pagination {
             display: flex;
             justify-content: center;
@@ -525,21 +518,9 @@
             opacity: 0.5;
             padding: 0 8px;
         }
-        .pagination .page-input {
-            width: 50px;
-            padding: 4px 6px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            text-align: center;
-            font-size: 14px;
-            outline: none;
-        }
-        .pagination .page-input:focus {
-            border-color: var(--blue-primary);
-        }
 
-        /* 加载与空状态 */
-        .loading-placeholder, .empty-placeholder {
+        .loading-placeholder,
+        .empty-placeholder {
             text-align: center;
             padding: 60px 0;
             color: var(--text-muted);
@@ -554,7 +535,6 @@
             margin-bottom: 10px;
         }
 
-        /* 响应式 */
         @media (max-width: 992px) {
             .map-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -671,7 +651,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏（与主站一致） ===== -->
+    <!-- ===== 导航栏（修正版：使用 ../ 回到上级目录） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -680,10 +660,10 @@
             </div>
             <button class="menu-toggle" id="menuToggle" aria-label="菜单"><i class="fas fa-bars"></i></button>
             <ul class="nav-links" id="navLinks">
-                <li><a href="./">主站</a></li>
-                <li><a href="./map/" class="active">地图库</a></li>
-                <li><a href="./blog/">极创博客</a></li>
-                <li><a href="./Management/">管理层成员公示</a></li>
+                <li><a href="../">主站</a></li>
+                <li><a href="./" class="active">地图库</a></li>
+                <li><a href="../blog/">极创博客</a></li>
+                <li><a href="../Management/">管理层成员公示</a></li>
             </ul>
         </div>
     </header>
@@ -714,7 +694,7 @@
                 <span class="tag-item" data-tag="精选">精选</span>
             </div>
 
-            <!-- 预告栏（待发布） -->
+            <!-- 预告栏 -->
             <section class="preview-section" id="previewSection">
                 <div class="preview-header">
                     <h3>即将发布 <span class="count" id="previewCount">0</span></h3>
@@ -726,7 +706,7 @@
                 </div>
             </section>
 
-            <!-- 全部地图卡片 -->
+            <!-- 全部地图 -->
             <div class="map-grid-container">
                 <div class="map-grid" id="mapGrid">
                     <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>
@@ -742,7 +722,7 @@
         </div>
     </main>
 
-    <!-- ===== 底部（与主站一致） ===== -->
+    <!-- ===== 底部 ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -775,19 +755,17 @@
             }
 
             // ===== 数据状态 =====
-            let allMaps = []; // 所有解析后的地图对象
-            let filteredMaps = []; // 当前筛选后的结果
+            let allMaps = [];
+            let filteredMaps = [];
             let currentPage = 1;
-            const pageSize = 16; // 电脑4行4列，手机2列自动适配
+            const pageSize = 16;
 
-            // DOM 元素
             const mapGrid = document.getElementById('mapGrid');
             const previewGrid = document.getElementById('previewGrid');
             const previewCount = document.getElementById('previewCount');
             const searchInput = document.getElementById('searchInput');
             const searchBtn = document.getElementById('searchBtn');
             const tagBar = document.getElementById('tagBar');
-            const pagination = document.getElementById('pagination');
             const prevBtn = document.getElementById('prevPage');
             const nextBtn = document.getElementById('nextPage');
             const pageInfo = document.getElementById('pageInfo');
@@ -822,9 +800,7 @@
                 if (!desc || desc.trim() === '') desc = '暂无描述';
                 if (!minid || minid.trim() === '') minid = '未知';
 
-                // 精选检测：标题中带 [精选]
                 var isFeatured = /\[精选\]/.test(title);
-                // 如果标签为空但有精选标记，则补一个“精选”标签（但不会覆盖已有的，精选作为独立标签）
                 if (isFeatured && !tag) {
                     tag = '精选';
                 }
@@ -888,7 +864,7 @@
                 return html;
             }
 
-            // ===== 分页渲染全部 =====
+            // ===== 分页渲染 =====
             function renderPage() {
                 var total = filteredMaps.length;
                 var totalPages = Math.ceil(total / pageSize) || 1;
@@ -907,13 +883,12 @@
                     mapGrid.innerHTML = html;
                 }
 
-                // 更新分页信息
                 pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
                 prevBtn.disabled = currentPage <= 1;
                 nextBtn.disabled = currentPage >= totalPages;
             }
 
-            // ===== 渲染预告（待发布） =====
+            // ===== 渲染预告 =====
             function renderPreview() {
                 var previewMaps = allMaps.filter(function(m) {
                     return m.tag === '待发布';
@@ -937,7 +912,6 @@
                 var tagFilter = activeTag ? activeTag.dataset.tag : 'all';
 
                 filteredMaps = allMaps.filter(function(map) {
-                    // 标签筛选
                     if (tagFilter !== 'all') {
                         if (tagFilter === '精选') {
                             if (!map.isFeatured) return false;
@@ -945,7 +919,6 @@
                             if (map.tag !== tagFilter) return false;
                         }
                     }
-                    // 搜索
                     if (searchTerm) {
                         var inTitle = map.title.toLowerCase().includes(searchTerm);
                         var inAuthor = map.author.toLowerCase().includes(searchTerm);
@@ -955,7 +928,6 @@
                     return true;
                 });
 
-                // 按时间倒序
                 filteredMaps.sort(function(a, b) {
                     return new Date(b.raw.created_at) - new Date(a.raw.created_at);
                 });
@@ -967,8 +939,7 @@
 
             // ===== 加载数据 =====
             function loadMaps() {
-                var grid = document.getElementById('mapGrid');
-                grid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
+                mapGrid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
 
                 var REPO_OWNER = 'jgcgzs';
                 var REPO_NAME = 'acns';
@@ -1003,7 +974,6 @@
             }
 
             // ===== 事件绑定 =====
-            // 标签切换
             tagBar.addEventListener('click', function(e) {
                 var target = e.target.closest('.tag-item');
                 if (!target) return;
@@ -1014,30 +984,20 @@
                 applyFilters();
             });
 
-            // 搜索
-            searchBtn.addEventListener('click', function() {
-                applyFilters();
-            });
+            searchBtn.addEventListener('click', applyFilters);
             searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    applyFilters();
-                }
+                if (e.key === 'Enter') applyFilters();
             });
 
-            // 分页
             prevBtn.addEventListener('click', function() {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderPage();
-                }
+                if (currentPage > 1) { currentPage--;
+                    renderPage(); }
             });
             nextBtn.addEventListener('click', function() {
                 var total = filteredMaps.length;
                 var totalPages = Math.ceil(total / pageSize);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderPage();
-                }
+                if (currentPage < totalPages) { currentPage++;
+                    renderPage(); }
             });
 
             // ===== 初始化 =====
