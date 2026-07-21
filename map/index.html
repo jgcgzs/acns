@@ -51,6 +51,8 @@
             --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
             --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
             --radius: 2px;
+            --green-primary: #16a34a;
+            --green-light: #dcfce7;
         }
 
         .navbar {
@@ -405,12 +407,27 @@
             flex-direction: column;
             gap: 3px;
         }
-        .map-card .body .tag {
+        /* 蓝色标签（默认） */
+        .map-card .body .tag-blue {
             font-size: 10px;
             font-weight: 600;
             padding: 1px 10px;
             border: 1.5px solid var(--blue-primary);
             color: var(--blue-primary);
+            background: transparent;
+            border-radius: 3px;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            line-height: 1.5;
+            align-self: flex-start;
+        }
+        /* 绿色标签（标题带[xx]） */
+        .map-card .body .tag-green {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border: 1.5px solid var(--green-primary);
+            color: var(--green-primary);
             background: transparent;
             border-radius: 3px;
             letter-spacing: 0.3px;
@@ -617,7 +634,8 @@
                 min-height: 36px;
                 -webkit-line-clamp: 2;
             }
-            .map-card .body .tag {
+            .map-card .body .tag-blue,
+            .map-card .body .tag-green {
                 font-size: 9px;
                 padding: 0 8px;
                 border-width: 1px;
@@ -651,7 +669,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏（修正版：使用 ../ 回到上级目录） ===== -->
+    <!-- ===== 导航栏（修正：使用 ../ 回到根目录） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -770,10 +788,45 @@
             const nextBtn = document.getElementById('nextPage');
             const pageInfo = document.getElementById('pageInfo');
 
+            // ===== 工具函数：从正文中解析日期 =====
+            function parseDateFromBody(body) {
+                // 支持格式：YYYY-MM-DD、YYYY年MM月DD日、YYYY/MM/DD
+                var patterns = [
+                    /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
+                    /(\d{4})\/(\d{1,2})\/(\d{1,2})/
+                ];
+                for (var i = 0; i < patterns.length; i++) {
+                    var match = body.match(patterns[i]);
+                    if (match) {
+                        var year = parseInt(match[1]);
+                        var month = parseInt(match[2]);
+                        var day = parseInt(match[3]);
+                        if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                            return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                        }
+                    }
+                }
+                return null;
+            }
+
+            // ===== 工具函数：从标题提取前缀标签 =====
+            function extractTitlePrefix(title) {
+                var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
+                if (match) {
+                    return {
+                        prefix: match[1].trim(),
+                        cleanTitle: match[2].trim() || title
+                    };
+                }
+                return null;
+            }
+
             // ===== 解析Issue =====
             function parseIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
+
+                // 解析元数据
                 var author = '';
                 var cover = '';
                 var desc = '';
@@ -800,27 +853,56 @@
                 if (!desc || desc.trim() === '') desc = '暂无描述';
                 if (!minid || minid.trim() === '') minid = '未知';
 
-                var isFeatured = /\[精选\]/.test(title);
-                if (isFeatured && !tag) {
-                    tag = '精选';
+                // 标题前缀检测（绿色标签）
+                var prefixInfo = extractTitlePrefix(rawTitle);
+                var displayTitle = rawTitle;
+                var prefixTag = null;
+                var isGreenTag = false;
+
+                if (prefixInfo) {
+                    prefixTag = prefixInfo.prefix;
+                    displayTitle = prefixInfo.cleanTitle;
+                    isGreenTag = true;
                 }
 
-                var dateObj = new Date(issue.created_at);
-                var dateStr = dateObj.getFullYear() + '-' +
-                    String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
-                    String(dateObj.getDate()).padStart(2, '0');
+                // 如果标题有前缀，则使用绿色标签；否则使用正文中的标签（蓝色）
+                var finalTag = tag;
+                var isGreen = isGreenTag;
+
+                // 如果标题有前缀，标签使用前缀内容
+                if (isGreenTag) {
+                    finalTag = prefixTag;
+                } else {
+                    // 否则使用正文中的标签，如果没有则空
+                    finalTag = tag || '';
+                }
+
+                // 日期解析：优先从正文中提取
+                var dateStr = parseDateFromBody(body);
+                if (!dateStr) {
+                    // 如果正文没有日期，使用Issue创建日期
+                    var dateObj = new Date(issue.created_at);
+                    dateStr = dateObj.getFullYear() + '-' +
+                        String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+                        String(dateObj.getDate()).padStart(2, '0');
+                }
+
+                // 精选检测：标题带[精选]或正文标签为精选
+                var isFeatured = /\[精选\]/.test(rawTitle) || tag === '精选';
 
                 return {
                     id: issue.number,
-                    title: title,
+                    title: displayTitle,
+                    rawTitle: rawTitle,
                     author: author,
                     cover: cover,
                     desc: desc,
-                    tag: tag,
+                    tag: finalTag,
                     minid: minid,
                     date: dateStr,
                     raw: issue,
-                    isFeatured: isFeatured
+                    isFeatured: isFeatured,
+                    isGreenTag: isGreen
                 };
             }
 
@@ -832,7 +914,11 @@
                 } else {
                     coverHtml = '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
                 }
-                var tagHtml = map.tag ? '<span class="tag">' + map.tag + '</span>' : '';
+
+                // 标签：绿色或蓝色
+                var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
+                var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
+
                 var html = '<div class="map-card">';
                 html += coverHtml;
                 html += '<div class="body">';
