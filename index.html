@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 主站样式（与之前一致，只修改地图卡片样式加入绿色标签） */
         * {
             margin: 0;
             padding: 0;
@@ -52,6 +53,7 @@
             --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
             --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
             --radius: 2px;
+            --green-primary: #16a34a;
         }
 
         .navbar {
@@ -388,7 +390,7 @@
             }
         }
 
-        /* ===== 地图展示 ===== */
+        /* 主站地图展示卡片样式（与地图库保持一致） */
         .map-section {
             background: var(--blue-bg-pale);
             border-top: 1px solid var(--border-light);
@@ -443,8 +445,6 @@
             border-color: var(--blue-primary);
             transform: translateY(-3px);
         }
-
-        /* 封面 */
         .map-card .cover {
             width: 100%;
             aspect-ratio: 16/9;
@@ -464,7 +464,6 @@
             color: var(--blue-primary);
             opacity: 0.2;
         }
-
         .map-card .body {
             padding: 12px 14px 14px;
             flex: 1;
@@ -472,9 +471,7 @@
             flex-direction: column;
             gap: 3px;
         }
-
-        /* 标签：蓝框蓝字无背景方框 */
-        .map-card .body .tag {
+        .map-card .body .tag-blue {
             font-size: 10px;
             font-weight: 600;
             padding: 1px 10px;
@@ -487,8 +484,19 @@
             line-height: 1.5;
             align-self: flex-start;
         }
-
-        /* 地图名 */
+        .map-card .body .tag-green {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border: 1.5px solid var(--green-primary);
+            color: var(--green-primary);
+            background: transparent;
+            border-radius: 3px;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            line-height: 1.5;
+            align-self: flex-start;
+        }
         .map-card .body .title {
             font-size: 15px;
             font-weight: 700;
@@ -499,8 +507,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
-        /* 发布日期 */
         .map-card .body .date-row {
             font-size: 12px;
             color: var(--text-muted);
@@ -514,8 +520,6 @@
             font-size: 11px;
             opacity: 0.5;
         }
-
-        /* 作者 + 迷你号 */
         .map-card .body .meta-row {
             display: flex;
             align-items: center;
@@ -539,8 +543,6 @@
             font-family: 'SF Mono', 'Menlo', monospace;
             font-size: 11px;
         }
-
-        /* 描述框 */
         .map-card .body .desc-box {
             background: var(--blue-bg-light);
             border: 1px solid var(--border-light);
@@ -596,9 +598,11 @@
                 min-height: 40px;
                 -webkit-line-clamp: 2;
             }
-            .map-card .body .tag {
+            .map-card .body .tag-blue,
+            .map-card .body .tag-green {
                 font-size: 9px;
                 padding: 0 8px;
+                border-width: 1px;
             }
             .map-card .body .date-row {
                 font-size: 11px;
@@ -624,7 +628,8 @@
                 min-height: 34px;
                 -webkit-line-clamp: 2;
             }
-            .map-card .body .tag {
+            .map-card .body .tag-blue,
+            .map-card .body .tag-green {
                 font-size: 8px;
                 padding: 0 6px;
                 border-width: 1px;
@@ -633,9 +638,6 @@
                 font-size: 10px;
             }
             .map-card .body .meta-row {
-                font-size: 10px;
-            }
-            .map-card .body .meta-row .minid {
                 font-size: 10px;
             }
         }
@@ -1009,7 +1011,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（根目录） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -1058,7 +1060,7 @@
                 </div>
             </div>
             <div class="timeline">
-
+                <!-- 2021-2026 内容与之前一致，省略以节省篇幅，但实际代码中保留完整 -->
                 <div class="timeline-item">
                     <div class="year">2021</div>
                     <div class="content">
@@ -1066,7 +1068,6 @@
                         <p>2021年7月，在工作室成立的七个月内，工作室的第一张地图《规则类怪谈》正式发布，在发布后的几个月内，地图迎来的反响十分不错，受到广大玩家的喜欢，为后来的玩法类地图奠定了坚实的基础</p>
                     </div>
                 </div>
-
                 <div class="timeline-item">
                     <div class="year">2022</div>
                     <div class="content">
@@ -1078,7 +1079,6 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/Fux2tNpR_bfNDAnpQLJuHTC0ecLn.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2022年工作室图片" loading="lazy">
                     </div>
                 </div>
-
                 <div class="timeline-item">
                     <div class="year">2023</div>
                     <div class="content">
@@ -1088,7 +1088,6 @@
                         <p>2023年12月，《江都市》（第一代）地图项目正式开始建设</p>
                     </div>
                 </div>
-
                 <div class="timeline-item">
                     <div class="year">2024</div>
                     <div class="content">
@@ -1099,7 +1098,6 @@
                         <p>2024年7月，《江都市》（第三代）地图项目正式开始建设</p>
                     </div>
                 </div>
-
                 <div class="timeline-item">
                     <div class="year">2025</div>
                     <div class="content">
@@ -1117,7 +1115,6 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/FkzvRIEKHLj4YJHosq1dEaDuqbN6.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2025年工作室图片" loading="lazy">
                     </div>
                 </div>
-
                 <div class="timeline-item">
                     <div class="year">2026</div>
                     <div class="content">
@@ -1131,12 +1128,11 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/FjcTTWJyBp_pcj8OvqZVDY8C3MpT.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2026年工作室图片" loading="lazy">
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- ===== 地图展示 ===== -->
+    <!-- ===== 地图展示（主站） ===== -->
     <section id="maps" class="section map-section">
         <div class="container">
             <div class="section-title">
@@ -1347,13 +1343,94 @@
                 });
             });
 
-            // ===== 地图展示：从GitHub Issues拉取map标签 =====
+            // ===== 地图展示：从GitHub Issues拉取map标签，按地图日期排序 =====
             (function loadMaps() {
                 const grid = document.getElementById('mapGrid');
                 const REPO_OWNER = 'jgcgzs';
                 const REPO_NAME = 'acns';
                 const apiUrl = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
                     '/issues?labels=map&state=open&sort=created&direction=desc&per_page=5';
+
+                // 解析日期工具
+                function parseDateFromBody(body) {
+                    var patterns = [
+                        /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
+                        /(\d{4})\/(\d{1,2})\/(\d{1,2})/
+                    ];
+                    for (var i = 0; i < patterns.length; i++) {
+                        var match = body.match(patterns[i]);
+                        if (match) {
+                            var year = parseInt(match[1]);
+                            var month = parseInt(match[2]);
+                            var day = parseInt(match[3]);
+                            if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                                return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                            }
+                        }
+                    }
+                    return null;
+                }
+
+                function extractTitlePrefix(title) {
+                    var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
+                    if (match) {
+                        return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title };
+                    }
+                    return null;
+                }
+
+                function parseMapIssue(issue) {
+                    var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+                    var body = issue.body || '';
+                    var author = '',
+                        cover = '',
+                        desc = '',
+                        tag = '',
+                        minid = '',
+                        customDate = null;
+                    var lines = body.split('\n');
+                    lines.forEach(function(line) {
+                        var trimmed = line.trim();
+                        if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                        else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
+                        else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
+                        else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
+                        else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                        else if (trimmed.match(/^日期[：:]\s*(.+)/)) {
+                            var dateVal = trimmed.replace(/^日期[：:]\s*/, '').trim();
+                            var parsed = parseDateFromBody(dateVal);
+                            if (parsed) customDate = parsed;
+                        }
+                    });
+                    if (!customDate) customDate = parseDateFromBody(body);
+                    var dateStr = customDate || '未知';
+                    if (!author) author = '未知作者';
+                    if (!desc) desc = '暂无描述';
+                    if (!minid) minid = '未知';
+
+                    var prefixInfo = extractTitlePrefix(rawTitle);
+                    var displayTitle = rawTitle;
+                    var isGreenTag = false;
+                    if (prefixInfo) {
+                        displayTitle = prefixInfo.cleanTitle;
+                        tag = prefixInfo.prefix;
+                        isGreenTag = true;
+                    }
+                    var isFeatured = /\[精选\]/.test(rawTitle) || tag === '精选';
+                    return {
+                        id: issue.number,
+                        title: displayTitle,
+                        author: author,
+                        cover: cover,
+                        desc: desc,
+                        tag: tag,
+                        minid: minid,
+                        date: dateStr,
+                        raw: issue,
+                        isFeatured: isFeatured,
+                        isGreenTag: isGreenTag
+                    };
+                }
 
                 fetch(apiUrl)
                     .then(function(res) {
@@ -1365,73 +1442,39 @@
                             grid.innerHTML = '<div class="map-empty"><i class="fas fa-map" style="display:block;font-size:28px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>暂无地图，在 GitHub Issues 中创建带 map 标签的文章</div>';
                             return;
                         }
+                        var parsed = issues.map(function(issue) { return parseMapIssue(issue); });
+                        // 按日期排序（未知排最后）
+                        parsed.sort(function(a, b) {
+                            if (a.date === '未知' && b.date === '未知') return 0;
+                            if (a.date === '未知') return 1;
+                            if (b.date === '未知') return -1;
+                            return b.date.localeCompare(a.date);
+                        });
+                        // 取前5
+                        var top5 = parsed.slice(0, 5);
 
                         var cardsHtml = '';
-                        issues.forEach(function(issue, index) {
-                            var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() :
-                                '未命名地图';
-                            var body = issue.body || '';
-                            var author = '';
-                            var cover = '';
-                            var desc = '';
-                            var tag = '';
-                            var minid = '';
-
-                            var lines = body.split('\n');
-                            lines.forEach(function(line) {
-                                var trimmed = line.trim();
-                                if (trimmed.match(/^作者[：:]\s*(.+)/)) {
-                                    author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                                } else if (trimmed.match(/^封面[：:]\s*(.+)/)) {
-                                    cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
-                                } else if (trimmed.match(/^描述[：:]\s*(.+)/)) {
-                                    desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
-                                } else if (trimmed.match(/^标签[：:]\s*(.+)/)) {
-                                    tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                                } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                                    minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                                }
-                            });
-
-                            if (!author || author.trim() === '') author = '未知作者';
-                            if (!desc || desc.trim() === '') desc = '暂无描述';
-                            if (!minid || minid.trim() === '') minid = '未知';
-
-                            var dateObj = new Date(issue.created_at);
-                            var dateStr = dateObj.getFullYear() + '-' +
-                                String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
-                                String(dateObj.getDate()).padStart(2, '0');
-
-                            var displayTag = tag || '';
-
+                        top5.forEach(function(map, index) {
                             var coverHtml = '';
-                            if (cover && cover.trim() !== '' && cover.trim().startsWith('http')) {
-                                coverHtml = '<img class="cover" src="' + cover.trim() +
-                                    '" alt="' + title + '" loading="lazy" onerror="this.style.display=\'none\'">';
+                            if (map.cover && map.cover.trim() !== '' && map.cover.trim().startsWith('http')) {
+                                coverHtml = '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">';
                             } else {
                                 coverHtml = '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
                             }
+                            var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
+                            var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
 
-                            cardsHtml +=
-                                '<div class="map-card" style="animation-delay:' + (index * 0.06) + 's">';
+                            cardsHtml += '<div class="map-card" style="animation-delay:' + (index * 0.06) + 's">';
                             cardsHtml += coverHtml;
                             cardsHtml += '<div class="body">';
-                            // 标签（单独一行）
-                            if (displayTag) {
-                                cardsHtml += '<span class="tag">' + displayTag + '</span>';
-                            }
-                            // 地图名（单独一行）
-                            cardsHtml += '<span class="title">' + title + '</span>';
-                            // 发布日期
-                            cardsHtml += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + dateStr +
-                                '</div>';
-                            // 作者 + 迷你号
+                            cardsHtml += tagHtml;
+                            cardsHtml += '<span class="title">' + map.title + '</span>';
+                            cardsHtml += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                             cardsHtml += '<div class="meta-row">';
-                            cardsHtml += '<span class="author"><i class="fas fa-user"></i> ' + author + '</span>';
-                            cardsHtml += '<span class="minid">迷你号 ' + minid + '</span>';
+                            cardsHtml += '<span class="author"><i class="fas fa-user"></i> ' + map.author + '</span>';
+                            cardsHtml += '<span class="minid">迷你号 ' + map.minid + '</span>';
                             cardsHtml += '</div>';
-                            // 描述框
-                            cardsHtml += '<div class="desc-box">' + desc + '</div>';
+                            cardsHtml += '<div class="desc-box">' + map.desc + '</div>';
                             cardsHtml += '</div></div>';
                         });
 
@@ -1458,8 +1501,7 @@
                     })
                     .catch(function(err) {
                         console.warn('地图加载失败:', err);
-                        grid.innerHTML =
-                            '<div class="map-empty"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
+                        grid.innerHTML = '<div class="map-empty"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
                     });
             })();
 
