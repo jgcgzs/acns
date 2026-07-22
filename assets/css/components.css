@@ -1,5 +1,5 @@
 /* ============================================================
-   成员档案弹窗 — 档案风格 · 卡片化 · 渐变动效
+   成员档案弹窗 — 左右列 · 卡片化 · 左右移入动画
    ============================================================ */
 
 /* ---- 弹窗容器 ---- */
@@ -21,8 +21,8 @@
 .modal-content {
     background: #ffffff;
     border: 1px solid rgba(220, 227, 239, 0.4);
-    border-radius: 12px;
-    max-width: 800px;
+    border-radius: 16px;
+    max-width: 880px;
     width: 100%;
     max-height: 90vh;
     overflow-y: auto;
@@ -42,7 +42,7 @@
     background: rgba(255, 255, 255, 0.86);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 24px 28px 28px;
     margin: 0;
 }
@@ -62,7 +62,7 @@
     border: none;
     color: #4a5a6a;
     cursor: pointer;
-    padding: 0 8px;
+    padding: 0;
     z-index: 10;
     line-height: 1;
     border-radius: 50%;
@@ -80,70 +80,87 @@
     transform: rotate(90deg) scale(1.1);
 }
 
-/* ---- 卡片通用动画 ---- */
-.card-block {
-    opacity: 0;
-    transform: translateY(24px);
-    animation: cardIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+/* ===== 左右列布局 ===== */
+.modal-columns {
+    display: flex;
+    gap: 28px;
+    margin-top: 4px;
 }
-.card-block:nth-child(1) { animation-delay: 0.04s; }
-.card-block:nth-child(2) { animation-delay: 0.08s; }
-.card-block:nth-child(3) { animation-delay: 0.12s; }
-.card-block:nth-child(4) { animation-delay: 0.16s; }
-.card-block:nth-child(5) { animation-delay: 0.20s; }
-.card-block:nth-child(6) { animation-delay: 0.24s; }
-.card-block:nth-child(7) { animation-delay: 0.28s; }
-.card-block:nth-child(8) { animation-delay: 0.32s; }
-.card-block:nth-child(9) { animation-delay: 0.36s; }
+.column-left {
+    flex: 0 0 40%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.column-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
 
-@keyframes cardIn {
-    0% { opacity: 0; transform: translateY(24px) scale(0.96); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
+/* ---- 左右移入动画 ---- */
+.slide-left {
+    opacity: 0;
+    animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+.slide-right {
+    opacity: 0;
+    animation: slideInRight 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes slideInLeft {
+    0% { opacity: 0; transform: translateX(-30px) scale(0.96); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes slideInRight {
+    0% { opacity: 0; transform: translateX(30px) scale(0.96); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 /* ===== 卡片通用样式 ===== */
 .card {
     background: #ffffff;
     border: 1px solid #eef2f7;
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-bottom: 14px;
+    border-radius: 12px;
+    padding: 16px 18px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
 }
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(95, 127, 255, 0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(95, 127, 255, 0.06);
     border-color: #d0d9e8;
 }
 
 /* ---- 头像卡片（个人资料卡） ---- */
 .profile-card {
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-    padding: 0 0 18px 0;
-    border-bottom: 2px solid #f0f3f9;
-    margin-bottom: 18px;
     background: transparent;
+    border: none;
     box-shadow: none;
+    padding: 0 0 4px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
 }
 .profile-card .avatar {
-    width: 80px;
-    height: 80px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #eef4ff, #e0e8f5);
+    background: linear-gradient(135deg, #eef4ff, #dce6f5);
     border: 3px solid #eef4ff;
     box-shadow: 0 4px 20px rgba(95, 127, 255, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
+    font-size: 30px;
     font-weight: 700;
     color: #5f7fff;
     flex-shrink: 0;
     overflow: hidden;
     transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    margin-bottom: 10px;
 }
 .profile-card .avatar img {
     width: 100%;
@@ -155,31 +172,30 @@
     box-shadow: 0 4px 30px rgba(95, 127, 255, 0.15);
     transform: scale(1.02);
 }
-.profile-card .info { flex: 1; }
-.profile-card .info .name {
-    font-size: 26px;
+.profile-card .name {
+    font-size: 24px;
     font-weight: 800;
     color: #1e293b;
     display: flex;
     align-items: center;
-    gap: 12px;
     flex-wrap: wrap;
+    gap: 10px;
     letter-spacing: -0.3px;
 }
-.profile-card .info .role {
+.profile-card .role {
     font-size: 15px;
     color: #4c6a9e;
     opacity: 0.6;
     font-weight: 400;
     margin-top: 2px;
 }
-.profile-card .info .groups {
+.profile-card .groups {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     margin-top: 8px;
 }
-.profile-card .info .groups .g {
+.profile-card .groups .g {
     font-size: 10px;
     font-weight: 600;
     padding: 2px 14px;
@@ -191,26 +207,26 @@
     text-transform: uppercase;
     transition: all 0.25s;
 }
-.profile-card .info .groups .g:hover {
+.profile-card .groups .g:hover {
     background: #5f7fff;
     color: #fff;
     transform: translateY(-1px);
     box-shadow: 0 2px 8px rgba(95,127,255,0.2);
 }
-.profile-card .info .meta {
+.profile-card .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 24px;
+    gap: 8px 20px;
     margin-top: 10px;
     font-size: 13px;
     color: #4c6a9e;
 }
-.profile-card .info .meta span {
+.profile-card .meta span {
     display: flex;
     align-items: center;
     gap: 4px;
 }
-.profile-card .info .meta i { font-size: 12px; opacity: 0.4; }
+.profile-card .meta i { font-size: 12px; opacity: 0.4; }
 
 /* ---- 成员属性标签 ---- */
 .member-attr-badge {
@@ -250,7 +266,7 @@
 .id-card .parts {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 24px;
+    gap: 4px 20px;
 }
 .id-card .parts span {
     font-size: 13px;
@@ -280,18 +296,38 @@
 }
 .bio-card a:hover { color: #3d5fd9; }
 
+/* ---- 入室天数卡片 ---- */
+.days-card {
+    background: linear-gradient(135deg, #f8faff, #eef4ff);
+    border: 1px solid #e4ecf8;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    color: #4c6a9e;
+}
+.days-card .num {
+    font-weight: 700;
+    font-size: 26px;
+    background: linear-gradient(135deg, #5f7fff, #7c8cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'JetBrains Mono', monospace;
+}
+
 /* ---- 荣誉卡片 ---- */
 .honor-card {
     background: transparent;
     border: none;
-    padding: 0 0 12px 0;
+    padding: 0;
     box-shadow: none;
 }
 .honor-card .title {
     font-size: 12px;
     font-weight: 700;
     color: #1e293b;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -325,33 +361,12 @@
     box-shadow: 0 6px 20px rgba(95, 127, 255, 0.25);
 }
 
-/* ---- 入室天数卡片 ---- */
-.days-card {
-    background: linear-gradient(135deg, #f8faff, #eef4ff);
-    border: 1px solid #e4ecf8;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 14px;
-    color: #4c6a9e;
-}
-.days-card .num {
-    font-weight: 700;
-    font-size: 26px;
-    color: #5f7fff;
-    font-family: 'JetBrains Mono', monospace;
-    background: linear-gradient(135deg, #5f7fff, #7c8cff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
 /* ---- 地图/博客卡片网格 ---- */
 .section-title {
     font-size: 13px;
     font-weight: 700;
     color: #1e293b;
-    margin: 20px 0 12px;
+    margin: 0 0 10px 0;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -372,23 +387,22 @@
 
 .work-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-    margin-bottom: 4px;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
 }
 .work-card {
     background: #ffffff;
     border: 1px solid #eef2f7;
     border-radius: 10px;
-    padding: 12px 14px 14px;
+    padding: 10px 12px 12px;
     transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
     cursor: pointer;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 .work-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 10px 30px rgba(95, 127, 255, 0.08);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 8px 28px rgba(95, 127, 255, 0.08);
     border-color: #5f7fff;
 }
 .work-card .cover {
@@ -398,7 +412,7 @@
     background: #eef4ff;
     border: 1px solid #eef2f7;
     border-radius: 6px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     transition: opacity 0.2s;
 }
 .work-card .cover-placeholder {
@@ -413,10 +427,10 @@
     font-size: 1.8rem;
     color: #5f7fff;
     opacity: 0.15;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 .work-card .title {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     color: #1e293b;
     display: -webkit-box;
@@ -436,7 +450,7 @@
     font-size: 13px;
     color: #4c6a9e;
     opacity: 0.3;
-    padding: 12px 0;
+    padding: 10px 0;
     grid-column: 1 / -1;
     text-align: center;
     font-style: italic;
@@ -454,22 +468,78 @@
     text-transform: uppercase;
 }
 
-/* ---- 响应式 ---- */
+/* ---- 右侧列中的作品模块间距 ---- */
+.column-right .card {
+    margin-bottom: 0;
+}
+.column-right .work-section {
+    margin-top: 0;
+}
+
+/* ---- 响应式：移动端变为上下排列，动画改为上滑 ---- */
 @media (max-width: 768px) {
     .modal-content.has-bg .modal-inner { padding: 16px 16px 20px; }
-    .profile-card { flex-direction: column; align-items: center; text-align: center; }
-    .profile-card .info .meta { justify-content: center; }
-    .work-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-    .profile-card .avatar { width: 68px; height: 68px; font-size: 26px; }
-    .profile-card .info .name { font-size: 22px; justify-content: center; }
-    .card { padding: 14px 16px; }
+    .modal-columns {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .column-left {
+        flex: 1;
+        gap: 12px;
+    }
+    .column-right {
+        gap: 12px;
+    }
+    .slide-left,
+    .slide-right {
+        animation-name: slideUp !important;
+    }
+    @keyframes slideUp {
+        0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .profile-card .avatar {
+        width: 64px;
+        height: 64px;
+        font-size: 24px;
+    }
+    .profile-card .name {
+        font-size: 22px;
+    }
+    .work-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+    .card {
+        padding: 14px 16px;
+    }
 }
 @media (max-width: 480px) {
-    .work-grid { grid-template-columns: 1fr; }
+    .work-grid {
+        grid-template-columns: 1fr;
+    }
     .modal-content.has-bg .modal-inner { padding: 12px 12px 16px; }
-    .profile-card .avatar { width: 56px; height: 56px; font-size: 20px; }
-    .profile-card .info .name { font-size: 19px; }
-    .days-card { flex-direction: column; text-align: center; }
-    .honor-item { font-size: 11px; padding: 3px 14px; }
-    .modal-close { top: 6px; right: 6px; width: 30px; height: 30px; font-size: 20px; }
+    .profile-card .avatar {
+        width: 56px;
+        height: 56px;
+        font-size: 20px;
+    }
+    .profile-card .name {
+        font-size: 19px;
+    }
+    .days-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .honor-item {
+        font-size: 11px;
+        padding: 3px 14px;
+    }
+    .modal-close {
+        top: 6px;
+        right: 6px;
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
+    }
 }
