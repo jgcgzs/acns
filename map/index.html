@@ -634,960 +634,321 @@
             border-color: var(--blue-primary);
             color: var(--blue-primary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 14px rgba(74, 10            display: block;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        /* ===== 参考主站配色 ===== */
-        :root {
-            --blue-primary: #5f7fff;
-            --blue-primary-dark: #4a6adf;
-            --blue-light: #eef4ff;
-            --blue-pale: #f0f4ff;
-            --white: #ffffff;
-            --text-primary: #1e293b;
-            --text-secondary: #4c6a9e;
-            --border-light: #dce3ef;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-hover: 0 4px 16px rgba(0,0,0,0.08);
-            --radius: 0px;
-        }
-
-        /* ===== 导航栏（完全不变） ===== */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 100;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            height: 68px;
-            display: flex;
-            align-items: center;
-            border-bottom: 1px solid var(--border-light);
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
-        }
-        .navbar .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .navbar-brand .logo {
-            height: 36px;
-            width: auto;
-        }
-        .navbar-brand .brand-text {
-            font-size: 20px;
-            font-weight: 700;
-            color: #1a1a1a;
-            letter-spacing: 0.3px;
-            white-space: nowrap;
-        }
-        .nav-links {
-            display: flex;
-            gap: 2px;
-            list-style: none;
-        }
-        .nav-links li a {
-            display: block;
-            padding: 8px 16px;
-            font-size: 15px;
-            font-weight: 500;
-            color: #222222;
-            border-radius: 0px;
-            transition: background 0.2s, color 0.2s;
-            position: relative;
-        }
-        .nav-links li a::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: var(--blue-primary);
-            transition: width 0.25s ease;
-            transform: translateX(-50%);
-            border-radius: 0px;
-        }
-        .nav-links li a:hover {
-            background: var(--blue-pale);
-            color: var(--blue-primary);
-        }
-        .nav-links li a:hover::after {
-            width: 50%;
-        }
-        .nav-links li a.active {
-            color: var(--blue-primary);
-            font-weight: 600;
-        }
-        .nav-links li a.active::after {
-            width: 50%;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 1.4rem;
-            color: #222;
-            cursor: pointer;
-            padding: 4px 8px;
-        }
-
-        .footer {
-            background: #1a2a3a;
-            color: rgba(255, 255, 255, 0.55);
-            text-align: center;
-            padding: 20px 0;
-            font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 48px;
-        }
-        .footer .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .footer .sep {
-            color: rgba(255, 255, 255, 0.12);
-        }
-
-        /* ===== 页面头部 ===== */
-        .page-header {
-            padding: 20px 0 16px;
-            position: relative;
-        }
-        .page-header h1 {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-        .page-header .sub {
-            font-size: 15px;
-            color: var(--text-secondary);
-            opacity: 0.6;
-            margin-top: 2px;
-        }
-
-        /* ===== 搜索 & 平台筛选 ===== */
-        .filter-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px 16px;
-            align-items: center;
-            margin-bottom: 16px;
-            padding: 14px 20px;
-            background: var(--white);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-        }
-        .filter-bar .search-wrap {
-            flex: 1;
-            min-width: 180px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--blue-pale);
-            padding: 0 14px;
-            transition: background 0.2s;
-        }
-        .filter-bar .search-wrap:focus-within {
-            background: #e4edff;
-        }
-        .filter-bar .search-wrap i {
-            color: var(--text-secondary);
-            opacity: 0.4;
-            font-size: 14px;
-        }
-        .filter-bar .search-wrap input {
-            flex: 1;
-            padding: 8px 4px;
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            outline: none;
-            color: var(--text-primary);
-            font-family: inherit;
-        }
-        .filter-bar .search-wrap input::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.4;
-        }
-
-        .filter-bar .filter-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            align-items: center;
-        }
-        .filter-bar .filter-group .label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-right: 4px;
-        }
-        .filter-tag {
-            padding: 4px 16px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            background: var(--blue-pale);
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.25s;
-            white-space: nowrap;
-        }
-        .filter-tag:hover {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-        }
-        .filter-tag.active {
-            background: var(--blue-primary);
-            color: #fff;
-            border-color: var(--blue-primary);
-            box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
-        }
-
-        /* ===== 分类标签（地图/模型/模组） ===== */
-        .category-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 12px;
-            padding: 6px 0;
-        }
-        .category-tag {
-            padding: 6px 20px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: var(--shadow-sm);
-        }
-        .category-tag:hover {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-hover);
-        }
-        .category-tag.active {
-            background: var(--blue-primary);
-            color: #fff;
-            border-color: var(--blue-primary);
-            box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
-        }
-        .category-tag i {
-            margin-right: 6px;
-            font-size: 13px;
-        }
-
-        /* ===== 状态筛选标签（新增） ===== */
-        .status-bar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 20px;
-            padding: 6px 0;
-            border-top: 1px solid var(--border-light);
-            padding-top: 12px;
-        }
-        .status-bar .label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-right: 8px;
-            align-self: center;
-        }
-        .status-tag {
-            padding: 4px 14px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            background: var(--blue-pale);
-            border: 1px solid transparent;
-            cursor: pointer;
-            transition: all 0.25s;
-            white-space: nowrap;
-        }
-        .status-tag:hover {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-        }
-        .status-tag.active {
-            background: var(--blue-primary);
-            color: #fff;
-            border-color: var(--blue-primary);
-            box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
-        }
-
-        /* ===== 卡片网格 ===== */
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-top: 4px;
-        }
-
-        /* ===== 卡片样式 — 直角 · 简洁入场 ===== */
-        .work-card {
-            background: var(--white);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            cursor: pointer;
-            opacity: 0;
-            transform: translateY(20px);
-            animation: cardFadeIn 0.5s ease forwards;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        .work-card:nth-child(1) { animation-delay: 0.04s; }
-        .work-card:nth-child(2) { animation-delay: 0.08s; }
-        .work-card:nth-child(3) { animation-delay: 0.12s; }
-        .work-card:nth-child(4) { animation-delay: 0.16s; }
-        .work-card:nth-child(5) { animation-delay: 0.20s; }
-        .work-card:nth-child(6) { animation-delay: 0.24s; }
-        .work-card:nth-child(7) { animation-delay: 0.28s; }
-        .work-card:nth-child(8) { animation-delay: 0.32s; }
-        .work-card:nth-child(9) { animation-delay: 0.36s; }
-        .work-card:nth-child(10) { animation-delay: 0.40s; }
-        .work-card:nth-child(11) { animation-delay: 0.44s; }
-        .work-card:nth-child(12) { animation-delay: 0.48s; }
-        .work-card:nth-child(13) { animation-delay: 0.52s; }
-        .work-card:nth-child(14) { animation-delay: 0.56s; }
-        .work-card:nth-child(15) { animation-delay: 0.60s; }
-        .work-card:nth-child(16) { animation-delay: 0.64s; }
-
-        @keyframes cardFadeIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .work-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-        }
-
-        .work-card .cover {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: var(--blue-pale);
-            transition: transform 0.4s ease;
-        }
-        .work-card:hover .cover {
-            transform: scale(1.02);
-        }
-        .work-card .cover-placeholder {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: var(--blue-pale);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: var(--blue-primary);
-            opacity: 0.15;
-            transition: opacity 0.3s;
-        }
-        .work-card:hover .cover-placeholder {
-            opacity: 0.25;
-        }
-
-        /* 状态徽章（右上角）保留 */
-        .work-card .status-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 12px;
-            color: #fff;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            background: rgba(0,0,0,0.35);
-            z-index: 2;
-        }
-        .work-card .status-badge.planning { background: #94a3b8; }
-        .work-card .status-badge.developing { background: #f59e0b; }
-        .work-card .status-badge.testing { background: #8b5cf6; }
-        .work-card .status-badge.updating { background: #3b82f6; }
-        .work-card .status-badge.pending { background: #14b8a6; }
-        .work-card .status-badge.completed { background: #16a34a; }
-
-        /* 卡片正文 — 类型标签移到标题上方 */
-        .work-card .body {
-            padding: 14px 16px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-        }
-        .work-card .body .type-label {
-            font-size: 10px;
-            font-weight: 700;
-            color: #fff;
-            background: var(--blue-primary);
-            display: inline-block;
-            padding: 2px 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            margin-bottom: 2px;
-            align-self: flex-start;
-        }
-        .work-card .body .type-label.mc {
-            background: #2d3436;
-        }
-
-        .work-card .body .title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .work-card .body .author {
-            font-size: 13px;
-            color: var(--text-secondary);
-            opacity: 0.6;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .work-card .body .author i {
-            font-size: 11px;
-            opacity: 0.5;
-        }
-        .work-card .body .meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 12px;
-            font-size: 12px;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            margin-top: 2px;
-        }
-        .work-card .body .meta span {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-        .work-card .body .meta i {
-            font-size: 11px;
-            opacity: 0.4;
-        }
-
-        .work-card .body .desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-top: 4px;
-            opacity: 0.8;
-        }
-
-        .work-card .body .footer-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border-light);
-        }
-        .work-card .body .footer-row .tag {
-            font-size: 10px;
-            font-weight: 600;
-            padding: 2px 12px;
-            color: var(--blue-primary);
-            background: var(--blue-pale);
-            border: 1px solid var(--border-light);
-            letter-spacing: 0.2px;
-        }
-        .work-card .body .footer-row .view-btn {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--blue-primary);
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            transition: gap 0.3s;
-            border: none;
-            background: none;
-            cursor: pointer;
-        }
-        .work-card:hover .body .footer-row .view-btn {
-            gap: 8px;
-        }
-        .work-card .body .footer-row .view-btn i {
-            font-size: 11px;
-            transition: transform 0.3s;
-        }
-        .work-card:hover .body .footer-row .view-btn i {
-            transform: translateX(4px);
-        }
-
-        /* ===== 空状态 & 加载 ===== */
-        .empty-state,
-        .loading-state {
-            text-align: center;
-            padding: 80px 0;
-            color: var(--text-secondary);
-            opacity: 0.4;
-            font-size: 15px;
-            grid-column: 1 / -1;
-        }
-        .loading-state i {
-            display: block;
-            font-size: 32px;
-            color: var(--blue-primary);
-            margin-bottom: 12px;
-            opacity: 0.6;
-        }
-
-        /* ===== 分页 ===== */
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            margin-top: 32px;
-            flex-wrap: wrap;
-        }
-        .pagination button {
-            padding: 6px 16px;
-            border: 1px solid var(--border-light);
-            background: var(--white);
-            color: var(--text-primary);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 36px;
-        }
-        .pagination button:hover:not(:disabled) {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
+            box-shadow: 0 4px 14px rgba(74, 108, 247, 0.2);
         }
         .pagination button.active {
             background: var(--blue-primary);
             color: #fff;
             border-color: var(--blue-primary);
+            box-shadow: 0 4px 16px rgba(74, 108, 247, 0.3);
         }
         .pagination button:disabled {
-            opacity: 0.3;
+            opacity: 0.25;
             cursor: default;
+            transform: none !important;
+            box-shadow: none !important;
         }
         .pagination .info {
             font-size: 13px;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            padding: 0 8px;
+            color: var(--text-light);
+            padding: 0 12px;
+            font-weight: 500;
+        }
+
+        /* ===== 加载 & 空状态 ===== */
+        .loading-placeholder,
+        .empty-placeholder {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-light);
+            font-size: 15px;
+            grid-column: 1 / -1;
+        }
+        .loading-placeholder i {
+            display: block;
+            font-size: 32px;
+            color: var(--blue-primary);
+            margin-bottom: 12px;
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         /* ============================================================
-           详情弹窗 — 直角 · 简洁 · 淡入入场
-           ============================================================ */
-        .detail-modal-overlay {
-            display: none;
+                   详情弹窗 - 模块化 + 左右入场 (新布局)
+                   ============================================================ */
+        .detail-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 300;
-            justify-content: center;
+            z-index: 200;
+            background: rgba(26, 42, 108, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
             align-items: center;
+            justify-content: center;
             padding: 20px;
-            animation: overlayFade 0.3s ease;
         }
-        .detail-modal-overlay.active {
+        .detail-overlay.open {
             display: flex;
-        }
-        @keyframes overlayFade {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
 
         .detail-modal {
-            background: #ffffff;
-            max-width: 920px;
-            width: 100%;
-            max-height: 92vh;
-            overflow-y: auto;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-            animation: modalIn 0.3s ease;
-            border: 1px solid var(--border-light);
-        }
-        .detail-modal.has-bg {
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        .detail-modal.has-bg .detail-inner {
-            background: rgba(255,255,255,0.92);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            padding: 28px 32px 32px;
-        }
-        .detail-modal .detail-inner {
-            padding: 28px 32px 32px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            background: var(--blue-card);
+            border-radius: var(--radius);
+            box-shadow: 0 24px 64px rgba(26, 42, 108, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        @keyframes modalIn {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* 关闭按钮 */
-        .detail-modal .modal-close {
-            position: sticky;
-            top: 6px;
-            float: right;
-            font-size: 24px;
-            background: rgba(255,255,255,0.9);
-            border: 1px solid var(--border-light);
-            color: var(--text-secondary);
-            cursor: pointer;
-            padding: 0;
+        .detail-modal .detail-close {
+            position: absolute;
+            top: 14px;
+            right: 18px;
             z-index: 10;
-            line-height: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
             width: 36px;
             height: 36px;
+            border-radius: 50%;
+            font-size: 22px;
+            line-height: 1;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s;
-            margin-bottom: 4px;
         }
-        .detail-modal .modal-close:hover {
-            color: var(--text-primary);
-            background: #ffffff;
-            border-color: var(--blue-primary);
+        .detail-modal .detail-close:hover {
+            background: #fff;
+            transform: rotate(90deg) scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
         }
 
-        /* 弹窗主体网格 */
-        .detail-modal .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 28px;
-            margin-top: 0;
-        }
-        .detail-modal .detail-grid > * {
-            opacity: 0;
-            animation: gridFadeIn 0.4s ease forwards;
-        }
-        .detail-modal .detail-grid .detail-left {
-            animation-delay: 0.06s;
-        }
-        .detail-modal .detail-grid .detail-right {
-            animation-delay: 0.12s;
-        }
-        @keyframes gridFadeIn {
-            0% { opacity: 0; transform: translateY(10px); }
-            100% { opacity: 1; transform: translateY(0); }
+        .detail-body {
+            display: flex;
+            flex-direction: row;
+            overflow-y: auto;
+            flex: 1;
+            max-height: 90vh;
         }
 
-        /* 左侧 */
-        .detail-modal .detail-left {
+        /* 左侧：封面 + 描述 (从左侧滑入) */
+        .detail-left {
+            flex: 0 0 42%;
+            min-width: 200px;
+            background: var(--blue-bg);
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            padding: 20px;
+            gap: 14px;
+            animation: slideInLeft 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            overflow-y: auto;
         }
-        .detail-modal .detail-cover {
+        .detail-left .cover-wrap {
+            flex: 0 0 auto;
+            width: 100%;
+            border-radius: var(--radius-sm);
             overflow: hidden;
-            background: var(--blue-pale);
-            border: 1px solid var(--border-light);
-            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+            background: var(--blue-card);
+        }
+        .detail-left .cover-wrap img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+        .detail-left .cover-wrap .placeholder {
             aspect-ratio: 16/9;
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .detail-modal .detail-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .detail-modal .detail-cover .cover-placeholder {
-            font-size: 4rem;
+            font-size: 3rem;
             color: var(--blue-primary);
-            opacity: 0.15;
+            opacity: 0.2;
+            background: var(--blue-card);
         }
-        /* 移除封面上的类型标签 */
-
-        .detail-modal .info-card {
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            padding: 18px 20px;
-            box-shadow: var(--shadow-sm);
-        }
-        .detail-modal .info-card .row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 7px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.04);
-            font-size: 14px;
-            gap: 8px;
-        }
-        .detail-modal .info-card .row:last-child {
-            border-bottom: none;
-        }
-        .detail-modal .info-card .label {
-            font-weight: 600;
-            color: var(--text-secondary);
-            opacity: 0.6;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-            flex-shrink: 0;
-        }
-        .detail-modal .info-card .value {
-            color: var(--text-primary);
-            font-weight: 500;
-            text-align: right;
-            word-break: break-all;
-            max-width: 65%;
+        .detail-left .left-desc {
+            background: var(--blue-card);
+            border: 1px solid var(--blue-border);
+            border-radius: var(--radius-sm);
+            padding: 12px 14px;
             font-size: 13px;
-        }
-        .detail-modal .info-card .value a {
-            color: var(--blue-primary);
-            font-weight: 600;
-        }
-        .detail-modal .info-card .value a:hover {
-            text-decoration: underline;
-        }
-        .detail-modal .info-card .copy-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--blue-primary);
-            background: var(--blue-pale);
-            border: 1px solid var(--border-light);
-            padding: 1px 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-left: 4px;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-        .detail-modal .info-card .copy-btn:hover {
-            background: var(--blue-primary);
-            color: #fff;
-            border-color: var(--blue-primary);
-        }
-        .detail-modal .info-card .copy-btn i {
-            font-size: 10px;
-        }
-        .detail-modal .info-card .value .copy-btn {
-            display: inline-flex;
+            color: var(--text-muted);
+            line-height: 1.7;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 180px;
         }
 
-        /* 右侧 — 类型标签放在标题上方 */
-        .detail-modal .detail-right {
+        @keyframes slideInLeft {
+            0% {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* 右侧：标题、标签、元数据、公告等 (模块从右侧滑入) */
+        .detail-right {
+            flex: 1;
+            padding: 28px 30px 30px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 6px;
         }
-        .detail-modal .detail-right .type-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: #fff;
-            background: var(--blue-primary);
-            display: inline-block;
-            padding: 2px 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            align-self: flex-start;
+        .detail-right .mod {
+            animation: slideInRight 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0;
+            transform: translateX(60px);
         }
-        .detail-modal .detail-right .type-label.mc {
-            background: #2d3436;
+        .detail-right .mod-1 {
+            animation-delay: 0.05s;
         }
-        .detail-modal .detail-right .title-section h2 {
-            font-size: 26px;
-            font-weight: 800;
-            color: var(--text-primary);
-            line-height: 1.2;
-            margin-bottom: 2px;
+        .detail-right .mod-2 {
+            animation-delay: 0.12s;
         }
-        .detail-modal .detail-right .title-section .subtitle {
-            font-size: 13px;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            font-weight: 500;
+        .detail-right .mod-3 {
+            animation-delay: 0.19s;
+        }
+        .detail-right .mod-4 {
+            animation-delay: 0.26s;
+        }
+        .detail-right .mod-5 {
+            animation-delay: 0.33s;
         }
 
-        .detail-modal .status-section {
+        @keyframes slideInRight {
+            0% {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .detail-right .detail-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+        .detail-right .detail-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px 24px;
-            padding: 12px 18px;
-            background: var(--blue-pale);
-            border: 1px solid var(--border-light);
+            gap: 4px;
+            margin: 2px 0 2px;
         }
-        .detail-modal .status-item {
+        .detail-right .detail-tags .tag-pill {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 1px 14px;
+            border-radius: 50px;
+            letter-spacing: 0.3px;
+            border: 1.5px solid transparent;
+            background: rgba(74, 108, 247, 0.08);
+            border-color: rgba(74, 108, 247, 0.25);
+            color: var(--blue-primary);
+        }
+        .detail-right .detail-tags .tag-pill.gold {
+            background: rgba(245, 166, 35, 0.10);
+            border-color: rgba(245, 166, 35, 0.30);
+            color: var(--gold);
+        }
+        .detail-right .detail-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+            font-size: 13px;
+            color: var(--text-light);
+            margin: 2px 0 4px;
+        }
+        .detail-right .detail-meta span {
             display: flex;
             align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            color: var(--text-primary);
+            gap: 4px;
         }
-        .detail-modal .status-item .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            flex-shrink: 0;
-        }
-        .detail-modal .status-item .dot.planning { background: #94a3b8; }
-        .detail-modal .status-item .dot.developing { background: #f59e0b; }
-        .detail-modal .status-item .dot.testing { background: #8b5cf6; }
-        .detail-modal .status-item .dot.updating { background: #3b82f6; }
-        .detail-modal .status-item .dot.pending { background: #14b8a6; }
-        .detail-modal .status-item .dot.completed { background: #16a34a; }
-        .detail-modal .status-item .label {
-            font-weight: 500;
-            color: var(--text-secondary);
-            opacity: 0.6;
-        }
-        .detail-modal .status-item .value {
-            font-weight: 600;
-        }
-
-        .detail-modal .progress-section {
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            padding: 14px 18px;
-            box-shadow: var(--shadow-sm);
-        }
-        .detail-modal .progress-section .progress-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 6px;
-        }
-        .detail-modal .progress-bar-bg {
-            width: 100%;
-            height: 6px;
-            background: var(--blue-pale);
-            overflow: hidden;
-        }
-        .detail-modal .progress-bar-fill {
-            height: 100%;
-            background: var(--blue-primary);
-            transition: width 0.8s ease;
-            width: 0%;
-        }
-
-        .detail-modal .desc-section {
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            padding: 16px 18px;
-            box-shadow: var(--shadow-sm);
-            font-size: 14px;
-            line-height: 1.9;
-            color: var(--text-primary);
-        }
-        .detail-modal .desc-section p {
-            margin-bottom: 8px;
-        }
-        .detail-modal .desc-section p:last-child {
-            margin-bottom: 0;
-        }
-
-        .detail-modal .announcement {
-            background: var(--blue-pale);
-            border-left: 4px solid var(--blue-primary);
-            padding: 12px 18px;
-            font-size: 14px;
-            color: var(--text-primary);
-            line-height: 1.7;
-        }
-        .detail-modal .announcement .announce-label {
-            font-weight: 700;
+        .detail-right .detail-meta .d-author {
+            cursor: pointer;
             color: var(--blue-primary);
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .detail-right .detail-meta .d-author:hover {
+            color: var(--blue-primary-dark);
+            text-decoration: underline;
+        }
+        .detail-right .detail-meta i {
+            opacity: 0.4;
             font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 2px;
+        }
+        .detail-right .detail-extra {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 16px;
+            margin: 4px 0 0;
+        }
+        .detail-right .detail-extra .extra-item {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+        .detail-right .detail-extra .extra-item strong {
+            color: var(--text-dark);
+            font-weight: 600;
+            min-width: 44px;
+        }
+        .detail-right .detail-extra .extra-item .badge {
+            padding: 0 12px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(74, 108, 247, 0.08);
+            color: var(--blue-primary);
+            border: 1px solid rgba(74, 108, 247, 0.2);
+        }
+        .detail-right .detail-extra .extra-item .badge.gold {
+            background: rgba(245, 166, 35, 0.10);
+            color: var(--gold);
+            border-color: rgba(245, 166, 35, 0.25);
+        }
+        .detail-right .detail-announce {
+            background: var(--blue-bg);
+            border: 1px solid var(--blue-border);
+            border-radius: var(--radius-sm);
+            padding: 8px 14px;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
 
-        /* ===== 复制 Toast ===== */
-        .copy-toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 10px 24px;
-            font-size: 14px;
-            z-index: 500;
-            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-            animation: toastIn 0.3s ease;
-        }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-
-        /* ============================================================
-           响应式
-           ============================================================ */
+        /* ===== 响应式 ===== */
         @media (max-width: 992px) {
-            .card-grid {
+            .map-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
-            .filter-bar {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-                padding: 14px 16px;
-            }
-            .filter-bar .search-wrap {
-                min-width: auto;
-            }
-            .filter-bar .filter-group {
-                justify-content: flex-start;
+            .detail-left {
+                flex: 0 0 38%;
             }
         }
         @media (max-width: 768px) {
@@ -1610,8 +971,8 @@
                 background: #fff;
                 padding: 12px 24px 20px;
                 gap: 2px;
-                border-top: 1px solid var(--border-light);
-                box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+                border-top: 1px solid var(--blue-border);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
             }
             .nav-links.open {
                 display: flex;
@@ -1622,12 +983,23 @@
                 width: 100%;
                 text-align: center;
             }
-            .card-grid {
+            .map-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 14px;
             }
+            .preview-card {
+                flex: 0 0 150px;
+                max-width: 150px;
+            }
             .page-header h1 {
-                font-size: 26px;
+                font-size: 22px;
+            }
+            .filter-item {
+                font-size: 12px;
+                padding: 4px 14px;
+            }
+            .filter-label {
+                font-size: 11px;
             }
             .navbar-brand .brand-text {
                 font-size: 17px;
@@ -1635,159 +1007,143 @@
             .navbar-brand .logo {
                 height: 28px;
             }
-            .filter-bar .filter-group .label {
-                display: none;
+            .detail-body {
+                flex-direction: column;
             }
-            .category-tag {
-                font-size: 12px;
-                padding: 4px 14px;
-            }
-            .status-bar .label {
-                display: none;
-            }
-
-            .detail-modal .detail-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .detail-modal .detail-left {
-                order: 1;
-            }
-            .detail-modal .detail-right {
-                order: 2;
-            }
-            .detail-modal .detail-cover {
-                aspect-ratio: 16/9;
-            }
-            .detail-modal .detail-right .title-section h2 {
-                font-size: 22px;
-            }
-            .detail-modal .info-card .row {
+            .detail-left {
+                flex: 0 0 auto;
+                min-height: 200px;
+                max-height: 320px;
+                padding: 14px;
+                flex-direction: row;
                 flex-wrap: wrap;
-                gap: 2px 0;
+                gap: 10px;
             }
-            .detail-modal .info-card .value {
-                text-align: left;
-                max-width: 100%;
+            .detail-left .cover-wrap {
+                flex: 0 0 40%;
+                min-width: 120px;
             }
-            .detail-modal .modal-close {
-                top: 4px;
-                right: 4px;
-                width: 34px;
-                height: 34px;
-                font-size: 20px;
+            .detail-left .left-desc {
+                flex: 1;
+                max-height: 120px;
+                min-width: 140px;
             }
-            .detail-modal .detail-inner {
-                padding: 16px 18px 20px;
+            .detail-right {
+                padding: 18px 18px 22px;
             }
-            .detail-modal.has-bg .detail-inner {
-                padding: 16px 18px 20px;
+            .detail-right .detail-title {
+                font-size: 19px;
+            }
+            .detail-right .detail-extra {
+                grid-template-columns: 1fr;
+            }
+            .detail-modal {
+                max-height: 95vh;
+            }
+            @keyframes slideInLeft {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-30px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes slideInRight {
+                0% {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
         }
         @media (max-width: 480px) {
-            .card-grid {
-                grid-template-columns: 1fr 1fr;
+            .map-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 10px;
             }
-            .work-card .body {
-                padding: 10px 12px 12px;
+            .map-card .body {
+                padding: 8px 10px 10px;
             }
-            .work-card .body .title {
-                font-size: 14px;
+            .map-card .body .title {
+                font-size: 13px;
             }
-            .work-card .body .desc {
-                font-size: 12px;
-                -webkit-line-clamp: 1;
-            }
-            .work-card .body .meta {
+            .map-card .body .desc-box {
                 font-size: 11px;
+                padding: 4px 8px;
+                min-height: 32px;
+                -webkit-line-clamp: 2;
             }
-            .work-card .body .footer-row .tag {
+            .map-card .body .tag-pill {
                 font-size: 9px;
-                padding: 1px 8px;
+                padding: 0 10px;
             }
-            .work-card .body .footer-row .view-btn {
+            .map-card .body .date-row {
                 font-size: 11px;
             }
-            .work-card .status-badge {
-                font-size: 8px;
-                padding: 1px 8px;
-                top: 8px;
-                right: 8px;
+            .map-card .body .meta-row {
+                font-size: 11px;
+            }
+            .map-card .body .btn-detail {
+                font-size: 11px;
+                padding: 3px 14px;
+            }
+            .preview-card {
+                flex: 0 0 130px;
+                max-width: 130px;
+            }
+            .preview-card .body .title {
+                font-size: 12px;
+            }
+            .search-bar input {
+                font-size: 13px;
+                padding: 8px 14px;
+            }
+            .search-bar .search-btn {
+                font-size: 13px;
+                padding: 8px 18px;
             }
             .container {
-                padding: 0 12px;
+                padding: 0 14px;
             }
-            .filter-bar {
-                padding: 10px 12px;
-            }
-            .filter-tag {
-                font-size: 12px;
-                padding: 3px 12px;
-            }
-            .category-bar {
-                gap: 6px;
-                padding: 6px 0;
-            }
-            .category-tag {
+            .filter-item {
                 font-size: 11px;
                 padding: 3px 12px;
             }
-            .status-tag {
-                font-size: 11px;
-                padding: 2px 10px;
-            }
-            .pagination button {
-                padding: 4px 12px;
-                font-size: 13px;
-                min-width: 32px;
-            }
-
-            .detail-modal .detail-right .title-section h2 {
-                font-size: 19px;
-            }
-            .detail-modal .status-section {
-                flex-direction: column;
+            .filter-row {
                 gap: 4px;
-                padding: 10px 14px;
+                padding: 4px 0 8px;
             }
-            .detail-modal .info-card {
-                padding: 12px 14px;
+            .detail-left {
+                flex-direction: column;
+                min-height: 160px;
+                max-height: 280px;
             }
-            .detail-modal .desc-section {
-                padding: 12px 14px;
-                font-size: 13px;
+            .detail-left .cover-wrap {
+                flex: 0 0 auto;
+                width: 100%;
+                max-height: 140px;
             }
-            .detail-modal .announcement {
-                padding: 10px 14px;
-                font-size: 13px;
+            .detail-left .left-desc {
+                max-height: 80px;
             }
-            .detail-modal .progress-section {
-                padding: 12px 14px;
-            }
-            .detail-modal .modal-close {
-                width: 32px;
-                height: 32px;
-                font-size: 18px;
-                top: 4px;
-                right: 4px;
-            }
-            .detail-modal .detail-inner {
-                padding: 12px 14px 16px;
-            }
-            .detail-modal.has-bg .detail-inner {
-                padding: 12px 14px 16px;
+            .detail-right .detail-extra .extra-item {
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 导航栏（完全不变） ===== -->
+    <!-- ===== 导航栏（完全保留原样） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
-                <img class="logo" src="https://user-assets.sxlcdn.com/images/1138507/FnXCnd1-XDIsMnQHRLQD_xUKHJac.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png" alt="极光创工作室logo" loading="lazy" onerror="this.style.display='none'">
+                <img class="logo" src="https://user-assets.sxlcdn.com/images/1138507/FnXCnd1-XDIsMnQHRLQD_xUKHJac.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png" alt="极光创工作室logo" loading="lazy" onerror="this.style.display='none'" />
                 <span class="brand-text">极光创工作室</span>
             </div>
             <button class="menu-toggle" id="menuToggle" aria-label="菜单"><i class="fas fa-bars"></i></button>
@@ -1804,70 +1160,108 @@
     <!-- ===== 主内容 ===== -->
     <main>
         <div class="container">
+
+            <!-- 头部 -->
             <div class="page-header">
-                <h1>作品库</h1>
-                <div class="sub">地图 · 模型 · 模组 — 全部作品</div>
-            </div>
-
-            <!-- 搜索 & 平台筛选 -->
-            <div class="filter-bar">
-                <div class="search-wrap">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="搜索作品名称、作者..." />
-                </div>
-                <div class="filter-group">
-                    <span class="label">平台</span>
-                    <span class="filter-tag active" data-filter="all">全部</span>
-                    <span class="filter-tag" data-filter="迷你世界">迷你世界</span>
-                    <span class="filter-tag" data-filter="MC">Minecraft</span>
+                <div>
+                    <h1>地图库</h1>
+                    <div class="sub">极光创工作室 · 所有地图作品</div>
                 </div>
             </div>
 
-            <!-- 分类标签：全部 / 地图 / 模型 / 模组 -->
-            <div class="category-bar" id="categoryBar">
-                <span class="category-tag active" data-cat="全部"><i class="fas fa-th-large"></i> 全部</span>
-                <span class="category-tag" data-cat="地图"><i class="fas fa-map"></i> 地图</span>
-                <span class="category-tag" data-cat="模型"><i class="fas fa-cube"></i> 模型</span>
-                <span class="category-tag" data-cat="模组"><i class="fas fa-puzzle-piece"></i> 模组</span>
+            <!-- 搜索 -->
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="搜索地图名称、作者、迷你号" />
+                <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
-            <!-- 状态筛选标签（新增） -->
-            <div class="status-bar" id="statusBar">
-                <span class="label">状态</span>
-                <span class="status-tag active" data-status="all">全部</span>
-                <span class="status-tag" data-status="策划中">策划中</span>
-                <span class="status-tag" data-status="开发中">开发中</span>
-                <span class="status-tag" data-status="测试中">测试中</span>
-                <span class="status-tag" data-status="更新中">更新中</span>
-                <span class="status-tag" data-status="待发布">待发布</span>
-                <span class="status-tag" data-status="已完结">已完结</span>
+            <!-- ===== 分类栏：三行 ===== -->
+            <div class="filter-section">
+
+                <!-- 第一行：平台 -->
+                <div class="filter-row" id="platformRow">
+                    <span class="filter-label">平台</span>
+                    <span class="filter-item active" data-filter="platform" data-value="all">全部</span>
+                    <span class="filter-item" data-filter="platform" data-value="迷你世界">迷你世界</span>
+                    <span class="filter-item" data-filter="platform" data-value="我的世界">我的世界</span>
+                </div>
+
+                <!-- 第二行：类型 -->
+                <div class="filter-row" id="typeRow">
+                    <span class="filter-label">类型</span>
+                    <span class="filter-item active" data-filter="type" data-value="all">全部</span>
+                    <span class="filter-item" data-filter="type" data-value="地图">地图</span>
+                    <span class="filter-item" data-filter="type" data-value="模型/模组">模型 / 模组</span>
+                </div>
+
+                <!-- 第三行：状态 -->
+                <div class="filter-row" id="statusRow">
+                    <span class="filter-label">状态</span>
+                    <span class="filter-item active" data-filter="status" data-value="all">全部</span>
+                    <span class="filter-item" data-filter="status" data-value="策划中">策划中</span>
+                    <span class="filter-item" data-filter="status" data-value="制作中">制作中</span>
+                    <span class="filter-item" data-filter="status" data-value="更新中">更新中</span>
+                    <span class="filter-item" data-filter="status" data-value="待发布">待发布</span>
+                    <span class="filter-item" data-filter="status" data-value="测试中">测试中</span>
+                    <span class="filter-item" data-filter="status" data-value="已完结">已完结</span>
+                    <span class="filter-item" data-filter="status" data-value="精选">精选</span>
+                </div>
             </div>
 
-            <!-- 卡片网格 -->
-            <div class="card-grid" id="cardGrid">
-                <div class="loading-state"><i class="fas fa-spinner fa-pulse"></i>加载作品中...</div>
+            <!-- 预告 -->
+            <section class="preview-section" id="previewSection">
+                <div class="preview-header">
+                    <h3>即将发布 <span class="badge-preview" id="previewCount">0</span></h3>
+                </div>
+                <div class="preview-scroll" id="previewScroll">
+                    <div class="preview-grid" id="previewGrid">
+                        <div class="preview-empty">加载中...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 地图网格 -->
+            <div class="map-grid-container">
+                <div class="map-grid" id="mapGrid">
+                    <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>
+                </div>
             </div>
 
             <!-- 分页 -->
             <div class="pagination" id="pagination">
-                <button id="prevPage" disabled>‹</button>
+                <button id="prevPage" disabled><i class="fas fa-chevron-left"></i></button>
                 <span id="pageInfo" class="info">第 1 / 1 页</span>
-                <button id="nextPage" disabled>›</button>
+                <button id="nextPage" disabled><i class="fas fa-chevron-right"></i></button>
             </div>
+
         </div>
     </main>
 
-    <!-- ===== 详情弹窗 ===== -->
-    <div class="detail-modal-overlay" id="detailModal">
-        <div class="detail-modal" id="detailModalContent">
-            <button class="modal-close" id="detailModalClose">&times;</button>
-            <div class="detail-inner" id="detailModalInner">
-                <div id="detailBody"></div>
+    <!-- ===== 详情弹窗（新布局） ===== -->
+    <div class="detail-overlay" id="detailOverlay">
+        <div class="detail-modal" id="detailModal">
+            <button class="detail-close" id="detailClose">&times;</button>
+            <div class="detail-body" id="detailBody">
+                <!-- 左侧：封面 + 描述 -->
+                <div class="detail-left" id="detailLeft">
+                    <div class="cover-wrap" id="detailCoverWrap">
+                        <div class="placeholder"><i class="fas fa-image"></i></div>
+                    </div>
+                    <div class="left-desc" id="detailLeftDesc">地图描述</div>
+                </div>
+                <!-- 右侧：标题、标签、元数据、公告等 -->
+                <div class="detail-right" id="detailRight">
+                    <div class="mod mod-1 detail-title" id="detailTitle">地图名称</div>
+                    <div class="mod mod-2 detail-tags" id="detailTags"></div>
+                    <div class="mod mod-3 detail-meta" id="detailMeta"></div>
+                    <div class="mod mod-4 detail-extra" id="detailExtra"></div>
+                    <div class="mod mod-5 detail-announce" id="detailAnnounce">公告内容</div>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- ===== 成员档案弹窗（公共组件） ===== -->
+    <!-- ===== 公共模态框（成员档案） ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -1882,21 +1276,22 @@
         <div class="container">
             <span>极光创工作室</span>
             <span class="sep">·</span>
-            <span> Aurora Creation Studio</span>
+            <span>Aurora Creation Studio</span>
         </div>
     </footer>
 
-    <!-- 引入公共脚本 -->
+    <!-- ===== 公共脚本 ===== -->
     <script src="../assets/js/components.js"></script>
 
+    <!-- ============================================================
+    地图库主脚本
+    ============================================================ -->
     <script>
         (function() {
 
-            // ============================================================
-            // 移动端菜单（不变）
-            // ============================================================
-            const toggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
+            // ===== 移动端菜单 =====
+            var toggle = document.getElementById('menuToggle');
+            var navLinks = document.getElementById('navLinks');
             if (toggle && navLinks) {
                 toggle.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -1914,10 +1309,8 @@
                 });
             }
 
-            // ============================================================
-            // 解析工具（不变）
-            // ============================================================
-            function parseDateFromBody(body) {
+            // ===== 工具函数 =====
+            var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
                     /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
                     /(\d{4})\/(\d{1,2})\/(\d{1,2})/
@@ -1929,54 +1322,32 @@
                             month = parseInt(match[2]),
                             day = parseInt(match[3]);
                         if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
-                            return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                            return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2,
+                            '0');
                         }
                     }
                 }
                 return null;
-            }
+            };
 
-            function extractTitlePrefix(title) {
+            var extractTitlePrefix = window.extractTitlePrefix || function(title) {
                 var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
                 if (match) { return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title }; }
                 return null;
-            }
+            };
 
-            // ============================================================
-            // 解析成员迷你号（不变）
-            // ============================================================
-            function parseMemberMinid(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
-                var body = issue.body || '';
-                var minid = '';
-                var name = title.split('-')[0].trim();
-                var lines = body.split('\n');
-                lines.forEach(function(line) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                    }
-                });
-                return { name: name, minid: minid };
-            }
-
-            // ============================================================
-            // 解析作品Issue（不变）
-            // ============================================================
-            function parseWorkIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名作品';
+            // ===== 解析地图 Issue =====
+            function parseMapIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
                 var author = '',
                     cover = '',
                     desc = '',
                     tag = '',
                     minid = '',
-                    type = '',
-                    status = '',
-                    progress = '',
-                    announcement = '',
-                    download = '',
-                    workId = '';
+                    platform = '迷你世界',
+                    type = '地图',
+                    announcement = '';
 
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
@@ -1985,17 +1356,25 @@
                     else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
                     else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
                     else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^类型[：:]\s*(.+)/)) type = trimmed.replace(/^类型[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^状态[：:]\s*(.+)/)) status = trimmed.replace(/^状态[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^进度[：:]\s*(.+)/)) progress = trimmed.replace(/^进度[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^公告[：:]\s*(.+)/)) announcement = trimmed.replace(/^公告[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^下载[：:]\s*(.+)/)) download = trimmed.replace(/^下载[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^作品ID[：:]\s*(.+)/)) workId = trimmed.replace(/^作品ID[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '')
+                    .trim();
+                    else if (trimmed.match(/^平台[：:]\s*(.+)/)) {
+                        var p = trimmed.replace(/^平台[：:]\s*/, '').trim();
+                        if (p.indexOf('迷你') > -1) platform = '迷你世界';
+                        else if (p.indexOf('我的世界') > -1 || p.indexOf('MC') > -1) platform = '我的世界';
+                        else platform = p;
+                    } else if (trimmed.match(/^类型[：:]\s*(.+)/)) {
+                        var t = trimmed.replace(/^类型[：:]\s*/, '').trim();
+                        if (t.indexOf('模组') > -1 || t.indexOf('模型') > -1) type = '模型/模组';
+                        else if (t.indexOf('地图') > -1) type = '地图';
+                        else type = t;
+                    } else if (trimmed.match(/^公告[：:]\s*(.+)/)) {
+                        announcement = trimmed.replace(/^公告[：:]\s*/, '').trim();
+                    }
                 });
 
-                if (!author) author = '未知作者';
-                if (!desc) desc = '暂无描述';
+                if (!author || author.trim() === '') author = '未知作者';
+                if (!desc || desc.trim() === '') desc = '暂无描述';
 
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) dateStr = '未知';
@@ -2004,19 +1383,16 @@
                 var displayTitle = title;
                 if (prefixInfo) {
                     displayTitle = prefixInfo.cleanTitle;
-                    if (!tag) tag = prefixInfo.prefix;
+                    tag = prefixInfo.prefix;
                 }
 
                 var isFeatured = /\[精选\]/.test(title) || tag === '精选';
 
-                // 判断分类
-                var category = '地图';
-                if (tag) {
-                    var lowerTag = tag.toLowerCase();
-                    if (lowerTag.includes('模型') || lowerTag.includes('model')) category = '模型';
-                    else if (lowerTag.includes('模组') || lowerTag.includes('mod')) category = '模组';
-                    else if (lowerTag.includes('地图') || lowerTag.includes('map')) category = '地图';
-                }
+                if (title.indexOf('迷你世界') > -1) platform = '迷你世界';
+                else if (title.indexOf('我的世界') > -1 || title.indexOf('MC') > -1) platform = '我的世界';
+
+                if (title.indexOf('模组') > -1 || title.indexOf('模型') > -1) type = '模型/模组';
+                else if (title.indexOf('地图') > -1) type = '地图';
 
                 return {
                     id: issue.number,
@@ -2026,338 +1402,18 @@
                     desc: desc,
                     tag: tag || '',
                     minid: minid || '',
-                    type: type || '迷你世界',
-                    status: status || '',
-                    progress: progress || '',
-                    announcement: announcement || '',
-                    download: download || '',
-                    workId: workId || '',
                     date: dateStr,
+                    platform: platform,
+                    type: type,
+                    announcement: announcement || '暂无公告',
                     raw: issue,
                     isFeatured: isFeatured,
-                    category: category
+                    isGreenTag: !!prefixInfo
                 };
             }
 
-            // ============================================================
-            // 复制功能（不变）
-            // ============================================================
-            function copyText(text, label) {
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    navigator.clipboard.writeText(text).then(function() {
-                        showToast(label + ' 已复制');
-                    }).catch(function() {
-                        fallbackCopy(text, label);
-                    });
-                } else {
-                    fallbackCopy(text, label);
-                }
-            }
-
-            function fallbackCopy(text, label) {
-                var textarea = document.createElement('textarea');
-                textarea.value = text;
-                textarea.style.position = 'fixed';
-                textarea.style.left = '-9999px';
-                textarea.style.top = '-9999px';
-                document.body.appendChild(textarea);
-                textarea.select();
-                try {
-                    document.execCommand('copy');
-                    showToast(label + ' 已复制');
-                } catch (e) {
-                    showToast('复制失败，请手动复制');
-                }
-                document.body.removeChild(textarea);
-            }
-
-            function showToast(msg) {
-                var existing = document.querySelector('.copy-toast');
-                if (existing) existing.remove();
-                var toast = document.createElement('div');
-                toast.className = 'copy-toast';
-                toast.textContent = msg;
-                document.body.appendChild(toast);
-                setTimeout(function() { toast.remove(); }, 2000);
-            }
-
-            window.copyText = copyText;
-
-            // ============================================================
-            // 状态
-            // ============================================================
-            var allWorks = [];
-            var filteredWorks = [];
-            var currentPage = 1;
-            var pageSize = 16;
-            var memberMinidMap = {};
-            var allMembers = [];
-
-            var cardGrid = document.getElementById('cardGrid');
-            var searchInput = document.getElementById('searchInput');
-            var categoryBar = document.getElementById('categoryBar');
-            var statusBar = document.getElementById('statusBar');
-            var prevBtn = document.getElementById('prevPage');
-            var nextBtn = document.getElementById('nextPage');
-            var pageInfo = document.getElementById('pageInfo');
-
-            // 详情弹窗
-            var detailModal = document.getElementById('detailModal');
-            var detailContent = document.getElementById('detailModalContent');
-            var detailInner = document.getElementById('detailModalInner');
-            var detailBody = document.getElementById('detailBody');
-            var detailClose = document.getElementById('detailModalClose');
-
-            // 公共弹窗
-            var modalOverlay = document.getElementById('modalOverlay');
-            var modalContent = document.getElementById('modalContent');
-            var modalInner = document.getElementById('modalInner');
-            var modalClose = document.getElementById('modalClose');
-
-            // ============================================================
-            // 渲染卡片（类型标签移到标题上方）
-            // ============================================================
-            function renderCard(work) {
-                var coverHtml = (work.cover && work.cover.trim().startsWith('http')) ?
-                    '<img class="cover" src="' + work.cover.trim() + '" alt="' + work.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-                    '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-
-                var typeLabel = work.type || '迷你世界';
-                var isMC = (typeLabel.toLowerCase().includes('minecraft') || typeLabel.toLowerCase().includes('mc'));
-                var typeClass = isMC ? 'mc' : '';
-
-                var statusMap = {
-                    '策划中': 'planning',
-                    '开发中': 'developing',
-                    '测试中': 'testing',
-                    '更新中': 'updating',
-                    '待发布': 'pending',
-                    '已完结': 'completed',
-                    '已完善': 'completed'
-                };
-                var statusDot = statusMap[work.status] || 'planning';
-
-                var finalMinid = (work.author && memberMinidMap[work.author]) ? memberMinidMap[work.author] : (work.minid ||
-                    '未录入');
-
-                var html = '<div class="work-card" data-id="' + work.id + '" onclick="openDetail(' + work.id + ')">';
-                // 状态徽章（右上角）
-                if (work.status) {
-                    html += '<span class="status-badge ' + statusDot + '">' + work.status + '</span>';
-                }
-                html += coverHtml;
-                html += '<div class="body">';
-                // 类型标签（左上角移到标题上方）
-                html += '<span class="type-label ' + typeClass + '">' + typeLabel + '</span>';
-                html += '<div class="title">' + work.title + '</div>';
-                html += '<div class="author"><i class="fas fa-user"></i> ' + work.author + '</div>';
-                html += '<div class="meta"><span><i class="fas fa-calendar-alt"></i> ' + work.date +
-                    '</span><span><i class="fas fa-hashtag"></i> ' + finalMinid + '</span></div>';
-                if (work.desc && work.desc !== '暂无描述') {
-                    html += '<div class="desc">' + work.desc.substring(0, 80) + (work.desc.length > 80 ? '...' : '') +
-                    '</div>';
-                }
-                html += '<div class="footer-row">';
-                if (work.tag) html += '<span class="tag">' + work.tag + '</span>';
-                html += '<span class="view-btn">查看详情 <i class="fas fa-arrow-right"></i></span>';
-                html += '</div></div></div>';
-                return html;
-            }
-
-            // ============================================================
-            // 渲染分页
-            // ============================================================
-            function renderPage() {
-                var total = filteredWorks.length;
-                var totalPages = Math.ceil(total / pageSize) || 1;
-                if (currentPage > totalPages) currentPage = totalPages;
-                var start = (currentPage - 1) * pageSize;
-                var end = Math.min(start + pageSize, total);
-                var pageItems = filteredWorks.slice(start, end);
-
-                if (pageItems.length === 0) {
-                    cardGrid.innerHTML = '<div class="empty-state">没有匹配的作品</div>';
-                } else {
-                    var html = '';
-                    pageItems.forEach(function(work) {
-                        html += renderCard(work);
-                    });
-                    cardGrid.innerHTML = html;
-                }
-
-                pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
-                prevBtn.disabled = currentPage <= 1;
-                nextBtn.disabled = currentPage >= totalPages;
-            }
-
-            // ============================================================
-            // 筛选（增加状态筛选）
-            // ============================================================
-            function applyFilters() {
-                var searchTerm = searchInput.value.trim().toLowerCase();
-                var activeCategory = document.querySelector('.category-tag.active');
-                var catFilter = activeCategory ? activeCategory.dataset.cat : '全部';
-                var activePlatform = document.querySelector('.filter-tag.active');
-                var platformFilter = activePlatform ? activePlatform.dataset.filter : '全部';
-                var activeStatus = document.querySelector('.status-tag.active');
-                var statusFilter = activeStatus ? activeStatus.dataset.status : 'all';
-
-                filteredWorks = allWorks.filter(function(work) {
-                    // 分类筛选
-                    if (catFilter !== '全部' && work.category !== catFilter) return false;
-                    // 平台筛选
-                    if (platformFilter !== '全部') {
-                        var type = work.type || '迷你世界';
-                        if (platformFilter === 'MC') {
-                            if (!type.toLowerCase().includes('minecraft') && !type.toLowerCase().includes('mc'))
-                                return false;
-                        } else {
-                            if (type.toLowerCase().includes('minecraft') || type.toLowerCase().includes('mc'))
-                                return false;
-                        }
-                    }
-                    // 状态筛选
-                    if (statusFilter !== 'all') {
-                        if (work.status !== statusFilter) return false;
-                    }
-                    // 搜索
-                    if (searchTerm) {
-                        var inTitle = work.title.toLowerCase().includes(searchTerm);
-                        var inAuthor = work.author.toLowerCase().includes(searchTerm);
-                        if (!inTitle && !inAuthor) return false;
-                    }
-                    return true;
-                });
-
-                filteredWorks.sort(function(a, b) {
-                    if (a.isFeatured && !b.isFeatured) return -1;
-                    if (!a.isFeatured && b.isFeatured) return 1;
-                    if (a.date === '未知' && b.date === '未知') return 0;
-                    if (a.date === '未知') return 1;
-                    if (b.date === '未知') return -1;
-                    return b.date.localeCompare(a.date);
-                });
-
-                currentPage = 1;
-                renderPage();
-            }
-
-            // ============================================================
-            // 加载数据（不变）
-            // ============================================================
-            function loadData() {
-                cardGrid.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse"></i>加载作品中...</div>';
-
-                var REPO_OWNER = 'jgcgzs';
-                var REPO_NAME = 'acns';
-                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
-                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
-                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
-
-                Promise.all([
-                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
-                ]).then(function(results) {
-                    var mapIssues = results[0] || [];
-                    var memberIssues = results[1] || [];
-                    var blogIssues = results[2] || [];
-
-                    allWorks = mapIssues.map(function(i) { return parseWorkIssue(i); });
-
-                    if (memberIssues.length) {
-                        memberIssues.forEach(function(m) {
-                            var parsed = parseMemberMinid(m);
-                            if (parsed.name && parsed.minid) {
-                                memberMinidMap[parsed.name] = parsed.minid;
-                            }
-                        });
-                        allMembers = memberIssues.map(function(i) {
-                            return parseFullMemberIssue(i);
-                        });
-                        allMembers = allMembers.filter(function(m) {
-                            if (m.groups && m.groups.length) return true;
-                            if (m.role === '室长' || m.role === '副室长') return true;
-                            return false;
-                        });
-                    } else {
-                        allMembers = [];
-                        memberMinidMap = {};
-                    }
-
-                    window._memberData = allMembers;
-
-                    var allMaps = mapIssues.map(function(i) {
-                        var title = i.title && i.title.trim() !== '' ? i.title.trim() : '未命名地图';
-                        var body = i.body || '';
-                        var author = '',
-                            cover = '',
-                            tag = '',
-                            dateStr = '未知';
-                        var lines = body.split('\n');
-                        lines.forEach(function(line) {
-                            var trimmed = line.trim();
-                            if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '')
-                            .trim();
-                            if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '')
-                            .trim();
-                            if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '')
-                            .trim();
-                        });
-                        var d = parseDateFromBody(body);
-                        if (d) dateStr = d;
-                        return { id: i.number, title: title, author: author || '未知作者', cover: cover, tag: tag ||
-                                '', date: dateStr };
-                    });
-                    window._mapData = allMaps;
-
-                    var allBlogs = blogIssues.map(function(i) {
-                        var rawTitle = i.title && i.title.trim() !== '' ? i.title.trim() : '未命名文章';
-                        var body = i.body || '';
-                        var author = '',
-                            category = '';
-                        var lines = body.split('\n');
-                        lines.forEach(function(line) {
-                            var trimmed = line.trim();
-                            if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '')
-                            .trim();
-                            if (trimmed.match(/^分类[：:]\s*(.+)/)) {
-                                var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
-                                category = cats.split(/[,，、\s]+/)[0] || '未分类';
-                            }
-                        });
-                        if (!author) author = i.user ? i.user.login : '未知作者';
-                        if (!category) category = '未分类';
-                        var dateStr = '未知';
-                        var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
-                        if (dateMatch) {
-                            var y = parseInt(dateMatch[1]),
-                                m = parseInt(dateMatch[2]),
-                                d = parseInt(dateMatch[3]);
-                            if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-                                dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-                            }
-                        }
-                        var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
-                        return { id: i.number, title: title, author: author, category: category, date: dateStr };
-                    });
-                    window._blogData = allBlogs;
-
-                    applyFilters();
-                }).catch(function(err) {
-                    console.warn('加载失败:', err);
-                    cardGrid.innerHTML =
-                        '<div class="empty-state"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
-                });
-            }
-
-            // ============================================================
-            // 完整成员解析
-            // ============================================================
-            function parseFullMemberIssue(issue) {
+            // ===== 解析成员 Issue =====
+            function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
                 var groups = [],
@@ -2402,228 +1458,407 @@
                 });
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                var attrType = '未知';
-                if (id && id.length >= 1) {
-                    var firstChar = id.charAt(0);
-                    if (firstChar === '1') attrType = '正式成员';
-                    else if (firstChar === '2') attrType = '外部成员';
-                    else if (firstChar === '3') attrType = '特招成员';
+                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
+            }
+
+            // ===== 解析博客 =====
+            function parseBlogIssue(issue) {
+                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
+                var body = issue.body || '';
+                var author = '',
+                    category = '';
+                var lines = body.split('\n');
+                var contentStart = 0;
+                lines.forEach(function(line, idx) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
+                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
+                    }
+                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) contentStart = idx;
+                });
+                if (!author) author = issue.user ? issue.user.login : '未知作者';
+                if (!category) category = '未分类';
+                var contentLines = lines.slice(contentStart);
+                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
+                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
+                var dateStr = '未知';
+                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (dateMatch) {
+                    var y = parseInt(dateMatch[1]),
+                        m = parseInt(dateMatch[2]),
+                        d = parseInt(dateMatch[3]);
+                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    }
+                } else {
+                    var d = new Date(issue.created_at);
+                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
+                        .padStart(2, '0');
                 }
-                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
-                    attrType };
+                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
+                return { id: issue.number, title, author, category, summary, date: dateStr };
             }
 
             // ============================================================
-            // 打开详情弹窗 — 类型标签移到标题上方
+            // 状态
             // ============================================================
-            window.openDetail = function(id) {
-                var work = allWorks.find(function(w) { return w.id === id; });
-                if (!work) return;
+            var allMaps = [];
+            var filteredMaps = [];
+            var currentPage = 1;
+            var pageSize = 16;
+            var memberMinidMap = {};
+            var allMembers = [];
+            var allBlogs = [];
 
-                // 背景图
-                var bgUrl = (work.cover && work.cover.trim().startsWith('http')) ? work.cover.trim() : '';
-                if (bgUrl) {
-                    detailContent.style.backgroundImage = 'url(' + bgUrl + ')';
-                    detailContent.classList.add('has-bg');
-                } else {
-                    detailContent.style.backgroundImage = '';
-                    detailContent.classList.remove('has-bg');
-                }
-
-                // 构建详情内容
-                var coverHtml = (work.cover && work.cover.trim().startsWith('http')) ?
-                    '<img src="' + work.cover.trim() + '" alt="' + work.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-                    '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-
-                var typeLabel = work.type || '迷你世界';
-                var isMC = (typeLabel.toLowerCase().includes('minecraft') || typeLabel.toLowerCase().includes('mc'));
-                var typeClass = isMC ? 'mc' : '';
-
-                var statusMap = {
-                    '策划中': 'planning',
-                    '开发中': 'developing',
-                    '测试中': 'testing',
-                    '更新中': 'updating',
-                    '待发布': 'pending',
-                    '已完结': 'completed',
-                    '已完善': 'completed'
-                };
-                var statusDot = statusMap[work.status] || 'planning';
-
-                var finalMinid = (work.author && memberMinidMap[work.author]) ? memberMinidMap[work.author] : (work.minid ||
-                    '未录入');
-
-                var progressNum = parseInt(work.progress);
-                var progressDisplay = progressNum ? progressNum + '%' : (work.progress || '未知');
-
-                var html = '';
-                html += '<div class="detail-grid">';
-
-                // 左侧
-                html += '<div class="detail-left">';
-                html += '<div class="detail-cover">' + coverHtml +
-                    '</div>'; // 移除封面上的类型标签
-
-                html += '<div class="info-card">';
-                html += '<div class="row"><span class="label">作品名称</span><span class="value">' + work.title +
-                    '</span></div>';
-                if (work.workId) {
-                    html += '<div class="row"><span class="label">作品ID</span><span class="value">' + work.workId +
-                        ' <button class="copy-btn" onclick="copyText(\'' + work.workId +
-                        '\',\'作品ID\')"><i class="fas fa-copy"></i> 复制</button></span></div>';
-                }
-                html += '<div class="row"><span class="label">作者</span><span class="value"><a href="javascript:void(0)" class="author-link" data-author="' +
-                    work.author + '" style="color:var(--blue-primary);font-weight:600;cursor:pointer;">' + work.author +
-                    '</a></span></div>';
-                html += '<div class="row"><span class="label">迷你号</span><span class="value">' + finalMinid +
-                    ' <button class="copy-btn" onclick="copyText(\'' + finalMinid +
-                    '\',\'迷你号\')"><i class="fas fa-copy"></i> 复制</button></span></div>';
-                html += '<div class="row"><span class="label">发布日期</span><span class="value">' + work.date +
-                    '</span></div>';
-                if (work.download) {
-                    html += '<div class="row"><span class="label">下载链接</span><span class="value"><a href="' +
-                        work.download + '" target="_blank" rel="noopener">' + work.download +
-                        '</a> <button class="copy-btn" onclick="copyText(\'' + work.download +
-                        '\',\'下载链接\')"><i class="fas fa-copy"></i> 复制</button></span></div>';
-                }
-                html += '</div></div>';
-
-                // 右侧
-                html += '<div class="detail-right">';
-                // 类型标签放在标题上方
-                html += '<span class="type-label ' + typeClass + '">' + typeLabel + '</span>';
-                html += '<div class="title-section"><h2>' + work.title + '</h2>';
-                if (work.tag) html += '<div class="subtitle">' + work.tag + '</div>';
-                html += '</div>';
-
-                html += '<div class="status-section">';
-                html += '<div class="status-item"><span class="dot ' + statusDot + '"></span> 状态：<span class="value">' +
-                    (work.status || '未指定') + '</span></div>';
-                html += '<div class="status-item"><span class="label">进度：</span><span class="value">' +
-                    progressDisplay + '</span></div>';
-                html += '</div>';
-
-                if (progressNum && !isNaN(progressNum) && progressNum >= 0 && progressNum <= 100) {
-                    html += '<div class="progress-section"><div class="progress-header"><span>开发进度</span><span>' +
-                        progressNum + '%</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' +
-                        progressNum + '%;"></div></div></div>';
-                }
-
-                if (work.desc && work.desc !== '暂无描述') {
-                    html += '<div class="desc-section">' + work.desc.replace(/\n/g, '<br>') + '</div>';
-                }
-
-                if (work.announcement) {
-                    html += '<div class="announcement"><div class="announce-label"><i class="fas fa-bullhorn"></i> 公告</div>' +
-                        work.announcement.replace(/\n/g, '<br>') + '</div>';
-                }
-
-                html += '</div></div>';
-
-                detailBody.innerHTML = html;
-                detailModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-
-                // 绑定作者点击
-                var authorLink = detailBody.querySelector('.author-link');
-                if (authorLink) {
-                    authorLink.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var authorName = this.dataset.author;
-                        if (typeof window.openMemberModal === 'function') {
-                            window._memberData = allMembers;
-                            window.openMemberModal(authorName);
-                        } else {
-                            console.warn('公共组件未加载');
-                        }
-                    });
-                }
+            var filterState = {
+                platform: 'all',
+                type: 'all',
+                status: 'all'
             };
 
+            var detailOpen = false;
+            var currentDetailMap = null;
+            var pendingDetailMap = null;
+            var memberPollInterval = null;
+
+            var mapGrid = document.getElementById('mapGrid');
+            var previewGrid = document.getElementById('previewGrid');
+            var previewCount = document.getElementById('previewCount');
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            var prevBtn = document.getElementById('prevPage');
+            var nextBtn = document.getElementById('nextPage');
+            var pageInfo = document.getElementById('pageInfo');
+
+            var detailOverlay = document.getElementById('detailOverlay');
+            var detailClose = document.getElementById('detailClose');
+            var detailCoverWrap = document.getElementById('detailCoverWrap');
+            var detailLeftDesc = document.getElementById('detailLeftDesc');
+            var detailTitle = document.getElementById('detailTitle');
+            var detailTags = document.getElementById('detailTags');
+            var detailMeta = document.getElementById('detailMeta');
+            var detailExtra = document.getElementById('detailExtra');
+            var detailAnnounce = document.getElementById('detailAnnounce');
+
             // ============================================================
-            // 关闭详情弹窗
+            // 渲染
             // ============================================================
-            function closeDetail() {
-                detailModal.classList.remove('active');
-                document.body.style.overflow = '';
-                detailContent.style.backgroundImage = '';
-                detailContent.classList.remove('has-bg');
+            function renderMapCard(map) {
+                var coverHtml = (map.cover && map.cover.trim().startsWith('http')) ?
+                    '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                    '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
+
+                var tagClass = map.isFeatured ? 'tag-gold' : 'tag-status';
+                var tagHtml = map.tag ? '<span class="tag-pill ' + tagClass + '">' + map.tag + '</span>' : '';
+                var platformHtml = '<span class="tag-pill tag-platform">' + map.platform + '</span>';
+                var typeHtml = '<span class="tag-pill tag-type">' + map.type + '</span>';
+
+                var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
+                '未知');
+                var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' + map
+                    .author + '</span>';
+
+                var html = '<div class="map-card" data-id="' + map.id + '">';
+                html += coverHtml;
+                html += '<div class="body">';
+                html += '<div class="tag-row">' + platformHtml + typeHtml + tagHtml + '</div>';
+                html += '<span class="title">' + map.title + '</span>';
+                html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
+                html += '<div class="meta-row">' + authorHtml + '<span class="minid">迷你号 ' + finalMinid + '</span></div>';
+                html += '<div class="desc-box">' + map.desc + '</div>';
+                html += '<div class="action-row"><button class="btn-detail" data-id="' + map.id +
+                    '"><i class="fas fa-info-circle"></i> 详情</button></div>';
+                html += '</div></div>';
+                return html;
             }
 
-            detailClose.addEventListener('click', closeDetail);
-            detailModal.addEventListener('click', function(e) {
-                if (e.target === detailModal) closeDetail();
-            });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    if (detailModal.classList.contains('active')) closeDetail();
-                    if (modalOverlay.classList.contains('active')) {
-                        modalOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                        modalContent.style.backgroundImage = '';
-                        modalContent.classList.remove('has-bg');
+            function renderPreviewCard(map) {
+                var coverHtml = (map.cover && map.cover.trim().startsWith('http')) ?
+                    '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                    '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
+                return '<div class="preview-card">' + coverHtml +
+                    '<div class="body"><div class="title">' + map.title + '</div><div class="meta">' + map.author +
+                    ' · ' + map.date + '</div></div></div>';
+            }
+
+            function renderPage() {
+                var total = filteredMaps.length;
+                var totalPages = Math.ceil(total / pageSize) || 1;
+                if (currentPage > totalPages) currentPage = totalPages;
+                var start = (currentPage - 1) * pageSize;
+                var end = Math.min(start + pageSize, total);
+                var pageItems = filteredMaps.slice(start, end);
+
+                if (pageItems.length === 0) {
+                    mapGrid.innerHTML = '<div class="empty-placeholder">没有匹配的地图</div>';
+                } else {
+                    var html = '';
+                    pageItems.forEach(function(map) { html += renderMapCard(map); });
+                    mapGrid.innerHTML = html;
+                }
+
+                pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
+                prevBtn.disabled = currentPage <= 1;
+                nextBtn.disabled = currentPage >= totalPages;
+
+                mapGrid.querySelectorAll('.btn-detail').forEach(function(btn) {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var id = parseInt(this.dataset.id);
+                        var map = allMaps.find(function(m) { return m.id === id; });
+                        if (map) openDetail(map);
+                    });
+                });
+
+                mapGrid.querySelectorAll('.author').forEach(function(el) {
+                    el.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var authorName = this.dataset.author;
+                        if (detailOpen) {
+                            pendingDetailMap = currentDetailMap;
+                            closeDetail(false);
+                            setTimeout(function() {
+                                openMemberArchive(authorName);
+                            }, 150);
+                        } else {
+                            openMemberArchive(authorName);
+                        }
+                    });
+                });
+            }
+
+            function renderPreview() {
+                var previewMaps = allMaps.filter(function(m) { return m.tag === '待发布'; });
+                previewCount.textContent = previewMaps.length;
+                if (previewMaps.length === 0) {
+                    previewGrid.innerHTML = '<div class="preview-empty">暂无待发布地图</div>';
+                    return;
+                }
+                var html = '';
+                previewMaps.forEach(function(map) { html += renderPreviewCard(map); });
+                previewGrid.innerHTML = html;
+            }
+
+            // ============================================================
+            // 详情弹窗 - 新布局
+            // ============================================================
+            function openDetail(map) {
+                if (!map) return;
+                currentDetailMap = map;
+                detailOpen = true;
+
+                // 左侧封面
+                if (map.cover && map.cover.trim().startsWith('http')) {
+                    detailCoverWrap.innerHTML = '<img src="' + map.cover.trim() + '" alt="' + map.title +
+                        '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'placeholder\\\'><i class=\\\'fas fa-image\\\'></i></div>\'">';
+                } else {
+                    detailCoverWrap.innerHTML = '<div class="placeholder"><i class="fas fa-image"></i></div>';
+                }
+
+                // 左侧描述
+                detailLeftDesc.textContent = map.desc || '暂无描述';
+
+                // 右侧标题
+                detailTitle.textContent = map.title;
+
+                // 标签
+                var tagClass = map.isFeatured ? 'gold' : '';
+                var tagsHtml = '';
+                tagsHtml += '<span class="tag-pill tag-platform">' + map.platform + '</span>';
+                tagsHtml += '<span class="tag-pill tag-type">' + map.type + '</span>';
+                if (map.tag) tagsHtml += '<span class="tag-pill ' + tagClass + '">' + map.tag + '</span>';
+                detailTags.innerHTML = tagsHtml;
+
+                // 元数据：作者、迷你号、日期
+                var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
+                    '未知');
+                var metaHtml = '';
+                metaHtml += '<span><i class="fas fa-user"></i> <span class="d-author" data-author="' + map.author +
+                    '">' + map.author + '</span></span>';
+                metaHtml += '<span><i class="fas fa-hashtag"></i> 迷你号 ' + finalMinid + '</span>';
+                metaHtml += '<span><i class="fas fa-calendar-alt"></i> ' + map.date + '</span>';
+                detailMeta.innerHTML = metaHtml;
+
+                // 绑定作者点击
+                detailMeta.querySelector('.d-author').addEventListener('click', function() {
+                    var name = this.dataset.author;
+                    if (detailOpen) {
+                        pendingDetailMap = currentDetailMap;
+                        closeDetail(false);
+                        setTimeout(function() {
+                            openMemberArchive(name);
+                        }, 150);
+                    } else {
+                        openMemberArchive(name);
                     }
+                });
+
+                // 扩展信息：平台、类型、状态（去掉结束和编号）
+                var extraHtml = '';
+                extraHtml += '<div class="extra-item"><strong>平台</strong> ' + map.platform + '</div>';
+                extraHtml += '<div class="extra-item"><strong>类型</strong> ' + map.type + '</div>';
+                extraHtml += '<div class="extra-item"><strong>状态</strong> <span class="badge ' + (map.isFeatured ?
+                    'gold' : '') + '">' + (map.tag || '未知') + '</span></div>';
+                detailExtra.innerHTML = extraHtml;
+
+                // 公告
+                detailAnnounce.textContent = '📢 ' + (map.announcement || '暂无公告');
+
+                // 重置动画
+                var left = document.querySelector('.detail-left');
+                var right = document.querySelector('.detail-right');
+                left.style.animation = 'none';
+                right.querySelectorAll('.mod').forEach(function(el) { el.style.animation = 'none'; });
+                void left.offsetHeight;
+                left.style.animation = '';
+                right.querySelectorAll('.mod').forEach(function(el) { el.style.animation = ''; });
+
+                detailOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeDetail(restore) {
+                detailOverlay.classList.remove('open');
+                document.body.style.overflow = '';
+                detailOpen = false;
+                if (restore && pendingDetailMap) {
+                    var map = pendingDetailMap;
+                    pendingDetailMap = null;
+                    setTimeout(function() {
+                        openDetail(map);
+                    }, 200);
+                } else {
+                    pendingDetailMap = null;
+                }
+            }
+
+            detailClose.addEventListener('click', function() {
+                pendingDetailMap = null;
+                closeDetail(false);
+            });
+            detailOverlay.addEventListener('click', function(e) {
+                if (e.target === detailOverlay) {
+                    pendingDetailMap = null;
+                    closeDetail(false);
                 }
             });
 
             // ============================================================
-            // 公共弹窗关闭（不变）
+            // 成员档案联动
             // ============================================================
-            if (modalClose) {
-                modalClose.addEventListener('click', function() {
-                    modalOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    modalContent.style.backgroundImage = '';
-                    modalContent.classList.remove('has-bg');
-                });
-            }
-            if (modalOverlay) {
-                modalOverlay.addEventListener('click', function(e) {
-                    if (e.target === modalOverlay) {
-                        modalOverlay.classList.remove('active');
-                        document.body.style.overflow = '';
-                        modalContent.style.backgroundImage = '';
-                        modalContent.classList.remove('has-bg');
+            function openMemberArchive(name) {
+                if (typeof window.openMemberModal === 'function') {
+                    var wasDetailOpen = detailOpen;
+                    var detailMap = currentDetailMap;
+                    if (wasDetailOpen) {
+                        pendingDetailMap = detailMap;
+                        closeDetail(false);
                     }
-                });
+                    window.openMemberModal(name);
+                    if (memberPollInterval) clearInterval(memberPollInterval);
+                    memberPollInterval = setInterval(function() {
+                        var overlay = document.getElementById('modalOverlay');
+                        if (!overlay || overlay.style.display === 'none' || overlay.style.display === '') {
+                            clearInterval(memberPollInterval);
+                            memberPollInterval = null;
+                            if (pendingDetailMap) {
+                                var map = pendingDetailMap;
+                                pendingDetailMap = null;
+                                setTimeout(function() {
+                                    openDetail(map);
+                                }, 180);
+                            }
+                        }
+                    }, 300);
+                } else {
+                    alert('成员档案功能未加载，请检查 assets/js/components.js');
+                }
             }
 
-            // ============================================================
-            // 事件绑定（增加状态筛选）
-            // ============================================================
-            categoryBar.addEventListener('click', function(e) {
-                var target = e.target.closest('.category-tag');
-                if (!target) return;
-                document.querySelectorAll('.category-tag').forEach(function(el) {
-                    el.classList.remove('active');
-                });
-                target.classList.add('active');
-                applyFilters();
+            document.addEventListener('click', function(e) {
+                var closeBtn = document.getElementById('modalClose');
+                if (closeBtn && (e.target === closeBtn || e.target.closest('.modal-close'))) {
+                    setTimeout(function() {
+                        if (pendingDetailMap) {
+                            var map = pendingDetailMap;
+                            pendingDetailMap = null;
+                            openDetail(map);
+                        }
+                    }, 200);
+                }
             });
 
-            document.querySelectorAll('.filter-tag').forEach(function(el) {
-                el.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-tag').forEach(function(f) {
-                        f.classList.remove('active');
-                    });
-                    this.classList.add('active');
+            // ============================================================
+            // 筛选
+            // ============================================================
+            function applyFilters() {
+                var searchTerm = searchInput.value.trim().toLowerCase();
+                var pf = filterState.platform;
+                var tp = filterState.type;
+                var st = filterState.status;
+
+                filteredMaps = allMaps.filter(function(map) {
+                    if (pf !== 'all' && map.platform !== pf) return false;
+                    if (tp !== 'all' && map.type !== tp) return false;
+                    if (st !== 'all') {
+                        if (st === '精选') {
+                            if (!map.isFeatured) return false;
+                        } else {
+                            if (map.tag !== st) return false;
+                        }
+                    }
+                    if (searchTerm) {
+                        var inTitle = map.title.toLowerCase().includes(searchTerm);
+                        var inAuthor = map.author.toLowerCase().includes(searchTerm);
+                        var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map
+                            .minid || '未知');
+                        var inMinid = finalMinid.includes(searchTerm);
+                        if (!inTitle && !inAuthor && !inMinid) return false;
+                    }
+                    return true;
+                });
+
+                filteredMaps.sort(function(a, b) {
+                    if (a.date === '未知' && b.date === '未知') return 0;
+                    if (a.date === '未知') return 1;
+                    if (b.date === '未知') return -1;
+                    return b.date.localeCompare(a.date);
+                });
+
+                currentPage = 1;
+                renderPage();
+                renderPreview();
+            }
+
+            // ============================================================
+            // 分类栏事件
+            // ============================================================
+            document.querySelectorAll('.filter-item').forEach(function(item) {
+                item.addEventListener('click', function() {
+                    var filter = this.dataset.filter;
+                    var value = this.dataset.value;
+                    if (!filter) return;
+                    filterState[filter] = value;
+                    var row = this.closest('.filter-row');
+                    if (row) {
+                        row.querySelectorAll('.filter-item').forEach(function(el) {
+                            if (el.dataset.filter === filter) {
+                                el.classList.toggle('active', el.dataset.value === value);
+                            }
+                        });
+                    }
                     applyFilters();
                 });
             });
 
-            // 状态筛选点击
-            statusBar.addEventListener('click', function(e) {
-                var target = e.target.closest('.status-tag');
-                if (!target) return;
-                document.querySelectorAll('.status-tag').forEach(function(el) {
-                    el.classList.remove('active');
-                });
-                target.classList.add('active');
-                applyFilters();
-            });
-
-            searchInput.addEventListener('input', function() {
-                applyFilters();
+            // ============================================================
+            // 搜索 & 分页
+            // ============================================================
+            searchBtn.addEventListener('click', applyFilters);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') applyFilters();
             });
 
             prevBtn.addEventListener('click', function() {
@@ -2631,15 +1866,78 @@
                     renderPage(); }
             });
             nextBtn.addEventListener('click', function() {
-                var total = filteredWorks.length;
+                var total = filteredMaps.length;
                 var totalPages = Math.ceil(total / pageSize);
                 if (currentPage < totalPages) { currentPage++;
                     renderPage(); }
             });
 
             // ============================================================
-            // 启动
+            // 加载数据
             // ============================================================
+            function loadData() {
+                mapGrid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
+
+                var REPO_OWNER = 'jgcgzs',
+                    REPO_NAME = 'acns';
+                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
+                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
+
+                Promise.all([
+                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
+                ]).then(function(results) {
+                    var mapIssues = results[0] || [],
+                        memberIssues = results[1] || [],
+                        blogIssues = results[2] || [];
+
+                    allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
+
+                    if (memberIssues.length) {
+                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
+                        allMembers = allMembers.filter(function(m) {
+                            if (m.groups && m.groups.length) return true;
+                            if (m.role === '室长' || m.role === '副室长') return true;
+                            return false;
+                        });
+                        memberMinidMap = {};
+                        allMembers.forEach(function(m) {
+                            if (m.name && m.minid) memberMinidMap[m.name] = m.minid;
+                        });
+                    } else {
+                        allMembers = [];
+                        memberMinidMap = {};
+                    }
+
+                    allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
+
+                    window._memberData = allMembers;
+                    window._mapData = allMaps;
+                    window._blogData = allBlogs;
+
+                    filterState = { platform: 'all', type: 'all', status: 'all' };
+                    document.querySelectorAll('.filter-item').forEach(function(el) {
+                        var f = el.dataset.filter;
+                        var v = el.dataset.value;
+                        if (f && v === 'all') el.classList.add('active');
+                        else el.classList.remove('active');
+                    });
+
+                    applyFilters();
+                }).catch(function(err) {
+                    console.warn('加载失败:', err);
+                    mapGrid.innerHTML =
+                        '<div class="empty-placeholder"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
+                    previewGrid.innerHTML = '<div class="preview-empty">加载失败</div>';
+                    previewCount.textContent = '0';
+                });
+            }
+
             loadData();
 
         })();
