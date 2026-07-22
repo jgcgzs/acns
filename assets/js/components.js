@@ -1,5 +1,5 @@
 /**
- * 公共组件 - 成员档案弹窗（个人主页风格）
+ * 公共组件 - 成员档案弹窗（档案风格 · 卡片化）
  * 使用方式：
  *   1. 页面加载成员数据到 window._memberData
  *   2. 加载地图数据到 window._mapData
@@ -10,28 +10,21 @@
 (function() {
 
     // ============================================================
-    // 获取站点根目录（修复路径叠加问题）
+    // 获取站点根目录（绝对路径，用于跳转）
     // ============================================================
     function getSiteRoot() {
         var path = window.location.pathname;
-        // 如果路径以 /acns/ 开头，则直接使用
-        if (path.indexOf('/acns/') === 0) {
-            return '/acns/';
-        }
-        // 否则查找 /acns/ 在路径中的位置（针对深层目录）
+        if (path.indexOf('/acns/') === 0) return '/acns/';
         var idx = path.indexOf('/acns/');
-        if (idx !== -1) {
-            return path.substring(0, idx + 6); // 包含 /acns/
-        }
-        // 若都不存在，假设为根目录（开发环境或自定义域名）
+        if (idx !== -1) return path.substring(0, idx + 6);
         return '/';
     }
 
     // ============================================================
-    // 编号解析
+    // 编号解析（修正游戏名称）
     // ============================================================
     var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
-    var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
+    var GAME_MAP = { '1': '迷你世界', '2': 'Minecraft', '3': '迷你世界 + Minecraft' };
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
     var DEFAULT_BG = 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
 
@@ -64,8 +57,8 @@
 
     function renderIdCard(id) {
         var info = parseIdNumber(id);
-        if (!info) return '<div class="id-card"><span style="opacity:0.3;">编号格式无效</span></div>';
-        var html = '<div class="id-card card-block"><div class="label">编号解析</div><div class="parts">';
+        if (!info) return '<div class="card id-card card-block"><span style="opacity:0.3;">编号格式无效</span></div>';
+        var html = '<div class="card id-card card-block"><div class="label">编号解析</div><div class="parts">';
         html += '<span>▸ ' + info.attrName + ' <span style="opacity:0.3;">(' + id.charAt(0) + ')</span></span>';
         html += '<span>▸ ' + info.gameName + ' <span style="opacity:0.3;">(' + id.charAt(1) + ')</span></span>';
         html += '<span>▸ ' + info.date + '</span>';
@@ -142,19 +135,19 @@
         // 入室天数
         var days = getDaysSince(member.joinDate);
         var daysHtml = (days !== null && days >= 0) ?
-            '<div class="days-card card-block"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>' :
+            '<div class="card days-card card-block"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>' :
             (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') ?
-            '<div class="days-card card-block"><span>入室时间</span><span>' + member.joinDate + '</span></div>' :
-            '<div class="days-card card-block"><span>入室时间</span><span style="opacity:0.3;">未录入</span></div>';
+            '<div class="card days-card card-block"><span>入室时间</span><span>' + member.joinDate + '</span></div>' :
+            '<div class="card days-card card-block"><span>入室时间</span><span style="opacity:0.3;">未录入</span></div>';
 
         // 编号
         var idHtml = (member.id && member.id !== '未知' && member.id.length >= 10) ?
             renderIdCard(member.id) :
-            '<div class="id-card card-block"><span style="opacity:0.3;">编号：' + member.id + '</span></div>';
+            '<div class="card id-card card-block"><span style="opacity:0.3;">编号：' + member.id + '</span></div>';
 
         // 简介
         var bioHtml = (member.bio && member.bio.trim()) ?
-            '<div class="bio-card card-block">' + member.bio + '</div>' : '';
+            '<div class="card bio-card card-block">' + member.bio + '</div>' : '';
 
         // ---- 荣誉 ----
         var honorsHtml = '';
@@ -189,7 +182,6 @@
             if (!isNaN(blogId)) pinnedBlogObj = allBlogs.find(function(b) { return b.id === blogId; });
         }
 
-        // 获取站点根目录（修复路径叠加问题）
         var siteRoot = getSiteRoot();
 
         function renderWorkCard(item, type) {
@@ -197,7 +189,6 @@
             var coverHtml = (item.cover && item.cover.trim().startsWith('http')) ?
                 '<img class="cover" src="' + item.cover.trim() + '" alt="' + item.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                 '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-            // 使用绝对路径：站点根目录 + map/ 或 blog/
             var link = siteRoot + (isMap ? 'map/?id=' : 'blog/post.html?id=') + item.id;
             var meta = isMap ? (item.tag ? item.tag + ' · ' : '') + item.date : item.category + ' · ' + item.date;
             return '<div class="work-card" onclick="location.href=\'' + link + '\'">' +
