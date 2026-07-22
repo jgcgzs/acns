@@ -4,13 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>地图库 - 极光创工作室</title>
-    <meta name="description" content="极光创工作室地图库 - 迷你世界地图作品展示">
+    <meta name="description" content="极光创工作室地图库 - 迷你世界/Minecraft地图/模型/模组展示">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 公共组件样式 -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <style>
-        /* ===== 地图库独有样式 ===== */
+        /* ===== 基础重置 & 导航 & 页尾 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -21,11 +20,12 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f9fe;
-            color: #1a2a3a;
+            background: #f5f7fc;
+            color: #1e293b;
             line-height: 1.7;
             font-size: 16px;
             padding-top: 68px;
+            min-height: 100vh;
         }
         a {
             text-decoration: none;
@@ -37,33 +37,36 @@
             display: block;
         }
         .container {
-            max-width: 1120px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
+        /* ===== 参考主站配色 ===== */
         :root {
-            --blue-primary: #1a7fc4;
-            --blue-primary-dark: #0f6aad;
-            --blue-bg-light: #ecf5fa;
-            --blue-bg-pale: #f5f9fe;
+            --blue-primary: #5f7fff;
+            --blue-primary-dark: #4a6adf;
+            --blue-light: #eef4ff;
+            --blue-pale: #f0f4ff;
             --white: #ffffff;
-            --text-dark: #1a2a3a;
-            --text-muted: #4a5a6a;
-            --border-light: #dce6ef;
-            --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
-            --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
-            --radius: 2px;
-            --green-primary: #16a34a;
+            --text-primary: #1e293b;
+            --text-secondary: #4c6a9e;
+            --border-light: #dce3ef;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.08);
+            --radius: 0px;
         }
 
+        /* ===== 导航栏（完全不变） ===== */
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             z-index: 100;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             height: 68px;
             display: flex;
             align-items: center;
@@ -103,7 +106,7 @@
             font-size: 15px;
             font-weight: 500;
             color: #222222;
-            border-radius: var(--radius);
+            border-radius: 0px;
             transition: background 0.2s, color 0.2s;
             position: relative;
         }
@@ -117,10 +120,10 @@
             background: var(--blue-primary);
             transition: width 0.25s ease;
             transform: translateX(-50%);
-            border-radius: var(--radius);
+            border-radius: 0px;
         }
         .nav-links li a:hover {
-            background: var(--blue-bg-light);
+            background: var(--blue-pale);
             color: var(--blue-primary);
         }
         .nav-links li a:hover::after {
@@ -164,361 +167,431 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
+        /* ===== 页面头部 ===== */
         .page-header {
-            padding: 24px 0 12px;
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 24px;
+            padding: 20px 0 16px;
+            position: relative;
         }
         .page-header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
         }
         .page-header .sub {
-            font-size: 14px;
-            color: var(--text-muted);
+            font-size: 15px;
+            color: var(--text-secondary);
             opacity: 0.6;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .search-bar input {
-            flex: 1;
-            min-width: 180px;
-            padding: 8px 14px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            font-size: 14px;
-            background: var(--white);
-            transition: border-color 0.25s;
-            outline: none;
-        }
-        .search-bar input:focus {
-            border-color: var(--blue-primary);
-        }
-        .search-bar .search-btn {
-            background: var(--blue-primary);
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.25s;
-        }
-        .search-bar .search-btn:hover {
-            background: var(--blue-primary-dark);
-        }
-
-        .tag-bar {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 8px;
-            padding: 4px 0 16px;
-            margin-bottom: 8px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .tag-bar::-webkit-scrollbar {
-            height: 4px;
-            background: var(--border-light);
-        }
-        .tag-bar::-webkit-scrollbar-thumb {
-            background: var(--blue-primary);
-            border-radius: 2px;
-        }
-        .tag-item {
-            flex: 0 0 auto;
-            padding: 4px 16px;
-            border: 1.5px solid var(--border-light);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-            background: transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .tag-item:hover {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-        }
-        .tag-item.active {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-            background: var(--blue-bg-light);
-        }
-
-        .preview-section {
-            margin: 16px 0 32px;
-        }
-        .preview-section .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 12px;
-        }
-        .preview-section .preview-header h3 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .preview-section .preview-header .count {
-            font-size: 13px;
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-        .preview-scroll {
-            overflow-x: auto;
-            overflow-y: visible;
-            -webkit-overflow-scrolling: touch;
-            padding: 4px 0 12px;
-            margin: 0 -4px;
-        }
-        .preview-scroll::-webkit-scrollbar {
-            height: 6px;
-            background: var(--border-light);
-            border-radius: 3px;
-        }
-        .preview-scroll::-webkit-scrollbar-thumb {
-            background: var(--blue-primary);
-            border-radius: 3px;
-        }
-        .preview-grid {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 20px;
-            width: max-content;
-            padding: 0 4px;
-        }
-        .preview-card {
-            flex: 0 0 200px;
-            max-width: 200px;
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s;
-            display: flex;
-            flex-direction: column;
-        }
-        .preview-card:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
-        }
-        .preview-card .cover {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: var(--blue-bg-light);
-            border-bottom: 1px solid var(--border-light);
-        }
-        .preview-card .cover-placeholder {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: var(--blue-bg-light);
-            border-bottom: 1px solid var(--border-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            color: var(--blue-primary);
-            opacity: 0.2;
-        }
-        .preview-card .body {
-            padding: 10px 12px 12px;
-        }
-        .preview-card .body .title {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--text-dark);
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .preview-card .body .meta {
-            font-size: 11px;
-            color: var(--text-muted);
-            opacity: 0.5;
             margin-top: 2px;
         }
-        .preview-empty {
-            text-align: center;
-            padding: 20px 0;
-            color: var(--text-muted);
+
+        /* ===== 搜索 & 平台筛选 ===== */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 16px;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 14px 20px;
+            background: var(--white);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+        }
+        .filter-bar .search-wrap {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--blue-pale);
+            padding: 0 14px;
+            transition: background 0.2s;
+        }
+        .filter-bar .search-wrap:focus-within {
+            background: #e4edff;
+        }
+        .filter-bar .search-wrap i {
+            color: var(--text-secondary);
             opacity: 0.4;
             font-size: 14px;
         }
-
-        .map-grid-container {
-            margin-top: 8px;
+        .filter-bar .search-wrap input {
+            flex: 1;
+            padding: 8px 4px;
+            border: none;
+            background: transparent;
+            font-size: 14px;
+            outline: none;
+            color: var(--text-primary);
+            font-family: inherit;
         }
-        .map-grid {
+        .filter-bar .search-wrap input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.4;
+        }
+
+        .filter-bar .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-items: center;
+        }
+        .filter-bar .filter-group .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-right: 4px;
+        }
+        .filter-tag {
+            padding: 4px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--blue-pale);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+        .filter-tag:hover {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+        }
+        .filter-tag.active {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
+            box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
+        }
+
+        /* ===== 分类标签（地图/模型/模组） ===== */
+        .category-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 6px 0;
+        }
+        .category-tag {
+            padding: 6px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+        .category-tag:hover {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+        .category-tag.active {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
+            box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
+        }
+        .category-tag i {
+            margin-right: 6px;
+            font-size: 13px;
+        }
+
+        /* ===== 状态筛选标签（新增） ===== */
+        .status-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 20px;
+            padding: 6px 0;
+            border-top: 1px solid var(--border-light);
+            padding-top: 12px;
+        }
+        .status-bar .label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-right: 8px;
+            align-self: center;
+        }
+        .status-tag {
+            padding: 4px 14px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: var(--blue-pale);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+        .status-tag:hover {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+        }
+        .status-tag.active {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
+            box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
+        }
+
+        /* ===== 卡片网格 ===== */
+        .card-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 20px;
+            margin-top: 4px;
         }
-        .map-card {
+
+        /* ===== 卡片样式 — 直角 · 简洁入场 ===== */
+        .work-card {
             background: var(--white);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+            border: 1px solid var(--border-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: cardFadeIn 0.5s ease forwards;
+            position: relative;
             display: flex;
             flex-direction: column;
         }
-        .map-card:hover {
+        .work-card:nth-child(1) { animation-delay: 0.04s; }
+        .work-card:nth-child(2) { animation-delay: 0.08s; }
+        .work-card:nth-child(3) { animation-delay: 0.12s; }
+        .work-card:nth-child(4) { animation-delay: 0.16s; }
+        .work-card:nth-child(5) { animation-delay: 0.20s; }
+        .work-card:nth-child(6) { animation-delay: 0.24s; }
+        .work-card:nth-child(7) { animation-delay: 0.28s; }
+        .work-card:nth-child(8) { animation-delay: 0.32s; }
+        .work-card:nth-child(9) { animation-delay: 0.36s; }
+        .work-card:nth-child(10) { animation-delay: 0.40s; }
+        .work-card:nth-child(11) { animation-delay: 0.44s; }
+        .work-card:nth-child(12) { animation-delay: 0.48s; }
+        .work-card:nth-child(13) { animation-delay: 0.52s; }
+        .work-card:nth-child(14) { animation-delay: 0.56s; }
+        .work-card:nth-child(15) { animation-delay: 0.60s; }
+        .work-card:nth-child(16) { animation-delay: 0.64s; }
+
+        @keyframes cardFadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .work-card:hover {
+            transform: translateY(-4px);
             box-shadow: var(--shadow-hover);
             border-color: var(--blue-primary);
-            transform: translateY(-3px);
         }
-        .map-card .cover {
+
+        .work-card .cover {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            background: var(--blue-bg-light);
-            border-bottom: 1px solid var(--border-light);
+            background: var(--blue-pale);
+            transition: transform 0.4s ease;
         }
-        .map-card .cover-placeholder {
+        .work-card:hover .cover {
+            transform: scale(1.02);
+        }
+        .work-card .cover-placeholder {
             width: 100%;
             aspect-ratio: 16/9;
-            background: var(--blue-bg-light);
-            border-bottom: 1px solid var(--border-light);
+            background: var(--blue-pale);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2.4rem;
+            font-size: 3rem;
             color: var(--blue-primary);
-            opacity: 0.2;
+            opacity: 0.15;
+            transition: opacity 0.3s;
         }
-        .map-card .body {
-            padding: 12px 14px 14px;
-            flex: 1;
+        .work-card:hover .cover-placeholder {
+            opacity: 0.25;
+        }
+
+        /* 状态徽章（右上角）保留 */
+        .work-card .status-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 12px;
+            color: #fff;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.35);
+            z-index: 2;
+        }
+        .work-card .status-badge.planning { background: #94a3b8; }
+        .work-card .status-badge.developing { background: #f59e0b; }
+        .work-card .status-badge.testing { background: #8b5cf6; }
+        .work-card .status-badge.updating { background: #3b82f6; }
+        .work-card .status-badge.pending { background: #14b8a6; }
+        .work-card .status-badge.completed { background: #16a34a; }
+
+        /* 卡片正文 — 类型标签移到标题上方 */
+        .work-card .body {
+            padding: 14px 16px 16px;
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 4px;
+            flex: 1;
         }
-        .map-card .body .tag-blue {
+        .work-card .body .type-label {
             font-size: 10px;
-            font-weight: 600;
-            padding: 1px 10px;
-            border: 1.5px solid var(--blue-primary);
-            color: var(--blue-primary);
-            background: transparent;
-            border-radius: 3px;
-            letter-spacing: 0.3px;
-            display: inline-block;
-            line-height: 1.5;
-            align-self: flex-start;
-        }
-        .map-card .body .tag-green {
-            font-size: 10px;
-            font-weight: 600;
-            padding: 1px 10px;
-            border: 1.5px solid var(--green-primary);
-            color: var(--green-primary);
-            background: transparent;
-            border-radius: 3px;
-            letter-spacing: 0.3px;
-            display: inline-block;
-            line-height: 1.5;
-            align-self: flex-start;
-        }
-        .map-card .body .title {
-            font-size: 15px;
             font-weight: 700;
-            color: var(--text-dark);
+            color: #fff;
+            background: var(--blue-primary);
+            display: inline-block;
+            padding: 2px 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 2px;
+            align-self: flex-start;
+        }
+        .work-card .body .type-label.mc {
+            background: #2d3436;
+        }
+
+        .work-card .body .title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
             line-height: 1.3;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        .map-card .body .date-row {
-            font-size: 12px;
-            color: var(--text-muted);
-            opacity: 0.55;
+        .work-card .body .author {
+            font-size: 13px;
+            color: var(--text-secondary);
+            opacity: 0.6;
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-top: 1px;
         }
-        .map-card .body .date-row i {
+        .work-card .body .author i {
             font-size: 11px;
             opacity: 0.5;
         }
-        .map-card .body .meta-row {
+        .work-card .body .meta {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 12px;
-            color: var(--text-muted);
-            opacity: 0.6;
             flex-wrap: wrap;
-            gap: 2px 8px;
+            gap: 4px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            margin-top: 2px;
         }
-        .map-card .body .meta-row .author {
+        .work-card .body .meta span {
             display: flex;
             align-items: center;
             gap: 3px;
-            cursor: pointer;
-            color: var(--blue-primary);
-            font-weight: 500;
-            transition: color 0.2s;
         }
-        .map-card .body .meta-row .author:hover {
-            color: var(--blue-primary-dark);
-            text-decoration: underline;
-        }
-        .map-card .body .meta-row .author i {
-            font-size: 10px;
-            opacity: 0.5;
-        }
-        .map-card .body .meta-row .minid {
-            font-family: 'SF Mono', 'Menlo', monospace;
+        .work-card .body .meta i {
             font-size: 11px;
-        }
-        .map-card .body .desc-box {
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            padding: 6px 10px;
-            margin-top: 4px;
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            min-height: 48px;
+            opacity: 0.4;
         }
 
+        .work-card .body .desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-top: 4px;
+            opacity: 0.8;
+        }
+
+        .work-card .body .footer-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-light);
+        }
+        .work-card .body .footer-row .tag {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 12px;
+            color: var(--blue-primary);
+            background: var(--blue-pale);
+            border: 1px solid var(--border-light);
+            letter-spacing: 0.2px;
+        }
+        .work-card .body .footer-row .view-btn {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--blue-primary);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: gap 0.3s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+        .work-card:hover .body .footer-row .view-btn {
+            gap: 8px;
+        }
+        .work-card .body .footer-row .view-btn i {
+            font-size: 11px;
+            transition: transform 0.3s;
+        }
+        .work-card:hover .body .footer-row .view-btn i {
+            transform: translateX(4px);
+        }
+
+        /* ===== 空状态 & 加载 ===== */
+        .empty-state,
+        .loading-state {
+            text-align: center;
+            padding: 80px 0;
+            color: var(--text-secondary);
+            opacity: 0.4;
+            font-size: 15px;
+            grid-column: 1 / -1;
+        }
+        .loading-state i {
+            display: block;
+            font-size: 32px;
+            color: var(--blue-primary);
+            margin-bottom: 12px;
+            opacity: 0.6;
+        }
+
+        /* ===== 分页 ===== */
         .pagination {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 6px;
-            margin-top: 28px;
+            margin-top: 32px;
             flex-wrap: wrap;
         }
         .pagination button {
-            padding: 6px 14px;
+            padding: 6px 16px;
             border: 1px solid var(--border-light);
-            border-radius: var(--radius);
             background: var(--white);
-            color: var(--text-dark);
+            color: var(--text-primary);
             font-size: 14px;
             cursor: pointer;
             transition: all 0.2s;
@@ -539,30 +612,382 @@
         }
         .pagination .info {
             font-size: 13px;
-            color: var(--text-muted);
+            color: var(--text-secondary);
             opacity: 0.5;
             padding: 0 8px;
         }
 
-        .loading-placeholder,
-        .empty-placeholder {
-            text-align: center;
-            padding: 60px 0;
-            color: var(--text-muted);
-            opacity: 0.4;
-            font-size: 15px;
-            grid-column: 1 / -1;
+        /* ============================================================
+           详情弹窗 — 直角 · 简洁 · 淡入入场
+           ============================================================ */
+        .detail-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: overlayFade 0.3s ease;
         }
-        .loading-placeholder i {
-            display: block;
-            font-size: 28px;
-            color: var(--blue-primary);
-            margin-bottom: 10px;
+        .detail-modal-overlay.active {
+            display: flex;
+        }
+        @keyframes overlayFade {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
 
+        .detail-modal {
+            background: #ffffff;
+            max-width: 920px;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            animation: modalIn 0.3s ease;
+            border: 1px solid var(--border-light);
+        }
+        .detail-modal.has-bg {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .detail-modal.has-bg .detail-inner {
+            background: rgba(255,255,255,0.92);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            padding: 28px 32px 32px;
+        }
+        .detail-modal .detail-inner {
+            padding: 28px 32px 32px;
+        }
+
+        @keyframes modalIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 关闭按钮 */
+        .detail-modal .modal-close {
+            position: sticky;
+            top: 6px;
+            float: right;
+            font-size: 24px;
+            background: rgba(255,255,255,0.9);
+            border: 1px solid var(--border-light);
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0;
+            z-index: 10;
+            line-height: 1;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+        .detail-modal .modal-close:hover {
+            color: var(--text-primary);
+            background: #ffffff;
+            border-color: var(--blue-primary);
+        }
+
+        /* 弹窗主体网格 */
+        .detail-modal .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 28px;
+            margin-top: 0;
+        }
+        .detail-modal .detail-grid > * {
+            opacity: 0;
+            animation: gridFadeIn 0.4s ease forwards;
+        }
+        .detail-modal .detail-grid .detail-left {
+            animation-delay: 0.06s;
+        }
+        .detail-modal .detail-grid .detail-right {
+            animation-delay: 0.12s;
+        }
+        @keyframes gridFadeIn {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 左侧 */
+        .detail-modal .detail-left {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .detail-modal .detail-cover {
+            overflow: hidden;
+            background: var(--blue-pale);
+            border: 1px solid var(--border-light);
+            position: relative;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .detail-modal .detail-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .detail-modal .detail-cover .cover-placeholder {
+            font-size: 4rem;
+            color: var(--blue-primary);
+            opacity: 0.15;
+        }
+        /* 移除封面上的类型标签 */
+
+        .detail-modal .info-card {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            padding: 18px 20px;
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-modal .info-card .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.04);
+            font-size: 14px;
+            gap: 8px;
+        }
+        .detail-modal .info-card .row:last-child {
+            border-bottom: none;
+        }
+        .detail-modal .info-card .label {
+            font-weight: 600;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+        .detail-modal .info-card .value {
+            color: var(--text-primary);
+            font-weight: 500;
+            text-align: right;
+            word-break: break-all;
+            max-width: 65%;
+            font-size: 13px;
+        }
+        .detail-modal .info-card .value a {
+            color: var(--blue-primary);
+            font-weight: 600;
+        }
+        .detail-modal .info-card .value a:hover {
+            text-decoration: underline;
+        }
+        .detail-modal .info-card .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--blue-primary);
+            background: var(--blue-pale);
+            border: 1px solid var(--border-light);
+            padding: 1px 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-left: 4px;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .detail-modal .info-card .copy-btn:hover {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
+        }
+        .detail-modal .info-card .copy-btn i {
+            font-size: 10px;
+        }
+        .detail-modal .info-card .value .copy-btn {
+            display: inline-flex;
+        }
+
+        /* 右侧 — 类型标签放在标题上方 */
+        .detail-modal .detail-right {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .detail-modal .detail-right .type-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            background: var(--blue-primary);
+            display: inline-block;
+            padding: 2px 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            align-self: flex-start;
+        }
+        .detail-modal .detail-right .type-label.mc {
+            background: #2d3436;
+        }
+        .detail-modal .detail-right .title-section h2 {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 2px;
+        }
+        .detail-modal .detail-right .title-section .subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            font-weight: 500;
+        }
+
+        .detail-modal .status-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 24px;
+            padding: 12px 18px;
+            background: var(--blue-pale);
+            border: 1px solid var(--border-light);
+        }
+        .detail-modal .status-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .detail-modal .status-item .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
+        }
+        .detail-modal .status-item .dot.planning { background: #94a3b8; }
+        .detail-modal .status-item .dot.developing { background: #f59e0b; }
+        .detail-modal .status-item .dot.testing { background: #8b5cf6; }
+        .detail-modal .status-item .dot.updating { background: #3b82f6; }
+        .detail-modal .status-item .dot.pending { background: #14b8a6; }
+        .detail-modal .status-item .dot.completed { background: #16a34a; }
+        .detail-modal .status-item .label {
+            font-weight: 500;
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+        .detail-modal .status-item .value {
+            font-weight: 600;
+        }
+
+        .detail-modal .progress-section {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            padding: 14px 18px;
+            box-shadow: var(--shadow-sm);
+        }
+        .detail-modal .progress-section .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .detail-modal .progress-bar-bg {
+            width: 100%;
+            height: 6px;
+            background: var(--blue-pale);
+            overflow: hidden;
+        }
+        .detail-modal .progress-bar-fill {
+            height: 100%;
+            background: var(--blue-primary);
+            transition: width 0.8s ease;
+            width: 0%;
+        }
+
+        .detail-modal .desc-section {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            padding: 16px 18px;
+            box-shadow: var(--shadow-sm);
+            font-size: 14px;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+        .detail-modal .desc-section p {
+            margin-bottom: 8px;
+        }
+        .detail-modal .desc-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-modal .announcement {
+            background: var(--blue-pale);
+            border-left: 4px solid var(--blue-primary);
+            padding: 12px 18px;
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+        .detail-modal .announcement .announce-label {
+            font-weight: 700;
+            color: var(--blue-primary);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        /* ===== 复制 Toast ===== */
+        .copy-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 24px;
+            font-size: 14px;
+            z-index: 500;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            animation: toastIn 0.3s ease;
+        }
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* ============================================================
+           响应式
+           ============================================================ */
         @media (max-width: 992px) {
-            .map-grid {
+            .card-grid {
                 grid-template-columns: repeat(3, 1fr);
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+                padding: 14px 16px;
+            }
+            .filter-bar .search-wrap {
+                min-width: auto;
+            }
+            .filter-bar .filter-group {
+                justify-content: flex-start;
             }
         }
         @media (max-width: 768px) {
@@ -586,7 +1011,7 @@
                 padding: 12px 24px 20px;
                 gap: 2px;
                 border-top: 1px solid var(--border-light);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+                box-shadow: 0 8px 24px rgba(0,0,0,0.06);
             }
             .nav-links.open {
                 display: flex;
@@ -597,26 +1022,12 @@
                 width: 100%;
                 text-align: center;
             }
-            .map-grid {
+            .card-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 14px;
             }
-            .preview-card {
-                flex: 0 0 160px;
-                max-width: 160px;
-            }
-            .preview-card .body .title {
-                font-size: 13px;
-            }
             .page-header h1 {
-                font-size: 24px;
-            }
-            .search-bar input {
-                min-width: 140px;
-            }
-            .tag-item {
-                font-size: 12px;
-                padding: 3px 12px;
+                font-size: 26px;
             }
             .navbar-brand .brand-text {
                 font-size: 17px;
@@ -624,60 +1035,155 @@
             .navbar-brand .logo {
                 height: 28px;
             }
+            .filter-bar .filter-group .label {
+                display: none;
+            }
+            .category-tag {
+                font-size: 12px;
+                padding: 4px 14px;
+            }
+            .status-bar .label {
+                display: none;
+            }
+
+            .detail-modal .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .detail-modal .detail-left {
+                order: 1;
+            }
+            .detail-modal .detail-right {
+                order: 2;
+            }
+            .detail-modal .detail-cover {
+                aspect-ratio: 16/9;
+            }
+            .detail-modal .detail-right .title-section h2 {
+                font-size: 22px;
+            }
+            .detail-modal .info-card .row {
+                flex-wrap: wrap;
+                gap: 2px 0;
+            }
+            .detail-modal .info-card .value {
+                text-align: left;
+                max-width: 100%;
+            }
+            .detail-modal .modal-close {
+                top: 4px;
+                right: 4px;
+                width: 34px;
+                height: 34px;
+                font-size: 20px;
+            }
+            .detail-modal .detail-inner {
+                padding: 16px 18px 20px;
+            }
+            .detail-modal.has-bg .detail-inner {
+                padding: 16px 18px 20px;
+            }
         }
         @media (max-width: 480px) {
-            .map-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .card-grid {
+                grid-template-columns: 1fr 1fr;
                 gap: 10px;
             }
-            .map-card .body {
-                padding: 8px 10px 10px;
+            .work-card .body {
+                padding: 10px 12px 12px;
             }
-            .map-card .body .title {
-                font-size: 13px;
+            .work-card .body .title {
+                font-size: 14px;
             }
-            .map-card .body .desc-box {
-                font-size: 11px;
-                padding: 4px 8px;
-                min-height: 36px;
-                -webkit-line-clamp: 2;
-            }
-            .map-card .body .tag-blue,
-            .map-card .body .tag-green {
-                font-size: 9px;
-                padding: 0 8px;
-                border-width: 1px;
-            }
-            .map-card .body .date-row {
-                font-size: 11px;
-            }
-            .map-card .body .meta-row {
-                font-size: 11px;
-            }
-            .preview-card {
-                flex: 0 0 140px;
-                max-width: 140px;
-            }
-            .preview-card .body .title {
+            .work-card .body .desc {
                 font-size: 12px;
+                -webkit-line-clamp: 1;
             }
-            .search-bar input {
-                font-size: 13px;
-                padding: 6px 12px;
+            .work-card .body .meta {
+                font-size: 11px;
             }
-            .search-bar .search-btn {
-                font-size: 13px;
-                padding: 6px 14px;
+            .work-card .body .footer-row .tag {
+                font-size: 9px;
+                padding: 1px 8px;
+            }
+            .work-card .body .footer-row .view-btn {
+                font-size: 11px;
+            }
+            .work-card .status-badge {
+                font-size: 8px;
+                padding: 1px 8px;
+                top: 8px;
+                right: 8px;
             }
             .container {
-                padding: 0 14px;
+                padding: 0 12px;
+            }
+            .filter-bar {
+                padding: 10px 12px;
+            }
+            .filter-tag {
+                font-size: 12px;
+                padding: 3px 12px;
+            }
+            .category-bar {
+                gap: 6px;
+                padding: 6px 0;
+            }
+            .category-tag {
+                font-size: 11px;
+                padding: 3px 12px;
+            }
+            .status-tag {
+                font-size: 11px;
+                padding: 2px 10px;
+            }
+            .pagination button {
+                padding: 4px 12px;
+                font-size: 13px;
+                min-width: 32px;
+            }
+
+            .detail-modal .detail-right .title-section h2 {
+                font-size: 19px;
+            }
+            .detail-modal .status-section {
+                flex-direction: column;
+                gap: 4px;
+                padding: 10px 14px;
+            }
+            .detail-modal .info-card {
+                padding: 12px 14px;
+            }
+            .detail-modal .desc-section {
+                padding: 12px 14px;
+                font-size: 13px;
+            }
+            .detail-modal .announcement {
+                padding: 10px 14px;
+                font-size: 13px;
+            }
+            .detail-modal .progress-section {
+                padding: 12px 14px;
+            }
+            .detail-modal .modal-close {
+                width: 32px;
+                height: 32px;
+                font-size: 18px;
+                top: 4px;
+                right: 4px;
+            }
+            .detail-modal .detail-inner {
+                padding: 12px 14px 16px;
+            }
+            .detail-modal.has-bg .detail-inner {
+                padding: 12px 14px 16px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（完全不变） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -695,49 +1201,51 @@
         </div>
     </header>
 
-    <!-- ===== 地图库内容 ===== -->
+    <!-- ===== 主内容 ===== -->
     <main>
         <div class="container">
             <div class="page-header">
-                <h1>地图库</h1>
-                <div class="sub">所有极光创工作室发布的地图作品</div>
+                <h1>作品库</h1>
+                <div class="sub">地图 · 模型 · 模组 — 全部作品</div>
             </div>
 
-            <!-- 搜索栏 -->
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="搜索地图名称、作者、迷你号..." />
-                <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
+            <!-- 搜索 & 平台筛选 -->
+            <div class="filter-bar">
+                <div class="search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="搜索作品名称、作者..." />
+                </div>
+                <div class="filter-group">
+                    <span class="label">平台</span>
+                    <span class="filter-tag active" data-filter="all">全部</span>
+                    <span class="filter-tag" data-filter="迷你世界">迷你世界</span>
+                    <span class="filter-tag" data-filter="MC">Minecraft</span>
+                </div>
             </div>
 
-            <!-- 标签栏 -->
-            <div class="tag-bar" id="tagBar">
-                <span class="tag-item active" data-tag="all">全部</span>
-                <span class="tag-item" data-tag="策划中">策划中</span>
-                <span class="tag-item" data-tag="制作中">制作中</span>
-                <span class="tag-item" data-tag="更新中">更新中</span>
-                <span class="tag-item" data-tag="待发布">待发布</span>
-                <span class="tag-item" data-tag="测试中">测试中</span>
-                <span class="tag-item" data-tag="已完结">已完结</span>
-                <span class="tag-item" data-tag="精选">精选</span>
+            <!-- 分类标签：全部 / 地图 / 模型 / 模组 -->
+            <div class="category-bar" id="categoryBar">
+                <span class="category-tag active" data-cat="全部"><i class="fas fa-th-large"></i> 全部</span>
+                <span class="category-tag" data-cat="地图"><i class="fas fa-map"></i> 地图</span>
+                <span class="category-tag" data-cat="模型"><i class="fas fa-cube"></i> 模型</span>
+                <span class="category-tag" data-cat="模组"><i class="fas fa-puzzle-piece"></i> 模组</span>
             </div>
 
-            <!-- 预告栏 -->
-            <section class="preview-section" id="previewSection">
-                <div class="preview-header">
-                    <h3>即将发布 <span class="count" id="previewCount">0</span></h3>
-                </div>
-                <div class="preview-scroll" id="previewScroll">
-                    <div class="preview-grid" id="previewGrid">
-                        <div class="preview-empty">加载中...</div>
-                    </div>
-                </div>
-            </section>
+            <!-- 状态筛选标签（新增） -->
+            <div class="status-bar" id="statusBar">
+                <span class="label">状态</span>
+                <span class="status-tag active" data-status="all">全部</span>
+                <span class="status-tag" data-status="策划中">策划中</span>
+                <span class="status-tag" data-status="开发中">开发中</span>
+                <span class="status-tag" data-status="测试中">测试中</span>
+                <span class="status-tag" data-status="更新中">更新中</span>
+                <span class="status-tag" data-status="待发布">待发布</span>
+                <span class="status-tag" data-status="已完结">已完结</span>
+            </div>
 
-            <!-- 全部地图 -->
-            <div class="map-grid-container">
-                <div class="map-grid" id="mapGrid">
-                    <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>
-                </div>
+            <!-- 卡片网格 -->
+            <div class="card-grid" id="cardGrid">
+                <div class="loading-state"><i class="fas fa-spinner fa-pulse"></i>加载作品中...</div>
             </div>
 
             <!-- 分页 -->
@@ -749,7 +1257,17 @@
         </div>
     </main>
 
-    <!-- ===== 弹窗结构（公共组件） ===== -->
+    <!-- ===== 详情弹窗 ===== -->
+    <div class="detail-modal-overlay" id="detailModal">
+        <div class="detail-modal" id="detailModalContent">
+            <button class="modal-close" id="detailModalClose">&times;</button>
+            <div class="detail-inner" id="detailModalInner">
+                <div id="detailBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 成员档案弹窗（公共组件） ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -774,7 +1292,9 @@
     <script>
         (function() {
 
-            // ===== 移动端菜单 =====
+            // ============================================================
+            // 移动端菜单（不变）
+            // ============================================================
             const toggle = document.getElementById('menuToggle');
             const navLinks = document.getElementById('navLinks');
             if (toggle && navLinks) {
@@ -795,9 +1315,9 @@
             }
 
             // ============================================================
-            // 解析工具（使用公共函数，若无则本地定义）
+            // 解析工具（不变）
             // ============================================================
-            var parseDateFromBody = window.parseDateFromBody || function(body) {
+            function parseDateFromBody(body) {
                 var patterns = [
                     /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
                     /(\d{4})\/(\d{1,2})\/(\d{1,2})/
@@ -814,25 +1334,50 @@
                     }
                 }
                 return null;
-            };
+            }
 
-            var extractTitlePrefix = window.extractTitlePrefix || function(title) {
+            function extractTitlePrefix(title) {
                 var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
                 if (match) { return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title }; }
                 return null;
-            };
+            }
 
             // ============================================================
-            // 解析地图Issue
+            // 解析成员迷你号（不变）
             // ============================================================
-            function parseMapIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+            function parseMemberMinid(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
+                var body = issue.body || '';
+                var minid = '';
+                var name = title.split('-')[0].trim();
+                var lines = body.split('\n');
+                lines.forEach(function(line) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                    }
+                });
+                return { name: name, minid: minid };
+            }
+
+            // ============================================================
+            // 解析作品Issue（不变）
+            // ============================================================
+            function parseWorkIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名作品';
                 var body = issue.body || '';
                 var author = '',
                     cover = '',
                     desc = '',
                     tag = '',
-                    minid = '';
+                    minid = '',
+                    type = '',
+                    status = '',
+                    progress = '',
+                    announcement = '',
+                    download = '',
+                    workId = '';
+
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
                     var trimmed = line.trim();
@@ -841,16 +1386,38 @@
                     else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
                     else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
                     else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^类型[：:]\s*(.+)/)) type = trimmed.replace(/^类型[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^状态[：:]\s*(.+)/)) status = trimmed.replace(/^状态[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^进度[：:]\s*(.+)/)) progress = trimmed.replace(/^进度[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^公告[：:]\s*(.+)/)) announcement = trimmed.replace(/^公告[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^下载[：:]\s*(.+)/)) download = trimmed.replace(/^下载[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^作品ID[：:]\s*(.+)/)) workId = trimmed.replace(/^作品ID[：:]\s*/, '').trim();
                 });
-                if (!author || author.trim() === '') author = '未知作者';
-                if (!desc || desc.trim() === '') desc = '暂无描述';
+
+                if (!author) author = '未知作者';
+                if (!desc) desc = '暂无描述';
+
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) dateStr = '未知';
+
                 var prefixInfo = extractTitlePrefix(title);
                 var displayTitle = title;
-                if (prefixInfo) { displayTitle = prefixInfo.cleanTitle;
-                    tag = prefixInfo.prefix; }
+                if (prefixInfo) {
+                    displayTitle = prefixInfo.cleanTitle;
+                    if (!tag) tag = prefixInfo.prefix;
+                }
+
                 var isFeatured = /\[精选\]/.test(title) || tag === '精选';
+
+                // 判断分类
+                var category = '地图';
+                if (tag) {
+                    var lowerTag = tag.toLowerCase();
+                    if (lowerTag.includes('模型') || lowerTag.includes('model')) category = '模型';
+                    else if (lowerTag.includes('模组') || lowerTag.includes('mod')) category = '模组';
+                    else if (lowerTag.includes('地图') || lowerTag.includes('map')) category = '地图';
+                }
+
                 return {
                     id: issue.number,
                     title: displayTitle,
@@ -859,17 +1426,338 @@
                     desc: desc,
                     tag: tag || '',
                     minid: minid || '',
+                    type: type || '迷你世界',
+                    status: status || '',
+                    progress: progress || '',
+                    announcement: announcement || '',
+                    download: download || '',
+                    workId: workId || '',
                     date: dateStr,
                     raw: issue,
                     isFeatured: isFeatured,
-                    isGreenTag: !!prefixInfo
+                    category: category
                 };
             }
 
             // ============================================================
-            // 解析成员Issue（用于迷你号映射和弹窗）
+            // 复制功能（不变）
             // ============================================================
-            function parseMemberIssue(issue) {
+            function copyText(text, label) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(function() {
+                        showToast(label + ' 已复制');
+                    }).catch(function() {
+                        fallbackCopy(text, label);
+                    });
+                } else {
+                    fallbackCopy(text, label);
+                }
+            }
+
+            function fallbackCopy(text, label) {
+                var textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '-9999px';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast(label + ' 已复制');
+                } catch (e) {
+                    showToast('复制失败，请手动复制');
+                }
+                document.body.removeChild(textarea);
+            }
+
+            function showToast(msg) {
+                var existing = document.querySelector('.copy-toast');
+                if (existing) existing.remove();
+                var toast = document.createElement('div');
+                toast.className = 'copy-toast';
+                toast.textContent = msg;
+                document.body.appendChild(toast);
+                setTimeout(function() { toast.remove(); }, 2000);
+            }
+
+            window.copyText = copyText;
+
+            // ============================================================
+            // 状态
+            // ============================================================
+            var allWorks = [];
+            var filteredWorks = [];
+            var currentPage = 1;
+            var pageSize = 16;
+            var memberMinidMap = {};
+            var allMembers = [];
+
+            var cardGrid = document.getElementById('cardGrid');
+            var searchInput = document.getElementById('searchInput');
+            var categoryBar = document.getElementById('categoryBar');
+            var statusBar = document.getElementById('statusBar');
+            var prevBtn = document.getElementById('prevPage');
+            var nextBtn = document.getElementById('nextPage');
+            var pageInfo = document.getElementById('pageInfo');
+
+            // 详情弹窗
+            var detailModal = document.getElementById('detailModal');
+            var detailContent = document.getElementById('detailModalContent');
+            var detailInner = document.getElementById('detailModalInner');
+            var detailBody = document.getElementById('detailBody');
+            var detailClose = document.getElementById('detailModalClose');
+
+            // 公共弹窗
+            var modalOverlay = document.getElementById('modalOverlay');
+            var modalContent = document.getElementById('modalContent');
+            var modalInner = document.getElementById('modalInner');
+            var modalClose = document.getElementById('modalClose');
+
+            // ============================================================
+            // 渲染卡片（类型标签移到标题上方）
+            // ============================================================
+            function renderCard(work) {
+                var coverHtml = (work.cover && work.cover.trim().startsWith('http')) ?
+                    '<img class="cover" src="' + work.cover.trim() + '" alt="' + work.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                    '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
+
+                var typeLabel = work.type || '迷你世界';
+                var isMC = (typeLabel.toLowerCase().includes('minecraft') || typeLabel.toLowerCase().includes('mc'));
+                var typeClass = isMC ? 'mc' : '';
+
+                var statusMap = {
+                    '策划中': 'planning',
+                    '开发中': 'developing',
+                    '测试中': 'testing',
+                    '更新中': 'updating',
+                    '待发布': 'pending',
+                    '已完结': 'completed',
+                    '已完善': 'completed'
+                };
+                var statusDot = statusMap[work.status] || 'planning';
+
+                var finalMinid = (work.author && memberMinidMap[work.author]) ? memberMinidMap[work.author] : (work.minid ||
+                    '未录入');
+
+                var html = '<div class="work-card" data-id="' + work.id + '" onclick="openDetail(' + work.id + ')">';
+                // 状态徽章（右上角）
+                if (work.status) {
+                    html += '<span class="status-badge ' + statusDot + '">' + work.status + '</span>';
+                }
+                html += coverHtml;
+                html += '<div class="body">';
+                // 类型标签（左上角移到标题上方）
+                html += '<span class="type-label ' + typeClass + '">' + typeLabel + '</span>';
+                html += '<div class="title">' + work.title + '</div>';
+                html += '<div class="author"><i class="fas fa-user"></i> ' + work.author + '</div>';
+                html += '<div class="meta"><span><i class="fas fa-calendar-alt"></i> ' + work.date +
+                    '</span><span><i class="fas fa-hashtag"></i> ' + finalMinid + '</span></div>';
+                if (work.desc && work.desc !== '暂无描述') {
+                    html += '<div class="desc">' + work.desc.substring(0, 80) + (work.desc.length > 80 ? '...' : '') +
+                    '</div>';
+                }
+                html += '<div class="footer-row">';
+                if (work.tag) html += '<span class="tag">' + work.tag + '</span>';
+                html += '<span class="view-btn">查看详情 <i class="fas fa-arrow-right"></i></span>';
+                html += '</div></div></div>';
+                return html;
+            }
+
+            // ============================================================
+            // 渲染分页
+            // ============================================================
+            function renderPage() {
+                var total = filteredWorks.length;
+                var totalPages = Math.ceil(total / pageSize) || 1;
+                if (currentPage > totalPages) currentPage = totalPages;
+                var start = (currentPage - 1) * pageSize;
+                var end = Math.min(start + pageSize, total);
+                var pageItems = filteredWorks.slice(start, end);
+
+                if (pageItems.length === 0) {
+                    cardGrid.innerHTML = '<div class="empty-state">没有匹配的作品</div>';
+                } else {
+                    var html = '';
+                    pageItems.forEach(function(work) {
+                        html += renderCard(work);
+                    });
+                    cardGrid.innerHTML = html;
+                }
+
+                pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
+                prevBtn.disabled = currentPage <= 1;
+                nextBtn.disabled = currentPage >= totalPages;
+            }
+
+            // ============================================================
+            // 筛选（增加状态筛选）
+            // ============================================================
+            function applyFilters() {
+                var searchTerm = searchInput.value.trim().toLowerCase();
+                var activeCategory = document.querySelector('.category-tag.active');
+                var catFilter = activeCategory ? activeCategory.dataset.cat : '全部';
+                var activePlatform = document.querySelector('.filter-tag.active');
+                var platformFilter = activePlatform ? activePlatform.dataset.filter : '全部';
+                var activeStatus = document.querySelector('.status-tag.active');
+                var statusFilter = activeStatus ? activeStatus.dataset.status : 'all';
+
+                filteredWorks = allWorks.filter(function(work) {
+                    // 分类筛选
+                    if (catFilter !== '全部' && work.category !== catFilter) return false;
+                    // 平台筛选
+                    if (platformFilter !== '全部') {
+                        var type = work.type || '迷你世界';
+                        if (platformFilter === 'MC') {
+                            if (!type.toLowerCase().includes('minecraft') && !type.toLowerCase().includes('mc'))
+                                return false;
+                        } else {
+                            if (type.toLowerCase().includes('minecraft') || type.toLowerCase().includes('mc'))
+                                return false;
+                        }
+                    }
+                    // 状态筛选
+                    if (statusFilter !== 'all') {
+                        if (work.status !== statusFilter) return false;
+                    }
+                    // 搜索
+                    if (searchTerm) {
+                        var inTitle = work.title.toLowerCase().includes(searchTerm);
+                        var inAuthor = work.author.toLowerCase().includes(searchTerm);
+                        if (!inTitle && !inAuthor) return false;
+                    }
+                    return true;
+                });
+
+                filteredWorks.sort(function(a, b) {
+                    if (a.isFeatured && !b.isFeatured) return -1;
+                    if (!a.isFeatured && b.isFeatured) return 1;
+                    if (a.date === '未知' && b.date === '未知') return 0;
+                    if (a.date === '未知') return 1;
+                    if (b.date === '未知') return -1;
+                    return b.date.localeCompare(a.date);
+                });
+
+                currentPage = 1;
+                renderPage();
+            }
+
+            // ============================================================
+            // 加载数据（不变）
+            // ============================================================
+            function loadData() {
+                cardGrid.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse"></i>加载作品中...</div>';
+
+                var REPO_OWNER = 'jgcgzs';
+                var REPO_NAME = 'acns';
+                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
+                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
+
+                Promise.all([
+                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
+                ]).then(function(results) {
+                    var mapIssues = results[0] || [];
+                    var memberIssues = results[1] || [];
+                    var blogIssues = results[2] || [];
+
+                    allWorks = mapIssues.map(function(i) { return parseWorkIssue(i); });
+
+                    if (memberIssues.length) {
+                        memberIssues.forEach(function(m) {
+                            var parsed = parseMemberMinid(m);
+                            if (parsed.name && parsed.minid) {
+                                memberMinidMap[parsed.name] = parsed.minid;
+                            }
+                        });
+                        allMembers = memberIssues.map(function(i) {
+                            return parseFullMemberIssue(i);
+                        });
+                        allMembers = allMembers.filter(function(m) {
+                            if (m.groups && m.groups.length) return true;
+                            if (m.role === '室长' || m.role === '副室长') return true;
+                            return false;
+                        });
+                    } else {
+                        allMembers = [];
+                        memberMinidMap = {};
+                    }
+
+                    window._memberData = allMembers;
+
+                    var allMaps = mapIssues.map(function(i) {
+                        var title = i.title && i.title.trim() !== '' ? i.title.trim() : '未命名地图';
+                        var body = i.body || '';
+                        var author = '',
+                            cover = '',
+                            tag = '',
+                            dateStr = '未知';
+                        var lines = body.split('\n');
+                        lines.forEach(function(line) {
+                            var trimmed = line.trim();
+                            if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '')
+                            .trim();
+                            if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '')
+                            .trim();
+                            if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '')
+                            .trim();
+                        });
+                        var d = parseDateFromBody(body);
+                        if (d) dateStr = d;
+                        return { id: i.number, title: title, author: author || '未知作者', cover: cover, tag: tag ||
+                                '', date: dateStr };
+                    });
+                    window._mapData = allMaps;
+
+                    var allBlogs = blogIssues.map(function(i) {
+                        var rawTitle = i.title && i.title.trim() !== '' ? i.title.trim() : '未命名文章';
+                        var body = i.body || '';
+                        var author = '',
+                            category = '';
+                        var lines = body.split('\n');
+                        lines.forEach(function(line) {
+                            var trimmed = line.trim();
+                            if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '')
+                            .trim();
+                            if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                                var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
+                                category = cats.split(/[,，、\s]+/)[0] || '未分类';
+                            }
+                        });
+                        if (!author) author = i.user ? i.user.login : '未知作者';
+                        if (!category) category = '未分类';
+                        var dateStr = '未知';
+                        var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                        if (dateMatch) {
+                            var y = parseInt(dateMatch[1]),
+                                m = parseInt(dateMatch[2]),
+                                d = parseInt(dateMatch[3]);
+                            if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                                dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                            }
+                        }
+                        var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
+                        return { id: i.number, title: title, author: author, category: category, date: dateStr };
+                    });
+                    window._blogData = allBlogs;
+
+                    applyFilters();
+                }).catch(function(err) {
+                    console.warn('加载失败:', err);
+                    cardGrid.innerHTML =
+                        '<div class="empty-state"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
+                });
+            }
+
+            // ============================================================
+            // 完整成员解析
+            // ============================================================
+            function parseFullMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
                 var groups = [],
@@ -914,269 +1802,236 @@
                 });
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
-            }
-
-            function parseBlogIssue(issue) {
-                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
-                var body = issue.body || '';
-                var author = '',
-                    category = '';
-                var lines = body.split('\n');
-                var contentStart = 0;
-                lines.forEach(function(line, idx) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
-                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
-                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
-                    }
-                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) contentStart = idx;
-                });
-                if (!author) author = issue.user ? issue.user.login : '未知作者';
-                if (!category) category = '未分类';
-                var contentLines = lines.slice(contentStart);
-                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
-                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
-                var dateStr = '未知';
-                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
-                if (dateMatch) {
-                    var y = parseInt(dateMatch[1]),
-                        m = parseInt(dateMatch[2]),
-                        d = parseInt(dateMatch[3]);
-                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-                    }
-                } else {
-                    var d = new Date(issue.created_at);
-                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
-                        .padStart(2, '0');
+                var attrType = '未知';
+                if (id && id.length >= 1) {
+                    var firstChar = id.charAt(0);
+                    if (firstChar === '1') attrType = '正式成员';
+                    else if (firstChar === '2') attrType = '外部成员';
+                    else if (firstChar === '3') attrType = '特招成员';
                 }
-                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
-                return { id: issue.number, title, author, category, summary, date: dateStr };
+                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
+                    attrType };
             }
 
             // ============================================================
-            // 状态
+            // 打开详情弹窗 — 类型标签移到标题上方
             // ============================================================
-            let allMaps = [];
-            let filteredMaps = [];
-            let currentPage = 1;
-            const pageSize = 16;
-            let memberMinidMap = {};
-            let allMembers = [];
-            let allBlogs = [];
+            window.openDetail = function(id) {
+                var work = allWorks.find(function(w) { return w.id === id; });
+                if (!work) return;
 
-            const mapGrid = document.getElementById('mapGrid');
-            const previewGrid = document.getElementById('previewGrid');
-            const previewCount = document.getElementById('previewCount');
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.getElementById('searchBtn');
-            const tagBar = document.getElementById('tagBar');
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
+                // 背景图
+                var bgUrl = (work.cover && work.cover.trim().startsWith('http')) ? work.cover.trim() : '';
+                if (bgUrl) {
+                    detailContent.style.backgroundImage = 'url(' + bgUrl + ')';
+                    detailContent.classList.add('has-bg');
+                } else {
+                    detailContent.style.backgroundImage = '';
+                    detailContent.classList.remove('has-bg');
+                }
 
-            // ============================================================
-            // 渲染地图卡片
-            // ============================================================
-            function renderMapCard(map) {
-                var coverHtml = (map.cover && map.cover.trim().startsWith('http')) ?
-                    '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                // 构建详情内容
+                var coverHtml = (work.cover && work.cover.trim().startsWith('http')) ?
+                    '<img src="' + work.cover.trim() + '" alt="' + work.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                     '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-                var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
-                var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
-                // 迷你号：成员档案 > 地图正文 > 未知
-                var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
-                    '未知');
-                var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' + map
-                    .author + '</span>';
-                var html = '<div class="map-card">';
-                html += coverHtml;
-                html += '<div class="body">';
-                html += tagHtml;
-                html += '<span class="title">' + map.title + '</span>';
-                html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
-                html += '<div class="meta-row">' + authorHtml + '<span class="minid">迷你号 ' + finalMinid + '</span></div>';
-                html += '<div class="desc-box">' + map.desc + '</div>';
+
+                var typeLabel = work.type || '迷你世界';
+                var isMC = (typeLabel.toLowerCase().includes('minecraft') || typeLabel.toLowerCase().includes('mc'));
+                var typeClass = isMC ? 'mc' : '';
+
+                var statusMap = {
+                    '策划中': 'planning',
+                    '开发中': 'developing',
+                    '测试中': 'testing',
+                    '更新中': 'updating',
+                    '待发布': 'pending',
+                    '已完结': 'completed',
+                    '已完善': 'completed'
+                };
+                var statusDot = statusMap[work.status] || 'planning';
+
+                var finalMinid = (work.author && memberMinidMap[work.author]) ? memberMinidMap[work.author] : (work.minid ||
+                    '未录入');
+
+                var progressNum = parseInt(work.progress);
+                var progressDisplay = progressNum ? progressNum + '%' : (work.progress || '未知');
+
+                var html = '';
+                html += '<div class="detail-grid">';
+
+                // 左侧
+                html += '<div class="detail-left">';
+                html += '<div class="detail-cover">' + coverHtml +
+                    '</div>'; // 移除封面上的类型标签
+
+                html += '<div class="info-card">';
+                html += '<div class="row"><span class="label">作品名称</span><span class="value">' + work.title +
+                    '</span></div>';
+                if (work.workId) {
+                    html += '<div class="row"><span class="label">作品ID</span><span class="value">' + work.workId +
+                        ' <button class="copy-btn" onclick="copyText(\'' + work.workId +
+                        '\',\'作品ID\')"><i class="fas fa-copy"></i> 复制</button></span></div>';
+                }
+                html += '<div class="row"><span class="label">作者</span><span class="value"><a href="javascript:void(0)" class="author-link" data-author="' +
+                    work.author + '" style="color:var(--blue-primary);font-weight:600;cursor:pointer;">' + work.author +
+                    '</a></span></div>';
+                html += '<div class="row"><span class="label">迷你号</span><span class="value">' + finalMinid +
+                    ' <button class="copy-btn" onclick="copyText(\'' + finalMinid +
+                    '\',\'迷你号\')"><i class="fas fa-copy"></i> 复制</button></span></div>';
+                html += '<div class="row"><span class="label">发布日期</span><span class="value">' + work.date +
+                    '</span></div>';
+                if (work.download) {
+                    html += '<div class="row"><span class="label">下载链接</span><span class="value"><a href="' +
+                        work.download + '" target="_blank" rel="noopener">' + work.download +
+                        '</a> <button class="copy-btn" onclick="copyText(\'' + work.download +
+                        '\',\'下载链接\')"><i class="fas fa-copy"></i> 复制</button></span></div>';
+                }
                 html += '</div></div>';
-                return html;
-            }
 
-            function renderPreviewCard(map) {
-                var coverHtml = (map.cover && map.cover.trim().startsWith('http')) ?
-                    '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-                    '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-                return '<div class="preview-card">' + coverHtml +
-                    '<div class="body"><div class="title">' + map.title + '</div><div class="meta">' + map.author +
-                    ' · ' + map.date + '</div></div></div>';
-            }
+                // 右侧
+                html += '<div class="detail-right">';
+                // 类型标签放在标题上方
+                html += '<span class="type-label ' + typeClass + '">' + typeLabel + '</span>';
+                html += '<div class="title-section"><h2>' + work.title + '</h2>';
+                if (work.tag) html += '<div class="subtitle">' + work.tag + '</div>';
+                html += '</div>';
 
-            // ============================================================
-            // 分页渲染
-            // ============================================================
-            function renderPage() {
-                var total = filteredMaps.length;
-                var totalPages = Math.ceil(total / pageSize) || 1;
-                if (currentPage > totalPages) currentPage = totalPages;
-                var start = (currentPage - 1) * pageSize;
-                var end = Math.min(start + pageSize, total);
-                var pageItems = filteredMaps.slice(start, end);
+                html += '<div class="status-section">';
+                html += '<div class="status-item"><span class="dot ' + statusDot + '"></span> 状态：<span class="value">' +
+                    (work.status || '未指定') + '</span></div>';
+                html += '<div class="status-item"><span class="label">进度：</span><span class="value">' +
+                    progressDisplay + '</span></div>';
+                html += '</div>';
 
-                if (pageItems.length === 0) {
-                    mapGrid.innerHTML = '<div class="empty-placeholder">没有匹配的地图</div>';
-                } else {
-                    var html = '';
-                    pageItems.forEach(function(map) { html += renderMapCard(map); });
-                    mapGrid.innerHTML = html;
+                if (progressNum && !isNaN(progressNum) && progressNum >= 0 && progressNum <= 100) {
+                    html += '<div class="progress-section"><div class="progress-header"><span>开发进度</span><span>' +
+                        progressNum + '%</span></div><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:' +
+                        progressNum + '%;"></div></div></div>';
                 }
 
-                pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
-                prevBtn.disabled = currentPage <= 1;
-                nextBtn.disabled = currentPage >= totalPages;
+                if (work.desc && work.desc !== '暂无描述') {
+                    html += '<div class="desc-section">' + work.desc.replace(/\n/g, '<br>') + '</div>';
+                }
 
-                // 绑定作者点击事件（调用公共弹窗）
-                mapGrid.querySelectorAll('.author').forEach(function(el) {
-                    el.addEventListener('click', function(e) {
+                if (work.announcement) {
+                    html += '<div class="announcement"><div class="announce-label"><i class="fas fa-bullhorn"></i> 公告</div>' +
+                        work.announcement.replace(/\n/g, '<br>') + '</div>';
+                }
+
+                html += '</div></div>';
+
+                detailBody.innerHTML = html;
+                detailModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                // 绑定作者点击
+                var authorLink = detailBody.querySelector('.author-link');
+                if (authorLink) {
+                    authorLink.addEventListener('click', function(e) {
                         e.stopPropagation();
                         var authorName = this.dataset.author;
                         if (typeof window.openMemberModal === 'function') {
+                            window._memberData = allMembers;
                             window.openMemberModal(authorName);
                         } else {
-                            alert('公共组件未加载，请检查 assets/js/components.js');
+                            console.warn('公共组件未加载');
                         }
                     });
-                });
-            }
-
-            // ============================================================
-            // 预告
-            // ============================================================
-            function renderPreview() {
-                var previewMaps = allMaps.filter(function(m) { return m.tag === '待发布'; });
-                previewCount.textContent = previewMaps.length;
-                if (previewMaps.length === 0) {
-                    previewGrid.innerHTML = '<div class="preview-empty">暂无待发布地图</div>';
-                    return;
                 }
-                var html = '';
-                previewMaps.forEach(function(map) { html += renderPreviewCard(map); });
-                previewGrid.innerHTML = html;
+            };
+
+            // ============================================================
+            // 关闭详情弹窗
+            // ============================================================
+            function closeDetail() {
+                detailModal.classList.remove('active');
+                document.body.style.overflow = '';
+                detailContent.style.backgroundImage = '';
+                detailContent.classList.remove('has-bg');
             }
 
-            // ============================================================
-            // 筛选与搜索
-            // ============================================================
-            function applyFilters() {
-                var searchTerm = searchInput.value.trim().toLowerCase();
-                var activeTag = document.querySelector('.tag-item.active');
-                var tagFilter = activeTag ? activeTag.dataset.tag : 'all';
-
-                filteredMaps = allMaps.filter(function(map) {
-                    if (tagFilter !== 'all') {
-                        if (tagFilter === '精选') {
-                            if (!map.isFeatured) return false;
-                        } else {
-                            if (map.tag !== tagFilter) return false;
-                        }
+            detailClose.addEventListener('click', closeDetail);
+            detailModal.addEventListener('click', function(e) {
+                if (e.target === detailModal) closeDetail();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (detailModal.classList.contains('active')) closeDetail();
+                    if (modalOverlay.classList.contains('active')) {
+                        modalOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                        modalContent.style.backgroundImage = '';
+                        modalContent.classList.remove('has-bg');
                     }
-                    if (searchTerm) {
-                        var inTitle = map.title.toLowerCase().includes(searchTerm);
-                        var inAuthor = map.author.toLowerCase().includes(searchTerm);
-                        var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map
-                            .minid || '未知');
-                        var inMinid = finalMinid.includes(searchTerm);
-                        if (!inTitle && !inAuthor && !inMinid) return false;
-                    }
-                    return true;
-                });
+                }
+            });
 
-                filteredMaps.sort(function(a, b) {
-                    if (a.date === '未知' && b.date === '未知') return 0;
-                    if (a.date === '未知') return 1;
-                    if (b.date === '未知') return -1;
-                    return b.date.localeCompare(a.date);
+            // ============================================================
+            // 公共弹窗关闭（不变）
+            // ============================================================
+            if (modalClose) {
+                modalClose.addEventListener('click', function() {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    modalContent.style.backgroundImage = '';
+                    modalContent.classList.remove('has-bg');
                 });
-
-                currentPage = 1;
-                renderPage();
-                renderPreview();
             }
-
-            // ============================================================
-            // 加载数据
-            // ============================================================
-            function loadData() {
-                mapGrid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
-
-                var REPO_OWNER = 'jgcgzs',
-                    REPO_NAME = 'acns';
-                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
-                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
-                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
-
-                Promise.all([
-                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
-                ]).then(function(results) {
-                    var mapIssues = results[0] || [],
-                        memberIssues = results[1] || [],
-                        blogIssues = results[2] || [];
-                    allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
-
-                    if (memberIssues.length) {
-                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
-                        allMembers = allMembers.filter(function(m) {
-                            if (m.groups && m.groups.length) return true;
-                            if (m.role === '室长' || m.role === '副室长') return true;
-                            return false;
-                        });
-                        memberMinidMap = {};
-                        allMembers.forEach(function(m) { if (m.name && m.minid) memberMinidMap[m.name] = m.minid; });
-                    } else {
-                        allMembers = [];
-                        memberMinidMap = {};
+            if (modalOverlay) {
+                modalOverlay.addEventListener('click', function(e) {
+                    if (e.target === modalOverlay) {
+                        modalOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                        modalContent.style.backgroundImage = '';
+                        modalContent.classList.remove('has-bg');
                     }
-
-                    allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
-
-                    // 挂载到全局供弹窗使用
-                    window._memberData = allMembers;
-                    window._mapData = allMaps;
-                    window._blogData = allBlogs;
-
-                    applyFilters();
-                }).catch(function(err) {
-                    console.warn('加载失败:', err);
-                    mapGrid.innerHTML =
-                        '<div class="empty-placeholder"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
-                    previewGrid.innerHTML = '<div class="preview-empty">加载失败</div>';
-                    previewCount.textContent = '0';
                 });
             }
 
             // ============================================================
-            // 事件绑定
+            // 事件绑定（增加状态筛选）
             // ============================================================
-            tagBar.addEventListener('click', function(e) {
-                var target = e.target.closest('.tag-item');
+            categoryBar.addEventListener('click', function(e) {
+                var target = e.target.closest('.category-tag');
                 if (!target) return;
-                document.querySelectorAll('.tag-item').forEach(function(el) { el.classList.remove('active'); });
+                document.querySelectorAll('.category-tag').forEach(function(el) {
+                    el.classList.remove('active');
+                });
                 target.classList.add('active');
                 applyFilters();
             });
 
-            searchBtn.addEventListener('click', applyFilters);
-            searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') applyFilters(); });
+            document.querySelectorAll('.filter-tag').forEach(function(el) {
+                el.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-tag').forEach(function(f) {
+                        f.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    applyFilters();
+                });
+            });
 
-            prevBtn.addEventListener('click', function() { if (currentPage > 1) { currentPage--;
-                    renderPage(); } });
+            // 状态筛选点击
+            statusBar.addEventListener('click', function(e) {
+                var target = e.target.closest('.status-tag');
+                if (!target) return;
+                document.querySelectorAll('.status-tag').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                target.classList.add('active');
+                applyFilters();
+            });
+
+            searchInput.addEventListener('input', function() {
+                applyFilters();
+            });
+
+            prevBtn.addEventListener('click', function() {
+                if (currentPage > 1) { currentPage--;
+                    renderPage(); }
+            });
             nextBtn.addEventListener('click', function() {
-                var total = filteredMaps.length;
+                var total = filteredWorks.length;
                 var totalPages = Math.ceil(total / pageSize);
                 if (currentPage < totalPages) { currentPage++;
                     renderPage(); }
