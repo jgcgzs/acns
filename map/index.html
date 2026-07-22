@@ -8,89 +8,1011 @@
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 样式与之前完全一致，不再重复粘贴，略... */
-        /* 实际使用请复制之前地图库的完整样式 */
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior:smooth; }
-        body { font-family:-apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif; background-color:#f5f9fe; color:#1a2a3a; line-height:1.7; font-size:16px; padding-top:68px; }
-        a { text-decoration:none; color:inherit; }
-        img { max-width:100%; height:auto; display:block; }
-        .container { max-width:1120px; margin:0 auto; padding:0 24px; }
-        :root { --blue-primary:#1a7fc4; --blue-primary-dark:#0f6aad; --blue-bg-light:#ecf5fa; --blue-bg-pale:#f5f9fe; --white:#ffffff; --text-dark:#1a2a3a; --text-muted:#4a5a6a; --border-light:#dce6ef; --shadow-sm:0 2px 12px rgba(26,127,196,0.07); --shadow-hover:0 8px 28px rgba(26,127,196,0.14); --radius:2px; --green-primary:#16a34a; }
-        .navbar { position:fixed; top:0; left:0; right:0; z-index:100; background:#ffffff; height:68px; display:flex; align-items:center; border-bottom:1px solid var(--border-light); box-shadow:0 1px 4px rgba(0,0,0,0.02); }
-        .navbar .container { display:flex; align-items:center; justify-content:space-between; width:100%; }
-        .navbar-brand { display:flex; align-items:center; gap:10px; }
-        .navbar-brand .logo { height:36px; width:auto; }
-        .navbar-brand .brand-text { font-size:20px; font-weight:700; color:#1a1a1a; letter-spacing:0.3px; white-space:nowrap; }
-        .nav-links { display:flex; gap:2px; list-style:none; }
-        .nav-links li a { display:block; padding:8px 16px; font-size:15px; font-weight:500; color:#222222; border-radius:var(--radius); transition:background 0.2s, color 0.2s; position:relative; }
-        .nav-links li a::after { content:''; position:absolute; bottom:2px; left:50%; width:0; height:2px; background:var(--blue-primary); transition:width 0.25s ease; transform:translateX(-50%); border-radius:var(--radius); }
-        .nav-links li a:hover { background:var(--blue-bg-light); color:var(--blue-primary); }
-        .nav-links li a:hover::after { width:50%; }
-        .nav-links li a.active { color:var(--blue-primary); font-weight:600; }
-        .nav-links li a.active::after { width:50%; }
-        .menu-toggle { display:none; background:none; border:none; font-size:1.4rem; color:#222; cursor:pointer; padding:4px 8px; }
-        .footer { background:#1a2a3a; color:rgba(255,255,255,0.55); text-align:center; padding:20px 0; font-size:14px; border-top:1px solid rgba(255,255,255,0.05); margin-top:48px; }
-        .footer .container { display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; }
-        .footer .sep { color:rgba(255,255,255,0.12); }
-        .page-header { padding:24px 0 12px; border-bottom:1px solid var(--border-light); margin-bottom:24px; }
-        .page-header h1 { font-size:28px; font-weight:700; color:var(--text-dark); }
-        .page-header .sub { font-size:14px; color:var(--text-muted); opacity:0.6; }
-        .search-bar { display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; align-items:center; }
-        .search-bar input { flex:1; min-width:180px; padding:8px 14px; border:1px solid var(--border-light); border-radius:var(--radius); font-size:14px; background:var(--white); transition:border-color 0.25s; outline:none; }
-        .search-bar input:focus { border-color:var(--blue-primary); }
-        .search-bar .search-btn { background:var(--blue-primary); color:#fff; border:none; padding:8px 20px; border-radius:var(--radius); font-size:14px; font-weight:500; cursor:pointer; transition:background 0.25s; }
-        .search-bar .search-btn:hover { background:var(--blue-primary-dark); }
-        .tag-bar { display:flex; flex-wrap:nowrap; overflow-x:auto; gap:8px; padding:4px 0 16px; margin-bottom:8px; -webkit-overflow-scrolling:touch; }
-        .tag-bar::-webkit-scrollbar { height:4px; background:var(--border-light); }
-        .tag-bar::-webkit-scrollbar-thumb { background:var(--blue-primary); border-radius:2px; }
-        .tag-item { flex:0 0 auto; padding:4px 16px; border:1.5px solid var(--border-light); border-radius:20px; font-size:13px; font-weight:500; color:var(--text-muted); background:transparent; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
-        .tag-item:hover { border-color:var(--blue-primary); color:var(--blue-primary); }
-        .tag-item.active { border-color:var(--blue-primary); color:var(--blue-primary); background:var(--blue-bg-light); }
-        .preview-section { margin:16px 0 32px; }
-        .preview-section .preview-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:12px; }
-        .preview-section .preview-header h3 { font-size:18px; font-weight:700; color:var(--text-dark); }
-        .preview-section .preview-header .count { font-size:13px; color:var(--text-muted); opacity:0.5; }
-        .preview-scroll { overflow-x:auto; overflow-y:visible; -webkit-overflow-scrolling:touch; padding:4px 0 12px; margin:0 -4px; }
-        .preview-scroll::-webkit-scrollbar { height:6px; background:var(--border-light); border-radius:3px; }
-        .preview-scroll::-webkit-scrollbar-thumb { background:var(--blue-primary); border-radius:3px; }
-        .preview-grid { display:flex; flex-wrap:nowrap; gap:20px; width:max-content; padding:0 4px; }
-        .preview-card { flex:0 0 200px; max-width:200px; background:var(--white); border:1px solid var(--border-light); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow 0.3s, transform 0.3s; display:flex; flex-direction:column; }
-        .preview-card:hover { box-shadow:var(--shadow-hover); transform:translateY(-2px); }
-        .preview-card .cover { width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--blue-bg-light); border-bottom:1px solid var(--border-light); }
-        .preview-card .cover-placeholder { width:100%; aspect-ratio:16/9; background:var(--blue-bg-light); border-bottom:1px solid var(--border-light); display:flex; align-items:center; justify-content:center; font-size:2rem; color:var(--blue-primary); opacity:0.2; }
-        .preview-card .body { padding:10px 12px 12px; }
-        .preview-card .body .title { font-size:14px; font-weight:700; color:var(--text-dark); line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-        .preview-card .body .meta { font-size:11px; color:var(--text-muted); opacity:0.5; margin-top:2px; }
-        .preview-empty { text-align:center; padding:20px 0; color:var(--text-muted); opacity:0.4; font-size:14px; }
-        .map-grid-container { margin-top:8px; }
-        .map-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
-        .map-card { background:var(--white); border:1px solid var(--border-light); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-sm); transition:box-shadow 0.3s, transform 0.3s, border-color 0.3s; display:flex; flex-direction:column; }
-        .map-card:hover { box-shadow:var(--shadow-hover); border-color:var(--blue-primary); transform:translateY(-3px); }
-        .map-card .cover { width:100%; aspect-ratio:16/9; object-fit:cover; background:var(--blue-bg-light); border-bottom:1px solid var(--border-light); }
-        .map-card .cover-placeholder { width:100%; aspect-ratio:16/9; background:var(--blue-bg-light); border-bottom:1px solid var(--border-light); display:flex; align-items:center; justify-content:center; font-size:2.4rem; color:var(--blue-primary); opacity:0.2; }
-        .map-card .body { padding:12px 14px 14px; flex:1; display:flex; flex-direction:column; gap:3px; }
-        .map-card .body .tag-blue { font-size:10px; font-weight:600; padding:1px 10px; border:1.5px solid var(--blue-primary); color:var(--blue-primary); background:transparent; border-radius:3px; letter-spacing:0.3px; display:inline-block; line-height:1.5; align-self:flex-start; }
-        .map-card .body .tag-green { font-size:10px; font-weight:600; padding:1px 10px; border:1.5px solid var(--green-primary); color:var(--green-primary); background:transparent; border-radius:3px; letter-spacing:0.3px; display:inline-block; line-height:1.5; align-self:flex-start; }
-        .map-card .body .title { font-size:15px; font-weight:700; color:var(--text-dark); line-height:1.3; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-        .map-card .body .date-row { font-size:12px; color:var(--text-muted); opacity:0.55; display:flex; align-items:center; gap:4px; margin-top:1px; }
-        .map-card .body .date-row i { font-size:11px; opacity:0.5; }
-        .map-card .body .meta-row { display:flex; align-items:center; justify-content:space-between; font-size:12px; color:var(--text-muted); opacity:0.6; flex-wrap:wrap; gap:2px 8px; }
-        .map-card .body .meta-row .author { display:flex; align-items:center; gap:3px; }
-        .map-card .body .meta-row .author i { font-size:10px; opacity:0.5; }
-        .map-card .body .meta-row .minid { font-family:'SF Mono','Menlo',monospace; font-size:11px; }
-        .map-card .body .desc-box { background:var(--blue-bg-light); border:1px solid var(--border-light); border-radius:var(--radius); padding:6px 10px; margin-top:4px; font-size:12px; color:var(--text-muted); line-height:1.6; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; min-height:48px; }
-        .pagination { display:flex; justify-content:center; align-items:center; gap:6px; margin-top:28px; flex-wrap:wrap; }
-        .pagination button { padding:6px 14px; border:1px solid var(--border-light); border-radius:var(--radius); background:var(--white); color:var(--text-dark); font-size:14px; cursor:pointer; transition:all 0.2s; min-width:36px; }
-        .pagination button:hover:not(:disabled) { border-color:var(--blue-primary); color:var(--blue-primary); }
-        .pagination button.active { background:var(--blue-primary); color:#fff; border-color:var(--blue-primary); }
-        .pagination button:disabled { opacity:0.3; cursor:default; }
-        .pagination .info { font-size:13px; color:var(--text-muted); opacity:0.5; padding:0 8px; }
-        .loading-placeholder, .empty-placeholder { text-align:center; padding:60px 0; color:var(--text-muted); opacity:0.4; font-size:15px; grid-column:1 / -1; }
-        .loading-placeholder i { display:block; font-size:28px; color:var(--blue-primary); margin-bottom:10px; }
-        @media (max-width:992px) { .map-grid { grid-template-columns:repeat(3,1fr); } }
-        @media (max-width:768px) { body { padding-top:60px; } .navbar { height:60px; } .menu-toggle { display:block; } .nav-links { display:none; position:absolute; top:60px; left:0; right:0; flex-direction:column; background:#fff; padding:12px 24px 20px; gap:2px; border-top:1px solid var(--border-light); box-shadow:0 8px 24px rgba(0,0,0,0.06); } .nav-links.open { display:flex; } .nav-links li a { padding:10px 16px; font-size:16px; width:100%; text-align:center; } .map-grid { grid-template-columns:repeat(2,1fr); gap:14px; } .preview-card { flex:0 0 160px; max-width:160px; } .preview-card .body .title { font-size:13px; } .page-header h1 { font-size:24px; } .search-bar input { min-width:140px; } .tag-item { font-size:12px; padding:3px 12px; } .navbar-brand .brand-text { font-size:17px; } .navbar-brand .logo { height:28px; } }
-        @media (max-width:480px) { .map-grid { grid-template-columns:repeat(2,1fr); gap:10px; } .map-card .body { padding:8px 10px 10px; } .map-card .body .title { font-size:13px; } .map-card .body .desc-box { font-size:11px; padding:4px 8px; min-height:36px; -webkit-line-clamp:2; } .map-card .body .tag-blue, .map-card .body .tag-green { font-size:9px; padding:0 8px; border-width:1px; } .map-card .body .date-row { font-size:11px; } .map-card .body .meta-row { font-size:11px; } .preview-card { flex:0 0 140px; max-width:140px; } .preview-card .body .title { font-size:12px; } .search-bar input { font-size:13px; padding:6px 12px; } .search-bar .search-btn { font-size:13px; padding:6px 14px; } .container { padding:0 14px; } }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+            background-color: #f5f9fe;
+            color: #1a2a3a;
+            line-height: 1.7;
+            font-size: 16px;
+            padding-top: 68px;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        :root {
+            --blue-primary: #1a7fc4;
+            --blue-primary-dark: #0f6aad;
+            --blue-bg-light: #ecf5fa;
+            --blue-bg-pale: #f5f9fe;
+            --white: #ffffff;
+            --text-dark: #1a2a3a;
+            --text-muted: #4a5a6a;
+            --border-light: #dce6ef;
+            --shadow-sm: 0 2px 12px rgba(26,127,196,0.07);
+            --shadow-hover: 0 8px 28px rgba(26,127,196,0.14);
+            --radius: 2px;
+            --green-primary: #16a34a;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: #ffffff;
+            height: 68px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+        }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-brand .logo {
+            height: 36px;
+            width: auto;
+        }
+        .navbar-brand .brand-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2px;
+            list-style: none;
+        }
+        .nav-links li a {
+            display: block;
+            padding: 8px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #222222;
+            border-radius: var(--radius);
+            transition: background 0.2s, color 0.2s;
+            position: relative;
+        }
+        .nav-links li a::after {
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--blue-primary);
+            transition: width 0.25s ease;
+            transform: translateX(-50%);
+            border-radius: var(--radius);
+        }
+        .nav-links li a:hover {
+            background: var(--blue-bg-light);
+            color: var(--blue-primary);
+        }
+        .nav-links li a:hover::after {
+            width: 50%;
+        }
+        .nav-links li a.active {
+            color: var(--blue-primary);
+            font-weight: 600;
+        }
+        .nav-links li a.active::after {
+            width: 50%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #222;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
+
+        .footer {
+            background: #1a2a3a;
+            color: rgba(255, 255, 255, 0.55);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 48px;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .footer .sep {
+            color: rgba(255, 255, 255, 0.12);
+        }
+
+        .page-header {
+            padding: 24px 0 12px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 24px;
+        }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .page-header .sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .search-bar input {
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 14px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            font-size: 14px;
+            background: var(--white);
+            transition: border-color 0.25s;
+            outline: none;
+        }
+        .search-bar input:focus {
+            border-color: var(--blue-primary);
+        }
+        .search-bar .search-btn {
+            background: var(--blue-primary);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.25s;
+        }
+        .search-bar .search-btn:hover {
+            background: var(--blue-primary-dark);
+        }
+
+        .tag-bar {
+            display: flex;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            gap: 8px;
+            padding: 4px 0 16px;
+            margin-bottom: 8px;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tag-bar::-webkit-scrollbar {
+            height: 4px;
+            background: var(--border-light);
+        }
+        .tag-bar::-webkit-scrollbar-thumb {
+            background: var(--blue-primary);
+            border-radius: 2px;
+        }
+        .tag-item {
+            flex: 0 0 auto;
+            padding: 4px 16px;
+            border: 1.5px solid var(--border-light);
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .tag-item:hover {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+        }
+        .tag-item.active {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+            background: var(--blue-bg-light);
+        }
+
+        .preview-section {
+            margin: 16px 0 32px;
+        }
+        .preview-section .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 12px;
+        }
+        .preview-section .preview-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .preview-section .preview-header .count {
+            font-size: 13px;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+        .preview-scroll {
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+            padding: 4px 0 12px;
+            margin: 0 -4px;
+        }
+        .preview-scroll::-webkit-scrollbar {
+            height: 6px;
+            background: var(--border-light);
+            border-radius: 3px;
+        }
+        .preview-scroll::-webkit-scrollbar-thumb {
+            background: var(--blue-primary);
+            border-radius: 3px;
+        }
+        .preview-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            width: max-content;
+            padding: 0 4px;
+        }
+        .preview-card {
+            flex: 0 0 200px;
+            max-width: 200px;
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s, transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .preview-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .preview-card .cover {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: var(--blue-bg-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .preview-card .cover-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--blue-bg-light);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--blue-primary);
+            opacity: 0.2;
+        }
+        .preview-card .body {
+            padding: 10px 12px 12px;
+        }
+        .preview-card .body .title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .preview-card .body .meta {
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            margin-top: 2px;
+        }
+        .preview-empty {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-muted);
+            opacity: 0.4;
+            font-size: 14px;
+        }
+
+        .map-grid-container {
+            margin-top: 8px;
+        }
+        .map-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        .map-card {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .map-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--blue-primary);
+            transform: translateY(-3px);
+        }
+        .map-card .cover {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: var(--blue-bg-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .map-card .cover-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--blue-bg-light);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            color: var(--blue-primary);
+            opacity: 0.2;
+        }
+        .map-card .body {
+            padding: 12px 14px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+        .map-card .body .tag-blue {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border: 1.5px solid var(--blue-primary);
+            color: var(--blue-primary);
+            background: transparent;
+            border-radius: 3px;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            line-height: 1.5;
+            align-self: flex-start;
+        }
+        .map-card .body .tag-green {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border: 1.5px solid var(--green-primary);
+            color: var(--green-primary);
+            background: transparent;
+            border-radius: 3px;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            line-height: 1.5;
+            align-self: flex-start;
+        }
+        .map-card .body .title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .map-card .body .date-row {
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0.55;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 1px;
+        }
+        .map-card .body .date-row i {
+            font-size: 11px;
+            opacity: 0.5;
+        }
+        .map-card .body .meta-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0.6;
+            flex-wrap: wrap;
+            gap: 2px 8px;
+        }
+        .map-card .body .meta-row .author {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+            color: var(--blue-primary);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .map-card .body .meta-row .author:hover {
+            color: var(--blue-primary-dark);
+            text-decoration: underline;
+        }
+        .map-card .body .meta-row .author i {
+            font-size: 10px;
+            opacity: 0.5;
+        }
+        .map-card .body .meta-row .minid {
+            font-family: 'SF Mono', 'Menlo', monospace;
+            font-size: 11px;
+        }
+        .map-card .body .desc-box {
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 6px 10px;
+            margin-top: 4px;
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 48px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        .pagination button {
+            padding: 6px 14px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            background: var(--white);
+            color: var(--text-dark);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 36px;
+        }
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+        }
+        .pagination button.active {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
+        }
+        .pagination button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+        .pagination .info {
+            font-size: 13px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            padding: 0 8px;
+        }
+
+        .loading-placeholder,
+        .empty-placeholder {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-muted);
+            opacity: 0.4;
+            font-size: 15px;
+            grid-column: 1 / -1;
+        }
+        .loading-placeholder i {
+            display: block;
+            font-size: 28px;
+            color: var(--blue-primary);
+            margin-bottom: 10px;
+        }
+
+        /* ===== 弹窗样式（与成员档案一致） ===== */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            max-width: 780px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 28px 32px 32px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            animation: fadeUp 0.3s ease;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        .modal-content.has-bg {
+            background-color: rgba(255, 255, 255, 0.92);
+            background-blend-mode: overlay;
+        }
+        .modal-content.has-bg .modal-inner {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(2px);
+            border-radius: var(--radius);
+            padding: 4px 0;
+            margin: -4px 0;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .modal-close {
+            position: sticky;
+            top: 0;
+            float: right;
+            font-size: 28px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0 4px;
+            z-index: 10;
+            line-height: 1;
+        }
+        .modal-close:hover {
+            color: var(--text-dark);
+        }
+
+        .modal-member {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 16px;
+        }
+        .modal-member .mavatar {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: var(--blue-bg-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--blue-primary);
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+        .modal-member .mavatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-member .minfo {
+            flex: 1;
+        }
+        .modal-member .minfo .mname {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .modal-member .minfo .mrole {
+            font-size: 14px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+        .modal-member .minfo .mgroups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        .modal-member .minfo .mgroups .g {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border: 1px solid var(--blue-primary);
+            color: var(--blue-primary);
+            background: transparent;
+            border-radius: 2px;
+        }
+        .modal-member .minfo .mmeta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .modal-member .minfo .mmeta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .modal-member .minfo .mmeta i {
+            font-size: 12px;
+            opacity: 0.5;
+        }
+
+        .id-parse-detail {
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 10px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+        .id-parse-detail .label {
+            font-weight: 600;
+            color: var(--blue-primary);
+        }
+        .id-parse-detail .parts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+            margin-top: 4px;
+        }
+        .id-parse-detail .parts span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .id-parse-detail .parts .val {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .modal-bio {
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+        .modal-bio a {
+            color: var(--blue-primary);
+            text-decoration: underline;
+        }
+        .modal-bio a:hover {
+            color: var(--blue-primary-dark);
+        }
+
+        .modal-section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 16px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-section-title .count {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .modal-works {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .modal-work-card {
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 10px 12px;
+            transition: box-shadow 0.2s, transform 0.2s;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .modal-work-card:hover {
+            box-shadow: var(--shadow-sm);
+            transform: translateY(-2px);
+        }
+        .modal-work-card .wcover {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            margin-bottom: 4px;
+        }
+        .modal-work-card .wcover-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--blue-primary);
+            opacity: 0.2;
+            margin-bottom: 4px;
+        }
+        .modal-work-card .wtitle {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .modal-work-card .wmeta {
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            margin-top: 2px;
+        }
+        .modal-work-empty {
+            font-size: 13px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            padding: 10px 0;
+            grid-column: 1 / -1;
+            text-align: center;
+        }
+
+        .modal-days {
+            margin-top: 14px;
+            padding: 10px 16px;
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        .modal-days .num {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--blue-primary);
+            font-family: 'SF Mono', 'Menlo', monospace;
+        }
+        .pinned-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--blue-primary);
+            padding: 1px 8px;
+            border-radius: 10px;
+            margin-left: 6px;
+            letter-spacing: 0.3px;
+        }
+
+        @media (max-width: 992px) {
+            .map-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .modal-works {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            .navbar {
+                height: 60px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: #fff;
+                padding: 12px 24px 20px;
+                gap: 2px;
+                border-top: 1px solid var(--border-light);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links li a {
+                padding: 10px 16px;
+                font-size: 16px;
+                width: 100%;
+                text-align: center;
+            }
+            .map-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 14px;
+            }
+            .preview-card {
+                flex: 0 0 160px;
+                max-width: 160px;
+            }
+            .preview-card .body .title {
+                font-size: 13px;
+            }
+            .page-header h1 {
+                font-size: 24px;
+            }
+            .search-bar input {
+                min-width: 140px;
+            }
+            .tag-item {
+                font-size: 12px;
+                padding: 3px 12px;
+            }
+            .navbar-brand .brand-text {
+                font-size: 17px;
+            }
+            .navbar-brand .logo {
+                height: 28px;
+            }
+            .modal-content {
+                padding: 20px 18px;
+            }
+            .modal-member {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .modal-member .minfo .mmeta {
+                justify-content: center;
+            }
+            .modal-works {
+                grid-template-columns: 1fr 1fr;
+            }
+            .modal-member .mavatar {
+                width: 60px;
+                height: 60px;
+                font-size: 22px;
+            }
+            .modal-member .minfo .mname {
+                font-size: 19px;
+            }
+        }
+        @media (max-width: 480px) {
+            .map-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .map-card .body {
+                padding: 8px 10px 10px;
+            }
+            .map-card .body .title {
+                font-size: 13px;
+            }
+            .map-card .body .desc-box {
+                font-size: 11px;
+                padding: 4px 8px;
+                min-height: 36px;
+                -webkit-line-clamp: 2;
+            }
+            .map-card .body .tag-blue,
+            .map-card .body .tag-green {
+                font-size: 9px;
+                padding: 0 8px;
+                border-width: 1px;
+            }
+            .map-card .body .date-row {
+                font-size: 11px;
+            }
+            .map-card .body .meta-row {
+                font-size: 11px;
+            }
+            .preview-card {
+                flex: 0 0 140px;
+                max-width: 140px;
+            }
+            .preview-card .body .title {
+                font-size: 12px;
+            }
+            .search-bar input {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+            .search-bar .search-btn {
+                font-size: 13px;
+                padding: 6px 14px;
+            }
+            .container {
+                padding: 0 14px;
+            }
+            .modal-works {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                padding: 14px 12px;
+            }
+            .modal-member .mavatar {
+                width: 52px;
+                height: 52px;
+                font-size: 18px;
+            }
+            .modal-member .minfo .mname {
+                font-size: 17px;
+            }
+            .modal-days {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -108,10 +1030,12 @@
                 <li><a href="./" class="active">地图库</a></li>
                 <li><a href="../blog/">极创博客</a></li>
                 <li><a href="../Management/">管理层成员公示</a></li>
+                <li><a href="../Management/member.html">成员档案</a></li>
             </ul>
         </div>
     </header>
 
+    <!-- ===== 地图库内容 ===== -->
     <main>
         <div class="container">
             <div class="page-header">
@@ -119,11 +1043,13 @@
                 <div class="sub">所有极光创工作室发布的地图作品</div>
             </div>
 
+            <!-- 搜索栏 -->
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="搜索地图名称、作者、迷你号..." />
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
+            <!-- 标签栏 -->
             <div class="tag-bar" id="tagBar">
                 <span class="tag-item active" data-tag="all">全部</span>
                 <span class="tag-item" data-tag="策划中">策划中</span>
@@ -135,6 +1061,7 @@
                 <span class="tag-item" data-tag="精选">精选</span>
             </div>
 
+            <!-- 预告栏 -->
             <section class="preview-section" id="previewSection">
                 <div class="preview-header">
                     <h3>即将发布 <span class="count" id="previewCount">0</span></h3>
@@ -146,12 +1073,14 @@
                 </div>
             </section>
 
+            <!-- 全部地图 -->
             <div class="map-grid-container">
                 <div class="map-grid" id="mapGrid">
                     <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>
                 </div>
             </div>
 
+            <!-- 分页 -->
             <div class="pagination" id="pagination">
                 <button id="prevPage" disabled>‹</button>
                 <span id="pageInfo" class="info">第 1 / 1 页</span>
@@ -160,6 +1089,17 @@
         </div>
     </main>
 
+    <!-- ===== 弹窗 ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content" id="modalContent">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-inner" id="modalInner">
+                <div id="modalBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 底部 ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -171,7 +1111,82 @@
     <script>
         (function() {
 
-            // ===== 移动端菜单 =====
+            // ============================================================
+            // 编号解析工具（用于成员档案弹窗）
+            // ============================================================
+            var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
+            var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
+            var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
+
+            function parseIdNumber(id) {
+                if (!id || id === '未知' || id.length < 10) return null;
+                var s = id.trim();
+                if (s.length < 10) return null;
+                var attr = s.charAt(0);
+                var game = s.charAt(1);
+                var year = s.substring(2, 4);
+                var month = s.substring(4, 6);
+                var day = s.substring(6, 8);
+                var group1 = s.charAt(8);
+                var group2 = s.charAt(9);
+                var dup = s.length > 10 ? s.charAt(10) : '';
+
+                var attrName = ATTR_MAP[attr] || '未知属性';
+                var gameName = GAME_MAP[game] || '未知平台';
+                var group1Name = GROUP_MAP[group1] || '未知';
+                var group2Name = GROUP_MAP[group2] || '无';
+
+                var groupDisplay = group2 === '0' ? group1Name : group1Name + ' + ' + group2Name;
+
+                var dateStr = '20' + year + '-' + month + '-' + day;
+                var y = parseInt('20' + year);
+                var m = parseInt(month);
+                var d = parseInt(day);
+                var validDate = (y >= 2020 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31);
+                if (!validDate) dateStr = '日期无效';
+
+                return {
+                    raw: id,
+                    attr: attr,
+                    attrName: attrName,
+                    game: game,
+                    gameName: gameName,
+                    year: '20' + year,
+                    month: month,
+                    day: day,
+                    date: dateStr,
+                    group1: group1,
+                    group1Name: group1Name,
+                    group2: group2,
+                    group2Name: group2Name,
+                    groupDisplay: groupDisplay,
+                    dup: dup || '无'
+                };
+            }
+
+            function renderIdParseDetail(id) {
+                var info = parseIdNumber(id);
+                if (!info) return '<div class="id-parse-detail"><span style="opacity:0.4;">编号格式无效</span></div>';
+                var html = '<div class="id-parse-detail">';
+                html += '<div class="label">📋 编号解析</div>';
+                html += '<div class="parts">';
+                html += '<span>🔹 ' + info.attrName + ' <span style="opacity:0.3;">(' + info.attr + ')</span></span>';
+                html += '<span>🎮 ' + info.gameName + ' <span style="opacity:0.3;">(' + info.game + ')</span></span>';
+                html += '<span>📅 ' + info.date + '</span>';
+                html += '<span>📂 ' + info.groupDisplay + '</span>';
+                if (info.dup && info.dup !== '无') {
+                    html += '<span>🔢 防重#' + info.dup + '</span>';
+                }
+                html += '</div>';
+                html += '<div style="font-size:11px;color:var(--text-muted);opacity:0.4;margin-top:2px;">完整编号：' + info.raw +
+                    '</div>';
+                html += '</div>';
+                return html;
+            }
+
+            // ============================================================
+            // 移动端菜单
+            // ============================================================
             const toggle = document.getElementById('menuToggle');
             const navLinks = document.getElementById('navLinks');
             if (toggle && navLinks) {
@@ -191,11 +1206,17 @@
                 });
             }
 
-            // ===== 数据状态 =====
+            // ============================================================
+            // 状态
+            // ============================================================
             let allMaps = [];
             let filteredMaps = [];
             let currentPage = 1;
             const pageSize = 16;
+
+            // 成员数据（用于弹窗）
+            let allMembers = [];
+            let allBlogs = []; // 用于关联博客
 
             const mapGrid = document.getElementById('mapGrid');
             const previewGrid = document.getElementById('previewGrid');
@@ -207,7 +1228,18 @@
             const nextBtn = document.getElementById('nextPage');
             const pageInfo = document.getElementById('pageInfo');
 
-            // ===== 工具函数 =====
+            // 弹窗元素
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalContent = document.getElementById('modalContent');
+            const modalInner = document.getElementById('modalInner');
+            const modalBody = document.getElementById('modalBody');
+            const modalClose = document.getElementById('modalClose');
+            const DEFAULT_BG =
+                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
+
+            // ============================================================
+            // 工具函数
+            // ============================================================
             function parseDateFromBody(body) {
                 var patterns = [
                     /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
@@ -229,22 +1261,19 @@
 
             function extractTitlePrefix(title) {
                 var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
-                if (match) {
-                    return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title };
-                }
+                if (match) { return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title }; }
                 return null;
             }
 
-            // ===== 解析Issue =====
-            function parseIssue(issue) {
-                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+            // 解析地图Issue
+            function parseMapIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
-                var author = '',
-                    cover = '',
-                    desc = '',
-                    tag = '',
-                    minid = '',
-                    customDate = null;
+                var author = '';
+                var cover = '';
+                var desc = '';
+                var tag = '';
+                var minid = '';
 
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
@@ -259,50 +1288,190 @@
                         tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
                     } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
                         minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^日期[：:]\s*(.+)/)) {
-                        var dateVal = trimmed.replace(/^日期[：:]\s*/, '').trim();
-                        var parsed = parseDateFromBody(dateVal);
-                        if (parsed) customDate = parsed;
                     }
                 });
-
-                if (!customDate) customDate = parseDateFromBody(body);
-                var dateStr = customDate || '未知';
 
                 if (!author || author.trim() === '') author = '未知作者';
                 if (!desc || desc.trim() === '') desc = '暂无描述';
                 if (!minid || minid.trim() === '') minid = '未知';
 
-                var prefixInfo = extractTitlePrefix(rawTitle);
-                var displayTitle = rawTitle;
-                var isGreenTag = false;
-                if (prefixInfo) {
-                    displayTitle = prefixInfo.cleanTitle;
-                    tag = prefixInfo.prefix;
-                    isGreenTag = true;
-                } else {
-                    tag = tag || '';
+                var dateStr = parseDateFromBody(body);
+                if (!dateStr) {
+                    var d = new Date(issue.created_at);
+                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
+                        .padStart(2, '0');
                 }
 
-                var isFeatured = /\[精选\]/.test(rawTitle) || tag === '精选';
+                var prefixInfo = extractTitlePrefix(title);
+                var displayTitle = title;
+                if (prefixInfo) { displayTitle = prefixInfo.cleanTitle;
+                    tag = prefixInfo.prefix; }
+
+                var isFeatured = /\[精选\]/.test(title) || tag === '精选';
 
                 return {
                     id: issue.number,
                     title: displayTitle,
-                    rawTitle: rawTitle,
                     author: author,
                     cover: cover,
                     desc: desc,
-                    tag: tag,
-                    minid: minid,
+                    tag: tag || '',
+                    minid: minid || '',
                     date: dateStr,
                     raw: issue,
                     isFeatured: isFeatured,
-                    isGreenTag: isGreenTag
+                    isGreenTag: !!prefixInfo
                 };
             }
 
-            // ===== 渲染卡片 =====
+            // 解析成员Issue
+            function parseMemberIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
+                var body = issue.body || '';
+                var groups = [];
+                var minid = '未知';
+                var id = '未知';
+                var joinDate = '未知';
+                var avatar = '';
+                var background = '';
+                var bio = '';
+                var pinnedMap = '';
+                var pinnedBlog = '';
+                var role = '';
+
+                var parts = title.split('-');
+                var name = parts[0].trim();
+                if (parts.length > 1) role = parts.slice(1).join('-').trim();
+
+                var lines = body.split('\n');
+                lines.forEach(function(line) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^组别[：:]\s*(.+)/)) {
+                        var g = trimmed.replace(/^组别[：:]\s*/, '').trim();
+                        groups = g.split(/[,，、\s]+/).filter(function(s) { return s.trim().length > 0; });
+                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
+                    } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
+                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
+                    } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
+                        var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
+                        var parsed = parseDateFromBody(d);
+                        if (parsed) joinDate = parsed;
+                        else joinDate = d || '未知';
+                    } else if (trimmed.match(/^头像[：:]\s*(.+)/)) {
+                        avatar = trimmed.replace(/^头像[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^背景[：:]\s*(.+)/)) {
+                        background = trimmed.replace(/^背景[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^简介[：:]\s*(.+)/)) {
+                        bio = trimmed.replace(/^简介[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^置顶地图[：:]\s*(.+)/)) {
+                        pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
+                        pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                    }
+                });
+
+                if (groups.length === 0) {
+                    if (role === '室长' || role === '副室长') {
+                        groups = ['管理层'];
+                    }
+                }
+
+                if (bio) {
+                    bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                }
+
+                return {
+                    name: name,
+                    role: role,
+                    groups: groups,
+                    minid: minid,
+                    id: id,
+                    joinDate: joinDate,
+                    avatar: avatar,
+                    background: background,
+                    bio: bio,
+                    pinnedMap: pinnedMap,
+                    pinnedBlog: pinnedBlog,
+                    raw: issue
+                };
+            }
+
+            // 解析博客Issue（仅用于弹窗关联）
+            function parseBlogIssue(issue) {
+                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
+                var body = issue.body || '';
+                var author = '';
+                var category = '';
+
+                var lines = body.split('\n');
+                var contentStart = 0;
+                lines.forEach(function(line, idx) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
+                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
+                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
+                    }
+                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) {
+                        contentStart = idx;
+                    }
+                });
+                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
+                if (!category || category.trim() === '') category = '未分类';
+
+                var contentLines = lines.slice(contentStart);
+                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
+                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
+
+                var dateStr = '未知';
+                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (dateMatch) {
+                    var y = parseInt(dateMatch[1]),
+                        m = parseInt(dateMatch[2]),
+                        d = parseInt(dateMatch[3]);
+                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    }
+                } else {
+                    var d = new Date(issue.created_at);
+                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
+                        .padStart(2, '0');
+                }
+
+                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
+                if (!title) title = rawTitle;
+
+                return {
+                    id: issue.number,
+                    title: title,
+                    author: author,
+                    category: category,
+                    summary: summary || '暂无摘要',
+                    date: dateStr,
+                    raw: issue
+                };
+            }
+
+            // 计算加入天数
+            function getDaysSince(joinDate) {
+                if (!joinDate || joinDate === '未知' || joinDate === '') return null;
+                var parts = joinDate.split('-');
+                if (parts.length !== 3) return null;
+                var y = parseInt(parts[0]),
+                    m = parseInt(parts[1]) - 1,
+                    d = parseInt(parts[2]);
+                if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
+                var start = new Date(y, m, d);
+                var now = new Date();
+                var diff = now - start;
+                return Math.floor(diff / (1000 * 60 * 60 * 24));
+            }
+
+            // ============================================================
+            // 渲染地图卡片
+            // ============================================================
             function renderMapCard(map) {
                 var coverHtml = '';
                 if (map.cover && map.cover.trim() !== '' && map.cover.trim().startsWith('http')) {
@@ -314,6 +1483,10 @@
                 var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
                 var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
 
+                // 作者点击事件
+                var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' + map
+                    .author + '</span>';
+
                 var html = '<div class="map-card">';
                 html += coverHtml;
                 html += '<div class="body">';
@@ -321,7 +1494,7 @@
                 html += '<span class="title">' + map.title + '</span>';
                 html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                 html += '<div class="meta-row">';
-                html += '<span class="author"><i class="fas fa-user"></i> ' + map.author + '</span>';
+                html += authorHtml;
                 html += '<span class="minid">迷你号 ' + map.minid + '</span>';
                 html += '</div>';
                 html += '<div class="desc-box">' + map.desc + '</div>';
@@ -345,7 +1518,191 @@
                 return html;
             }
 
-            // ===== 分页渲染 =====
+            // ============================================================
+            // 渲染成员弹窗
+            // ============================================================
+            function renderMemberModal(member) {
+                // 背景
+                var bgUrl = (member.background && member.background.trim().startsWith('http')) ?
+                    member.background.trim() :
+                    DEFAULT_BG;
+                modalContent.style.backgroundImage = 'url(' + bgUrl + ')';
+                modalContent.classList.add('has-bg');
+
+                var avatarHtml = '';
+                if (member.avatar && member.avatar.trim().startsWith('http')) {
+                    avatarHtml = '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
+                } else {
+                    avatarHtml = member.name.charAt(0);
+                }
+
+                var groupsHtml = member.groups && member.groups.length > 0 ?
+                    member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
+
+                var days = getDaysSince(member.joinDate);
+                var daysHtml = '';
+                if (days !== null && days >= 0) {
+                    daysHtml = '<div class="modal-days"><span>🌟 加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
+                } else if (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') {
+                    daysHtml = '<div class="modal-days"><span>📅 入室时间</span><span>' + member.joinDate + '</span></div>';
+                } else {
+                    daysHtml = '<div class="modal-days"><span>📅 入室时间</span><span style="opacity:0.4;">未知</span></div>';
+                }
+
+                var idDetailHtml = '';
+                if (member.id && member.id !== '未知' && member.id.length >= 10) {
+                    idDetailHtml = renderIdParseDetail(member.id);
+                } else {
+                    idDetailHtml = '<div class="id-parse-detail"><span style="opacity:0.4;">编号：' + member.id +
+                        '</span></div>';
+                }
+
+                var bioHtml = '';
+                if (member.bio && member.bio.trim() !== '') {
+                    bioHtml = '<div class="modal-bio">📝 ' + member.bio + '</div>';
+                }
+
+                // 查找该成员的地图和博客
+                var memberMaps = allMaps.filter(function(m) {
+                    return m.author === member.name || m.author.includes(member.name);
+                });
+                var memberBlogs = allBlogs.filter(function(b) {
+                    return b.author === member.name || b.author.includes(member.name);
+                });
+
+                // 置顶
+                var pinnedMapObj = null;
+                var pinnedBlogObj = null;
+                if (member.pinnedMap && member.pinnedMap.trim() !== '') {
+                    var mapId = parseInt(member.pinnedMap.trim());
+                    if (!isNaN(mapId)) {
+                        pinnedMapObj = allMaps.find(function(m) { return m.id === mapId; });
+                    }
+                }
+                if (member.pinnedBlog && member.pinnedBlog.trim() !== '') {
+                    var blogId = parseInt(member.pinnedBlog.trim());
+                    if (!isNaN(blogId)) {
+                        pinnedBlogObj = allBlogs.find(function(b) { return b.id === blogId; });
+                    }
+                }
+
+                var pinnedMapHtml = '';
+                if (pinnedMapObj) {
+                    var coverHtml = '';
+                    if (pinnedMapObj.cover && pinnedMapObj.cover.trim().startsWith('http')) {
+                        coverHtml = '<img class="wcover" src="' + pinnedMapObj.cover.trim() + '" alt="' + pinnedMapObj
+                            .title + '" loading="lazy" onerror="this.style.display=\'none\'">';
+                    } else {
+                        coverHtml = '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
+                    }
+                    pinnedMapHtml = '<div class="modal-work-card" onclick="location.href=\'../map/?id=' + pinnedMapObj
+                        .id + '\'">' +
+                        coverHtml +
+                        '<div class="wtitle">' + pinnedMapObj.title + ' <span class="pinned-badge">置顶</span></div>' +
+                        '<div class="wmeta">' + (pinnedMapObj.tag ? pinnedMapObj.tag + ' · ' : '') + pinnedMapObj
+                        .date + '</div>' +
+                        '</div>';
+                }
+
+                var pinnedBlogHtml = '';
+                if (pinnedBlogObj) {
+                    pinnedBlogHtml = '<div class="modal-work-card" onclick="location.href=\'../blog/post.html?id=' +
+                        pinnedBlogObj.id + '\'">' +
+                        '<div class="wtitle">' + pinnedBlogObj.title + ' <span class="pinned-badge">置顶</span></div>' +
+                        '<div class="wmeta">' + pinnedBlogObj.category + ' · ' + pinnedBlogObj.date + '</div>' +
+                        '</div>';
+                }
+
+                var otherMaps = memberMaps;
+                if (pinnedMapObj) {
+                    otherMaps = memberMaps.filter(function(m) { return m.id !== pinnedMapObj.id; });
+                }
+                var mapsHtml = '';
+                if (otherMaps.length > 0) {
+                    mapsHtml = otherMaps.map(function(m) {
+                        var coverHtml = '';
+                        if (m.cover && m.cover.trim().startsWith('http')) {
+                            coverHtml = '<img class="wcover" src="' + m.cover.trim() + '" alt="' + m.title +
+                                '" loading="lazy" onerror="this.style.display=\'none\'">';
+                        } else {
+                            coverHtml = '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
+                        }
+                        return '<div class="modal-work-card" onclick="location.href=\'../map/?id=' + m.id + '\'">' +
+                            coverHtml +
+                            '<div class="wtitle">' + m.title + '</div>' +
+                            '<div class="wmeta">' + (m.tag ? m.tag + ' · ' : '') + m.date + '</div>' +
+                            '</div>';
+                    }).join('');
+                }
+
+                var otherBlogs = memberBlogs;
+                if (pinnedBlogObj) {
+                    otherBlogs = memberBlogs.filter(function(b) { return b.id !== pinnedBlogObj.id; });
+                }
+                var blogsHtml = '';
+                if (otherBlogs.length > 0) {
+                    blogsHtml = otherBlogs.map(function(b) {
+                        return '<div class="modal-work-card" onclick="location.href=\'../blog/post.html?id=' + b
+                            .id + '\'">' +
+                            '<div class="wtitle">' + b.title + '</div>' +
+                            '<div class="wmeta">' + b.category + ' · ' + b.date + '</div>' +
+                            '</div>';
+                    }).join('');
+                }
+
+                var html = '';
+                html += '<div class="modal-member">';
+                html += '<div class="mavatar">' + avatarHtml + '</div>';
+                html += '<div class="minfo">';
+                html += '<div class="mname">' + member.name + '</div>';
+                html += (member.role ? '<div class="mrole">' + member.role + '</div>' : '');
+                html += (groupsHtml ? '<div class="mgroups">' + groupsHtml + '</div>' : '');
+                html += '<div class="mmeta">';
+                html += '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>';
+                html += '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>';
+                html += '</div>';
+                html += '</div></div>';
+
+                html += idDetailHtml;
+                html += bioHtml;
+                html += daysHtml;
+
+                var hasPinned = pinnedMapObj || pinnedBlogObj;
+                if (hasPinned) {
+                    html += '<div class="modal-section-title">📌 置顶</div>';
+                    html += '<div class="modal-works">';
+                    if (pinnedMapHtml) html += pinnedMapHtml;
+                    if (pinnedBlogHtml) html += pinnedBlogHtml;
+                    if (pinnedMapHtml && !pinnedBlogHtml) {
+                        html += '<div style="grid-column:span 2;"></div>';
+                    }
+                    html += '</div>';
+                }
+
+                if (otherMaps.length > 0) {
+                    html += '<div class="modal-section-title">🗺️ 发布的地图 <span class="count">(' + otherMaps.length +
+                        ')</span></div>';
+                    html += '<div class="modal-works">' + mapsHtml + '</div>';
+                } else if (!pinnedMapObj && memberMaps.length === 0) {
+                    html += '<div class="modal-section-title">🗺️ 发布的地图 <span class="count">(0)</span></div>';
+                    html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的地图</div></div>';
+                }
+
+                if (otherBlogs.length > 0) {
+                    html += '<div class="modal-section-title">📝 发布的博客 <span class="count">(' + otherBlogs.length +
+                        ')</span></div>';
+                    html += '<div class="modal-works">' + blogsHtml + '</div>';
+                } else if (!pinnedBlogObj && memberBlogs.length === 0) {
+                    html += '<div class="modal-section-title">📝 发布的博客 <span class="count">(0)</span></div>';
+                    html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的博客</div></div>';
+                }
+
+                modalInner.innerHTML = html;
+            }
+
+            // ============================================================
+            // 分页渲染
+            // ============================================================
             function renderPage() {
                 var total = filteredMaps.length;
                 var totalPages = Math.ceil(total / pageSize) || 1;
@@ -367,9 +1724,37 @@
                 pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
                 prevBtn.disabled = currentPage <= 1;
                 nextBtn.disabled = currentPage >= totalPages;
+
+                // 绑定作者点击事件
+                mapGrid.querySelectorAll('.author').forEach(function(el) {
+                    el.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var authorName = this.dataset.author;
+                        // 查找成员
+                        var member = allMembers.find(function(m) { return m.name === authorName; });
+                        if (member) {
+                            // 重置弹窗背景样式
+                            modalContent.style.backgroundImage = '';
+                            modalContent.classList.remove('has-bg');
+                            renderMemberModal(member);
+                            modalOverlay.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        } else {
+                            // 未找到成员，显示提示
+                            modalContent.style.backgroundImage = '';
+                            modalContent.classList.remove('has-bg');
+                            modalInner.innerHTML =
+                                '<div style="padding:40px 20px;text-align:center;color:var(--text-muted);">未找到该成员档案</div>';
+                            modalOverlay.classList.add('active');
+                            document.body.style.overflow = 'hidden';
+                        }
+                    });
+                });
             }
 
-            // ===== 渲染预告 =====
+            // ============================================================
+            // 渲染预告
+            // ============================================================
             function renderPreview() {
                 var previewMaps = allMaps.filter(function(m) {
                     return m.tag === '待发布';
@@ -386,7 +1771,9 @@
                 previewGrid.innerHTML = html;
             }
 
-            // ===== 筛选与搜索（排序按地图日期） =====
+            // ============================================================
+            // 筛选与搜索
+            // ============================================================
             function applyFilters() {
                 var searchTerm = searchInput.value.trim().toLowerCase();
                 var activeTag = document.querySelector('.tag-item.active');
@@ -409,7 +1796,7 @@
                     return true;
                 });
 
-                // ===== 排序：按地图日期（未知排最后） =====
+                // 排序：按地图日期（未知排最后）
                 filteredMaps.sort(function(a, b) {
                     if (a.date === '未知' && b.date === '未知') return 0;
                     if (a.date === '未知') return 1;
@@ -422,43 +1809,61 @@
                 renderPreview();
             }
 
-            // ===== 加载数据 =====
-            function loadMaps() {
+            // ============================================================
+            // 加载数据
+            // ============================================================
+            function loadData() {
                 mapGrid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
 
                 var REPO_OWNER = 'jgcgzs';
                 var REPO_NAME = 'acns';
-                var apiUrl = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
                     '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
+                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
 
-                fetch(apiUrl)
-                    .then(function(res) {
-                        if (!res.ok) throw new Error('HTTP ' + res.status);
-                        return res.json();
-                    })
-                    .then(function(issues) {
-                        if (!issues || issues.length === 0) {
-                            allMaps = [];
-                            filteredMaps = [];
-                            mapGrid.innerHTML = '<div class="empty-placeholder">暂无地图，在 GitHub Issues 中创建带 map 标签的文章</div>';
-                            previewGrid.innerHTML = '<div class="preview-empty">暂无待发布地图</div>';
-                            previewCount.textContent = '0';
-                            return;
-                        }
-                        allMaps = issues.map(function(issue) {
-                            return parseIssue(issue);
+                Promise.all([
+                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
+                ]).then(function(results) {
+                    var mapIssues = results[0] || [];
+                    var memberIssues = results[1] || [];
+                    var blogIssues = results[2] || [];
+
+                    // 解析地图
+                    allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
+
+                    // 解析成员（用于弹窗）
+                    if (memberIssues && memberIssues.length > 0) {
+                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
+                        // 过滤：组别为空且角色为空（非管理层）的成员不显示
+                        allMembers = allMembers.filter(function(m) {
+                            if (m.groups && m.groups.length > 0) return true;
+                            if (m.role === '室长' || m.role === '副室长') return true;
+                            return false;
                         });
-                        applyFilters();
-                    })
-                    .catch(function(err) {
-                        console.warn('加载失败:', err);
-                        mapGrid.innerHTML = '<div class="empty-placeholder"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
-                        previewGrid.innerHTML = '<div class="preview-empty">加载失败</div>';
-                        previewCount.textContent = '0';
-                    });
+                    } else {
+                        allMembers = [];
+                    }
+
+                    // 解析博客（用于弹窗关联）
+                    allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
+
+                    applyFilters();
+                }).catch(function(err) {
+                    console.warn('加载失败:', err);
+                    mapGrid.innerHTML = '<div class="empty-placeholder"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
+                    previewGrid.innerHTML = '<div class="preview-empty">加载失败</div>';
+                    previewCount.textContent = '0';
+                });
             }
 
-            // ===== 事件绑定 =====
+            // ============================================================
+            // 事件绑定
+            // ============================================================
             tagBar.addEventListener('click', function(e) {
                 var target = e.target.closest('.tag-item');
                 if (!target) return;
@@ -485,7 +1890,34 @@
                     renderPage(); }
             });
 
-            loadMaps();
+            // 弹窗关闭
+            modalClose.addEventListener('click', function() {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                modalContent.style.backgroundImage = '';
+                modalContent.classList.remove('has-bg');
+            });
+            modalOverlay.addEventListener('click', function(e) {
+                if (e.target === modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    modalContent.style.backgroundImage = '';
+                    modalContent.classList.remove('has-bg');
+                }
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                    modalContent.style.backgroundImage = '';
+                    modalContent.classList.remove('has-bg');
+                }
+            });
+
+            // ============================================================
+            // 初始化
+            // ============================================================
+            loadData();
 
         })();
     </script>
