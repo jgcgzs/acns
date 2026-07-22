@@ -1,6 +1,6 @@
 /**
  * 公共组件 - 成员档案弹窗
- * 依赖：jQuery（可选，但不用也可），无需外部依赖
+ * 依赖：无需外部库
  * 使用方式：
  *   1. 页面加载成员数据到 window._memberData
  *   2. 加载地图数据到 window._mapData
@@ -17,6 +17,20 @@
     var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
     var DEFAULT_BG = 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
+
+    // 颜色名称映射
+    var COLOR_MAP = {
+        '红': '#e74c3c',
+        '蓝': '#1a7fc4',
+        '绿': '#16a34a',
+        '紫': '#8b5cf6',
+        '橙': '#f59e0b',
+        '金': '#f1c40f',
+        '粉': '#ec4899',
+        '灰': '#95a5a6',
+        '黑': '#2d3436',
+        '白': '#ecf0f1'
+    };
 
     function parseIdNumber(id) {
         if (!id || id === '未知' || id.length < 10) return null;
@@ -69,6 +83,53 @@
     }
 
     // ============================================================
+    // 获取当前页面所在目录的前缀（用于正确跳转）
+    // ============================================================
+    function getPathPrefix() {
+        var path = window.location.pathname;
+        // 如果路径包含 /map/ 或 /blog/，则说明当前在子目录下，返回 ../ 回到上级
+        if (path.includes('/map/') || path.includes('/blog/')) {
+            return '../';
+        }
+        // 否则返回 ./ （根目录）
+        return './';
+    }
+
+    // ============================================================
+    // 解析荣誉文本，提取颜色
+    // ============================================================
+    function parseHonorItem(line) {
+        var parts = line.split('|');
+        var text = parts[0].trim();
+        var color = '#1a7fc4'; // 默认蓝色
+        if (parts.length > 1) {
+            var colorPart = parts[1].trim();
+            // 如果是颜色名称，映射
+            if (COLOR_MAP[colorPart]) {
+                color = COLOR_MAP[colorPart];
+            } else if (colorPart.startsWith('#')) {
+                color = colorPart;
+            } else {
+                // 尝试解析为颜色名称（拼音或英文）
+                var lower = colorPart.toLowerCase();
+                var found = false;
+                for (var key in COLOR_MAP) {
+                    if (key.toLowerCase() === lower || COLOR_MAP[key].toLowerCase() === lower) {
+                        color = COLOR_MAP[key];
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    // 默认蓝色
+                    color = '#1a7fc4';
+                }
+            }
+        }
+        return { text: text, color: color };
+    }
+
+    // ============================================================
     // 渲染弹窗（核心函数）
     // ============================================================
     function renderMemberModal(member) {
@@ -77,15 +138,34 @@
         var modalInner = document.getElementById('modalInner');
         if (!modalContent || !modalInner) return;
 
+        // 设置背景图（修复不显示问题）
         modalContent.style.backgroundImage = 'url(' + bgUrl + ')';
         modalContent.classList.add('has-bg');
 
+        // 头像
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
             member.name.charAt(0);
+
+        // 组别标签
         var groupsHtml = member.groups && member.groups.length ?
             member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
 
+        // 成员属性标签（根据编号第一位）
+        var attrBadge = '';
+        if (member.id && member.id.length >= 1) {
+            var first = member.id.charAt(0);
+            var attrName = '';
+            var cls = '';
+            if (first === '1') { attrName = '正式成员'; cls = 'green'; }
+            else if (first === '2') { attrName = '外部成员'; cls = 'blue'; }
+            else if (first === '3') { attrName = '特招成员'; cls = 'purple'; }
+            if (attrName) {
+                attrBadge = '<span class="member-attr-badge ' + cls + '">' + attrName + '</span>';
+            }
+        }
+
+        // 入室天数
         var days = getDaysSince(member.joinDate);
         var daysHtml = (days !== null && days >= 0) ?
             '<div class="modal-days"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>' :
@@ -93,13 +173,32 @@
             '<div class="modal-days"><span>入室时间</span><span>' + member.joinDate + '</span></div>' :
             '<div class="modal-days"><span>入室时间</span><span style="opacity:0.4;">未知</span></div>';
 
+        // 编号解析
         var idDetailHtml = (member.id && member.id !== '未知' && member.id.length >= 10) ?
             renderIdParseDetail(member.id) :
             '<div class="id-parse-detail"><span style="opacity:0.4;">编号：' + member.id + '</span></div>';
 
+        // 简介
         var bioHtml = (member.bio && member.bio.trim()) ? '<div class="modal-bio">' + member.bio + '</div>' : '';
 
-        // 从全局数据查找关联地图和博客
+        // ---- 荣誉展示 ----
+        var honorsHtml = '';
+        if (member.honors_work && member.honors_work.length) {
+            var items = member.honors_work.map(function(h) {
+                var parsed = parseHonorItem(h);
+                return '<span class="honor-item" style="background:' + parsed.color + ';">' + parsed.text + '</span>';
+            }).join('');
+            honorsHtml += '<div class="modal-honors"><div class="honor-title">工作室荣誉</div><div class="honor-list">' + items + '</div></div>';
+        }
+        if (member.honors_game && member.honors_game.length) {
+            var items = member.honors_game.map(function(h) {
+                var parsed = parseHonorItem(h);
+                return '<span class="honor-item" style="background:' + parsed.color + ';">' + parsed.text + '</span>';
+            }).join('');
+            honorsHtml += '<div class="modal-honors"><div class="honor-title">游戏荣誉</div><div class="honor-list">' + items + '</div></div>';
+        }
+
+        // ---- 关联地图和博客 ----
         var allMaps = window._mapData || [];
         var allBlogs = window._blogData || [];
         var memberMaps = allMaps.filter(function(m) { return m.author === member.name || m.author.includes(member.name); });
@@ -116,17 +215,19 @@
             if (!isNaN(blogId)) pinnedBlogObj = allBlogs.find(function(b) { return b.id === blogId; });
         }
 
+        var prefix = getPathPrefix(); // 动态路径前缀
+
         var pinnedMapHtml = '', pinnedBlogHtml = '';
         if (pinnedMapObj) {
             var coverHtml = (pinnedMapObj.cover && pinnedMapObj.cover.trim().startsWith('http')) ?
                 '<img class="wcover" src="' + pinnedMapObj.cover.trim() + '" alt="' + pinnedMapObj.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                 '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
-            pinnedMapHtml = '<div class="modal-work-card" onclick="location.href=\'./map/?id=' + pinnedMapObj.id + '\'">' +
+            pinnedMapHtml = '<div class="modal-work-card" onclick="location.href=\'' + prefix + 'map/?id=' + pinnedMapObj.id + '\'">' +
                 coverHtml + '<div class="wtitle">' + pinnedMapObj.title + ' <span class="pinned-badge">置顶</span></div>' +
                 '<div class="wmeta">' + (pinnedMapObj.tag ? pinnedMapObj.tag + ' · ' : '') + pinnedMapObj.date + '</div></div>';
         }
         if (pinnedBlogObj) {
-            pinnedBlogHtml = '<div class="modal-work-card" onclick="location.href=\'./blog/post.html?id=' + pinnedBlogObj.id + '\'">' +
+            pinnedBlogHtml = '<div class="modal-work-card" onclick="location.href=\'' + prefix + 'blog/post.html?id=' + pinnedBlogObj.id + '\'">' +
                 '<div class="wtitle">' + pinnedBlogObj.title + ' <span class="pinned-badge">置顶</span></div>' +
                 '<div class="wmeta">' + pinnedBlogObj.category + ' · ' + pinnedBlogObj.date + '</div></div>';
         }
@@ -139,7 +240,7 @@
                 var coverHtml = (m.cover && m.cover.trim().startsWith('http')) ?
                     '<img class="wcover" src="' + m.cover.trim() + '" alt="' + m.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                     '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
-                return '<div class="modal-work-card" onclick="location.href=\'./map/?id=' + m.id + '\'">' +
+                return '<div class="modal-work-card" onclick="location.href=\'' + prefix + 'map/?id=' + m.id + '\'">' +
                     coverHtml + '<div class="wtitle">' + m.title + '</div>' +
                     '<div class="wmeta">' + (m.tag ? m.tag + ' · ' : '') + m.date + '</div></div>';
             }).join('') :
@@ -147,21 +248,32 @@
 
         var blogsHtml = otherBlogs.length ?
             otherBlogs.map(function(b) {
-                return '<div class="modal-work-card" onclick="location.href=\'./blog/post.html?id=' + b.id + '\'">' +
+                return '<div class="modal-work-card" onclick="location.href=\'' + prefix + 'blog/post.html?id=' + b.id + '\'">' +
                     '<div class="wtitle">' + b.title + '</div>' +
                     '<div class="wmeta">' + b.category + ' · ' + b.date + '</div></div>';
             }).join('') :
             '<div class="modal-work-empty">该成员暂无发布的博客</div>';
 
-        var html = '<div class="modal-member"><div class="mavatar">' + avatarHtml + '</div><div class="minfo">' +
-            '<div class="mname">' + member.name + '</div>' +
-            (member.role ? '<div class="mrole">' + member.role + '</div>' : '') +
-            (groupsHtml ? '<div class="mgroups">' + groupsHtml + '</div>' : '') +
-            '<div class="mmeta"><span><i class="fas fa-id-card"></i> ' + member.id + '</span>' +
-            '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span></div></div></div>';
+        // ---- 组装最终HTML ----
+        var html = '';
+        html += '<div class="modal-member">';
+        html += '<div class="mavatar">' + avatarHtml + '</div>';
+        html += '<div class="minfo">';
+        html += '<div class="mname">' + member.name + ' ' + attrBadge + '</div>';
+        html += (member.role ? '<div class="mrole">' + member.role + '</div>' : '');
+        html += (groupsHtml ? '<div class="mgroups">' + groupsHtml + '</div>' : '');
+        html += '<div class="mmeta">';
+        html += '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>';
+        html += '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>';
+        html += '</div>';
+        html += '</div></div>';
 
-        html += idDetailHtml + bioHtml + daysHtml;
+        html += idDetailHtml;
+        html += bioHtml;
+        html += honorsHtml;
+        html += daysHtml;
 
+        // 置顶和普通地图/博客
         var hasPinned = pinnedMapObj || pinnedBlogObj;
         if (hasPinned) {
             html += '<div class="modal-section-title">置顶</div><div class="modal-works">';
