@@ -8,8 +8,15 @@
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior:smooth; }
+        /* ===== 基础样式（与之前保持一致） ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
             background-color: #f5f9fe;
@@ -18,9 +25,20 @@
             font-size: 16px;
             padding-top: 68px;
         }
-        a { text-decoration:none; color:inherit; }
-        img { max-width:100%; height:auto; display:block; }
-        .container { max-width:1120px; margin:0 auto; padding:0 24px; }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
 
         :root {
             --blue-primary: #1a7fc4;
@@ -31,9 +49,12 @@
             --text-dark: #1a2a3a;
             --text-muted: #4a5a6a;
             --border-light: #dce6ef;
-            --shadow-sm: 0 2px 12px rgba(26,127,196,0.07);
-            --shadow-hover: 0 8px 28px rgba(26,127,196,0.14);
+            --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
+            --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
             --radius: 2px;
+            --green-badge: #16a34a;
+            --blue-badge: #1a7fc4;
+            --purple-badge: #8b5cf6;
         }
 
         .navbar {
@@ -47,60 +68,151 @@
             display: flex;
             align-items: center;
             border-bottom: 1px solid var(--border-light);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
         }
-        .navbar .container { display:flex; align-items:center; justify-content:space-between; width:100%; }
-        .navbar-brand { display:flex; align-items:center; gap:10px; }
-        .navbar-brand .logo { height:36px; width:auto; }
-        .navbar-brand .brand-text { font-size:20px; font-weight:700; color:#1a1a1a; letter-spacing:0.3px; white-space:nowrap; }
-        .nav-links { display:flex; gap:2px; list-style:none; }
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+        }
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .navbar-brand .logo {
+            height: 36px;
+            width: auto;
+        }
+        .navbar-brand .brand-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2px;
+            list-style: none;
+        }
         .nav-links li a {
-            display:block; padding:8px 16px; font-size:15px; font-weight:500; color:#222222;
-            border-radius:var(--radius); transition:background 0.2s, color 0.2s; position:relative;
+            display: block;
+            padding: 8px 16px;
+            font-size: 15px;
+            font-weight: 500;
+            color: #222222;
+            border-radius: var(--radius);
+            transition: background 0.2s, color 0.2s;
+            position: relative;
         }
         .nav-links li a::after {
-            content:''; position:absolute; bottom:2px; left:50%; width:0; height:2px;
-            background:var(--blue-primary); transition:width 0.25s ease; transform:translateX(-50%); border-radius:var(--radius);
+            content: '';
+            position: absolute;
+            bottom: 2px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--blue-primary);
+            transition: width 0.25s ease;
+            transform: translateX(-50%);
+            border-radius: var(--radius);
         }
-        .nav-links li a:hover { background:var(--blue-bg-light); color:var(--blue-primary); }
-        .nav-links li a:hover::after { width:50%; }
-        .nav-links li a.active { color:var(--blue-primary); font-weight:600; }
-        .nav-links li a.active::after { width:50%; }
-        .menu-toggle { display:none; background:none; border:none; font-size:1.4rem; color:#222; cursor:pointer; padding:4px 8px; }
+        .nav-links li a:hover {
+            background: var(--blue-bg-light);
+            color: var(--blue-primary);
+        }
+        .nav-links li a:hover::after {
+            width: 50%;
+        }
+        .nav-links li a.active {
+            color: var(--blue-primary);
+            font-weight: 600;
+        }
+        .nav-links li a.active::after {
+            width: 50%;
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #222;
+            cursor: pointer;
+            padding: 4px 8px;
+        }
 
         .footer {
             background: #1a2a3a;
-            color: rgba(255,255,255,0.55);
+            color: rgba(255, 255, 255, 0.55);
             text-align: center;
             padding: 20px 0;
             font-size: 14px;
-            border-top: 1px solid rgba(255,255,255,0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 48px;
         }
-        .footer .container { display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; }
-        .footer .sep { color:rgba(255,255,255,0.12); }
+        .footer .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .footer .sep {
+            color: rgba(255, 255, 255, 0.12);
+        }
 
         .page-header {
             padding: 24px 0 12px;
             border-bottom: 1px solid var(--border-light);
             margin-bottom: 24px;
         }
-        .page-header h1 { font-size:28px; font-weight:700; color:var(--text-dark); }
-        .page-header .sub { font-size:14px; color:var(--text-muted); opacity:0.6; }
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        .page-header .sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
 
         .search-bar {
-            display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; align-items:center;
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
         }
         .search-bar input {
-            flex:1; min-width:180px; padding:8px 14px; border:1px solid var(--border-light);
-            border-radius:var(--radius); font-size:14px; background:var(--white); outline:none;
+            flex: 1;
+            min-width: 180px;
+            padding: 8px 14px;
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            font-size: 14px;
+            background: var(--white);
+            outline: none;
         }
-        .search-bar input:focus { border-color:var(--blue-primary); }
+        .search-bar input:focus {
+            border-color: var(--blue-primary);
+        }
         .search-bar .search-btn {
-            background:var(--blue-primary); color:#fff; border:none; padding:8px 20px;
-            border-radius:var(--radius); font-size:14px; font-weight:500; cursor:pointer;
+            background: var(--blue-primary);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
         }
-        .search-bar .search-btn:hover { background:var(--blue-primary-dark); }
+        .search-bar .search-btn:hover {
+            background: var(--blue-primary-dark);
+        }
 
         .tag-bar {
             display: flex;
@@ -111,8 +223,14 @@
             margin-bottom: 8px;
             -webkit-overflow-scrolling: touch;
         }
-        .tag-bar::-webkit-scrollbar { height:4px; background:var(--border-light); }
-        .tag-bar::-webkit-scrollbar-thumb { background:var(--blue-primary); border-radius:2px; }
+        .tag-bar::-webkit-scrollbar {
+            height: 4px;
+            background: var(--border-light);
+        }
+        .tag-bar::-webkit-scrollbar-thumb {
+            background: var(--blue-primary);
+            border-radius: 2px;
+        }
         .tag-item {
             flex: 0 0 auto;
             padding: 4px 16px;
@@ -126,8 +244,15 @@
             transition: all 0.2s;
             white-space: nowrap;
         }
-        .tag-item:hover { border-color:var(--blue-primary); color:var(--blue-primary); }
-        .tag-item.active { border-color:var(--blue-primary); color:var(--blue-primary); background:var(--blue-bg-light); }
+        .tag-item:hover {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+        }
+        .tag-item.active {
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+            background: var(--blue-bg-light);
+        }
 
         .member-grid {
             display: grid;
@@ -146,6 +271,7 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+            position: relative;
         }
         .member-card:hover {
             box-shadow: var(--shadow-hover);
@@ -168,9 +294,16 @@
             transition: border-color 0.3s;
             overflow: hidden;
             flex-shrink: 0;
+            position: relative;
         }
-        .member-card .avatar img { width:100%; height:100%; object-fit:cover; }
-        .member-card:hover .avatar { border-color:var(--blue-primary); }
+        .member-card .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .member-card:hover .avatar {
+            border-color: var(--blue-primary);
+        }
         .member-card .name {
             font-size: 16px;
             font-weight: 700;
@@ -209,7 +342,11 @@
             justify-content: center;
             gap: 4px 12px;
         }
-        .member-card .info-row span { display:inline-flex; align-items:center; gap:3px; }
+        .member-card .info-row span {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
         .member-card .btn-detail {
             margin-top: 10px;
             padding: 4px 16px;
@@ -227,7 +364,29 @@
             color: #fff;
         }
 
-        .id-parse {
+        /* ===== 成员属性徽章（小标） ===== */
+        .member-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 12px;
+            color: #fff;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+        .member-badge.green {
+            background: var(--green-badge);
+        }
+        .member-badge.blue {
+            background: var(--blue-badge);
+        }
+        .member-badge.purple {
+            background: var(--purple-badge);
+        }
+
+        .member-card .id-parse {
             font-size: 10px;
             color: var(--text-muted);
             opacity: 0.5;
@@ -235,31 +394,26 @@
             font-family: 'SF Mono', 'Menlo', monospace;
             letter-spacing: 0.3px;
         }
-        .id-parse .hl { color: var(--blue-primary); opacity: 1; }
-
-        .empty-placeholder, .loading-placeholder {
-            text-align: center;
-            padding: 60px 0;
-            color: var(--text-muted);
-            opacity: 0.4;
-            font-size: 15px;
-            grid-column: 1 / -1;
+        .member-card .id-parse .hl {
+            color: var(--blue-primary);
+            opacity: 1;
         }
-        .loading-placeholder i { display:block; font-size:28px; color:var(--blue-primary); margin-bottom:10px; }
 
-        /* 弹窗 - 支持背景 */
+        /* ===== 弹窗样式 ===== */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(4px);
             z-index: 200;
             justify-content: center;
             align-items: center;
             padding: 20px;
         }
-        .modal-overlay.active { display:flex; }
+        .modal-overlay.active {
+            display: flex;
+        }
         .modal-content {
             background: var(--white);
             border: 1px solid var(--border-light);
@@ -270,24 +424,33 @@
             overflow-y: auto;
             padding: 28px 32px 32px;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
             animation: fadeUp 0.3s ease;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
         }
         .modal-content.has-bg {
-            background-color: rgba(255,255,255,0.92);
+            background-color: rgba(255, 255, 255, 0.92);
             background-blend-mode: overlay;
         }
         .modal-content.has-bg .modal-inner {
-            background: rgba(255,255,255,0.85);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(2px);
             border-radius: var(--radius);
             padding: 4px 0;
             margin: -4px 0;
         }
-        @keyframes fadeUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         .modal-close {
             position: sticky;
             top: 0;
@@ -301,7 +464,9 @@
             z-index: 10;
             line-height: 1;
         }
-        .modal-close:hover { color: var(--text-dark); }
+        .modal-close:hover {
+            color: var(--text-dark);
+        }
 
         .modal-member {
             display: flex;
@@ -326,22 +491,56 @@
             flex-shrink: 0;
             overflow: hidden;
         }
-        .modal-member .mavatar img { width:100%; height:100%; object-fit:cover; }
-        .modal-member .minfo { flex:1; }
-        .modal-member .minfo .mname { font-size:22px; font-weight:800; color:var(--text-dark); }
-        .modal-member .minfo .mrole { font-size:14px; color:var(--text-muted); opacity:0.6; }
-        .modal-member .minfo .mgroups { display:flex; flex-wrap:wrap; gap:4px; margin-top:4px; }
+        .modal-member .mavatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .modal-member .minfo {
+            flex: 1;
+        }
+        .modal-member .minfo .mname {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+        .modal-member .minfo .mrole {
+            font-size: 14px;
+            color: var(--text-muted);
+            opacity: 0.6;
+        }
+        .modal-member .minfo .mgroups {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
         .modal-member .minfo .mgroups .g {
-            font-size:10px; font-weight:600; padding:1px 10px;
-            border:1px solid var(--blue-primary); color:var(--blue-primary);
-            background:transparent; border-radius:2px;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 10px;
+            border: 1px solid var(--blue-primary);
+            color: var(--blue-primary);
+            background: transparent;
+            border-radius: 2px;
         }
         .modal-member .minfo .mmeta {
-            display:flex; flex-wrap:wrap; gap:8px 20px; margin-top:6px; font-size:13px;
-            color:var(--text-muted);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
         }
-        .modal-member .minfo .mmeta span { display:flex; align-items:center; gap:4px; }
-        .modal-member .minfo .mmeta i { font-size:12px; opacity:0.5; }
+        .modal-member .minfo .mmeta span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .modal-member .minfo .mmeta i {
+            font-size: 12px;
+            opacity: 0.5;
+        }
 
         .id-parse-detail {
             background: var(--blue-bg-light);
@@ -352,10 +551,24 @@
             font-size: 13px;
             color: var(--text-dark);
         }
-        .id-parse-detail .label { font-weight:600; color:var(--blue-primary); }
-        .id-parse-detail .parts { display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:4px; }
-        .id-parse-detail .parts span { font-size:12px; color:var(--text-muted); }
-        .id-parse-detail .parts .val { color:var(--text-dark); font-weight:600; }
+        .id-parse-detail .label {
+            font-weight: 600;
+            color: var(--blue-primary);
+        }
+        .id-parse-detail .parts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 16px;
+            margin-top: 4px;
+        }
+        .id-parse-detail .parts span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .id-parse-detail .parts .val {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
 
         .modal-bio {
             background: var(--blue-bg-light);
@@ -371,13 +584,25 @@
             color: var(--blue-primary);
             text-decoration: underline;
         }
-        .modal-bio a:hover { color: var(--blue-primary-dark); }
+        .modal-bio a:hover {
+            color: var(--blue-primary-dark);
+        }
 
         .modal-section-title {
-            font-size:16px; font-weight:700; color:var(--text-dark);
-            margin:16px 0 10px; display:flex; align-items:center; gap:8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 16px 0 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .modal-section-title .count { font-size:13px; font-weight:400; color:var(--text-muted); opacity:0.5; }
+        .modal-section-title .count {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
 
         .modal-works {
             display: grid;
@@ -398,60 +623,70 @@
             transform: translateY(-2px);
         }
         .modal-work-card .wcover {
-            width:100%;
-            aspect-ratio:16/9;
-            object-fit:cover;
-            background:var(--blue-bg-light);
-            border:1px solid var(--border-light);
-            border-radius:var(--radius);
-            margin-bottom:4px;
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            margin-bottom: 4px;
         }
         .modal-work-card .wcover-placeholder {
-            width:100%;
-            aspect-ratio:16/9;
-            background:var(--blue-bg-light);
-            border:1px solid var(--border-light);
-            border-radius:var(--radius);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size:1.5rem;
-            color:var(--blue-primary);
-            opacity:0.2;
-            margin-bottom:4px;
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--blue-bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--blue-primary);
+            opacity: 0.2;
+            margin-bottom: 4px;
         }
         .modal-work-card .wtitle {
-            font-size:13px; font-weight:600; color:var(--text-dark);
-            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         .modal-work-card .wmeta {
-            font-size:11px; color:var(--text-muted); opacity:0.5; margin-top:2px;
+            font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.5;
+            margin-top: 2px;
         }
         .modal-work-empty {
-            font-size:13px; color:var(--text-muted); opacity:0.4; padding:10px 0;
-            grid-column:1 / -1; text-align:center;
+            font-size: 13px;
+            color: var(--text-muted);
+            opacity: 0.4;
+            padding: 10px 0;
+            grid-column: 1 / -1;
+            text-align: center;
         }
 
         .modal-days {
-            margin-top:14px;
-            padding:10px 16px;
+            margin-top: 14px;
+            padding: 10px 16px;
             background: var(--blue-bg-light);
             border: 1px solid var(--border-light);
             border-radius: var(--radius);
             display: flex;
             align-items: center;
             gap: 12px;
-            font-size:14px;
-            color:var(--text-muted);
+            font-size: 14px;
+            color: var(--text-muted);
         }
         .modal-days .num {
-            font-weight:700;
-            font-size:20px;
-            color:var(--blue-primary);
-            font-family:'SF Mono','Menlo',monospace;
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--blue-primary);
+            font-family: 'SF Mono', 'Menlo', monospace;
         }
-
-        /* 置顶标签 */
         .pinned-badge {
             display: inline-block;
             font-size: 9px;
@@ -464,52 +699,162 @@
             letter-spacing: 0.3px;
         }
 
+        .empty-placeholder,
+        .loading-placeholder {
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-muted);
+            opacity: 0.4;
+            font-size: 15px;
+            grid-column: 1 / -1;
+        }
+        .loading-placeholder i {
+            display: block;
+            font-size: 28px;
+            color: var(--blue-primary);
+            margin-bottom: 10px;
+        }
+
         @media (max-width: 992px) {
-            .member-grid { grid-template-columns: repeat(3, 1fr); }
-            .modal-works { grid-template-columns: repeat(2, 1fr); }
+            .member-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .modal-works {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
         @media (max-width: 768px) {
-            body { padding-top:60px; }
-            .navbar { height:60px; }
-            .menu-toggle { display:block; }
-            .nav-links {
-                display:none; position:absolute; top:60px; left:0; right:0;
-                flex-direction:column; background:#fff; padding:12px 24px 20px; gap:2px;
-                border-top:1px solid var(--border-light); box-shadow:0 8px 24px rgba(0,0,0,0.06);
+            body {
+                padding-top: 60px;
             }
-            .nav-links.open { display:flex; }
-            .nav-links li a { padding:10px 16px; font-size:16px; width:100%; text-align:center; }
-            .member-grid { grid-template-columns: repeat(2, 1fr); gap:12px; }
-            .modal-content { padding:20px 18px; }
-            .modal-member { flex-direction:column; align-items:center; text-align:center; }
-            .modal-member .minfo .mmeta { justify-content:center; }
-            .modal-works { grid-template-columns: 1fr 1fr; }
-            .page-header h1 { font-size:24px; }
-            .navbar-brand .brand-text { font-size:17px; }
-            .navbar-brand .logo { height:28px; }
-            .modal-member .mavatar { width:60px; height:60px; font-size:22px; }
-            .modal-member .minfo .mname { font-size:19px; }
+            .navbar {
+                height: 60px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background: #fff;
+                padding: 12px 24px 20px;
+                gap: 2px;
+                border-top: 1px solid var(--border-light);
+                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-links li a {
+                padding: 10px 16px;
+                font-size: 16px;
+                width: 100%;
+                text-align: center;
+            }
+            .member-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .modal-content {
+                padding: 20px 18px;
+            }
+            .modal-member {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .modal-member .minfo .mmeta {
+                justify-content: center;
+            }
+            .modal-works {
+                grid-template-columns: 1fr 1fr;
+            }
+            .modal-member .mavatar {
+                width: 60px;
+                height: 60px;
+                font-size: 22px;
+            }
+            .modal-member .minfo .mname {
+                font-size: 19px;
+            }
+            .page-header h1 {
+                font-size: 24px;
+            }
+            .search-bar input {
+                min-width: 140px;
+            }
+            .tag-item {
+                font-size: 12px;
+                padding: 3px 12px;
+            }
+            .navbar-brand .brand-text {
+                font-size: 17px;
+            }
+            .navbar-brand .logo {
+                height: 28px;
+            }
         }
         @media (max-width: 480px) {
-            .member-grid { grid-template-columns: repeat(2, 1fr); gap:10px; }
-            .member-card { padding:12px 10px; }
-            .member-card .avatar { width:48px; height:48px; font-size:18px; }
-            .member-card .name { font-size:14px; }
-            .member-card .role { font-size:11px; }
-            .modal-works { grid-template-columns: 1fr; }
-            .modal-content { padding:14px 12px; }
-            .container { padding:0 14px; }
-            .modal-member .mavatar { width:52px; height:52px; font-size:18px; }
-            .modal-member .minfo .mname { font-size:17px; }
-            .modal-days { flex-direction:column; text-align:center; }
-            .member-card .info-row { font-size:11px; gap:2px 8px; }
-            .id-parse { font-size:9px; }
+            .member-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .member-card {
+                padding: 12px 10px;
+            }
+            .member-card .avatar {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+            }
+            .member-card .name {
+                font-size: 14px;
+            }
+            .member-card .role {
+                font-size: 11px;
+            }
+            .modal-works {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                padding: 14px 12px;
+            }
+            .container {
+                padding: 0 14px;
+            }
+            .modal-member .mavatar {
+                width: 52px;
+                height: 52px;
+                font-size: 18px;
+            }
+            .modal-member .minfo .mname {
+                font-size: 17px;
+            }
+            .modal-days {
+                flex-direction: column;
+                text-align: center;
+            }
+            .member-card .info-row {
+                font-size: 11px;
+                gap: 2px 8px;
+            }
+            .member-card .id-parse {
+                font-size: 9px;
+            }
+            .member-badge {
+                font-size: 8px;
+                padding: 1px 8px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- 导航栏 -->
+    <!-- ===== 导航栏 ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -527,7 +872,7 @@
         </div>
     </header>
 
-    <!-- 成员档案 -->
+    <!-- ===== 成员档案 ===== -->
     <main>
         <div class="container">
             <div class="page-header">
@@ -555,7 +900,7 @@
         </div>
     </main>
 
-    <!-- 弹窗 -->
+    <!-- ===== 弹窗 ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -565,7 +910,7 @@
         </div>
     </div>
 
-    <!-- 底部 -->
+    <!-- ===== 底部 ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -577,8 +922,28 @@
     <script>
         (function() {
 
+            // ===== 移动端菜单 =====
+            const toggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (toggle && navLinks) {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('open');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+                        navLinks.classList.remove('open');
+                    }
+                });
+                navLinks.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('open');
+                    });
+                });
+            }
+
             // ============================================================
-            // 编号解析工具
+            // 编号解析工具（仅用于弹窗详情，卡片上不再显示解析文字）
             // ============================================================
             var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
             var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
@@ -601,7 +966,6 @@
                 var gameName = GAME_MAP[game] || '未知平台';
                 var group1Name = GROUP_MAP[group1] || '未知';
                 var group2Name = GROUP_MAP[group2] || '无';
-
                 var groupDisplay = group2 === '0' ? group1Name : group1Name + ' + ' + group2Name;
 
                 var dateStr = '20' + year + '-' + month + '-' + day;
@@ -630,22 +994,6 @@
                 };
             }
 
-            function renderIdParse(id) {
-                var info = parseIdNumber(id);
-                if (!info) return '<div class="id-parse">编号格式无效</div>';
-                var parts = [];
-                parts.push('<span class="val">' + info.attrName + '</span>');
-                parts.push('<span class="val">' + info.gameName + '</span>');
-                parts.push('<span class="val">' + info.date + '</span>');
-                parts.push('<span class="val">' + info.groupDisplay + '</span>');
-                if (info.dup && info.dup !== '无') {
-                    parts.push('<span class="val">防重#' + info.dup + '</span>');
-                }
-                return '<div class="id-parse">' +
-                    parts.map(function(p) { return '<span class="hl">' + p + '</span>'; }).join(' <span style="opacity:0.2;">·</span> ') +
-                    '</div>';
-            }
-
             function renderIdParseDetail(id) {
                 var info = parseIdNumber(id);
                 if (!info) return '<div class="id-parse-detail"><span style="opacity:0.4;">编号格式无效</span></div>';
@@ -667,48 +1015,7 @@
             }
 
             // ============================================================
-            // 移动端菜单
-            // ============================================================
-            const toggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
-            if (toggle && navLinks) {
-                toggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    navLinks.classList.toggle('open');
-                });
-                document.addEventListener('click', function(e) {
-                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
-                        navLinks.classList.remove('open');
-                    }
-                });
-                navLinks.querySelectorAll('a').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('open');
-                    });
-                });
-            }
-
-            // ============================================================
-            // 状态
-            // ============================================================
-            let allMembers = [];
-            let filteredMembers = [];
-            let allMaps = [];
-            let allBlogs = [];
-            const DEFAULT_BG = 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
-
-            const grid = document.getElementById('memberGrid');
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.getElementById('searchBtn');
-            const tagBar = document.getElementById('tagBar');
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalBody = document.getElementById('modalBody');
-            const modalContent = document.getElementById('modalContent');
-            const modalInner = document.getElementById('modalInner');
-            const modalClose = document.getElementById('modalClose');
-
-            // ============================================================
-            // 工具函数
+            // 解析工具
             // ============================================================
             function parseDateFromBody(body) {
                 var patterns = [
@@ -726,12 +1033,6 @@
                         }
                     }
                 }
-                return null;
-            }
-
-            function extractTitlePrefix(title) {
-                var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
-                if (match) { return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title }; }
                 return null;
             }
 
@@ -787,9 +1088,17 @@
                     }
                 }
 
-                // 处理bio中的链接：自动识别http链接转为可点击
                 if (bio) {
                     bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                }
+
+                // 解析成员属性（从编号第一位）
+                var attrType = '未知';
+                if (id && id.length >= 1) {
+                    var firstChar = id.charAt(0);
+                    if (firstChar === '1') attrType = '正式成员';
+                    else if (firstChar === '2') attrType = '外部成员';
+                    else if (firstChar === '3') attrType = '特招成员';
                 }
 
                 return {
@@ -804,11 +1113,12 @@
                     bio: bio,
                     pinnedMap: pinnedMap,
                     pinnedBlog: pinnedBlog,
+                    attrType: attrType,
                     raw: issue
                 };
             }
 
-            function parseMapIssue(issue) {
+            function parseMapIssueForModal(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
                 var author = '';
@@ -816,48 +1126,28 @@
                 var desc = '';
                 var tag = '';
                 var minid = '';
-
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
                     var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
-                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^封面[：:]\s*(.+)/)) {
-                        cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^描述[：:]\s*(.+)/)) {
-                        desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^标签[：:]\s*(.+)/)) {
-                        tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                    }
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) { author = trimmed.replace(/^作者[：:]\s*/, '').trim(); }
+                    if (trimmed.match(/^封面[：:]\s*(.+)/)) { cover = trimmed.replace(/^封面[：:]\s*/, '').trim(); }
+                    if (trimmed.match(/^描述[：:]\s*(.+)/)) { desc = trimmed.replace(/^描述[：:]\s*/, '').trim(); }
+                    if (trimmed.match(/^标签[：:]\s*(.+)/)) { tag = trimmed.replace(/^标签[：:]\s*/, '').trim(); }
+                    if (trimmed.match(/^迷你号[：:]\s*(.+)/)) { minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim(); }
                 });
-                if (!author || author.trim() === '') author = '未知作者';
-                if (!desc || desc.trim() === '') desc = '暂无描述';
-
+                if (!author) author = '未知作者';
+                if (!desc) desc = '暂无描述';
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) {
                     var d = new Date(issue.created_at);
                     dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
                         .padStart(2, '0');
                 }
-
-                var prefixInfo = extractTitlePrefix(title);
-                var displayTitle = title;
-                if (prefixInfo) { displayTitle = prefixInfo.cleanTitle;
-                    tag = prefixInfo.prefix; }
-
-                return {
-                    id: issue.number,
-                    title: displayTitle,
-                    author: author,
-                    cover: cover,
-                    desc: desc,
-                    tag: tag || '',
-                    minid: minid || '',
-                    date: dateStr,
-                    raw: issue
-                };
+                var prefixInfo = title.match(/^\[([^\]]+)\]\s*(.*)/);
+                if (prefixInfo) { tag = prefixInfo[1];
+                    title = prefixInfo[2].trim() || title; }
+                return { id: issue.number, title: title, author: author, cover: cover, desc: desc, tag: tag || '',
+                    minid: minid || '', date: dateStr };
             }
 
             function parseBlogIssue(issue) {
@@ -916,9 +1206,6 @@
                 };
             }
 
-            // ============================================================
-            // 计算加入天数
-            // ============================================================
             function getDaysSince(joinDate) {
                 if (!joinDate || joinDate === '未知' || joinDate === '') return null;
                 var parts = joinDate.split('-');
@@ -934,7 +1221,27 @@
             }
 
             // ============================================================
-            // 渲染成员卡片
+            // 状态
+            // ============================================================
+            var allMembers = [];
+            var filteredMembers = [];
+            var allMaps = [];
+            var allBlogs = [];
+            var DEFAULT_BG =
+                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
+
+            var grid = document.getElementById('memberGrid');
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            var tagBar = document.getElementById('tagBar');
+            var modalOverlay = document.getElementById('modalOverlay');
+            var modalContent = document.getElementById('modalContent');
+            var modalInner = document.getElementById('modalInner');
+            var modalBody = document.getElementById('modalBody');
+            var modalClose = document.getElementById('modalClose');
+
+            // ============================================================
+            // 渲染成员卡片（精简版，只显示编号，不显示解析文字）
             // ============================================================
             function renderMemberCard(member) {
                 var avatarHtml = '';
@@ -946,9 +1253,14 @@
                 var groupsHtml = member.groups && member.groups.length > 0 ?
                     member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
 
-                var idParseHtml = '';
-                if (member.id && member.id !== '未知' && member.id.length >= 10) {
-                    idParseHtml = renderIdParse(member.id);
+                // 成员属性徽章
+                var badgeHtml = '';
+                var badgeClass = '';
+                if (member.attrType === '正式成员') badgeClass = 'green';
+                else if (member.attrType === '外部成员') badgeClass = 'blue';
+                else if (member.attrType === '特招成员') badgeClass = 'purple';
+                if (badgeClass) {
+                    badgeHtml = '<span class="member-badge ' + badgeClass + '">' + member.attrType + '</span>';
                 }
 
                 return '<div class="member-card" data-name="' + member.name + '" data-role="' + member.role + '">' +
@@ -956,20 +1268,19 @@
                     '<div class="name">' + member.name + '</div>' +
                     (member.role ? '<div class="role">' + member.role + '</div>' : '') +
                     (groupsHtml ? '<div class="groups">' + groupsHtml + '</div>' : '') +
+                    badgeHtml +
                     '<div class="info-row">' +
                     '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>' +
                     '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>' +
                     '</div>' +
-                    idParseHtml +
                     '<button class="btn-detail" data-name="' + member.name + '">查看详情</button>' +
                     '</div>';
             }
 
             // ============================================================
-            // 渲染弹窗
+            // 渲染成员弹窗（保留编号解析）
             // ============================================================
-            function renderModal(member) {
-                // 背景处理
+            function renderMemberModal(member) {
                 var bgUrl = (member.background && member.background.trim().startsWith('http')) ?
                     member.background.trim() :
                     DEFAULT_BG;
@@ -1004,13 +1315,11 @@
                         '</span></div>';
                 }
 
-                // 简介
                 var bioHtml = '';
                 if (member.bio && member.bio.trim() !== '') {
                     bioHtml = '<div class="modal-bio">📝 ' + member.bio + '</div>';
                 }
 
-                // 查找该成员的地图和博客
                 var memberMaps = allMaps.filter(function(m) {
                     return m.author === member.name || m.author.includes(member.name);
                 });
@@ -1018,7 +1327,6 @@
                     return b.author === member.name || b.author.includes(member.name);
                 });
 
-                // 处理置顶地图和博客
                 var pinnedMapObj = null;
                 var pinnedBlogObj = null;
                 if (member.pinnedMap && member.pinnedMap.trim() !== '') {
@@ -1034,7 +1342,6 @@
                     }
                 }
 
-                // 置顶地图卡片
                 var pinnedMapHtml = '';
                 if (pinnedMapObj) {
                     var coverHtml = '';
@@ -1044,8 +1351,8 @@
                     } else {
                         coverHtml = '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
                     }
-                    pinnedMapHtml = '<div class="modal-work-card" onclick="location.href=\'../map/?id=' + pinnedMapObj.id +
-                        '\'">' +
+                    pinnedMapHtml = '<div class="modal-work-card" onclick="location.href=\'../map/?id=' + pinnedMapObj
+                        .id + '\'">' +
                         coverHtml +
                         '<div class="wtitle">' + pinnedMapObj.title + ' <span class="pinned-badge">置顶</span></div>' +
                         '<div class="wmeta">' + (pinnedMapObj.tag ? pinnedMapObj.tag + ' · ' : '') + pinnedMapObj
@@ -1053,7 +1360,6 @@
                         '</div>';
                 }
 
-                // 置顶博客卡片
                 var pinnedBlogHtml = '';
                 if (pinnedBlogObj) {
                     pinnedBlogHtml = '<div class="modal-work-card" onclick="location.href=\'../blog/post.html?id=' +
@@ -1063,7 +1369,6 @@
                         '</div>';
                 }
 
-                // 其他地图（排除置顶）
                 var otherMaps = memberMaps;
                 if (pinnedMapObj) {
                     otherMaps = memberMaps.filter(function(m) { return m.id !== pinnedMapObj.id; });
@@ -1086,7 +1391,6 @@
                     }).join('');
                 }
 
-                // 其他博客（排除置顶）
                 var otherBlogs = memberBlogs;
                 if (pinnedBlogObj) {
                     otherBlogs = memberBlogs.filter(function(b) { return b.id !== pinnedBlogObj.id; });
@@ -1119,14 +1423,12 @@
                 html += bioHtml;
                 html += daysHtml;
 
-                // 置顶区域
                 var hasPinned = pinnedMapObj || pinnedBlogObj;
                 if (hasPinned) {
                     html += '<div class="modal-section-title">📌 置顶</div>';
                     html += '<div class="modal-works">';
                     if (pinnedMapHtml) html += pinnedMapHtml;
                     if (pinnedBlogHtml) html += pinnedBlogHtml;
-                    // 如果只有置顶没有其他，补空位保持布局
                     if (pinnedMapHtml && !pinnedBlogHtml) {
                         html += '<div style="grid-column:span 2;"></div>';
                     }
@@ -1151,16 +1453,11 @@
                     html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的博客</div></div>';
                 }
 
-                // 如果只有置顶没有其他地图/博客，但置顶已经显示过了，这里不再重复显示空状态
-                if (!pinnedMapObj && !pinnedBlogObj && memberMaps.length === 0 && memberBlogs.length === 0) {
-                    // 已经在上面的空状态显示了
-                }
-
                 modalInner.innerHTML = html;
             }
 
             // ============================================================
-            // 渲染页面
+            // 分页渲染
             // ============================================================
             function renderPage() {
                 var total = filteredMembers.length;
@@ -1181,10 +1478,9 @@
                         var name = this.dataset.name;
                         var member = allMembers.find(function(m) { return m.name === name; });
                         if (member) {
-                            // 重置弹窗背景样式
                             modalContent.style.backgroundImage = '';
                             modalContent.classList.remove('has-bg');
-                            renderModal(member);
+                            renderMemberModal(member);
                             modalOverlay.classList.add('active');
                             document.body.style.overflow = 'hidden';
                         }
@@ -1252,11 +1548,13 @@
                     var mapIssues = results[1] || [];
                     var blogIssues = results[2] || [];
 
-                    allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
+                    // 解析地图和博客
+                    allMaps = mapIssues.map(function(i) { return parseMapIssueForModal(i); });
                     allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
 
-                    if (memberIssues && memberIssues.length > 0) {
+                    if (memberIssues.length > 0) {
                         allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
+                        // 过滤：组别为空且角色为空（非管理层）的成员不显示
                         allMembers = allMembers.filter(function(m) {
                             if (m.groups && m.groups.length > 0) return true;
                             if (m.role === '室长' || m.role === '副室长') return true;
@@ -1274,7 +1572,15 @@
             }
 
             // ============================================================
-            // 事件绑定
+            // 搜索事件
+            // ============================================================
+            searchBtn.addEventListener('click', applyFilters);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') applyFilters();
+            });
+
+            // ============================================================
+            // 标签切换
             // ============================================================
             tagBar.addEventListener('click', function(e) {
                 var target = e.target.closest('.tag-item');
@@ -1286,11 +1592,9 @@
                 applyFilters();
             });
 
-            searchBtn.addEventListener('click', applyFilters);
-            searchInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') applyFilters();
-            });
-
+            // ============================================================
+            // 弹窗事件
+            // ============================================================
             modalClose.addEventListener('click', function() {
                 modalOverlay.classList.remove('active');
                 document.body.style.overflow = '';
