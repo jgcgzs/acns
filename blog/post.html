@@ -4,13 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>文章详情 - 极光创工作室</title>
+    <meta name="description" content="极光创工作室博客文章详情">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* 直接复用列表页样式，为了简洁此处省略（实际部署时需包含完整样式） */
-        /* 但为保障独立运行，我将关键样式复制在此 */
-        /* 由于篇幅限制，此处假设样式已存在，实际交付时包含完整样式 */
-        /* 以下为必要样式，完整样式参考列表页 */
+        /* ===== 基础样式（与主站、博客列表一致） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -37,7 +35,7 @@
             display: block;
         }
         .container {
-            max-width: 1120px;
+            max-width: 820px;
             margin: 0 auto;
             padding: 0 24px;
         }
@@ -163,7 +161,7 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
-        /* 详情页独有样式 */
+        /* 详情页特有样式 */
         .back-bar {
             padding: 16px 0 8px;
             border-bottom: 1px solid var(--border-light);
@@ -328,7 +326,7 @@
             margin-bottom: 12px;
         }
 
-        /* 弹窗样式（与列表页一致） */
+        /* ===== 弹窗样式（与成员档案一致） ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -737,7 +735,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（与主站一致，使用 ../ 回到根目录） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -778,7 +776,7 @@
         </div>
     </div>
 
-    <!-- ===== 底部 ===== -->
+    <!-- ===== 底部（与主站一致） ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -790,8 +788,28 @@
     <script>
         (function() {
 
+            // ===== 移动端菜单 =====
+            const toggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (toggle && navLinks) {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('open');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+                        navLinks.classList.remove('open');
+                    }
+                });
+                navLinks.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('open');
+                    });
+                });
+            }
+
             // ============================================================
-            // 编号解析工具（与列表页一致）
+            // 编号解析工具（与成员档案一致）
             // ============================================================
             var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
             var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
@@ -862,51 +880,6 @@
                 html += '</div>';
                 return html;
             }
-
-            // ============================================================
-            // 移动端菜单
-            // ============================================================
-            const toggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
-            if (toggle && navLinks) {
-                toggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    navLinks.classList.toggle('open');
-                });
-                document.addEventListener('click', function(e) {
-                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
-                        navLinks.classList.remove('open');
-                    }
-                });
-                navLinks.querySelectorAll('a').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('open');
-                    });
-                });
-            }
-
-            // ============================================================
-            // 获取文章ID
-            // ============================================================
-            function getQueryParam(name) {
-                var url = new URL(window.location.href);
-                return url.searchParams.get(name);
-            }
-
-            var postId = getQueryParam('id');
-            var container = document.getElementById('postContent');
-            var allMembers = [];
-            var allMaps = [];
-            var allBlogs = [];
-
-            // 弹窗元素
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalContent = document.getElementById('modalContent');
-            const modalInner = document.getElementById('modalInner');
-            const modalBody = document.getElementById('modalBody');
-            const modalClose = document.getElementById('modalClose');
-            const DEFAULT_BG =
-                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
 
             // ============================================================
             // 工具函数
@@ -1034,6 +1007,62 @@
                     minid: minid || '', date: dateStr };
             }
 
+            function parseBlogIssue(issue) {
+                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
+                var body = issue.body || '';
+                var author = '';
+                var category = '';
+
+                var lines = body.split('\n');
+                var contentStart = 0;
+                lines.forEach(function(line, idx) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
+                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
+                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
+                    }
+                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) {
+                        contentStart = idx;
+                    }
+                });
+                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
+                if (!category || category.trim() === '') category = '未分类';
+
+                var contentLines = lines.slice(contentStart);
+                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
+                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
+
+                var dateStr = '未知';
+                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (dateMatch) {
+                    var y = parseInt(dateMatch[1]),
+                        m = parseInt(dateMatch[2]),
+                        d = parseInt(dateMatch[3]);
+                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    }
+                } else {
+                    var d = new Date(issue.created_at);
+                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
+                        .padStart(2, '0');
+                }
+
+                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
+                if (!title) title = rawTitle;
+
+                return {
+                    id: issue.number,
+                    title: title,
+                    author: author,
+                    category: category,
+                    summary: summary || '暂无摘要',
+                    date: dateStr,
+                    raw: issue
+                };
+            }
+
             function getDaysSince(joinDate) {
                 if (!joinDate || joinDate === '未知' || joinDate === '') return null;
                 var parts = joinDate.split('-');
@@ -1047,6 +1076,22 @@
                 var diff = now - start;
                 return Math.floor(diff / (1000 * 60 * 60 * 24));
             }
+
+            // ============================================================
+            // 状态
+            // ============================================================
+            var allMembers = [];
+            var allMaps = [];
+            var allBlogs = [];
+            var DEFAULT_BG =
+                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
+
+            var container = document.getElementById('postContent');
+            var modalOverlay = document.getElementById('modalOverlay');
+            var modalContent = document.getElementById('modalContent');
+            var modalInner = document.getElementById('modalInner');
+            var modalBody = document.getElementById('modalBody');
+            var modalClose = document.getElementById('modalClose');
 
             // ============================================================
             // 渲染成员弹窗
@@ -1228,14 +1273,21 @@
             }
 
             // ============================================================
-            // 加载文章
+            // 获取文章ID并加载
             // ============================================================
-            function loadPost() {
-                if (!postId) {
-                    container.innerHTML = '<div class="error-state">缺少文章ID</div>';
-                    return;
-                }
+            function getQueryParam(name) {
+                var url = new URL(window.location.href);
+                return url.searchParams.get(name);
+            }
 
+            var postId = getQueryParam('id');
+
+            if (!postId) {
+                container.innerHTML = '<div class="error-state">缺少文章ID</div>';
+                return;
+            }
+
+            function loadPost() {
                 container.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-pulse"></i>加载文章...</div>';
 
                 var REPO_OWNER = 'jgcgzs';
@@ -1245,18 +1297,22 @@
                     '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
                 var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
                     '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
+                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
 
                 Promise.all([
                     fetch(postApi).then(function(r) { return r.ok ? r.json() : null; }),
                     fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; })
+                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
                 ]).then(function(results) {
                     var issue = results[0];
                     var memberIssues = results[1] || [];
                     var mapIssues = results[2] || [];
+                    var blogIssues = results[3] || [];
 
                     if (!issue) {
-                        container.innerHTML = '<div class="error-state">文章不存在</div>';
+                        container.innerHTML = '<div class="error-state">文章不存在或已被删除</div>';
                         return;
                     }
 
@@ -1272,10 +1328,11 @@
                         allMembers = [];
                     }
 
-                    // 解析地图（用于弹窗关联）
+                    // 解析地图和博客（用于弹窗关联）
                     allMaps = mapIssues.map(function(i) { return parseMapIssueForModal(i); });
+                    allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
 
-                    // 解析当前博客文章（用于弹窗关联）
+                    // 解析当前文章
                     var body = issue.body || '';
                     var author = '';
                     var category = '';
@@ -1293,26 +1350,18 @@
                             contentStart = idx;
                         }
                     });
-                    if (!author) author = issue.user ? issue.user.login : '未知作者';
-                    if (!category) category = '未分类';
+                    if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
+                    if (!category || category.trim() === '') category = '未分类';
+
                     var dateObj = new Date(issue.created_at);
-                    var dateStr = dateObj.getFullYear() + '-' + String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+                    var dateStr = dateObj.getFullYear() + '-' +
+                        String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
                         String(dateObj.getDate()).padStart(2, '0');
 
-                    // 正文
                     var contentBody = lines.slice(contentStart).join('\n').trim();
                     if (!contentBody) contentBody = body;
 
-                    // 保存当前文章信息用于弹窗关联
-                    allBlogs = [{
-                        id: issue.number,
-                        title: issue.title,
-                        author: author,
-                        category: category,
-                        date: dateStr
-                    }];
-
-                    // 渲染文章
+                    // 渲染Markdown
                     function renderMarkdown(text) {
                         var html = text;
                         html = html.replace(/```([\s\S]*?)```/g, function(match, code) {
@@ -1352,6 +1401,7 @@
 
                     var renderedContent = renderMarkdown(contentBody);
 
+                    // 构建HTML
                     var html = '';
                     html += '<div class="post-header">';
                     html += '<span class="post-tag">' + category + '</span>';
@@ -1366,25 +1416,28 @@
                     container.innerHTML = html;
 
                     // 绑定作者点击事件
-                    container.querySelector('.author-link').addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var authorName = this.dataset.author;
-                        var member = allMembers.find(function(m) { return m.name === authorName; });
-                        if (member) {
-                            modalContent.style.backgroundImage = '';
-                            modalContent.classList.remove('has-bg');
-                            renderMemberModal(member);
-                            modalOverlay.classList.add('active');
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            modalContent.style.backgroundImage = '';
-                            modalContent.classList.remove('has-bg');
-                            modalInner.innerHTML =
-                                '<div style="padding:40px 20px;text-align:center;color:var(--text-muted);">未找到该成员档案</div>';
-                            modalOverlay.classList.add('active');
-                            document.body.style.overflow = 'hidden';
-                        }
-                    });
+                    var authorLink = container.querySelector('.author-link');
+                    if (authorLink) {
+                        authorLink.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            var authorName = this.dataset.author;
+                            var member = allMembers.find(function(m) { return m.name === authorName; });
+                            if (member) {
+                                modalContent.style.backgroundImage = '';
+                                modalContent.classList.remove('has-bg');
+                                renderMemberModal(member);
+                                modalOverlay.classList.add('active');
+                                document.body.style.overflow = 'hidden';
+                            } else {
+                                modalContent.style.backgroundImage = '';
+                                modalContent.classList.remove('has-bg');
+                                modalInner.innerHTML =
+                                    '<div style="padding:40px 20px;text-align:center;color:var(--text-muted);">未找到该成员档案</div>';
+                                modalOverlay.classList.add('active');
+                                document.body.style.overflow = 'hidden';
+                            }
+                        });
+                    }
                 }).catch(function(err) {
                     console.warn('加载文章失败:', err);
                     container.innerHTML =
@@ -1419,7 +1472,7 @@
             });
 
             // ============================================================
-            // 初始化
+            // 启动
             // ============================================================
             loadPost();
 
