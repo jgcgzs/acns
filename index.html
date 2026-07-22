@@ -323,7 +323,7 @@
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(24px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.3s, border-color 0.3s;
         }
         .timeline-item.visible {
             opacity: 1;
@@ -389,6 +389,7 @@
             }
         }
 
+        /* 地图展示（与地图库一致） */
         .map-section {
             background: var(--blue-bg-pale);
             border-top: 1px solid var(--border-light);
@@ -431,7 +432,7 @@
             flex-direction: column;
             opacity: 0;
             transform: translateY(16px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, border-color 0.3s;
         }
         .map-card.visible {
             opacity: 1;
@@ -644,7 +645,7 @@
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(18px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.3s, border-color 0.3s;
         }
         .join-card.visible {
             opacity: 1;
@@ -721,7 +722,7 @@
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(18px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.3s, border-color 0.3s;
         }
         .channel-card.visible {
             opacity: 1;
@@ -816,7 +817,7 @@
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(14px);
-            transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, border-color 0.3s;
         }
         .contact-card.visible {
             opacity: 1;
@@ -907,7 +908,7 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
-        /* 弹窗样式（与成员档案一致） */
+        /* ===== 弹窗样式（与成员档案一致） ===== */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1341,7 +1342,6 @@
                 </div>
             </div>
             <div class="timeline">
-
                 <!-- 2021 -->
                 <div class="timeline-item">
                     <div class="year">2021</div>
@@ -1350,7 +1350,6 @@
                         <p>2021年7月，在工作室成立的七个月内，工作室的第一张地图《规则类怪谈》正式发布，在发布后的几个月内，地图迎来的反响十分不错，受到广大玩家的喜欢，为后来的玩法类地图奠定了坚实的基础</p>
                     </div>
                 </div>
-
                 <!-- 2022 -->
                 <div class="timeline-item">
                     <div class="year">2022</div>
@@ -1363,7 +1362,6 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/Fux2tNpR_bfNDAnpQLJuHTC0ecLn.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2022年工作室图片" loading="lazy">
                     </div>
                 </div>
-
                 <!-- 2023 -->
                 <div class="timeline-item">
                     <div class="year">2023</div>
@@ -1374,7 +1372,6 @@
                         <p>2023年12月，《江都市》（第一代）地图项目正式开始建设</p>
                     </div>
                 </div>
-
                 <!-- 2024 -->
                 <div class="timeline-item">
                     <div class="year">2024</div>
@@ -1386,7 +1383,6 @@
                         <p>2024年7月，《江都市》（第三代）地图项目正式开始建设</p>
                     </div>
                 </div>
-
                 <!-- 2025 -->
                 <div class="timeline-item">
                     <div class="year">2025</div>
@@ -1405,7 +1401,6 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/FkzvRIEKHLj4YJHosq1dEaDuqbN6.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2025年工作室图片" loading="lazy">
                     </div>
                 </div>
-
                 <!-- 2026 -->
                 <div class="timeline-item">
                     <div class="year">2026</div>
@@ -1420,7 +1415,6 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/FjcTTWJyBp_pcj8OvqZVDY8C3MpT.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2026年工作室图片" loading="lazy">
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -1581,7 +1575,7 @@
             }
 
             // ============================================================
-            // 编号解析工具（与地图库一致）
+            // 编号解析工具（弹窗用）
             // ============================================================
             var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
             var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
@@ -1604,7 +1598,6 @@
                 var gameName = GAME_MAP[game] || '未知平台';
                 var group1Name = GROUP_MAP[group1] || '未知';
                 var group2Name = GROUP_MAP[group2] || '无';
-
                 var groupDisplay = group2 === '0' ? group1Name : group1Name + ' + ' + group2Name;
 
                 var dateStr = '20' + year + '-' + month + '-' + day;
@@ -1616,18 +1609,9 @@
 
                 return {
                     raw: id,
-                    attr: attr,
                     attrName: attrName,
-                    game: game,
                     gameName: gameName,
-                    year: '20' + year,
-                    month: month,
-                    day: day,
                     date: dateStr,
-                    group1: group1,
-                    group1Name: group1Name,
-                    group2: group2,
-                    group2Name: group2Name,
                     groupDisplay: groupDisplay,
                     dup: dup || '无'
                 };
@@ -1637,14 +1621,14 @@
                 var info = parseIdNumber(id);
                 if (!info) return '<div class="id-parse-detail"><span style="opacity:0.4;">编号格式无效</span></div>';
                 var html = '<div class="id-parse-detail">';
-                html += '<div class="label">📋 编号解析</div>';
+                html += '<div class="label">编号解析</div>';
                 html += '<div class="parts">';
-                html += '<span>🔹 ' + info.attrName + ' <span style="opacity:0.3;">(' + info.attr + ')</span></span>';
-                html += '<span>🎮 ' + info.gameName + ' <span style="opacity:0.3;">(' + info.game + ')</span></span>';
-                html += '<span>📅 ' + info.date + '</span>';
-                html += '<span>📂 ' + info.groupDisplay + '</span>';
+                html += '<span>' + info.attrName + ' <span style="opacity:0.3;">(' + id.charAt(0) + ')</span></span>';
+                html += '<span>' + info.gameName + ' <span style="opacity:0.3;">(' + id.charAt(1) + ')</span></span>';
+                html += '<span>' + info.date + '</span>';
+                html += '<span>' + info.groupDisplay + '</span>';
                 if (info.dup && info.dup !== '无') {
-                    html += '<span>🔢 防重#' + info.dup + '</span>';
+                    html += '<span>防重#' + info.dup + '</span>';
                 }
                 html += '</div>';
                 html += '<div style="font-size:11px;color:var(--text-muted);opacity:0.4;margin-top:2px;">完整编号：' + info.raw +
@@ -1681,6 +1665,7 @@
                 return null;
             }
 
+            // 解析地图Issue（关键：日期解析不到设为'未知'）
             function parseMapIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
@@ -1708,14 +1693,10 @@
 
                 if (!author || author.trim() === '') author = '未知作者';
                 if (!desc || desc.trim() === '') desc = '暂无描述';
-                if (!minid || minid.trim() === '') minid = '未知';
 
+                // 日期只从正文解析，解析不到为'未知'
                 var dateStr = parseDateFromBody(body);
-                if (!dateStr) {
-                    var d = new Date(issue.created_at);
-                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
-                        .padStart(2, '0');
-                }
+                if (!dateStr) dateStr = '未知';
 
                 var prefixInfo = extractTitlePrefix(title);
                 var displayTitle = title;
@@ -1739,7 +1720,26 @@
                 };
             }
 
+            // 解析成员Issue（用于迷你号映射）
             function parseMemberIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
+                var body = issue.body || '';
+                var minid = '';
+                var name = title.split('-')[0].trim();
+
+                var lines = body.split('\n');
+                lines.forEach(function(line) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                    }
+                });
+
+                return { name: name, minid: minid };
+            }
+
+            // 完整成员解析（弹窗用）
+            function parseFullMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
                 var groups = [];
@@ -1887,6 +1887,7 @@
             var allMaps = [];
             var allMembers = [];
             var allBlogs = [];
+            var memberMinidMap = {};
             var DEFAULT_BG =
                 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
 
@@ -1920,11 +1921,11 @@
                 var days = getDaysSince(member.joinDate);
                 var daysHtml = '';
                 if (days !== null && days >= 0) {
-                    daysHtml = '<div class="modal-days"><span>🌟 加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
+                    daysHtml = '<div class="modal-days"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
                 } else if (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') {
-                    daysHtml = '<div class="modal-days"><span>📅 入室时间</span><span>' + member.joinDate + '</span></div>';
+                    daysHtml = '<div class="modal-days"><span>入室时间</span><span>' + member.joinDate + '</span></div>';
                 } else {
-                    daysHtml = '<div class="modal-days"><span>📅 入室时间</span><span style="opacity:0.4;">未知</span></div>';
+                    daysHtml = '<div class="modal-days"><span>入室时间</span><span style="opacity:0.4;">未知</span></div>';
                 }
 
                 var idDetailHtml = '';
@@ -1937,7 +1938,7 @@
 
                 var bioHtml = '';
                 if (member.bio && member.bio.trim() !== '') {
-                    bioHtml = '<div class="modal-bio">📝 ' + member.bio + '</div>';
+                    bioHtml = '<div class="modal-bio">' + member.bio + '</div>';
                 }
 
                 var memberMaps = allMaps.filter(function(m) {
@@ -2045,7 +2046,7 @@
 
                 var hasPinned = pinnedMapObj || pinnedBlogObj;
                 if (hasPinned) {
-                    html += '<div class="modal-section-title">📌 置顶</div>';
+                    html += '<div class="modal-section-title">置顶</div>';
                     html += '<div class="modal-works">';
                     if (pinnedMapHtml) html += pinnedMapHtml;
                     if (pinnedBlogHtml) html += pinnedBlogHtml;
@@ -2056,20 +2057,20 @@
                 }
 
                 if (otherMaps.length > 0) {
-                    html += '<div class="modal-section-title">🗺️ 发布的地图 <span class="count">(' + otherMaps.length +
+                    html += '<div class="modal-section-title">发布的地图 <span class="count">(' + otherMaps.length +
                         ')</span></div>';
                     html += '<div class="modal-works">' + mapsHtml + '</div>';
                 } else if (!pinnedMapObj && memberMaps.length === 0) {
-                    html += '<div class="modal-section-title">🗺️ 发布的地图 <span class="count">(0)</span></div>';
+                    html += '<div class="modal-section-title">发布的地图 <span class="count">(0)</span></div>';
                     html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的地图</div></div>';
                 }
 
                 if (otherBlogs.length > 0) {
-                    html += '<div class="modal-section-title">📝 发布的博客 <span class="count">(' + otherBlogs.length +
+                    html += '<div class="modal-section-title">发布的博客 <span class="count">(' + otherBlogs.length +
                         ')</span></div>';
                     html += '<div class="modal-works">' + blogsHtml + '</div>';
                 } else if (!pinnedBlogObj && memberBlogs.length === 0) {
-                    html += '<div class="modal-section-title">📝 发布的博客 <span class="count">(0)</span></div>';
+                    html += '<div class="modal-section-title">发布的博客 <span class="count">(0)</span></div>';
                     html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的博客</div></div>';
                 }
 
@@ -2103,9 +2104,17 @@
                     // 解析地图
                     allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
 
-                    // 解析成员
+                    // 解析成员迷你号映射
                     if (memberIssues.length > 0) {
-                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
+                        var membersSimple = memberIssues.map(function(i) { return parseMemberIssue(i); });
+                        memberMinidMap = {};
+                        membersSimple.forEach(function(m) {
+                            if (m.name && m.minid) {
+                                memberMinidMap[m.name] = m.minid;
+                            }
+                        });
+                        // 完整成员数据（弹窗用）
+                        allMembers = memberIssues.map(function(i) { return parseFullMemberIssue(i); });
                         allMembers = allMembers.filter(function(m) {
                             if (m.groups && m.groups.length > 0) return true;
                             if (m.role === '室长' || m.role === '副室长') return true;
@@ -2113,9 +2122,10 @@
                         });
                     } else {
                         allMembers = [];
+                        memberMinidMap = {};
                     }
 
-                    // 解析博客
+                    // 解析博客（弹窗关联）
                     allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
 
                     // 渲染地图卡片
@@ -2124,8 +2134,6 @@
                 }).catch(function(err) {
                     console.warn('加载失败:', err);
                     mapGrid.innerHTML = '<div class="map-empty"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
-                    // 即使地图加载失败，也要确保其他模块可见
-                    ensureAllVisible();
                 });
             }
 
@@ -2135,7 +2143,6 @@
             function renderMaps() {
                 if (allMaps.length === 0) {
                     mapGrid.innerHTML = '<div class="map-empty"><i class="fas fa-map" style="display:block;font-size:28px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>暂无地图，在 GitHub Issues 中创建带 map 标签的文章</div>';
-                    ensureAllVisible();
                     return;
                 }
 
@@ -2160,6 +2167,18 @@
                     var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
                     var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
 
+                    // 迷你号补充逻辑：优先成员档案，其次地图正文，最后未知
+                    var finalMinid = '';
+                    if (map.author && memberMinidMap[map.author]) {
+                        finalMinid = memberMinidMap[map.author];
+                    }
+                    if (!finalMinid && map.minid) {
+                        finalMinid = map.minid;
+                    }
+                    if (!finalMinid) {
+                        finalMinid = '未知';
+                    }
+
                     var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' +
                         map.author + '</span>';
 
@@ -2171,7 +2190,7 @@
                     html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                     html += '<div class="meta-row">';
                     html += authorHtml;
-                    html += '<span class="minid">迷你号 ' + map.minid + '</span>';
+                    html += '<span class="minid">迷你号 ' + finalMinid + '</span>';
                     html += '</div>';
                     html += '<div class="desc-box">' + map.desc + '</div>';
                     html += '</div></div>';
@@ -2221,53 +2240,6 @@
                         }
                     });
                 });
-
-                ensureAllVisible();
-            }
-
-            // ============================================================
-            // 确保所有卡片可见（后备逻辑）
-            // ============================================================
-            function ensureAllVisible() {
-                // 强制显示所有卡片（如果尚未可见）
-                var allCards = document.querySelectorAll('.timeline-item, .join-card, .channel-card, .contact-card, .map-card');
-                allCards.forEach(function(card) {
-                    if (!card.classList.contains('visible')) {
-                        // 检查是否在视口内
-                        var rect = card.getBoundingClientRect();
-                        var winHeight = window.innerHeight || document.documentElement.clientHeight;
-                        var winWidth = window.innerWidth || document.documentElement.clientWidth;
-                        var isVisible = (rect.top < winHeight + 50 && rect.bottom > -50 && rect.left < winWidth + 50 &&
-                            rect.right > -50);
-                        if (isVisible) {
-                            card.classList.add('visible');
-                        }
-                    }
-                });
-
-                // 如果还有未显示的，监听滚动和resize事件，但只用一次
-                var pendingCards = document.querySelectorAll(
-                    '.timeline-item:not(.visible), .join-card:not(.visible), .channel-card:not(.visible), .contact-card:not(.visible), .map-card:not(.visible)'
-                );
-                if (pendingCards.length > 0) {
-                    var scrollHandler = function() {
-                        pendingCards.forEach(function(card) {
-                            if (!card.classList.contains('visible')) {
-                                var rect = card.getBoundingClientRect();
-                                var winHeight = window.innerHeight || document.documentElement.clientHeight;
-                                var winWidth = window.innerWidth || document.documentElement.clientWidth;
-                                if (rect.top < winHeight + 50 && rect.bottom > -50 && rect.left < winWidth +
-                                    50 && rect.right > -50) {
-                                    card.classList.add('visible');
-                                }
-                            }
-                        });
-                    };
-                    window.addEventListener('scroll', scrollHandler);
-                    window.addEventListener('resize', scrollHandler);
-                    // 执行一次
-                    setTimeout(scrollHandler, 100);
-                }
             }
 
             // ============================================================
@@ -2305,10 +2277,31 @@
             document.getElementById('statDay').textContent = now.getDate();
 
             // ============================================================
-            // 初始化观察者（用于所有需要动画的卡片）
+            // 确保发展历程、加入卡片等可见（保证所有模块正常显示）
             // ============================================================
+            function ensureAllVisible() {
+                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
+                var elements = document.querySelectorAll(selectors);
+                elements.forEach(function(el) {
+                    var rect = el.getBoundingClientRect();
+                    var winHeight = window.innerHeight || document.documentElement.clientHeight;
+                    if (rect.top < winHeight + 50 && rect.bottom > -50) {
+                        el.classList.add('visible');
+                    }
+                });
+                // 地图卡片由 observer 处理，但如果 observer 未触发，强制检查
+                document.querySelectorAll('.map-card').forEach(function(card) {
+                    var rect = card.getBoundingClientRect();
+                    var winHeight = window.innerHeight || document.documentElement.clientHeight;
+                    if (rect.top < winHeight && rect.bottom > 0) {
+                        card.classList.add('visible');
+                    }
+                });
+            }
+
+            // 初始化 observers
             function initObservers() {
-                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card, .map-card';
+                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
                 var elements = document.querySelectorAll(selectors);
                 if (elements.length === 0) return;
 
@@ -2321,12 +2314,10 @@
                             }
                         });
                     }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
-
                     elements.forEach(function(el) {
                         observer.observe(el);
                     });
                 } else {
-                    // 降级：直接显示所有
                     elements.forEach(function(el) {
                         el.classList.add('visible');
                     });
@@ -2336,24 +2327,10 @@
             // ============================================================
             // 初始化
             // ============================================================
-            // 先加载数据（地图等），然后调用 initObservers
             loadData();
-
-            // 但 initObservers 也需要在 DOM 完全加载后执行，以防动态内容
-            document.addEventListener('DOMContentLoaded', function() {
-                // 延迟执行，确保所有元素已存在
-                setTimeout(initObservers, 300);
-                // 确保静态卡片在加载后显示（尤其是联系卡片等）
-                setTimeout(ensureAllVisible, 500);
-            });
-
-            // 如果数据加载很快完成，也需要再次确保可见
-            window.addEventListener('load', function() {
-                setTimeout(ensureAllVisible, 200);
-            });
-
-            // 手动触发一次，作为后备
-            setTimeout(ensureAllVisible, 1000);
+            // 延迟执行，保证DOM渲染完成
+            setTimeout(initObservers, 200);
+            setTimeout(ensureAllVisible, 500);
 
         })();
     </script>
