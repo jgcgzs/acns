@@ -1,6 +1,5 @@
 /**
- * 公共组件 - 成员档案弹窗
- * 依赖：无需外部库
+ * 公共组件 - 成员档案弹窗（星能风格）
  * 使用方式：
  *   1. 页面加载成员数据到 window._memberData
  *   2. 加载地图数据到 window._mapData
@@ -18,18 +17,20 @@
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
     var DEFAULT_BG = 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
 
-    // 颜色名称映射
+    // 颜色映射
     var COLOR_MAP = {
         '红': '#e74c3c',
-        '蓝': '#1a7fc4',
-        '绿': '#16a34a',
+        '蓝': '#5f7fff',
+        '绿': '#10b981',
         '紫': '#8b5cf6',
         '橙': '#f59e0b',
         '金': '#f1c40f',
         '粉': '#ec4899',
         '灰': '#95a5a6',
         '黑': '#2d3436',
-        '白': '#ecf0f1'
+        '白': '#ecf0f1',
+        '青': '#06b6d4',
+        '玫': '#f472b6'
     };
 
     function parseIdNumber(id) {
@@ -60,13 +61,17 @@
     function renderIdParseDetail(id) {
         var info = parseIdNumber(id);
         if (!info) return '<div class="id-parse-detail"><span style="opacity:0.4;">编号格式无效</span></div>';
-        var html = '<div class="id-parse-detail"><div class="label">编号解析</div><div class="parts">';
-        html += '<span>' + info.attrName + ' <span style="opacity:0.3;">(' + id.charAt(0) + ')</span></span>';
-        html += '<span>' + info.gameName + ' <span style="opacity:0.3;">(' + id.charAt(1) + ')</span></span>';
-        html += '<span>' + info.date + '</span>';
-        html += '<span>' + info.groupDisplay + '</span>';
-        if (info.dup && info.dup !== '无') html += '<span>防重#' + info.dup + '</span>';
-        html += '</div><div style="font-size:11px;color:var(--text-muted);opacity:0.4;margin-top:2px;">完整编号：' + info.raw + '</div></div>';
+        var html = '<div class="id-parse-detail">';
+        html += '<div class="label">编号解析</div>';
+        html += '<div class="parts">';
+        html += '<span>▸ ' + info.attrName + ' <span style="opacity:0.4;">(' + id.charAt(0) + ')</span></span>';
+        html += '<span>▸ ' + info.gameName + ' <span style="opacity:0.4;">(' + id.charAt(1) + ')</span></span>';
+        html += '<span>▸ ' + info.date + '</span>';
+        html += '<span>▸ ' + info.groupDisplay + '</span>';
+        if (info.dup && info.dup !== '无') html += '<span>▸ 防重#' + info.dup + '</span>';
+        html += '</div>';
+        html += '<div style="font-size:11px;color:#4c6a9e;opacity:0.3;margin-top:4px;">完整编号：' + info.raw + '</div>';
+        html += '</div>';
         return html;
     }
 
@@ -83,46 +88,36 @@
     }
 
     // ============================================================
-    // 获取当前页面所在目录的前缀（用于正确跳转）
+    // 获取当前页面所在目录前缀
     // ============================================================
     function getPathPrefix() {
         var path = window.location.pathname;
-        // 如果路径包含 /map/ 或 /blog/，则说明当前在子目录下，返回 ../ 回到上级
         if (path.includes('/map/') || path.includes('/blog/')) {
             return '../';
         }
-        // 否则返回 ./ （根目录）
         return './';
     }
 
     // ============================================================
-    // 解析荣誉文本，提取颜色
+    // 解析荣誉文本
     // ============================================================
     function parseHonorItem(line) {
         var parts = line.split('|');
         var text = parts[0].trim();
-        var color = '#1a7fc4'; // 默认蓝色
+        var color = '#5f7fff';
         if (parts.length > 1) {
             var colorPart = parts[1].trim();
-            // 如果是颜色名称，映射
             if (COLOR_MAP[colorPart]) {
                 color = COLOR_MAP[colorPart];
             } else if (colorPart.startsWith('#')) {
                 color = colorPart;
             } else {
-                // 尝试解析为颜色名称（拼音或英文）
                 var lower = colorPart.toLowerCase();
-                var found = false;
                 for (var key in COLOR_MAP) {
                     if (key.toLowerCase() === lower || COLOR_MAP[key].toLowerCase() === lower) {
                         color = COLOR_MAP[key];
-                        found = true;
                         break;
                     }
-                }
-                if (!found) {
-                    // 默认蓝色
-                    color = '#1a7fc4';
                 }
             }
         }
@@ -138,7 +133,7 @@
         var modalInner = document.getElementById('modalInner');
         if (!modalContent || !modalInner) return;
 
-        // 设置背景图（修复不显示问题）
+        // 背景
         modalContent.style.backgroundImage = 'url(' + bgUrl + ')';
         modalContent.classList.add('has-bg');
 
@@ -151,7 +146,7 @@
         var groupsHtml = member.groups && member.groups.length ?
             member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
 
-        // 成员属性标签（根据编号第一位）
+        // 成员属性标签（从编号第一位解析）
         var attrBadge = '';
         if (member.id && member.id.length >= 1) {
             var first = member.id.charAt(0);
@@ -171,12 +166,12 @@
             '<div class="modal-days"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>' :
             (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') ?
             '<div class="modal-days"><span>入室时间</span><span>' + member.joinDate + '</span></div>' :
-            '<div class="modal-days"><span>入室时间</span><span style="opacity:0.4;">未知</span></div>';
+            '<div class="modal-days"><span>入室时间</span><span style="opacity:0.3;">未录入</span></div>';
 
         // 编号解析
         var idDetailHtml = (member.id && member.id !== '未知' && member.id.length >= 10) ?
             renderIdParseDetail(member.id) :
-            '<div class="id-parse-detail"><span style="opacity:0.4;">编号：' + member.id + '</span></div>';
+            '<div class="id-parse-detail"><span style="opacity:0.3;">编号：' + member.id + '</span></div>';
 
         // 简介
         var bioHtml = (member.bio && member.bio.trim()) ? '<div class="modal-bio">' + member.bio + '</div>' : '';
@@ -188,14 +183,14 @@
                 var parsed = parseHonorItem(h);
                 return '<span class="honor-item" style="background:' + parsed.color + ';">' + parsed.text + '</span>';
             }).join('');
-            honorsHtml += '<div class="modal-honors"><div class="honor-title">工作室荣誉</div><div class="honor-list">' + items + '</div></div>';
+            honorsHtml += '<div class="modal-honors"><div class="honor-title"><i class="fas fa-trophy"></i> 工作室荣誉</div><div class="honor-list">' + items + '</div></div>';
         }
         if (member.honors_game && member.honors_game.length) {
             var items = member.honors_game.map(function(h) {
                 var parsed = parseHonorItem(h);
                 return '<span class="honor-item" style="background:' + parsed.color + ';">' + parsed.text + '</span>';
             }).join('');
-            honorsHtml += '<div class="modal-honors"><div class="honor-title">游戏荣誉</div><div class="honor-list">' + items + '</div></div>';
+            honorsHtml += '<div class="modal-honors"><div class="honor-title"><i class="fas fa-gamepad"></i> 游戏荣誉</div><div class="honor-list">' + items + '</div></div>';
         }
 
         // ---- 关联地图和博客 ----
@@ -215,7 +210,7 @@
             if (!isNaN(blogId)) pinnedBlogObj = allBlogs.find(function(b) { return b.id === blogId; });
         }
 
-        var prefix = getPathPrefix(); // 动态路径前缀
+        var prefix = getPathPrefix();
 
         var pinnedMapHtml = '', pinnedBlogHtml = '';
         if (pinnedMapObj) {
@@ -276,23 +271,23 @@
         // 置顶和普通地图/博客
         var hasPinned = pinnedMapObj || pinnedBlogObj;
         if (hasPinned) {
-            html += '<div class="modal-section-title">置顶</div><div class="modal-works">';
+            html += '<div class="modal-section-title"><i class="fas fa-thumbtack"></i> 置顶</div><div class="modal-works">';
             if (pinnedMapHtml) html += pinnedMapHtml;
             if (pinnedBlogHtml) html += pinnedBlogHtml;
             if (pinnedMapHtml && !pinnedBlogHtml) html += '<div style="grid-column:span 2;"></div>';
             html += '</div>';
         }
 
-        html += '<div class="modal-section-title">发布的地图 <span class="count">(' + otherMaps.length + ')</span></div>' +
+        html += '<div class="modal-section-title"><i class="fas fa-map"></i> 发布的地图 <span class="count">(' + otherMaps.length + ')</span></div>' +
             '<div class="modal-works">' + mapsHtml + '</div>';
-        html += '<div class="modal-section-title">发布的博客 <span class="count">(' + otherBlogs.length + ')</span></div>' +
+        html += '<div class="modal-section-title"><i class="fas fa-pen"></i> 发布的博客 <span class="count">(' + otherBlogs.length + ')</span></div>' +
             '<div class="modal-works">' + blogsHtml + '</div>';
 
         modalInner.innerHTML = html;
     }
 
     // ============================================================
-    // 公共API：打开成员弹窗
+    // 公共API
     // ============================================================
     window.openMemberModal = function(name) {
         var allMembers = window._memberData || [];
@@ -315,14 +310,14 @@
             modalContent.style.backgroundImage = '';
             modalContent.classList.remove('has-bg');
             document.getElementById('modalInner').innerHTML =
-                '<div style="padding:40px 20px;text-align:center;color:#4a5a6a;">未找到该成员档案</div>';
+                '<div style="padding:60px 20px;text-align:center;color:#4c6a9e;font-size:15px;opacity:0.5;">未找到该成员档案</div>';
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
     };
 
     // ============================================================
-    // 公共解析函数（供各页面使用）
+    // 公共解析函数
     // ============================================================
     window.parseDateFromBody = function(body) {
         var patterns = [
@@ -347,7 +342,7 @@
         return null;
     };
 
-    // 弹窗关闭事件（统一绑定）
+    // 弹窗关闭事件
     document.addEventListener('DOMContentLoaded', function() {
         var modalClose = document.getElementById('modalClose');
         var modalOverlay = document.getElementById('modalOverlay');
