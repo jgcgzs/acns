@@ -8,7 +8,6 @@
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ===== 基础样式（与之前保持一致） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -254,16 +253,19 @@
             background: var(--blue-bg-light);
         }
 
+        /* 卡片网格 */
         .member-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 16px;
         }
+
+        /* 卡片 */
         .member-card {
             background: var(--white);
             border: 1px solid var(--border-light);
             border-radius: var(--radius);
-            padding: 16px 14px 14px;
+            padding: 16px 12px 14px;
             box-shadow: var(--shadow-sm);
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             cursor: pointer;
@@ -278,23 +280,24 @@
             border-color: var(--blue-primary);
             transform: translateY(-3px);
         }
+
+        /* 头像 */
         .member-card .avatar {
-            width: 60px;
-            height: 60px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             background: var(--blue-bg-light);
             border: 2px solid var(--border-light);
-            margin: 0 auto 8px;
+            margin: 0 auto 6px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 22px;
             color: var(--blue-primary);
             font-weight: 700;
-            transition: border-color 0.3s;
             overflow: hidden;
             flex-shrink: 0;
-            position: relative;
+            transition: border-color 0.3s;
         }
         .member-card .avatar img {
             width: 100%;
@@ -304,17 +307,24 @@
         .member-card:hover .avatar {
             border-color: var(--blue-primary);
         }
+
+        /* 姓名 */
         .member-card .name {
             font-size: 16px;
             font-weight: 700;
             color: var(--text-dark);
+            margin-top: 4px;
         }
+
+        /* 职位 */
         .member-card .role {
             font-size: 12px;
             color: var(--text-muted);
             opacity: 0.6;
-            margin-top: 1px;
+            margin-top: 0px;
         }
+
+        /* 组别标签 */
         .member-card .groups {
             display: flex;
             flex-wrap: wrap;
@@ -332,6 +342,8 @@
             border-radius: 2px;
             letter-spacing: 0.2px;
         }
+
+        /* 信息行：编号和迷你号 */
         .member-card .info-row {
             font-size: 12px;
             color: var(--text-muted);
@@ -347,9 +359,11 @@
             align-items: center;
             gap: 3px;
         }
+
+        /* 查看详情按钮 */
         .member-card .btn-detail {
-            margin-top: 10px;
-            padding: 4px 16px;
+            margin-top: 8px;
+            padding: 3px 16px;
             font-size: 12px;
             font-weight: 500;
             color: var(--blue-primary);
@@ -364,17 +378,22 @@
             color: #fff;
         }
 
-        /* ===== 成员属性徽章（小标） ===== */
+        /* 成员属性徽章 - 左上角角标 */
         .member-badge {
+            position: absolute;
+            top: 6px;
+            left: 6px;
             display: inline-block;
-            font-size: 9px;
+            font-size: 8px;
             font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
             color: #fff;
-            letter-spacing: 0.3px;
-            margin-top: 2px;
+            letter-spacing: 0.2px;
             text-transform: uppercase;
+            background: var(--blue-badge);
+            line-height: 1.4;
+            z-index: 1;
         }
         .member-badge.green {
             background: var(--green-badge);
@@ -386,17 +405,21 @@
             background: var(--purple-badge);
         }
 
-        .member-card .id-parse {
-            font-size: 10px;
+        /* 空状态和加载 */
+        .empty-placeholder,
+        .loading-placeholder {
+            text-align: center;
+            padding: 60px 0;
             color: var(--text-muted);
-            opacity: 0.5;
-            margin-top: 2px;
-            font-family: 'SF Mono', 'Menlo', monospace;
-            letter-spacing: 0.3px;
+            opacity: 0.4;
+            font-size: 15px;
+            grid-column: 1 / -1;
         }
-        .member-card .id-parse .hl {
+        .loading-placeholder i {
+            display: block;
+            font-size: 28px;
             color: var(--blue-primary);
-            opacity: 1;
+            margin-bottom: 10px;
         }
 
         /* ===== 弹窗样式 ===== */
@@ -542,6 +565,7 @@
             opacity: 0.5;
         }
 
+        /* 编号解析（不含防重合） */
         .id-parse-detail {
             background: var(--blue-bg-light);
             border: 1px solid var(--border-light);
@@ -699,22 +723,7 @@
             letter-spacing: 0.3px;
         }
 
-        .empty-placeholder,
-        .loading-placeholder {
-            text-align: center;
-            padding: 60px 0;
-            color: var(--text-muted);
-            opacity: 0.4;
-            font-size: 15px;
-            grid-column: 1 / -1;
-        }
-        .loading-placeholder i {
-            display: block;
-            font-size: 28px;
-            color: var(--blue-primary);
-            margin-bottom: 10px;
-        }
-
+        /* 响应式 */
         @media (max-width: 992px) {
             .member-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -842,12 +851,11 @@
                 font-size: 11px;
                 gap: 2px 8px;
             }
-            .member-card .id-parse {
-                font-size: 9px;
-            }
             .member-badge {
-                font-size: 8px;
-                padding: 1px 8px;
+                font-size: 7px;
+                padding: 1px 6px;
+                top: 4px;
+                left: 4px;
             }
         }
     </style>
@@ -943,7 +951,7 @@
             }
 
             // ============================================================
-            // 编号解析工具（仅用于弹窗详情，卡片上不再显示解析文字）
+            // 编号解析工具（不包含防重合位）
             // ============================================================
             var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
             var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
@@ -960,7 +968,6 @@
                 var day = s.substring(6, 8);
                 var group1 = s.charAt(8);
                 var group2 = s.charAt(9);
-                var dup = s.length > 10 ? s.charAt(10) : '';
 
                 var attrName = ATTR_MAP[attr] || '未知属性';
                 var gameName = GAME_MAP[game] || '未知平台';
@@ -977,20 +984,10 @@
 
                 return {
                     raw: id,
-                    attr: attr,
                     attrName: attrName,
-                    game: game,
                     gameName: gameName,
-                    year: '20' + year,
-                    month: month,
-                    day: day,
                     date: dateStr,
-                    group1: group1,
-                    group1Name: group1Name,
-                    group2: group2,
-                    group2Name: group2Name,
-                    groupDisplay: groupDisplay,
-                    dup: dup || '无'
+                    groupDisplay: groupDisplay
                 };
             }
 
@@ -998,15 +995,12 @@
                 var info = parseIdNumber(id);
                 if (!info) return '<div class="id-parse-detail"><span style="opacity:0.4;">编号格式无效</span></div>';
                 var html = '<div class="id-parse-detail">';
-                html += '<div class="label">📋 编号解析</div>';
+                html += '<div class="label">编号解析</div>';
                 html += '<div class="parts">';
-                html += '<span>🔹 ' + info.attrName + ' <span style="opacity:0.3;">(' + info.attr + ')</span></span>';
-                html += '<span>🎮 ' + info.gameName + ' <span style="opacity:0.3;">(' + info.game + ')</span></span>';
-                html += '<span>📅 ' + info.date + '</span>';
-                html += '<span>📂 ' + info.groupDisplay + '</span>';
-                if (info.dup && info.dup !== '无') {
-                    html += '<span>🔢 防重#' + info.dup + '</span>';
-                }
+                html += '<span>' + info.attrName + ' <span style="opacity:0.3;">(' + id.charAt(0) + ')</span></span>';
+                html += '<span>' + info.gameName + ' <span style="opacity:0.3;">(' + id.charAt(1) + ')</span></span>';
+                html += '<span>' + info.date + '</span>';
+                html += '<span>' + info.groupDisplay + '</span>';
                 html += '</div>';
                 html += '<div style="font-size:11px;color:var(--text-muted);opacity:0.4;margin-top:2px;">完整编号：' + info.raw +
                     '</div>';
@@ -1092,7 +1086,7 @@
                     bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
                 }
 
-                // 解析成员属性（从编号第一位）
+                // 成员属性
                 var attrType = '未知';
                 if (id && id.length >= 1) {
                     var firstChar = id.charAt(0);
@@ -1241,7 +1235,7 @@
             var modalClose = document.getElementById('modalClose');
 
             // ============================================================
-            // 渲染成员卡片（精简版，只显示编号，不显示解析文字）
+            // 渲染成员卡片
             // ============================================================
             function renderMemberCard(member) {
                 var avatarHtml = '';
@@ -1253,7 +1247,7 @@
                 var groupsHtml = member.groups && member.groups.length > 0 ?
                     member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
 
-                // 成员属性徽章
+                // 属性徽章
                 var badgeHtml = '';
                 var badgeClass = '';
                 if (member.attrType === '正式成员') badgeClass = 'green';
@@ -1264,11 +1258,11 @@
                 }
 
                 return '<div class="member-card" data-name="' + member.name + '" data-role="' + member.role + '">' +
+                    badgeHtml +
                     '<div class="avatar">' + avatarHtml + '</div>' +
                     '<div class="name">' + member.name + '</div>' +
                     (member.role ? '<div class="role">' + member.role + '</div>' : '') +
                     (groupsHtml ? '<div class="groups">' + groupsHtml + '</div>' : '') +
-                    badgeHtml +
                     '<div class="info-row">' +
                     '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>' +
                     '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>' +
@@ -1278,9 +1272,10 @@
             }
 
             // ============================================================
-            // 渲染成员弹窗（保留编号解析）
+            // 渲染成员弹窗（修复背景显示，去除防重合）
             // ============================================================
             function renderMemberModal(member) {
+                // 修复背景显示：强制设置背景图并应用has-bg类
                 var bgUrl = (member.background && member.background.trim().startsWith('http')) ?
                     member.background.trim() :
                     DEFAULT_BG;
@@ -1297,16 +1292,18 @@
                 var groupsHtml = member.groups && member.groups.length > 0 ?
                     member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
 
+                // 入室天数
                 var days = getDaysSince(member.joinDate);
                 var daysHtml = '';
                 if (days !== null && days >= 0) {
-                    daysHtml = '<div class="modal-days"><span>🌟 加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
+                    daysHtml = '<div class="modal-days"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
                 } else if (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') {
-                    daysHtml = '<div class="modal-days"><span>📅 入室时间</span><span>' + member.joinDate + '</span></div>';
+                    daysHtml = '<div class="modal-days"><span>入室时间</span><span>' + member.joinDate + '</span></div>';
                 } else {
-                    daysHtml = '<div class="modal-days"><span>📅 入室时间</span><span style="opacity:0.4;">未知</span></div>';
+                    daysHtml = '<div class="modal-days"><span>入室时间</span><span style="opacity:0.4;">未知</span></div>';
                 }
 
+                // 编号解析（不含防重合）
                 var idDetailHtml = '';
                 if (member.id && member.id !== '未知' && member.id.length >= 10) {
                     idDetailHtml = renderIdParseDetail(member.id);
@@ -1315,11 +1312,13 @@
                         '</span></div>';
                 }
 
+                // 简介微调：保留原始bio，已支持链接识别
                 var bioHtml = '';
                 if (member.bio && member.bio.trim() !== '') {
-                    bioHtml = '<div class="modal-bio">📝 ' + member.bio + '</div>';
+                    bioHtml = '<div class="modal-bio">' + member.bio + '</div>';
                 }
 
+                // 关联地图和博客
                 var memberMaps = allMaps.filter(function(m) {
                     return m.author === member.name || m.author.includes(member.name);
                 });
@@ -1327,6 +1326,7 @@
                     return b.author === member.name || b.author.includes(member.name);
                 });
 
+                // 置顶
                 var pinnedMapObj = null;
                 var pinnedBlogObj = null;
                 if (member.pinnedMap && member.pinnedMap.trim() !== '') {
@@ -1425,7 +1425,7 @@
 
                 var hasPinned = pinnedMapObj || pinnedBlogObj;
                 if (hasPinned) {
-                    html += '<div class="modal-section-title">📌 置顶</div>';
+                    html += '<div class="modal-section-title">置顶</div>';
                     html += '<div class="modal-works">';
                     if (pinnedMapHtml) html += pinnedMapHtml;
                     if (pinnedBlogHtml) html += pinnedBlogHtml;
@@ -1436,20 +1436,20 @@
                 }
 
                 if (otherMaps.length > 0) {
-                    html += '<div class="modal-section-title">🗺️ 发布的地图 <span class="count">(' + otherMaps.length +
+                    html += '<div class="modal-section-title">发布的地图 <span class="count">(' + otherMaps.length +
                         ')</span></div>';
                     html += '<div class="modal-works">' + mapsHtml + '</div>';
                 } else if (!pinnedMapObj && memberMaps.length === 0) {
-                    html += '<div class="modal-section-title">🗺️ 发布的地图 <span class="count">(0)</span></div>';
+                    html += '<div class="modal-section-title">发布的地图 <span class="count">(0)</span></div>';
                     html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的地图</div></div>';
                 }
 
                 if (otherBlogs.length > 0) {
-                    html += '<div class="modal-section-title">📝 发布的博客 <span class="count">(' + otherBlogs.length +
+                    html += '<div class="modal-section-title">发布的博客 <span class="count">(' + otherBlogs.length +
                         ')</span></div>';
                     html += '<div class="modal-works">' + blogsHtml + '</div>';
                 } else if (!pinnedBlogObj && memberBlogs.length === 0) {
-                    html += '<div class="modal-section-title">📝 发布的博客 <span class="count">(0)</span></div>';
+                    html += '<div class="modal-section-title">发布的博客 <span class="count">(0)</span></div>';
                     html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的博客</div></div>';
                 }
 
@@ -1548,7 +1548,6 @@
                     var mapIssues = results[1] || [];
                     var blogIssues = results[2] || [];
 
-                    // 解析地图和博客
                     allMaps = mapIssues.map(function(i) { return parseMapIssueForModal(i); });
                     allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
 
