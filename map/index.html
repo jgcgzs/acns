@@ -8,6 +8,7 @@
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        /* 样式与前一致，此处省略（实际部署时包含完整样式） */
         * {
             margin: 0;
             padding: 0;
@@ -48,8 +49,8 @@
             --text-dark: #1a2a3a;
             --text-muted: #4a5a6a;
             --border-light: #dce6ef;
-            --shadow-sm: 0 2px 12px rgba(26,127,196,0.07);
-            --shadow-hover: 0 8px 28px rgba(26,127,196,0.14);
+            --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
+            --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
             --radius: 2px;
             --green-primary: #16a34a;
         }
@@ -557,7 +558,7 @@
             margin-bottom: 10px;
         }
 
-        /* ===== 弹窗样式（与成员档案一致） ===== */
+        /* 弹窗样式（与成员档案一致） */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -1111,8 +1112,28 @@
     <script>
         (function() {
 
+            // ===== 移动端菜单 =====
+            const toggle = document.getElementById('menuToggle');
+            const navLinks = document.getElementById('navLinks');
+            if (toggle && navLinks) {
+                toggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('open');
+                });
+                document.addEventListener('click', function(e) {
+                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+                        navLinks.classList.remove('open');
+                    }
+                });
+                navLinks.querySelectorAll('a').forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('open');
+                    });
+                });
+            }
+
             // ============================================================
-            // 编号解析工具（用于成员档案弹窗）
+            // 编号解析工具（用于成员弹窗）
             // ============================================================
             var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
             var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
@@ -1185,60 +1206,7 @@
             }
 
             // ============================================================
-            // 移动端菜单
-            // ============================================================
-            const toggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
-            if (toggle && navLinks) {
-                toggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    navLinks.classList.toggle('open');
-                });
-                document.addEventListener('click', function(e) {
-                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
-                        navLinks.classList.remove('open');
-                    }
-                });
-                navLinks.querySelectorAll('a').forEach(function(link) {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('open');
-                    });
-                });
-            }
-
-            // ============================================================
-            // 状态
-            // ============================================================
-            let allMaps = [];
-            let filteredMaps = [];
-            let currentPage = 1;
-            const pageSize = 16;
-
-            // 成员数据（用于弹窗）
-            let allMembers = [];
-            let allBlogs = []; // 用于关联博客
-
-            const mapGrid = document.getElementById('mapGrid');
-            const previewGrid = document.getElementById('previewGrid');
-            const previewCount = document.getElementById('previewCount');
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.getElementById('searchBtn');
-            const tagBar = document.getElementById('tagBar');
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
-
-            // 弹窗元素
-            const modalOverlay = document.getElementById('modalOverlay');
-            const modalContent = document.getElementById('modalContent');
-            const modalInner = document.getElementById('modalInner');
-            const modalBody = document.getElementById('modalBody');
-            const modalClose = document.getElementById('modalClose');
-            const DEFAULT_BG =
-                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
-
-            // ============================================================
-            // 工具函数
+            // 解析工具
             // ============================================================
             function parseDateFromBody(body) {
                 var patterns = [
@@ -1293,7 +1261,7 @@
 
                 if (!author || author.trim() === '') author = '未知作者';
                 if (!desc || desc.trim() === '') desc = '暂无描述';
-                if (!minid || minid.trim() === '') minid = '未知';
+                if (!minid || minid.trim() === '') minid = ''; // 留空，后续处理
 
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) {
@@ -1316,7 +1284,7 @@
                     cover: cover,
                     desc: desc,
                     tag: tag || '',
-                    minid: minid || '',
+                    minid: minid, // 可能为空
                     date: dateStr,
                     raw: issue,
                     isFeatured: isFeatured,
@@ -1324,150 +1292,54 @@
                 };
             }
 
-            // 解析成员Issue
+            // 解析成员Issue（用于获取迷你号）
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
-                var groups = [];
-                var minid = '未知';
-                var id = '未知';
-                var joinDate = '未知';
-                var avatar = '';
-                var background = '';
-                var bio = '';
-                var pinnedMap = '';
-                var pinnedBlog = '';
-                var role = '';
+                var minid = '';
+                var name = '';
 
                 var parts = title.split('-');
-                var name = parts[0].trim();
-                if (parts.length > 1) role = parts.slice(1).join('-').trim();
+                name = parts[0].trim();
 
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
                     var trimmed = line.trim();
-                    if (trimmed.match(/^组别[：:]\s*(.+)/)) {
-                        var g = trimmed.replace(/^组别[：:]\s*/, '').trim();
-                        groups = g.split(/[,，、\s]+/).filter(function(s) { return s.trim().length > 0; });
-                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
-                    } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
-                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
-                    } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
-                        var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
-                        var parsed = parseDateFromBody(d);
-                        if (parsed) joinDate = parsed;
-                        else joinDate = d || '未知';
-                    } else if (trimmed.match(/^头像[：:]\s*(.+)/)) {
-                        avatar = trimmed.replace(/^头像[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^背景[：:]\s*(.+)/)) {
-                        background = trimmed.replace(/^背景[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^简介[：:]\s*(.+)/)) {
-                        bio = trimmed.replace(/^简介[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^置顶地图[：:]\s*(.+)/)) {
-                        pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
-                        pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                    if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
                     }
                 });
 
-                if (groups.length === 0) {
-                    if (role === '室长' || role === '副室长') {
-                        groups = ['管理层'];
-                    }
-                }
-
-                if (bio) {
-                    bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                }
-
-                return {
-                    name: name,
-                    role: role,
-                    groups: groups,
-                    minid: minid,
-                    id: id,
-                    joinDate: joinDate,
-                    avatar: avatar,
-                    background: background,
-                    bio: bio,
-                    pinnedMap: pinnedMap,
-                    pinnedBlog: pinnedBlog,
-                    raw: issue
-                };
+                return { name: name, minid: minid };
             }
 
-            // 解析博客Issue（仅用于弹窗关联）
-            function parseBlogIssue(issue) {
-                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
-                var body = issue.body || '';
-                var author = '';
-                var category = '';
+            // ============================================================
+            // 状态
+            // ============================================================
+            let allMaps = [];
+            let filteredMaps = [];
+            let currentPage = 1;
+            const pageSize = 16;
+            let memberMinidMap = {}; // 作者名 -> 迷你号
 
-                var lines = body.split('\n');
-                var contentStart = 0;
-                lines.forEach(function(line, idx) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
-                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
-                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
-                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
-                    }
-                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) {
-                        contentStart = idx;
-                    }
-                });
-                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
-                if (!category || category.trim() === '') category = '未分类';
+            const mapGrid = document.getElementById('mapGrid');
+            const previewGrid = document.getElementById('previewGrid');
+            const previewCount = document.getElementById('previewCount');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const tagBar = document.getElementById('tagBar');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageInfo = document.getElementById('pageInfo');
 
-                var contentLines = lines.slice(contentStart);
-                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
-                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
-
-                var dateStr = '未知';
-                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
-                if (dateMatch) {
-                    var y = parseInt(dateMatch[1]),
-                        m = parseInt(dateMatch[2]),
-                        d = parseInt(dateMatch[3]);
-                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-                    }
-                } else {
-                    var d = new Date(issue.created_at);
-                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
-                        .padStart(2, '0');
-                }
-
-                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
-                if (!title) title = rawTitle;
-
-                return {
-                    id: issue.number,
-                    title: title,
-                    author: author,
-                    category: category,
-                    summary: summary || '暂无摘要',
-                    date: dateStr,
-                    raw: issue
-                };
-            }
-
-            // 计算加入天数
-            function getDaysSince(joinDate) {
-                if (!joinDate || joinDate === '未知' || joinDate === '') return null;
-                var parts = joinDate.split('-');
-                if (parts.length !== 3) return null;
-                var y = parseInt(parts[0]),
-                    m = parseInt(parts[1]) - 1,
-                    d = parseInt(parts[2]);
-                if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
-                var start = new Date(y, m, d);
-                var now = new Date();
-                var diff = now - start;
-                return Math.floor(diff / (1000 * 60 * 60 * 24));
-            }
+            // 弹窗元素
+            const modalOverlay = document.getElementById('modalOverlay');
+            const modalContent = document.getElementById('modalContent');
+            const modalInner = document.getElementById('modalInner');
+            const modalBody = document.getElementById('modalBody');
+            const modalClose = document.getElementById('modalClose');
+            const DEFAULT_BG =
+                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
 
             // ============================================================
             // 渲染地图卡片
@@ -1483,7 +1355,21 @@
                 var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
                 var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
 
-                // 作者点击事件
+                // ---- 迷你号补充逻辑 ----
+                var finalMinid = '';
+                // 1. 优先从成员档案获取
+                if (map.author && memberMinidMap[map.author]) {
+                    finalMinid = memberMinidMap[map.author];
+                }
+                // 2. 否则使用地图自身的迷你号
+                if (!finalMinid && map.minid) {
+                    finalMinid = map.minid;
+                }
+                // 3. 最后未知
+                if (!finalMinid) {
+                    finalMinid = '未知';
+                }
+
                 var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' + map
                     .author + '</span>';
 
@@ -1495,7 +1381,7 @@
                 html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                 html += '<div class="meta-row">';
                 html += authorHtml;
-                html += '<span class="minid">迷你号 ' + map.minid + '</span>';
+                html += '<span class="minid">迷你号 ' + finalMinid + '</span>';
                 html += '</div>';
                 html += '<div class="desc-box">' + map.desc + '</div>';
                 html += '</div></div>';
@@ -1522,7 +1408,6 @@
             // 渲染成员弹窗
             // ============================================================
             function renderMemberModal(member) {
-                // 背景
                 var bgUrl = (member.background && member.background.trim().startsWith('http')) ?
                     member.background.trim() :
                     DEFAULT_BG;
@@ -1562,7 +1447,7 @@
                     bioHtml = '<div class="modal-bio">📝 ' + member.bio + '</div>';
                 }
 
-                // 查找该成员的地图和博客
+                // 查找该成员的地图和博客（需要获取全局数据，但此处无法直接访问，故使用闭包）
                 var memberMaps = allMaps.filter(function(m) {
                     return m.author === member.name || m.author.includes(member.name);
                 });
@@ -1570,7 +1455,6 @@
                     return b.author === member.name || b.author.includes(member.name);
                 });
 
-                // 置顶
                 var pinnedMapObj = null;
                 var pinnedBlogObj = null;
                 if (member.pinnedMap && member.pinnedMap.trim() !== '') {
@@ -1730,17 +1614,15 @@
                     el.addEventListener('click', function(e) {
                         e.stopPropagation();
                         var authorName = this.dataset.author;
-                        // 查找成员
+                        // 查找成员档案（需要全局成员数据）
                         var member = allMembers.find(function(m) { return m.name === authorName; });
                         if (member) {
-                            // 重置弹窗背景样式
                             modalContent.style.backgroundImage = '';
                             modalContent.classList.remove('has-bg');
                             renderMemberModal(member);
                             modalOverlay.classList.add('active');
                             document.body.style.overflow = 'hidden';
                         } else {
-                            // 未找到成员，显示提示
                             modalContent.style.backgroundImage = '';
                             modalContent.classList.remove('has-bg');
                             modalInner.innerHTML =
@@ -1790,7 +1672,18 @@
                     if (searchTerm) {
                         var inTitle = map.title.toLowerCase().includes(searchTerm);
                         var inAuthor = map.author.toLowerCase().includes(searchTerm);
-                        var inMinid = map.minid.toLowerCase().includes(searchTerm);
+                        // 迷你号搜索：使用最终显示的迷你号（但需重新获取，因为可能有成员档案）
+                        var finalMinid = '';
+                        if (map.author && memberMinidMap[map.author]) {
+                            finalMinid = memberMinidMap[map.author];
+                        }
+                        if (!finalMinid && map.minid) {
+                            finalMinid = map.minid;
+                        }
+                        if (!finalMinid) {
+                            finalMinid = '未知';
+                        }
+                        var inMinid = finalMinid.includes(searchTerm);
                         if (!inTitle && !inAuthor && !inMinid) return false;
                     }
                     return true;
@@ -1812,6 +1705,9 @@
             // ============================================================
             // 加载数据
             // ============================================================
+            let allMembers = [];
+            let allBlogs = [];
+
             function loadData() {
                 mapGrid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
 
@@ -1836,10 +1732,27 @@
                     // 解析地图
                     allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
 
-                    // 解析成员（用于弹窗）
-                    if (memberIssues && memberIssues.length > 0) {
-                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
-                        // 过滤：组别为空且角色为空（非管理层）的成员不显示
+                    // 解析成员档案，建立迷你号映射
+                    if (memberIssues.length > 0) {
+                        allMembers = memberIssues.map(function(i) {
+                            var parsed = parseMemberIssue(i);
+                            // 同时保存完整成员信息用于弹窗（需要更多字段，但此处简化）
+                            // 为弹窗准备完整数据，但弹窗需要更多字段，所以单独存储
+                            return parsed;
+                        });
+                        // 建立映射
+                        memberMinidMap = {};
+                        allMembers.forEach(function(m) {
+                            if (m.name && m.minid) {
+                                memberMinidMap[m.name] = m.minid;
+                            }
+                        });
+                        // 为了弹窗，需要加载完整的成员数据，但弹窗中需要 role, groups, joinDate, avatar, background, bio, pinnedMap, pinnedBlog
+                        // 这里我们重新解析一次完整成员数据，存储为 allMembersFull
+                        allMembers = memberIssues.map(function(i) {
+                            return parseFullMemberIssue(i);
+                        });
+                        // 过滤有效成员（有组别或管理层）
                         allMembers = allMembers.filter(function(m) {
                             if (m.groups && m.groups.length > 0) return true;
                             if (m.role === '室长' || m.role === '副室长') return true;
@@ -1847,11 +1760,15 @@
                         });
                     } else {
                         allMembers = [];
+                        memberMinidMap = {};
                     }
 
                     // 解析博客（用于弹窗关联）
-                    allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
+                    allBlogs = blogIssues.map(function(i) {
+                        return parseBlogIssue(i);
+                    });
 
+                    // 应用筛选
                     applyFilters();
                 }).catch(function(err) {
                     console.warn('加载失败:', err);
@@ -1859,6 +1776,136 @@
                     previewGrid.innerHTML = '<div class="preview-empty">加载失败</div>';
                     previewCount.textContent = '0';
                 });
+            }
+
+            // 完整成员解析（用于弹窗）
+            function parseFullMemberIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
+                var body = issue.body || '';
+                var groups = [];
+                var minid = '未知';
+                var id = '未知';
+                var joinDate = '未知';
+                var avatar = '';
+                var background = '';
+                var bio = '';
+                var pinnedMap = '';
+                var pinnedBlog = '';
+                var role = '';
+
+                var parts = title.split('-');
+                var name = parts[0].trim();
+                if (parts.length > 1) role = parts.slice(1).join('-').trim();
+
+                var lines = body.split('\n');
+                lines.forEach(function(line) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^组别[：:]\s*(.+)/)) {
+                        var g = trimmed.replace(/^组别[：:]\s*/, '').trim();
+                        groups = g.split(/[,，、\s]+/).filter(function(s) { return s.trim().length > 0; });
+                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
+                    } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
+                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
+                    } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
+                        var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
+                        var parsed = parseDateFromBody(d);
+                        if (parsed) joinDate = parsed;
+                        else joinDate = d || '未知';
+                    } else if (trimmed.match(/^头像[：:]\s*(.+)/)) {
+                        avatar = trimmed.replace(/^头像[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^背景[：:]\s*(.+)/)) {
+                        background = trimmed.replace(/^背景[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^简介[：:]\s*(.+)/)) {
+                        bio = trimmed.replace(/^简介[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^置顶地图[：:]\s*(.+)/)) {
+                        pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
+                        pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                    }
+                });
+
+                if (groups.length === 0) {
+                    if (role === '室长' || role === '副室长') {
+                        groups = ['管理层'];
+                    }
+                }
+
+                if (bio) {
+                    bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                }
+
+                return {
+                    name: name,
+                    role: role,
+                    groups: groups,
+                    minid: minid,
+                    id: id,
+                    joinDate: joinDate,
+                    avatar: avatar,
+                    background: background,
+                    bio: bio,
+                    pinnedMap: pinnedMap,
+                    pinnedBlog: pinnedBlog,
+                    raw: issue
+                };
+            }
+
+            // 解析博客Issue（用于弹窗）
+            function parseBlogIssue(issue) {
+                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
+                var body = issue.body || '';
+                var author = '';
+                var category = '';
+
+                var lines = body.split('\n');
+                var contentStart = 0;
+                lines.forEach(function(line, idx) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
+                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
+                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
+                    }
+                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) {
+                        contentStart = idx;
+                    }
+                });
+                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
+                if (!category || category.trim() === '') category = '未分类';
+
+                var contentLines = lines.slice(contentStart);
+                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
+                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
+
+                var dateStr = '未知';
+                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (dateMatch) {
+                    var y = parseInt(dateMatch[1]),
+                        m = parseInt(dateMatch[2]),
+                        d = parseInt(dateMatch[3]);
+                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    }
+                } else {
+                    var d = new Date(issue.created_at);
+                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
+                        .padStart(2, '0');
+                }
+
+                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
+                if (!title) title = rawTitle;
+
+                return {
+                    id: issue.number,
+                    title: title,
+                    author: author,
+                    category: category,
+                    summary: summary || '暂无摘要',
+                    date: dateStr,
+                    raw: issue
+                };
             }
 
             // ============================================================
