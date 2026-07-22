@@ -8,7 +8,10 @@
     <meta name="keywords" content="极光创,迷你世界,迷你,迷你世界极光创工作室,迷你世界极光创,极光创工作室">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入公共样式 -->
+    <link rel="stylesheet" href="assets/css/components.css">
     <style>
+        /* ===== 主站独有样式（不包含弹窗） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -389,7 +392,6 @@
             }
         }
 
-        /* 地图展示（与地图库一致） */
         .map-section {
             background: var(--blue-bg-pale);
             border-top: 1px solid var(--border-light);
@@ -908,311 +910,7 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
-        /* ===== 弹窗样式（与成员档案一致） ===== */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-content {
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            max-width: 780px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 28px 32px 32px;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-            animation: fadeUp 0.3s ease;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-        .modal-content.has-bg {
-            background-color: rgba(255, 255, 255, 0.92);
-            background-blend-mode: overlay;
-        }
-        .modal-content.has-bg .modal-inner {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(2px);
-            border-radius: var(--radius);
-            padding: 4px 0;
-            margin: -4px 0;
-        }
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .modal-close {
-            position: sticky;
-            top: 0;
-            float: right;
-            font-size: 28px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            padding: 0 4px;
-            z-index: 10;
-            line-height: 1;
-        }
-        .modal-close:hover {
-            color: var(--text-dark);
-        }
-
-        .modal-member {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 16px;
-        }
-        .modal-member .mavatar {
-            width: 72px;
-            height: 72px;
-            border-radius: 50%;
-            background: var(--blue-bg-light);
-            border: 2px solid var(--border-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--blue-primary);
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-        .modal-member .mavatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .modal-member .minfo {
-            flex: 1;
-        }
-        .modal-member .minfo .mname {
-            font-size: 22px;
-            font-weight: 800;
-            color: var(--text-dark);
-        }
-        .modal-member .minfo .mrole {
-            font-size: 14px;
-            color: var(--text-muted);
-            opacity: 0.6;
-        }
-        .modal-member .minfo .mgroups {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 4px;
-        }
-        .modal-member .minfo .mgroups .g {
-            font-size: 10px;
-            font-weight: 600;
-            padding: 1px 10px;
-            border: 1px solid var(--blue-primary);
-            color: var(--blue-primary);
-            background: transparent;
-            border-radius: 2px;
-        }
-        .modal-member .minfo .mmeta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 20px;
-            margin-top: 6px;
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-        .modal-member .minfo .mmeta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .modal-member .minfo .mmeta i {
-            font-size: 12px;
-            opacity: 0.5;
-        }
-
-        .id-parse-detail {
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            padding: 10px 16px;
-            margin-bottom: 16px;
-            font-size: 13px;
-            color: var(--text-dark);
-        }
-        .id-parse-detail .label {
-            font-weight: 600;
-            color: var(--blue-primary);
-        }
-        .id-parse-detail .parts {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 16px;
-            margin-top: 4px;
-        }
-        .id-parse-detail .parts span {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-        .id-parse-detail .parts .val {
-            color: var(--text-dark);
-            font-weight: 600;
-        }
-
-        .modal-bio {
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            padding: 12px 16px;
-            margin-bottom: 16px;
-            font-size: 14px;
-            color: var(--text-dark);
-            line-height: 1.8;
-        }
-        .modal-bio a {
-            color: var(--blue-primary);
-            text-decoration: underline;
-        }
-        .modal-bio a:hover {
-            color: var(--blue-primary-dark);
-        }
-
-        .modal-section-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin: 16px 0 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .modal-section-title .count {
-            font-size: 13px;
-            font-weight: 400;
-            color: var(--text-muted);
-            opacity: 0.5;
-        }
-
-        .modal-works {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        .modal-work-card {
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            padding: 10px 12px;
-            transition: box-shadow 0.2s, transform 0.2s;
-            cursor: pointer;
-            overflow: hidden;
-        }
-        .modal-work-card:hover {
-            box-shadow: var(--shadow-sm);
-            transform: translateY(-2px);
-        }
-        .modal-work-card .wcover {
-            width: 100%;
-            aspect-ratio: 16/9;
-            object-fit: cover;
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            margin-bottom: 4px;
-        }
-        .modal-work-card .wcover-placeholder {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--blue-primary);
-            opacity: 0.2;
-            margin-bottom: 4px;
-        }
-        .modal-work-card .wtitle {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-dark);
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .modal-work-card .wmeta {
-            font-size: 11px;
-            color: var(--text-muted);
-            opacity: 0.5;
-            margin-top: 2px;
-        }
-        .modal-work-empty {
-            font-size: 13px;
-            color: var(--text-muted);
-            opacity: 0.4;
-            padding: 10px 0;
-            grid-column: 1 / -1;
-            text-align: center;
-        }
-
-        .modal-days {
-            margin-top: 14px;
-            padding: 10px 16px;
-            background: var(--blue-bg-light);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        .modal-days .num {
-            font-weight: 700;
-            font-size: 20px;
-            color: var(--blue-primary);
-            font-family: 'SF Mono', 'Menlo', monospace;
-        }
-        .pinned-badge {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 600;
-            color: #fff;
-            background: var(--blue-primary);
-            padding: 1px 8px;
-            border-radius: 10px;
-            margin-left: 6px;
-            letter-spacing: 0.3px;
-        }
-
-        @media (max-width: 992px) {
-            .modal-works {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
+        /* 响应式 */
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
@@ -1245,47 +943,59 @@
                 width: 100%;
                 text-align: center;
             }
-            .modal-content {
-                padding: 20px 18px;
+            .hero-content h1 {
+                font-size: 32px;
             }
-            .modal-member {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
+            .hero {
+                padding: 52px 0 36px;
             }
-            .modal-member .minfo .mmeta {
-                justify-content: center;
+            .section {
+                padding: 36px 0;
             }
-            .modal-works {
-                grid-template-columns: 1fr 1fr;
+            .section-title .left h2 {
+                font-size: 26px;
             }
-            .modal-member .mavatar {
-                width: 60px;
-                height: 60px;
-                font-size: 22px;
+            .navbar-brand .brand-text {
+                font-size: 17px;
             }
-            .modal-member .minfo .mname {
-                font-size: 19px;
+            .navbar-brand .logo {
+                height: 28px;
             }
         }
         @media (max-width: 480px) {
-            .modal-works {
-                grid-template-columns: 1fr;
+            .hero-content h1 {
+                font-size: 26px;
             }
-            .modal-content {
-                padding: 14px 12px;
+            .hero-content .desc {
+                font-size: 14px;
+                padding-left: 14px;
             }
-            .modal-member .mavatar {
-                width: 52px;
-                height: 52px;
-                font-size: 18px;
-            }
-            .modal-member .minfo .mname {
+            .hero-stats .stat .num {
                 font-size: 17px;
             }
-            .modal-days {
-                flex-direction: column;
+            .btn-primary,
+            .btn-outline,
+            .btn-join {
+                padding: 10px 22px;
+                font-size: 14px;
+                width: 100%;
                 text-align: center;
+            }
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+            .container {
+                padding: 0 14px;
+            }
+            .timeline-item {
+                padding: 14px 14px;
+            }
+            .join-card {
+                padding: 18px 16px;
+            }
+            .channel-card {
+                padding: 18px 14px;
             }
         }
     </style>
@@ -1532,7 +1242,7 @@
         </div>
     </section>
 
-    <!-- ===== 弹窗 ===== -->
+    <!-- ===== 弹窗结构（由公共组件控制） ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -1550,6 +1260,9 @@
             <span> Aurora Creation Studio</span>
         </div>
     </footer>
+
+    <!-- 引入公共脚本 -->
+    <script src="assets/js/components.js"></script>
 
     <script>
         (function() {
@@ -1575,72 +1288,9 @@
             }
 
             // ============================================================
-            // 编号解析工具（弹窗用）
+            // 解析工具（使用公共函数）
             // ============================================================
-            var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
-            var GAME_MAP = { '1': '迷你世界', '2': '安慕希(MC)', '3': '迷你+安慕希' };
-            var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
-
-            function parseIdNumber(id) {
-                if (!id || id === '未知' || id.length < 10) return null;
-                var s = id.trim();
-                if (s.length < 10) return null;
-                var attr = s.charAt(0);
-                var game = s.charAt(1);
-                var year = s.substring(2, 4);
-                var month = s.substring(4, 6);
-                var day = s.substring(6, 8);
-                var group1 = s.charAt(8);
-                var group2 = s.charAt(9);
-                var dup = s.length > 10 ? s.charAt(10) : '';
-
-                var attrName = ATTR_MAP[attr] || '未知属性';
-                var gameName = GAME_MAP[game] || '未知平台';
-                var group1Name = GROUP_MAP[group1] || '未知';
-                var group2Name = GROUP_MAP[group2] || '无';
-                var groupDisplay = group2 === '0' ? group1Name : group1Name + ' + ' + group2Name;
-
-                var dateStr = '20' + year + '-' + month + '-' + day;
-                var y = parseInt('20' + year);
-                var m = parseInt(month);
-                var d = parseInt(day);
-                var validDate = (y >= 2020 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31);
-                if (!validDate) dateStr = '日期无效';
-
-                return {
-                    raw: id,
-                    attrName: attrName,
-                    gameName: gameName,
-                    date: dateStr,
-                    groupDisplay: groupDisplay,
-                    dup: dup || '无'
-                };
-            }
-
-            function renderIdParseDetail(id) {
-                var info = parseIdNumber(id);
-                if (!info) return '<div class="id-parse-detail"><span style="opacity:0.4;">编号格式无效</span></div>';
-                var html = '<div class="id-parse-detail">';
-                html += '<div class="label">编号解析</div>';
-                html += '<div class="parts">';
-                html += '<span>' + info.attrName + ' <span style="opacity:0.3;">(' + id.charAt(0) + ')</span></span>';
-                html += '<span>' + info.gameName + ' <span style="opacity:0.3;">(' + id.charAt(1) + ')</span></span>';
-                html += '<span>' + info.date + '</span>';
-                html += '<span>' + info.groupDisplay + '</span>';
-                if (info.dup && info.dup !== '无') {
-                    html += '<span>防重#' + info.dup + '</span>';
-                }
-                html += '</div>';
-                html += '<div style="font-size:11px;color:var(--text-muted);opacity:0.4;margin-top:2px;">完整编号：' + info.raw +
-                    '</div>';
-                html += '</div>';
-                return html;
-            }
-
-            // ============================================================
-            // 解析工具
-            // ============================================================
-            function parseDateFromBody(body) {
+            var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
                     /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
                     /(\d{4})\/(\d{1,2})\/(\d{1,2})/
@@ -1648,63 +1298,52 @@
                 for (var i = 0; i < patterns.length; i++) {
                     var match = body.match(patterns[i]);
                     if (match) {
-                        var year = parseInt(match[1]);
-                        var month = parseInt(match[2]);
-                        var day = parseInt(match[3]);
+                        var year = parseInt(match[1]),
+                            month = parseInt(match[2]),
+                            day = parseInt(match[3]);
                         if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
                             return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
                         }
                     }
                 }
                 return null;
-            }
+            };
 
-            function extractTitlePrefix(title) {
+            var extractTitlePrefix = window.extractTitlePrefix || function(title) {
                 var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
                 if (match) { return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title }; }
                 return null;
-            }
+            };
 
-            // 解析地图Issue（关键：日期解析不到设为'未知'）
+            // ============================================================
+            // 解析地图
+            // ============================================================
             function parseMapIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
-                var author = '';
-                var cover = '';
-                var desc = '';
-                var tag = '';
-                var minid = '';
-
+                var author = '',
+                    cover = '',
+                    desc = '',
+                    tag = '',
+                    minid = '';
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
                     var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
-                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^封面[：:]\s*(.+)/)) {
-                        cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^描述[：:]\s*(.+)/)) {
-                        desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^标签[：:]\s*(.+)/)) {
-                        tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                    }
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
                 });
-
                 if (!author || author.trim() === '') author = '未知作者';
                 if (!desc || desc.trim() === '') desc = '暂无描述';
-
-                // 日期只从正文解析，解析不到为'未知'
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) dateStr = '未知';
-
                 var prefixInfo = extractTitlePrefix(title);
                 var displayTitle = title;
                 if (prefixInfo) { displayTitle = prefixInfo.cleanTitle;
                     tag = prefixInfo.prefix; }
-
                 var isFeatured = /\[精选\]/.test(title) || tag === '精选';
-
                 return {
                     id: issue.number,
                     title: displayTitle,
@@ -1720,43 +1359,25 @@
                 };
             }
 
-            // 解析成员Issue（用于迷你号映射）
+            // ============================================================
+            // 解析成员（仅迷你号映射和完整数据）
+            // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
-                var minid = '';
-                var name = title.split('-')[0].trim();
-
-                var lines = body.split('\n');
-                lines.forEach(function(line) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                    }
-                });
-
-                return { name: name, minid: minid };
-            }
-
-            // 完整成员解析（弹窗用）
-            function parseFullMemberIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
-                var body = issue.body || '';
-                var groups = [];
-                var minid = '未知';
-                var id = '未知';
-                var joinDate = '未知';
-                var avatar = '';
-                var background = '';
-                var bio = '';
-                var pinnedMap = '';
-                var pinnedBlog = '';
-                var role = '';
-
+                var groups = [],
+                    minid = '未知',
+                    id = '未知',
+                    joinDate = '未知',
+                    avatar = '',
+                    background = '',
+                    bio = '',
+                    pinnedMap = '',
+                    pinnedBlog = '',
+                    role = '';
                 var parts = title.split('-');
                 var name = parts[0].trim();
                 if (parts.length > 1) role = parts.slice(1).join('-').trim();
-
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
                     var trimmed = line.trim();
@@ -1784,60 +1405,32 @@
                         pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
                     }
                 });
-
-                if (groups.length === 0) {
-                    if (role === '室长' || role === '副室长') {
-                        groups = ['管理层'];
-                    }
-                }
-
-                if (bio) {
-                    bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                }
-
-                return {
-                    name: name,
-                    role: role,
-                    groups: groups,
-                    minid: minid,
-                    id: id,
-                    joinDate: joinDate,
-                    avatar: avatar,
-                    background: background,
-                    bio: bio,
-                    pinnedMap: pinnedMap,
-                    pinnedBlog: pinnedBlog,
-                    raw: issue
-                };
+                if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
+                if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
             }
 
             function parseBlogIssue(issue) {
                 var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
                 var body = issue.body || '';
-                var author = '';
-                var category = '';
-
+                var author = '',
+                    category = '';
                 var lines = body.split('\n');
                 var contentStart = 0;
                 lines.forEach(function(line, idx) {
                     var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
-                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
                         var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
                         category = cats.split(/[,，、\s]+/)[0] || '未分类';
                     }
-                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) {
-                        contentStart = idx;
-                    }
+                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) contentStart = idx;
                 });
-                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
-                if (!category || category.trim() === '') category = '未分类';
-
+                if (!author) author = issue.user ? issue.user.login : '未知作者';
+                if (!category) category = '未分类';
                 var contentLines = lines.slice(contentStart);
                 var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
                 var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
-
                 var dateStr = '未知';
                 var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
                 if (dateMatch) {
@@ -1852,239 +1445,86 @@
                     dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
                         .padStart(2, '0');
                 }
-
-                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
-                if (!title) title = rawTitle;
-
-                return {
-                    id: issue.number,
-                    title: title,
-                    author: author,
-                    category: category,
-                    summary: summary || '暂无摘要',
-                    date: dateStr,
-                    raw: issue
-                };
-            }
-
-            function getDaysSince(joinDate) {
-                if (!joinDate || joinDate === '未知' || joinDate === '') return null;
-                var parts = joinDate.split('-');
-                if (parts.length !== 3) return null;
-                var y = parseInt(parts[0]),
-                    m = parseInt(parts[1]) - 1,
-                    d = parseInt(parts[2]);
-                if (isNaN(y) || isNaN(m) || isNaN(d)) return null;
-                var start = new Date(y, m, d);
-                var now = new Date();
-                var diff = now - start;
-                return Math.floor(diff / (1000 * 60 * 60 * 24));
+                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
+                return { id: issue.number, title, author, category, summary, date: dateStr };
             }
 
             // ============================================================
-            // 状态
+            // 数据加载与渲染
             // ============================================================
-            var allMaps = [];
-            var allMembers = [];
-            var allBlogs = [];
-            var memberMinidMap = {};
-            var DEFAULT_BG =
-                'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
-
             var mapGrid = document.getElementById('mapGrid');
-            var modalOverlay = document.getElementById('modalOverlay');
-            var modalContent = document.getElementById('modalContent');
-            var modalInner = document.getElementById('modalInner');
-            var modalBody = document.getElementById('modalBody');
-            var modalClose = document.getElementById('modalClose');
+            var allMaps = [],
+                allMembers = [],
+                allBlogs = [];
+            var memberMinidMap = {};
 
-            // ============================================================
-            // 渲染成员弹窗
-            // ============================================================
-            function renderMemberModal(member) {
-                var bgUrl = (member.background && member.background.trim().startsWith('http')) ?
-                    member.background.trim() :
-                    DEFAULT_BG;
-                modalContent.style.backgroundImage = 'url(' + bgUrl + ')';
-                modalContent.classList.add('has-bg');
-
-                var avatarHtml = '';
-                if (member.avatar && member.avatar.trim().startsWith('http')) {
-                    avatarHtml = '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">';
-                } else {
-                    avatarHtml = member.name.charAt(0);
+            function renderMaps() {
+                if (allMaps.length === 0) {
+                    mapGrid.innerHTML = '<div class="map-empty"><i class="fas fa-map" style="display:block;font-size:28px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>暂无地图，在 GitHub Issues 中创建带 map 标签的文章</div>';
+                    return;
                 }
-
-                var groupsHtml = member.groups && member.groups.length > 0 ?
-                    member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
-
-                var days = getDaysSince(member.joinDate);
-                var daysHtml = '';
-                if (days !== null && days >= 0) {
-                    daysHtml = '<div class="modal-days"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
-                } else if (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') {
-                    daysHtml = '<div class="modal-days"><span>入室时间</span><span>' + member.joinDate + '</span></div>';
-                } else {
-                    daysHtml = '<div class="modal-days"><span>入室时间</span><span style="opacity:0.4;">未知</span></div>';
-                }
-
-                var idDetailHtml = '';
-                if (member.id && member.id !== '未知' && member.id.length >= 10) {
-                    idDetailHtml = renderIdParseDetail(member.id);
-                } else {
-                    idDetailHtml = '<div class="id-parse-detail"><span style="opacity:0.4;">编号：' + member.id +
-                        '</span></div>';
-                }
-
-                var bioHtml = '';
-                if (member.bio && member.bio.trim() !== '') {
-                    bioHtml = '<div class="modal-bio">' + member.bio + '</div>';
-                }
-
-                var memberMaps = allMaps.filter(function(m) {
-                    return m.author === member.name || m.author.includes(member.name);
+                var sorted = allMaps.slice().sort(function(a, b) {
+                    if (a.date === '未知' && b.date === '未知') return 0;
+                    if (a.date === '未知') return 1;
+                    if (b.date === '未知') return -1;
+                    return b.date.localeCompare(a.date);
                 });
-                var memberBlogs = allBlogs.filter(function(b) {
-                    return b.author === member.name || b.author.includes(member.name);
-                });
-
-                var pinnedMapObj = null;
-                var pinnedBlogObj = null;
-                if (member.pinnedMap && member.pinnedMap.trim() !== '') {
-                    var mapId = parseInt(member.pinnedMap.trim());
-                    if (!isNaN(mapId)) {
-                        pinnedMapObj = allMaps.find(function(m) { return m.id === mapId; });
-                    }
-                }
-                if (member.pinnedBlog && member.pinnedBlog.trim() !== '') {
-                    var blogId = parseInt(member.pinnedBlog.trim());
-                    if (!isNaN(blogId)) {
-                        pinnedBlogObj = allBlogs.find(function(b) { return b.id === blogId; });
-                    }
-                }
-
-                var pinnedMapHtml = '';
-                if (pinnedMapObj) {
-                    var coverHtml = '';
-                    if (pinnedMapObj.cover && pinnedMapObj.cover.trim().startsWith('http')) {
-                        coverHtml = '<img class="wcover" src="' + pinnedMapObj.cover.trim() + '" alt="' + pinnedMapObj
-                            .title + '" loading="lazy" onerror="this.style.display=\'none\'">';
-                    } else {
-                        coverHtml = '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
-                    }
-                    pinnedMapHtml = '<div class="modal-work-card" onclick="location.href=\'./map/?id=' + pinnedMapObj
-                        .id + '\'">' +
-                        coverHtml +
-                        '<div class="wtitle">' + pinnedMapObj.title + ' <span class="pinned-badge">置顶</span></div>' +
-                        '<div class="wmeta">' + (pinnedMapObj.tag ? pinnedMapObj.tag + ' · ' : '') + pinnedMapObj
-                        .date + '</div>' +
-                        '</div>';
-                }
-
-                var pinnedBlogHtml = '';
-                if (pinnedBlogObj) {
-                    pinnedBlogHtml = '<div class="modal-work-card" onclick="location.href=\'./blog/post.html?id=' +
-                        pinnedBlogObj.id + '\'">' +
-                        '<div class="wtitle">' + pinnedBlogObj.title + ' <span class="pinned-badge">置顶</span></div>' +
-                        '<div class="wmeta">' + pinnedBlogObj.category + ' · ' + pinnedBlogObj.date + '</div>' +
-                        '</div>';
-                }
-
-                var otherMaps = memberMaps;
-                if (pinnedMapObj) {
-                    otherMaps = memberMaps.filter(function(m) { return m.id !== pinnedMapObj.id; });
-                }
-                var mapsHtml = '';
-                if (otherMaps.length > 0) {
-                    mapsHtml = otherMaps.map(function(m) {
-                        var coverHtml = '';
-                        if (m.cover && m.cover.trim().startsWith('http')) {
-                            coverHtml = '<img class="wcover" src="' + m.cover.trim() + '" alt="' + m.title +
-                                '" loading="lazy" onerror="this.style.display=\'none\'">';
-                        } else {
-                            coverHtml = '<div class="wcover-placeholder"><i class="fas fa-image"></i></div>';
-                        }
-                        return '<div class="modal-work-card" onclick="location.href=\'./map/?id=' + m.id + '\'">' +
-                            coverHtml +
-                            '<div class="wtitle">' + m.title + '</div>' +
-                            '<div class="wmeta">' + (m.tag ? m.tag + ' · ' : '') + m.date + '</div>' +
-                            '</div>';
-                    }).join('');
-                }
-
-                var otherBlogs = memberBlogs;
-                if (pinnedBlogObj) {
-                    otherBlogs = memberBlogs.filter(function(b) { return b.id !== pinnedBlogObj.id; });
-                }
-                var blogsHtml = '';
-                if (otherBlogs.length > 0) {
-                    blogsHtml = otherBlogs.map(function(b) {
-                        return '<div class="modal-work-card" onclick="location.href=\'./blog/post.html?id=' + b
-                            .id + '\'">' +
-                            '<div class="wtitle">' + b.title + '</div>' +
-                            '<div class="wmeta">' + b.category + ' · ' + b.date + '</div>' +
-                            '</div>';
-                    }).join('');
-                }
-
                 var html = '';
-                html += '<div class="modal-member">';
-                html += '<div class="mavatar">' + avatarHtml + '</div>';
-                html += '<div class="minfo">';
-                html += '<div class="mname">' + member.name + '</div>';
-                html += (member.role ? '<div class="mrole">' + member.role + '</div>' : '');
-                html += (groupsHtml ? '<div class="mgroups">' + groupsHtml + '</div>' : '');
-                html += '<div class="mmeta">';
-                html += '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>';
-                html += '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>';
-                html += '</div>';
-                html += '</div></div>';
+                sorted.forEach(function(map, index) {
+                    var coverHtml = (map.cover && map.cover.trim().startsWith('http')) ?
+                        '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                        '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
+                    var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
+                    var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
+                    var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map
+                        .minid || '未知');
+                    var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' +
+                        map.author + '</span>';
+                    html += '<div class="map-card" style="animation-delay:' + (index * 0.06) + 's">';
+                    html += coverHtml;
+                    html += '<div class="body">';
+                    html += tagHtml;
+                    html += '<span class="title">' + map.title + '</span>';
+                    html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
+                    html += '<div class="meta-row">' + authorHtml + '<span class="minid">迷你号 ' + finalMinid +
+                    '</span></div>';
+                    html += '<div class="desc-box">' + map.desc + '</div>';
+                    html += '</div></div>';
+                });
+                mapGrid.innerHTML = html;
 
-                html += idDetailHtml;
-                html += bioHtml;
-                html += daysHtml;
-
-                var hasPinned = pinnedMapObj || pinnedBlogObj;
-                if (hasPinned) {
-                    html += '<div class="modal-section-title">置顶</div>';
-                    html += '<div class="modal-works">';
-                    if (pinnedMapHtml) html += pinnedMapHtml;
-                    if (pinnedBlogHtml) html += pinnedBlogHtml;
-                    if (pinnedMapHtml && !pinnedBlogHtml) {
-                        html += '<div style="grid-column:span 2;"></div>';
-                    }
-                    html += '</div>';
+                // 触发卡片动画
+                var mapCards = mapGrid.querySelectorAll('.map-card');
+                if (mapCards.length && 'IntersectionObserver' in window) {
+                    var cardObserver = new IntersectionObserver(function(entries) {
+                        entries.forEach(function(entry) {
+                            if (entry.isIntersecting) { entry.target.classList.add('visible');
+                                cardObserver.unobserve(entry.target); }
+                        });
+                    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
+                    mapCards.forEach(function(card) { cardObserver.observe(card); });
+                } else {
+                    mapCards.forEach(function(card) { card.classList.add('visible'); });
                 }
 
-                if (otherMaps.length > 0) {
-                    html += '<div class="modal-section-title">发布的地图 <span class="count">(' + otherMaps.length +
-                        ')</span></div>';
-                    html += '<div class="modal-works">' + mapsHtml + '</div>';
-                } else if (!pinnedMapObj && memberMaps.length === 0) {
-                    html += '<div class="modal-section-title">发布的地图 <span class="count">(0)</span></div>';
-                    html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的地图</div></div>';
-                }
-
-                if (otherBlogs.length > 0) {
-                    html += '<div class="modal-section-title">发布的博客 <span class="count">(' + otherBlogs.length +
-                        ')</span></div>';
-                    html += '<div class="modal-works">' + blogsHtml + '</div>';
-                } else if (!pinnedBlogObj && memberBlogs.length === 0) {
-                    html += '<div class="modal-section-title">发布的博客 <span class="count">(0)</span></div>';
-                    html += '<div class="modal-works"><div class="modal-work-empty">该成员暂无发布的博客</div></div>';
-                }
-
-                modalInner.innerHTML = html;
+                // 绑定作者点击事件（调用公共弹窗）
+                mapGrid.querySelectorAll('.author').forEach(function(el) {
+                    el.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        var authorName = this.dataset.author;
+                        if (typeof window.openMemberModal === 'function') {
+                            window.openMemberModal(authorName);
+                        } else {
+                            alert('公共组件未加载，请检查 assets/js/components.js');
+                        }
+                    });
+                });
             }
 
-            // ============================================================
-            // 加载地图和成员数据
-            // ============================================================
             function loadData() {
                 mapGrid.innerHTML = '<div class="map-loading"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
-
-                var REPO_OWNER = 'jgcgzs';
-                var REPO_NAME = 'acns';
+                var REPO_OWNER = 'jgcgzs',
+                    REPO_NAME = 'acns';
                 var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
                     '/issues?labels=map&state=open&sort=created&direction=desc&per_page=5';
                 var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
@@ -2097,176 +1537,63 @@
                     fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
                     fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
                 ]).then(function(results) {
-                    var mapIssues = results[0] || [];
-                    var memberIssues = results[1] || [];
-                    var blogIssues = results[2] || [];
-
-                    // 解析地图
+                    var mapIssues = results[0] || [],
+                        memberIssues = results[1] || [],
+                        blogIssues = results[2] || [];
                     allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
-
-                    // 解析成员迷你号映射
-                    if (memberIssues.length > 0) {
-                        var membersSimple = memberIssues.map(function(i) { return parseMemberIssue(i); });
-                        memberMinidMap = {};
-                        membersSimple.forEach(function(m) {
-                            if (m.name && m.minid) {
-                                memberMinidMap[m.name] = m.minid;
-                            }
-                        });
-                        // 完整成员数据（弹窗用）
-                        allMembers = memberIssues.map(function(i) { return parseFullMemberIssue(i); });
+                    if (memberIssues.length) {
+                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
                         allMembers = allMembers.filter(function(m) {
-                            if (m.groups && m.groups.length > 0) return true;
+                            if (m.groups && m.groups.length) return true;
                             if (m.role === '室长' || m.role === '副室长') return true;
                             return false;
                         });
+                        memberMinidMap = {};
+                        allMembers.forEach(function(m) { if (m.name && m.minid) memberMinidMap[m.name] = m.minid; });
                     } else {
                         allMembers = [];
                         memberMinidMap = {};
                     }
-
-                    // 解析博客（弹窗关联）
                     allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
-
-                    // 渲染地图卡片
+                    // 挂载到全局供弹窗使用
+                    window._memberData = allMembers;
+                    window._mapData = allMaps;
+                    window._blogData = allBlogs;
                     renderMaps();
-
                 }).catch(function(err) {
                     console.warn('加载失败:', err);
-                    mapGrid.innerHTML = '<div class="map-empty"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
+                    mapGrid.innerHTML =
+                        '<div class="map-empty"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
                 });
             }
 
             // ============================================================
-            // 渲染地图卡片
+            // 保证其他模块可见
             // ============================================================
-            function renderMaps() {
-                if (allMaps.length === 0) {
-                    mapGrid.innerHTML = '<div class="map-empty"><i class="fas fa-map" style="display:block;font-size:28px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>暂无地图，在 GitHub Issues 中创建带 map 标签的文章</div>';
-                    return;
-                }
-
-                // 按日期排序（未知排最后）
-                var sorted = allMaps.slice().sort(function(a, b) {
-                    if (a.date === '未知' && b.date === '未知') return 0;
-                    if (a.date === '未知') return 1;
-                    if (b.date === '未知') return -1;
-                    return b.date.localeCompare(a.date);
+            function ensureVisible() {
+                document.querySelectorAll('.timeline-item, .join-card, .channel-card, .contact-card').forEach(function(el) {
+                    var rect = el.getBoundingClientRect();
+                    var winHeight = window.innerHeight || document.documentElement.clientHeight;
+                    if (rect.top < winHeight + 50 && rect.bottom > -50) el.classList.add('visible');
                 });
+            }
 
-                var html = '';
-                sorted.forEach(function(map, index) {
-                    var coverHtml = '';
-                    if (map.cover && map.cover.trim() !== '' && map.cover.trim().startsWith('http')) {
-                        coverHtml = '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title +
-                            '" loading="lazy" onerror="this.style.display=\'none\'">';
-                    } else {
-                        coverHtml = '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-                    }
-
-                    var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
-                    var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
-
-                    // 迷你号补充逻辑：优先成员档案，其次地图正文，最后未知
-                    var finalMinid = '';
-                    if (map.author && memberMinidMap[map.author]) {
-                        finalMinid = memberMinidMap[map.author];
-                    }
-                    if (!finalMinid && map.minid) {
-                        finalMinid = map.minid;
-                    }
-                    if (!finalMinid) {
-                        finalMinid = '未知';
-                    }
-
-                    var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' +
-                        map.author + '</span>';
-
-                    html += '<div class="map-card" style="animation-delay:' + (index * 0.06) + 's">';
-                    html += coverHtml;
-                    html += '<div class="body">';
-                    html += tagHtml;
-                    html += '<span class="title">' + map.title + '</span>';
-                    html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
-                    html += '<div class="meta-row">';
-                    html += authorHtml;
-                    html += '<span class="minid">迷你号 ' + finalMinid + '</span>';
-                    html += '</div>';
-                    html += '<div class="desc-box">' + map.desc + '</div>';
-                    html += '</div></div>';
-                });
-
-                mapGrid.innerHTML = html;
-
-                // 触发卡片动画
-                var mapCards = mapGrid.querySelectorAll('.map-card');
-                if (mapCards.length > 0 && 'IntersectionObserver' in window) {
-                    var cardObserver = new IntersectionObserver(function(entries) {
+            function initObservers() {
+                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
+                var elements = document.querySelectorAll(selectors);
+                if (!elements.length) return;
+                if ('IntersectionObserver' in window) {
+                    var observer = new IntersectionObserver(function(entries) {
                         entries.forEach(function(entry) {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                                cardObserver.unobserve(entry.target);
-                            }
+                            if (entry.isIntersecting) { entry.target.classList.add('visible');
+                                observer.unobserve(entry.target); }
                         });
-                    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-                    mapCards.forEach(function(card) {
-                        cardObserver.observe(card);
-                    });
+                    }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+                    elements.forEach(function(el) { observer.observe(el); });
                 } else {
-                    mapCards.forEach(function(card) {
-                        card.classList.add('visible');
-                    });
+                    elements.forEach(function(el) { el.classList.add('visible'); });
                 }
-
-                // 绑定作者点击事件
-                mapGrid.querySelectorAll('.author').forEach(function(el) {
-                    el.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var authorName = this.dataset.author;
-                        var member = allMembers.find(function(m) { return m.name === authorName; });
-                        if (member) {
-                            modalContent.style.backgroundImage = '';
-                            modalContent.classList.remove('has-bg');
-                            renderMemberModal(member);
-                            modalOverlay.classList.add('active');
-                            document.body.style.overflow = 'hidden';
-                        } else {
-                            modalContent.style.backgroundImage = '';
-                            modalContent.classList.remove('has-bg');
-                            modalInner.innerHTML =
-                                '<div style="padding:40px 20px;text-align:center;color:var(--text-muted);">未找到该成员档案</div>';
-                            modalOverlay.classList.add('active');
-                            document.body.style.overflow = 'hidden';
-                        }
-                    });
-                });
             }
-
-            // ============================================================
-            // 弹窗事件
-            // ============================================================
-            modalClose.addEventListener('click', function() {
-                modalOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-                modalContent.style.backgroundImage = '';
-                modalContent.classList.remove('has-bg');
-            });
-            modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
-                    modalOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    modalContent.style.backgroundImage = '';
-                    modalContent.classList.remove('has-bg');
-                }
-            });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    modalOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    modalContent.style.backgroundImage = '';
-                    modalContent.classList.remove('has-bg');
-                }
-            });
 
             // ============================================================
             // 日期更新
@@ -2277,60 +1604,11 @@
             document.getElementById('statDay').textContent = now.getDate();
 
             // ============================================================
-            // 确保发展历程、加入卡片等可见（保证所有模块正常显示）
-            // ============================================================
-            function ensureAllVisible() {
-                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
-                var elements = document.querySelectorAll(selectors);
-                elements.forEach(function(el) {
-                    var rect = el.getBoundingClientRect();
-                    var winHeight = window.innerHeight || document.documentElement.clientHeight;
-                    if (rect.top < winHeight + 50 && rect.bottom > -50) {
-                        el.classList.add('visible');
-                    }
-                });
-                // 地图卡片由 observer 处理，但如果 observer 未触发，强制检查
-                document.querySelectorAll('.map-card').forEach(function(card) {
-                    var rect = card.getBoundingClientRect();
-                    var winHeight = window.innerHeight || document.documentElement.clientHeight;
-                    if (rect.top < winHeight && rect.bottom > 0) {
-                        card.classList.add('visible');
-                    }
-                });
-            }
-
-            // 初始化 observers
-            function initObservers() {
-                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
-                var elements = document.querySelectorAll(selectors);
-                if (elements.length === 0) return;
-
-                if ('IntersectionObserver' in window) {
-                    var observer = new IntersectionObserver(function(entries) {
-                        entries.forEach(function(entry) {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                                observer.unobserve(entry.target);
-                            }
-                        });
-                    }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
-                    elements.forEach(function(el) {
-                        observer.observe(el);
-                    });
-                } else {
-                    elements.forEach(function(el) {
-                        el.classList.add('visible');
-                    });
-                }
-            }
-
-            // ============================================================
-            // 初始化
+            // 启动
             // ============================================================
             loadData();
-            // 延迟执行，保证DOM渲染完成
             setTimeout(initObservers, 200);
-            setTimeout(ensureAllVisible, 500);
+            setTimeout(ensureVisible, 500);
 
         })();
     </script>
