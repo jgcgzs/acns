@@ -1,7 +1,6 @@
 // ============================================================
-// components.js – 成员档案弹窗逻辑 (独立于主站)
-// 参考星能工作室交互风格：平滑过渡、轻量反馈
-// 全局依赖：_memberData, _mapData, _blogData (由页面设置)
+// components.js – 成员档案弹窗逻辑（独立于主站）
+// 依赖全局变量：_memberData, _mapData, _blogData
 // 提供函数：openMemberModal(name)
 // ============================================================
 
@@ -34,7 +33,7 @@
     });
 
     // ============================================================
-    // 解析编号 (8位有效，忽略防重合位)
+    // 解析编号 (11位，取前10位)
     // ============================================================
     function parseId(idStr) {
         if (!idStr || idStr.length < 10) {
@@ -44,7 +43,6 @@
         if (digits.length < 10) {
             return { attr: '未知', game: '未知', joinDate: '未知', group1: '未加入', group2: '未加入' };
         }
-        // 取前10位（第11位防重合忽略）
         var code = digits.slice(0, 10);
         var attrCode = parseInt(code.charAt(0));
         var gameCode = parseInt(code.charAt(1));
@@ -70,7 +68,7 @@
     }
 
     // ============================================================
-    // 解析荣誉字符串 (格式: [段位]荣誉名称)
+    // 解析荣誉字符串
     // ============================================================
     function parseHonors(str) {
         if (!str) return [];
@@ -91,7 +89,7 @@
     }
 
     // ============================================================
-    // 获取某成员的地图和博客 (作者精确匹配)
+    // 获取成员的地图和博客（通过作者精确匹配）
     // ============================================================
     function getMemberMaps(memberName, allMaps) {
         if (!allMaps) return [];
@@ -112,7 +110,7 @@
     }
 
     // ============================================================
-    // 打开成员弹窗
+    // 打开弹窗
     // ============================================================
     window.openMemberModal = function(name) {
         var members = window._memberData || [];
@@ -121,25 +119,57 @@
 
         var member = members.find(function(m) { return m.name === name; });
         if (!member) {
-            bodyContainer.innerHTML = '<p style="color:#4c6a9e;">未找到成员信息</p>';
+            bodyContainer.innerHTML = '<p style="color:#4a5a6a;">未找到成员信息</p>';
             overlay.style.display = 'flex';
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
             return;
         }
 
-        // 解析编号
         var idInfo = parseId(member.id);
 
         // 解析荣誉
         var workHonors = parseHonors(member.workHonors || '');
         var gameHonors = parseHonors(member.gameHonors || '');
 
-        // 获取关联地图和博客（作者匹配）
+        // 获取关联
         var memberMaps = getMemberMaps(member.name, maps);
         var memberBlogs = getMemberBlogs(member.name, blogs);
 
-        // 生成灵动岛HTML
+        // ---- 左栏 ----
+        // 头像
+        var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
+            '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy">' :
+            member.name.charAt(0);
+
+        // 属性徽章类
+        var badgeClass = '';
+        if (idInfo.attr === '正式成员') badgeClass = 'green';
+        else if (idInfo.attr === '外部成员') badgeClass = 'blue';
+        else if (idInfo.attr === '特招成员') badgeClass = 'purple';
+
+        // 组别标签
+        var groups = [];
+        if (idInfo.group1 !== '未加入') groups.push(idInfo.group1);
+        if (idInfo.group2 !== '未加入') groups.push(idInfo.group2);
+        var groupsHtml = groups.length ?
+            groups.map(function(g) { return '<span class="group-tag">' + g + '</span>'; }).join('') :
+            '<span class="group-tag placeholder">未加入任何组</span>';
+
+        // 荣誉HTML
+        function honorHtml(records) {
+            if (!records.length) return '<div class="honor-empty">似乎什么都没有呢</div>';
+            var html = '<div class="honor-list">';
+            records.forEach(function(h) {
+                html += '<span class="honor-tag rank-' + h.rank + '">[' + h.rank + '] ' + h.name + '</span>';
+            });
+            html += '</div>';
+            return html;
+        }
+        var workHonorHtml = honorHtml(workHonors);
+        var gameHonorHtml = honorHtml(gameHonors);
+
+        // 灵动岛
         var islandHtml = '';
         if (member.liveType && member.liveContent) {
             var contentHtml = '';
@@ -155,59 +185,56 @@
             }
         }
 
-        // 构建荣誉HTML
-        function honorHtml(records) {
-            if (!records.length) return '';
-            var html = '<div class="honor-list">';
-            records.forEach(function(h) {
-                html += '<span class="honor-tag rank-' + h.rank + '">[' + h.rank + '] ' + h.name + '</span>';
-            });
-            html += '</div>';
-            return html;
-        }
-        var workHonorHtml = workHonors.length ? '<div><span style="font-weight:600;font-size:13px;color:#1e293b;">工作室荣誉</span>' + honorHtml(workHonors) + '</div>' : '';
-        var gameHonorHtml = gameHonors.length ? '<div><span style="font-weight:600;font-size:13px;color:#1e293b;">游戏荣誉</span>' + honorHtml(gameHonors) + '</div>' : '';
+        // 简介
+        var bioHtml = member.bio ? '<div class="member-bio">' + member.bio + '</div>' : '';
 
-        // 属性徽章类
-        var badgeClass = '';
-        if (idInfo.attr === '正式成员') badgeClass = 'green';
-        else if (idInfo.attr === '外部成员') badgeClass = 'blue';
-        else if (idInfo.attr === '特招成员') badgeClass = 'purple';
-
-        // 左栏成员详细
         var leftHtml = `
-            <div class="member-avatar-lg">${member.avatar && member.avatar.startsWith('http') ? '<img src="'+member.avatar+'" alt="'+member.name+'" loading="lazy">' : member.name.charAt(0)}</div>
-            <div class="member-name-lg">${member.name}</div>
-            <div class="member-role-lg">${member.role || '成员'}</div>
-            ${badgeClass ? '<div class="member-badge-lg '+badgeClass+'">'+idInfo.attr+'</div>' : ''}
-            <div class="member-detail-row"><i class="fas fa-id-card"></i><span class="label">编号</span><span class="value">${member.id}</span></div>
-            <div class="member-detail-row"><i class="fas fa-user-tag"></i><span class="label">属性</span><span class="value">${idInfo.attr}</span></div>
-            <div class="member-detail-row"><i class="fas fa-gamepad"></i><span class="label">游戏</span><span class="value">${idInfo.game}</span></div>
-            <div class="member-detail-row"><i class="fas fa-calendar-alt"></i><span class="label">入室日期</span><span class="value">${idInfo.joinDate}</span></div>
-            <div class="member-detail-row"><i class="fas fa-users"></i><span class="label">组别</span><span class="value">${idInfo.group1}${idInfo.group2 !== '未加入' ? ' / '+idInfo.group2 : ''}</span></div>
-            <div class="member-detail-row"><i class="fas fa-hashtag"></i><span class="label">迷你号</span><span class="value">${member.minid}</span></div>
-            ${member.bio ? '<div class="member-bio">'+member.bio+'</div>' : ''}
-            ${workHonorHtml}
-            ${gameHonorHtml}
-            ${islandHtml}
-            ${member.pinnedMap ? '<div class="member-detail-row"><i class="fas fa-thumbtack"></i><span class="label">置顶地图</span><span class="value">#'+member.pinnedMap+'</span></div>' : ''}
-            ${member.pinnedBlog ? '<div class="member-detail-row"><i class="fas fa-thumbtack"></i><span class="label">置顶博客</span><span class="value">#'+member.pinnedBlog+'</span></div>' : ''}
+            <div class="left-card">
+                <div class="member-avatar-lg">${avatarHtml}</div>
+                <div class="member-name-lg">${member.name}</div>
+                <div class="member-role-lg">${member.role || '成员'}</div>
+                ${badgeClass ? '<div class="member-badge-lg '+badgeClass+'">'+idInfo.attr+'</div>' : ''}
+                <div class="detail-row"><i class="fas fa-id-card"></i><span class="label">编号</span><span class="value">${member.id}</span></div>
+                <div class="detail-row"><i class="fas fa-user-tag"></i><span class="label">属性</span><span class="value">${idInfo.attr}</span></div>
+                <div class="detail-row"><i class="fas fa-gamepad"></i><span class="label">游戏</span><span class="value">${idInfo.game}</span></div>
+                <div class="detail-row"><i class="fas fa-calendar-alt"></i><span class="label">入室日期</span><span class="value">${idInfo.joinDate}</span></div>
+                <div class="detail-row"><i class="fas fa-users"></i><span class="label">组别</span><span class="value"></span></div>
+                <div class="group-tags">${groupsHtml}</div>
+                <div class="detail-row"><i class="fas fa-hashtag"></i><span class="label">迷你号</span><span class="value">${member.minid || '未知'}</span></div>
+                ${bioHtml}
+            </div>
+            <div class="left-card">
+                <div style="font-weight:600;font-size:14px;color:#1a2a3a;margin-bottom:4px;">工作室荣誉</div>
+                ${workHonorHtml}
+            </div>
+            <div class="left-card">
+                <div style="font-weight:600;font-size:14px;color:#1a2a3a;margin-bottom:4px;">游戏荣誉</div>
+                ${gameHonorHtml}
+            </div>
+            ${islandHtml ? '<div class="left-card">' + islandHtml + '</div>' : ''}
         `;
 
-        // 右栏：地图和博客列表
+        // ---- 右栏 ----
+        // 地图卡片
         function mapItemsHtml(items) {
-            if (!items.length) return '<div style="color:#4c6a9e;opacity:0.5;font-size:13px;">暂无地图</div>';
+            if (!items.length) return '<div class="item-empty">似乎什么都没有呢</div>';
             var html = '';
             items.forEach(function(item) {
+                var coverHtml = (item.cover && item.cover.trim().startsWith('http')) ?
+                    '<img class="item-cover" src="' + item.cover + '" alt="' + item.title + '" loading="lazy">' :
+                    '<div class="item-cover-placeholder"><i class="fas fa-map"></i></div>';
                 var featured = item.title.startsWith('[精选]') ? '<span class="featured">精选</span>' : '';
                 var titleDisplay = item.title.replace(/^\[精选\]/, '').trim();
+                var tagHtml = item.tag ? '<span class="tag">' + item.tag + '</span>' : '';
+                var dateHtml = (item.date && item.date !== '未知') ? '<span class="date"><i class="far fa-calendar-alt"></i> ' + item.date + '</span>' : '';
                 html += `
-                    <div class="item-card">
+                    <div class="item-card" onclick="window.open('https://jgcgzs.github.io/acns/map/?id=${item.id}','_blank')">
+                        ${coverHtml}
                         <div class="item-title">${featured} ${titleDisplay}</div>
                         <div class="item-meta">
-                            ${item.author ? '<span class="author"><i class="fas fa-user"></i> '+item.author+'</span>' : ''}
-                            ${item.tag ? '<span class="tag">'+item.tag+'</span>' : ''}
-                            ${item.date && item.date !== '未知' ? '<span class="date"><i class="far fa-calendar-alt"></i> '+item.date+'</span>' : ''}
+                            <span class="author"><i class="fas fa-user"></i> ${item.author || '未知作者'}</span>
+                            ${tagHtml}
+                            ${dateHtml}
                         </div>
                     </div>
                 `;
@@ -215,17 +242,20 @@
             return html;
         }
 
+        // 博客卡片
         function blogItemsHtml(items) {
-            if (!items.length) return '<div style="color:#4c6a9e;opacity:0.5;font-size:13px;">暂无博客</div>';
+            if (!items.length) return '<div class="item-empty">似乎什么都没有呢</div>';
             var html = '';
             items.forEach(function(item) {
+                var dateHtml = (item.date && item.date !== '未知') ? '<span class="date"><i class="far fa-calendar-alt"></i> ' + item.date + '</span>' : '';
+                var catHtml = item.category ? '<span class="tag">' + item.category + '</span>' : '';
                 html += `
-                    <div class="item-card">
+                    <div class="item-card" onclick="window.open('https://jgcgzs.github.io/acns/blog/post.html?id=${item.id}','_blank')">
                         <div class="item-title">${item.title}</div>
                         <div class="item-meta">
-                            ${item.author ? '<span class="author"><i class="fas fa-user"></i> '+item.author+'</span>' : ''}
-                            ${item.category ? '<span class="tag">'+item.category+'</span>' : ''}
-                            ${item.date && item.date !== '未知' ? '<span class="date"><i class="far fa-calendar-alt"></i> '+item.date+'</span>' : ''}
+                            <span class="author"><i class="fas fa-user"></i> ${item.author || '未知作者'}</span>
+                            ${catHtml}
+                            ${dateHtml}
                         </div>
                     </div>
                 `;
@@ -234,25 +264,24 @@
         }
 
         var rightHtml = `
-            <div>
+            <div class="right-section">
                 <div class="section-label">地图作品 <span class="count">${memberMaps.length}</span></div>
                 ${mapItemsHtml(memberMaps)}
             </div>
-            <div>
+            <div class="right-section">
                 <div class="section-label">博客文章 <span class="count">${memberBlogs.length}</span></div>
                 ${blogItemsHtml(memberBlogs)}
             </div>
         `;
 
-        var html = `<div class="modal-inner"><div class="modal-left">${leftHtml}</div><div class="modal-right">${rightHtml}</div></div>`;
-        bodyContainer.innerHTML = html;
+        var fullHtml = `<div class="modal-inner"><div class="modal-left">${leftHtml}</div><div class="modal-right">${rightHtml}</div></div>`;
+        bodyContainer.innerHTML = fullHtml;
 
         overlay.style.display = 'flex';
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     };
 
-    // 暴露解析函数供调试
+    // 暴露工具
     window._parseId = parseId;
-
 })();
