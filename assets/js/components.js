@@ -1,5 +1,5 @@
 /**
- * 成员档案弹窗 — 完整逻辑
+ * 成员档案弹窗 — 完整逻辑（已修复）
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
  * 解析字段：组别、迷你号、编号、入室时间、头像、背景、简介、置顶地图、置顶博客、
@@ -109,15 +109,38 @@
     }
 
     // ============================================================
-    // 主渲染函数
+    // 主渲染函数（修复版）
     // ============================================================
     function renderMemberModal(member) {
-        var bgUrl = (member.background && member.background.trim().startsWith('http')) ? member.background.trim() : DEFAULT_BG;
+        // ----- 数据归一化（新增：兼容字符串格式）-----
+        // 组别
+        if (member.groups && typeof member.groups === 'string') {
+            member.groups = member.groups.split(/[,，]\s*/).filter(Boolean);
+        }
+        // 工作室荣誉
+        if (member.honors_work && typeof member.honors_work === 'string') {
+            member.honors_work = member.honors_work.split(/[,，]\s*/).filter(Boolean);
+        }
+        // 游戏荣誉
+        if (member.honors_game && typeof member.honors_game === 'string') {
+            member.honors_game = member.honors_game.split(/[,，]\s*/).filter(Boolean);
+        }
+
+        // ----- 背景处理（增强容错）-----
+        var bgUrl = (member.background && member.background.trim().startsWith('http')) 
+            ? member.background.trim() 
+            : DEFAULT_BG;
+        // 后备渐变（当图片加载失败时显示）
+        var fallbackGradient = 'linear-gradient(135deg, #e8edf5, #d5dff0)';
+
         var modalContent = document.getElementById('modalContent');
         var modalInner = document.getElementById('modalInner');
         if (!modalContent || !modalInner) return;
 
-        modalContent.style.backgroundImage = 'url(' + bgUrl + ')';
+        // 同时设置背景图片和渐变，保证不空白
+        modalContent.style.backgroundImage = 'url(' + bgUrl + '), ' + fallbackGradient;
+        modalContent.style.backgroundSize = 'cover, cover';
+        modalContent.style.backgroundBlendMode = 'overlay, normal'; // 让图片叠在渐变上
         modalContent.classList.add('has-bg');
 
         // --- 左侧列 ---
@@ -300,13 +323,16 @@
         }
 
         if (member) {
+            // 重置背景样式（由 renderMemberModal 重新设置）
             modalContent.style.backgroundImage = '';
+            modalContent.style.backgroundBlendMode = '';
             modalContent.classList.remove('has-bg');
             renderMemberModal(member);
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         } else {
             modalContent.style.backgroundImage = '';
+            modalContent.style.backgroundBlendMode = '';
             modalContent.classList.remove('has-bg');
             document.getElementById('modalInner').innerHTML =
                 '<div style="padding:60px 20px;text-align:center;color:#4c6a9e;opacity:0.5;">未找到该成员档案</div>';
@@ -325,8 +351,11 @@
                 modalOverlay.classList.remove('active');
                 document.body.style.overflow = '';
                 var modalContent = document.getElementById('modalContent');
-                if (modalContent) { modalContent.style.backgroundImage = '';
-                    modalContent.classList.remove('has-bg'); }
+                if (modalContent) { 
+                    modalContent.style.backgroundImage = '';
+                    modalContent.style.backgroundBlendMode = '';
+                    modalContent.classList.remove('has-bg'); 
+                }
             });
         }
         if (modalOverlay) {
@@ -335,8 +364,11 @@
                     modalOverlay.classList.remove('active');
                     document.body.style.overflow = '';
                     var modalContent = document.getElementById('modalContent');
-                    if (modalContent) { modalContent.style.backgroundImage = '';
-                        modalContent.classList.remove('has-bg'); }
+                    if (modalContent) { 
+                        modalContent.style.backgroundImage = '';
+                        modalContent.style.backgroundBlendMode = '';
+                        modalContent.classList.remove('has-bg'); 
+                    }
                 }
             });
         }
@@ -347,8 +379,11 @@
                     overlay.classList.remove('active');
                     document.body.style.overflow = '';
                     var modalContent = document.getElementById('modalContent');
-                    if (modalContent) { modalContent.style.backgroundImage = '';
-                        modalContent.classList.remove('has-bg'); }
+                    if (modalContent) { 
+                        modalContent.style.backgroundImage = '';
+                        modalContent.style.backgroundBlendMode = '';
+                        modalContent.classList.remove('has-bg'); 
+                    }
                 }
             }
         });
