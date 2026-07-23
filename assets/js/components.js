@@ -1,13 +1,12 @@
 /**
- * 成员档案弹窗 — 最终重制版
- * 固定荣誉占位，横向滑动作品容器，纯文字无表情
+ * 成员档案弹窗 — 最终重制版（左信息 + 右作品）
+ * 支持 [段位]荣誉，组别自动替换 ACCM，横向滑动作品
  * 依赖：window._memberData, window._mapData, window._blogData
- * 调用：window.openMemberModal(name)
  */
 
 (function() {
 
-    // ----- 工具函数（不变）-----
+    // ----- 工具函数 -----
     function getSiteRoot() {
         var path = window.location.pathname;
         if (path.indexOf('/acns/') === 0) return '/acns/';
@@ -16,14 +15,19 @@
         return '/';
     }
 
+    // 段位 → 颜色映射
+    var RANK_COLORS = {
+        '普通': '#8b8b8b',
+        '优秀': '#4caf50',
+        '精英': '#2196f3',
+        '大师': '#ff9800',
+        '传说': '#f44336'
+    };
+
+    // 编号解析
     var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
     var GAME_MAP = { '1': '迷你世界', '2': 'Minecraft', '3': '迷你世界 + Minecraft' };
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
-    var COLOR_MAP = {
-        '红': '#e74c3c', '蓝': '#5f7fff', '绿': '#10b981',
-        '紫': '#8b5cf6', '橙': '#f59e0b', '金': '#f1c40f',
-        '粉': '#ec4899', '青': '#06b6d4'
-    };
 
     function parseIdNumber(id) {
         if (!id || id === '未知' || id.length < 10) return null;
@@ -76,41 +80,63 @@
         return Math.floor(diff / (1000*60*60*24));
     }
 
+    // 解析荣誉（支持 [段位]名称 或 名称（颜色） 兼容旧格式）
     function parseHonorItem(line) {
         var text = line.trim();
-        var color = '#5f7fff';
-        var match = text.match(/^(.+?)[（(]\s*([^）)]+)\s*[）)]$/);
-        if (match) {
-            text = match[1].trim();
-            var c = match[2].trim();
-            if (COLOR_MAP[c]) color = COLOR_MAP[c];
-            else if (c.startsWith('#')) color = c;
-            else {
-                var lower = c.toLowerCase();
-                for (var key in COLOR_MAP) {
-                    if (key.toLowerCase() === lower || COLOR_MAP[key].toLowerCase() === lower) {
-                        color = COLOR_MAP[key]; break;
+        var color = '#5f7fff'; // 默认
+        // 检测 [段位] 格式
+        var rankMatch = text.match(/^\[([^\]]+)\]\s*(.+)/);
+        if (rankMatch) {
+            var rank = rankMatch[1].trim();
+            text = rankMatch[2].trim();
+            if (RANK_COLORS[rank]) {
+                color = RANK_COLORS[rank];
+            } else {
+                // 若段位不在映射中，尝试作为颜色名
+                var lower = rank.toLowerCase();
+                for (var key in RANK_COLORS) {
+                    if (key.toLowerCase() === lower) {
+                        color = RANK_COLORS[key]; break;
                     }
                 }
             }
         } else {
-            var parts = text.split('|');
-            if (parts.length === 2) {
-                text = parts[0].trim();
-                var c2 = parts[1].trim();
-                if (COLOR_MAP[c2]) color = COLOR_MAP[c2];
-                else if (c2.startsWith('#')) color = c2;
+            // 兼容旧格式：名称（颜色）或 名称|颜色
+            var match = text.match(/^(.+?)[（(]\s*([^）)]+)\s*[）)]$/);
+            if (match) {
+                text = match[1].trim();
+                var c = match[2].trim();
+                if (RANK_COLORS[c]) color = RANK_COLORS[c];
+                else if (c.startsWith('#')) color = c;
+            } else {
+                var parts = text.split('|');
+                if (parts.length === 2) {
+                    text = parts[0].trim();
+                    var c2 = parts[1].trim();
+                    if (RANK_COLORS[c2]) color = RANK_COLORS[c2];
+                    else if (c2.startsWith('#')) color = c2;
+                }
             }
         }
         return { text: text, color: color };
     }
 
-    // ----- 主渲染函数（固定占位）-----
+    // ----- 主渲染函数（新布局）-----
     function renderMemberModal(member) {
-        // 归一化（字符串→数组）
+        // 归一化字符串→数组
         if (member.groups && typeof member.groups === 'string') {
             member.groups = member.groups.split(/[,，]\s*/).filter(Boolean);
         }
+        // 组别自动替换 ACCM
+        if (member.groups && member.groups.length) {
+            var hasManagement = member.groups.some(function(g) {
+                return g.indexOf('管理层') !== -1 || g.indexOf('管理组') !== -1;
+            });
+            if (hasManagement) {
+                member.groups = ['ACCM'];
+            }
+        }
+
         if (member.honors_work && typeof member.honors_work === 'string') {
             member.honors_work = member.honors_work.split(/[,，]\s*/).filter(Boolean);
         }
@@ -135,8 +161,8 @@
         var rightHtml = [];
         var delay = 0.05;
 
-        // ----- 左列：个人信息 -----
-        // 1. 头像 + 姓名 + 组别 + 属性
+        // ========== 左列：个人信息 + 荣誉 + 灵动岛 ==========
+        // 1. 头像 + 姓名 + 职位 + 组别 + 属性标签
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
             member.name.charAt(0);
@@ -188,44 +214,66 @@
         }
         delay += 0.06;
 
-        // ----- 右列：荣誉 + 作品（始终占位）-----
-        var rDelay = 0.06;
-
-        // 1. 工作室荣誉（始终显示区域）
-        rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
-        rightHtml.push('<div class="section-title">工作室荣誉</div>');
+        // 5. 工作室荣誉（始终占位）
+        leftHtml.push('<div class="honor-section fade-up" style="animation-delay:'+delay+'s">');
+        leftHtml.push('<div class="section-title">工作室荣誉</div>');
         if (member.honors_work && member.honors_work.length) {
             var workItems = member.honors_work.map(function(h) {
                 var p = parseHonorItem(h);
                 return '<span class="honor-tag" style="background:' + p.color + ';">' + p.text + '</span>';
             }).join('');
-            rightHtml.push('<div class="honor-list">' + workItems + '</div>');
+            leftHtml.push('<div class="honor-list">' + workItems + '</div>');
         } else {
-            rightHtml.push('<div class="honor-empty">暂无荣誉</div>');
+            leftHtml.push('<div class="honor-empty">暂无荣誉</div>');
         }
-        rightHtml.push('</div>');
-        rDelay += 0.06;
+        leftHtml.push('</div>');
+        delay += 0.06;
 
-        // 2. 游戏荣誉（始终显示区域）
-        rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
-        rightHtml.push('<div class="section-title">游戏荣誉</div>');
+        // 6. 游戏荣誉（始终占位）
+        leftHtml.push('<div class="honor-section fade-up" style="animation-delay:'+delay+'s">');
+        leftHtml.push('<div class="section-title">游戏荣誉</div>');
         if (member.honors_game && member.honors_game.length) {
             var gameItems = member.honors_game.map(function(h) {
                 var p = parseHonorItem(h);
                 return '<span class="honor-tag" style="background:' + p.color + ';">' + p.text + '</span>';
             }).join('');
-            rightHtml.push('<div class="honor-list">' + gameItems + '</div>');
+            leftHtml.push('<div class="honor-list">' + gameItems + '</div>');
         } else {
-            rightHtml.push('<div class="honor-empty">暂无荣誉</div>');
+            leftHtml.push('<div class="honor-empty">暂无荣誉</div>');
         }
-        rightHtml.push('</div>');
-        rDelay += 0.06;
+        leftHtml.push('</div>');
+        delay += 0.06;
 
-        // 3. 作品数据准备
+        // 7. 灵动岛（如果有）
+        if (member.island) {
+            var islandType = member.island.type || '留言';
+            var islandContent = member.island.content || '这里有一片灵动岛';
+            var islandHtml = '';
+            if (islandType === '音乐') {
+                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+delay+'s;background:rgba(240,244,255,0.7);">' +
+                    '<div class="island-title">灵动岛 · 音乐</div>' +
+                    '<audio controls style="width:100%;border-radius:6px;"><source src="' + islandContent + '" type="audio/mpeg">您的浏览器不支持音频播放。</audio></div>';
+            } else if (islandType === '动画') {
+                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+delay+'s;background:rgba(255,245,245,0.7);">' +
+                    '<div class="island-title">灵动岛 · 动画</div>' +
+                    '<div style="padding:16px 0;text-align:center;font-size:20px;color:#7f6b6b;">' + islandContent + '</div></div>';
+            } else {
+                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+delay+'s;background:rgba(240,250,255,0.7);">' +
+                    '<div class="island-title">灵动岛 · 留言</div>' +
+                    '<div style="font-size:14px;color:#1e293b;line-height:1.6;">' + islandContent + '</div></div>';
+            }
+            leftHtml.push(islandHtml);
+        }
+
+        // ========== 右列：作品（地图 + 博客） ==========
         var allMaps = window._mapData || [];
         var allBlogs = window._blogData || [];
-        var memberMaps = allMaps.filter(function(m) { return m.author === member.name || m.author.includes(member.name); });
-        var memberBlogs = allBlogs.filter(function(b) { return b.author === member.name || b.author.includes(member.name); });
+        var memberMaps = allMaps.filter(function(m) { 
+            return m.author === member.name || m.author.includes(member.name);
+        });
+        var memberBlogs = allBlogs.filter(function(b) {
+            return b.author === member.name || b.author.includes(member.name);
+        });
 
         var pinnedMapObj = null, pinnedBlogObj = null;
         if (member.pinnedMap && member.pinnedMap.trim()) {
@@ -252,7 +300,9 @@
                 '<div class="work-meta">' + meta + '</div></div>';
         }
 
-        // 4. 置顶作品（如果有）
+        var rDelay = 0.06;
+
+        // 置顶作品（如果有）
         var pinnedHtml = '';
         if (pinnedMapObj) { pinnedMapObj.pinned = true; pinnedHtml += renderWorkCard(pinnedMapObj, 'map'); }
         if (pinnedBlogObj) { pinnedBlogObj.pinned = true; pinnedHtml += renderWorkCard(pinnedBlogObj, 'blog'); }
@@ -264,7 +314,7 @@
             rDelay += 0.06;
         }
 
-        // 5. 发布的地图（始终显示区域）
+        // 发布的地图（始终显示）
         rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">发布的地图 <span class="count">(' + memberMaps.length + ')</span></div>');
         var otherMaps = memberMaps.filter(function(m) { return !pinnedMapObj || m.id !== pinnedMapObj.id; });
@@ -277,7 +327,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 6. 发布的博客（始终显示区域）
+        // 发布的博客（始终显示）
         rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">发布的博客 <span class="count">(' + memberBlogs.length + ')</span></div>');
         var otherBlogs = memberBlogs.filter(function(b) { return !pinnedBlogObj || b.id !== pinnedBlogObj.id; });
@@ -288,28 +338,6 @@
             rightHtml.push('<div class="work-empty">暂无博客</div>');
         }
         rightHtml.push('</div>');
-        rDelay += 0.06;
-
-        // 7. 灵动岛（如果有）
-        if (member.island) {
-            var islandType = member.island.type || '留言';
-            var islandContent = member.island.content || '这里有一片灵动岛';
-            var islandHtml = '';
-            if (islandType === '音乐') {
-                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(240,244,255,0.7);">' +
-                    '<div class="island-title">灵动岛 · 音乐</div>' +
-                    '<audio controls style="width:100%;border-radius:6px;"><source src="' + islandContent + '" type="audio/mpeg">您的浏览器不支持音频播放。</audio></div>';
-            } else if (islandType === '动画') {
-                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(255,245,245,0.7);">' +
-                    '<div class="island-title">灵动岛 · 动画</div>' +
-                    '<div style="padding:16px 0;text-align:center;font-size:20px;color:#7f6b6b;">' + islandContent + '</div></div>';
-            } else {
-                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(240,250,255,0.7);">' +
-                    '<div class="island-title">灵动岛 · 留言</div>' +
-                    '<div style="font-size:14px;color:#1e293b;line-height:1.6;">' + islandContent + '</div></div>';
-            }
-            rightHtml.push(islandHtml);
-        }
 
         // ----- 组装 -----
         var html = '<div class="modal-columns">';
@@ -349,7 +377,7 @@
         }
     };
 
-    // 关闭事件（略，同前）
+    // 关闭事件
     document.addEventListener('DOMContentLoaded', function() {
         var modalClose = document.getElementById('modalClose');
         var modalOverlay = document.getElementById('modalOverlay');
