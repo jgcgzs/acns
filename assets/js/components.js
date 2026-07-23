@@ -7,17 +7,15 @@
 (function() {
     'use strict';
 
-    // 获取弹窗元素
     var overlay = document.getElementById('modalOverlay');
     var closeBtn = document.getElementById('modalClose');
     var bodyContainer = document.getElementById('modalBody');
 
     if (!overlay || !closeBtn || !bodyContainer) {
-        console.warn('弹窗元素缺失，请确保页面包含 .modal-overlay, #modalClose, #modalBody');
+        console.warn('弹窗元素缺失');
         return;
     }
 
-    // 关闭弹窗
     function closeModal() {
         overlay.classList.remove('active');
         overlay.style.display = 'none';
@@ -33,7 +31,7 @@
     });
 
     // ============================================================
-    // 解析编号 (11位，取前10位)
+    // 编号解析（取前10位）
     // ============================================================
     function parseId(idStr) {
         if (!idStr || idStr.length < 10) {
@@ -68,7 +66,7 @@
     }
 
     // ============================================================
-    // 解析荣誉字符串
+    // 荣誉解析
     // ============================================================
     function parseHonors(str) {
         if (!str) return [];
@@ -128,27 +126,23 @@
 
         var idInfo = parseId(member.id);
 
-        // 解析荣誉
+        // 荣誉解析（从 member 对象中读取 workHonors 和 gameHonors）
         var workHonors = parseHonors(member.workHonors || '');
         var gameHonors = parseHonors(member.gameHonors || '');
 
-        // 获取关联
         var memberMaps = getMemberMaps(member.name, maps);
         var memberBlogs = getMemberBlogs(member.name, blogs);
 
         // ---- 左栏 ----
-        // 头像
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy">' :
             member.name.charAt(0);
 
-        // 属性徽章类
         var badgeClass = '';
         if (idInfo.attr === '正式成员') badgeClass = 'green';
         else if (idInfo.attr === '外部成员') badgeClass = 'blue';
         else if (idInfo.attr === '特招成员') badgeClass = 'purple';
 
-        // 组别标签
         var groups = [];
         if (idInfo.group1 !== '未加入') groups.push(idInfo.group1);
         if (idInfo.group2 !== '未加入') groups.push(idInfo.group2);
@@ -156,7 +150,6 @@
             groups.map(function(g) { return '<span class="group-tag">' + g + '</span>'; }).join('') :
             '<span class="group-tag placeholder">未加入任何组</span>';
 
-        // 荣誉HTML
         function honorHtml(records) {
             if (!records.length) return '<div class="honor-empty">似乎什么都没有呢</div>';
             var html = '<div class="honor-list">';
@@ -169,7 +162,6 @@
         var workHonorHtml = honorHtml(workHonors);
         var gameHonorHtml = honorHtml(gameHonors);
 
-        // 灵动岛
         var islandHtml = '';
         if (member.liveType && member.liveContent) {
             var contentHtml = '';
@@ -185,7 +177,6 @@
             }
         }
 
-        // 简介
         var bioHtml = member.bio ? '<div class="member-bio">' + member.bio + '</div>' : '';
 
         var leftHtml = `
@@ -198,7 +189,7 @@
                 <div class="detail-row"><i class="fas fa-user-tag"></i><span class="label">属性</span><span class="value">${idInfo.attr}</span></div>
                 <div class="detail-row"><i class="fas fa-gamepad"></i><span class="label">游戏</span><span class="value">${idInfo.game}</span></div>
                 <div class="detail-row"><i class="fas fa-calendar-alt"></i><span class="label">入室日期</span><span class="value">${idInfo.joinDate}</span></div>
-                <div class="detail-row"><i class="fas fa-users"></i><span class="label">组别</span><span class="value"></span></div>
+                <div class="detail-row"><i class="fas fa-users"></i><span class="label">组别</span></div>
                 <div class="group-tags">${groupsHtml}</div>
                 <div class="detail-row"><i class="fas fa-hashtag"></i><span class="label">迷你号</span><span class="value">${member.minid || '未知'}</span></div>
                 ${bioHtml}
@@ -215,7 +206,6 @@
         `;
 
         // ---- 右栏 ----
-        // 地图卡片
         function mapItemsHtml(items) {
             if (!items.length) return '<div class="item-empty">似乎什么都没有呢</div>';
             var html = '';
@@ -242,7 +232,6 @@
             return html;
         }
 
-        // 博客卡片
         function blogItemsHtml(items) {
             if (!items.length) return '<div class="item-empty">似乎什么都没有呢</div>';
             var html = '';
@@ -281,7 +270,4 @@
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
     };
-
-    // 暴露工具
-    window._parseId = parseId;
 })();
