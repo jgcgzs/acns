@@ -1,8 +1,7 @@
 /* ============================================================
-   成员档案弹窗 — 全新设计 · 毛玻璃 · 流畅动画
+   最终版样式：背景清晰，荣誉强制显示，移动端横向滑动
    ============================================================ */
 
-/* ---- 弹窗容器 ---- */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -17,11 +16,10 @@
 }
 .modal-overlay.active { display: flex; }
 
-/* ---- 弹窗主体 ---- */
 .modal-content {
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 24px;
     max-width: 880px;
@@ -32,18 +30,14 @@
     position: relative;
     box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
     animation: modalIn 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
 }
 .modal-content.has-bg {
-    background-color: rgba(255, 255, 255, 0.65);
-    background-blend-mode: overlay;
+    background: rgba(255, 255, 255, 0.75); /* 轻微半透，不影响背景图 */
+    background-blend-mode: normal;
 }
 .modal-content .modal-inner {
     padding: 28px 32px 32px;
     border-radius: 24px;
-    background: transparent;
 }
 
 @keyframes modalIn {
@@ -51,13 +45,12 @@
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-/* ---- 关闭按钮 ---- */
 .modal-close {
     position: sticky;
     top: 16px;
     float: right;
     font-size: 24px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255,255,255,0.5);
     backdrop-filter: blur(4px);
     border: none;
     color: #2c3e50;
@@ -74,11 +67,10 @@
 }
 .modal-close:hover {
     transform: rotate(90deg) scale(1.1);
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255,255,255,0.9);
     box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
-/* ---- 左右列布局 ---- */
 .modal-columns {
     display: flex;
     gap: 28px;
@@ -98,7 +90,6 @@
     gap: 20px;
 }
 
-/* ---- 动画：卡片向上浮入 ---- */
 .fade-up {
     opacity: 0;
     animation: fadeUp 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
@@ -108,24 +99,22 @@
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ---- 卡片通用样式 ---- */
 .card {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(255,255,255,0.6);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255,255,255,0.5);
     border-radius: 16px;
     padding: 16px 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
     transition: transform 0.25s, box-shadow 0.3s, border-color 0.3s;
 }
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
-    border-color: rgba(95, 127, 255, 0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.04);
+    border-color: rgba(95,127,255,0.2);
 }
 
-/* ---- 头像卡 ---- */
 .profile-card {
     background: transparent;
     backdrop-filter: none;
@@ -139,7 +128,7 @@
     border-radius: 50%;
     background: linear-gradient(135deg, #eef4ff, #dce6f5);
     border: 3px solid #ffffff;
-    box-shadow: 0 8px 30px rgba(95, 127, 255, 0.08);
+    box-shadow: 0 8px 30px rgba(95,127,255,0.08);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,7 +146,7 @@
 }
 .profile-card .avatar:hover {
     transform: scale(1.04);
-    box-shadow: 0 8px 40px rgba(95, 127, 255, 0.15);
+    box-shadow: 0 8px 40px rgba(95,127,255,0.15);
 }
 .profile-card .name {
     font-size: 24px;
@@ -186,7 +175,7 @@
     font-size: 11px;
     font-weight: 600;
     padding: 4px 14px;
-    background: rgba(95, 127, 255, 0.12);
+    background: rgba(95,127,255,0.12);
     color: #5f7fff;
     border-radius: 20px;
     letter-spacing: 0.3px;
@@ -212,7 +201,6 @@
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* ---- 属性标签 ---- */
 .attr-badge {
     display: inline-block;
     font-size: 11px;
@@ -227,9 +215,8 @@
 .attr-badge.blue { background: #5f7fff; }
 .attr-badge.purple { background: #8b5cf6; }
 
-/* ---- 编号卡片 ---- */
 .id-card {
-    background: rgba(248, 250, 255, 0.6);
+    background: rgba(248,250,255,0.6);
 }
 .id-card .id-label {
     font-size: 11px;
@@ -266,9 +253,8 @@
     font-family: monospace;
 }
 
-/* ---- 简介 ---- */
 .bio-card {
-    background: rgba(250, 252, 255, 0.6);
+    background: rgba(250,252,255,0.6);
     font-size: 14px;
     color: #1e293b;
     line-height: 1.8;
@@ -280,9 +266,8 @@
 }
 .bio-card a:hover { border-bottom-color: #5f7fff; }
 
-/* ---- 入室天数 ---- */
 .days-card {
-    background: rgba(248, 250, 255, 0.6);
+    background: rgba(248,250,255,0.6);
     display: flex;
     align-items: center;
     gap: 12px;
@@ -299,9 +284,8 @@
     font-family: 'JetBrains Mono', monospace;
 }
 
-/* ---- 荣誉区域 ---- */
 .honor-section {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.4);
     border-radius: 16px;
     padding: 14px 18px;
     backdrop-filter: blur(4px);
@@ -320,6 +304,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    min-height: 28px;
 }
 .honor-tag {
     display: inline-block;
@@ -336,10 +321,15 @@
     transform: translateY(-3px) scale(1.04);
     box-shadow: 0 6px 20px rgba(0,0,0,0.12);
 }
+.honor-empty {
+    font-size: 13px;
+    color: #4c6a9e;
+    opacity: 0.3;
+    font-style: italic;
+}
 
-/* ---- 作品区域 ---- */
 .work-section {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.4);
     border-radius: 16px;
     padding: 14px 18px;
     backdrop-filter: blur(4px);
@@ -350,6 +340,24 @@
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
+/* 移动端横向滚动（由JS添加类 .horizontal-scroll） */
+.work-grid.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+.work-grid.horizontal-scroll .work-card {
+    flex: 0 0 200px;
+    scroll-snap-align: start;
+}
+.work-grid.horizontal-scroll .work-empty {
+    flex: 0 0 100%;
+    text-align: center;
+}
+
 .work-card {
     background: rgba(255,255,255,0.5);
     border-radius: 12px;
@@ -417,9 +425,8 @@
     margin-left: 6px;
 }
 
-/* ---- 灵动岛卡片 ---- */
 .island-card {
-    background: rgba(240, 248, 255, 0.5);
+    background: rgba(240,248,255,0.5);
     backdrop-filter: blur(6px);
     border: 1px solid rgba(255,255,255,0.5);
 }
@@ -437,7 +444,6 @@
     background: #f0f4ff;
 }
 
-/* ---- 通用辅助 ---- */
 .muted {
     opacity: 0.4;
 }
@@ -467,17 +473,18 @@
     .profile-card .name {
         font-size: 20px;
     }
-    .work-grid {
+    /* 移动端：作品网格强制变为横向滚动（由JS添加类 .horizontal-scroll） */
+    .work-grid:not(.horizontal-scroll) {
         grid-template-columns: 1fr 1fr;
+    }
+    .work-grid.horizontal-scroll .work-card {
+        flex: 0 0 160px;
     }
     .card {
         padding: 14px 16px;
     }
 }
 @media (max-width: 480px) {
-    .work-grid {
-        grid-template-columns: 1fr;
-    }
     .modal-content .modal-inner { padding: 12px; }
     .profile-card .avatar {
         width: 56px;
@@ -501,5 +508,8 @@
         font-size: 18px;
         top: 8px;
         right: 8px;
+    }
+    .work-grid.horizontal-scroll .work-card {
+        flex: 0 0 140px;
     }
 }
