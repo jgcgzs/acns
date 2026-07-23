@@ -1,14 +1,17 @@
 /**
- * 公共组件 - 成员档案弹窗（左右列 · 左右移入动画 + 灵动岛）
+ * 成员档案弹窗 — 完整逻辑
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
+ * 解析字段：组别、迷你号、编号、入室时间、头像、背景、简介、置顶地图、置顶博客、
+ *          工作室荣誉、游戏荣誉、灵动岛
  */
 
 (function() {
 
     // ============================================================
-    // 获取站点根目录
+    // 工具函数
     // ============================================================
+
     function getSiteRoot() {
         var path = window.location.pathname;
         if (path.indexOf('/acns/') === 0) return '/acns/';
@@ -17,15 +20,13 @@
         return '/';
     }
 
-    // ============================================================
     // 编号解析（保留原有机制）
-    // ============================================================
     var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
     var GAME_MAP = { '1': '迷你世界', '2': 'Minecraft', '3': '迷你世界 + Minecraft' };
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
     var DEFAULT_BG = 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
 
-    // 8 种内置颜色（用户可扩展）
+    // 8 种内置颜色
     var COLOR_MAP = {
         '红': '#e74c3c', '蓝': '#5f7fff', '绿': '#10b981',
         '紫': '#8b5cf6', '橙': '#f59e0b', '金': '#f1c40f',
@@ -80,8 +81,7 @@
     // 解析荣誉项（支持 “名称（颜色）” 或 “名称|颜色”）
     function parseHonorItem(line) {
         var text = line.trim();
-        var color = '#5f7fff'; // 默认蓝色
-        // 尝试匹配 （颜色） 或 |颜色
+        var color = '#5f7fff';
         var match = text.match(/^(.+?)[（(]\s*([^）)]+)\s*[）)]$/);
         if (match) {
             text = match[1].trim();
@@ -89,7 +89,6 @@
             if (COLOR_MAP[c]) color = COLOR_MAP[c];
             else if (c.startsWith('#')) color = c;
             else {
-                // 尝试通过颜色名匹配
                 var lower = c.toLowerCase();
                 for (var key in COLOR_MAP) {
                     if (key.toLowerCase() === lower || COLOR_MAP[key].toLowerCase() === lower) {
@@ -98,7 +97,6 @@
                 }
             }
         } else {
-            // 尝试 | 分隔
             var parts = text.split('|');
             if (parts.length === 2) {
                 text = parts[0].trim();
@@ -111,7 +109,7 @@
     }
 
     // ============================================================
-    // 主渲染函数（重构版）
+    // 主渲染函数
     // ============================================================
     function renderMemberModal(member) {
         var bgUrl = (member.background && member.background.trim().startsWith('http')) ? member.background.trim() : DEFAULT_BG;
@@ -232,7 +230,6 @@
                 '<div class="meta">' + meta + '</div></div>';
         }
 
-        // 置顶作品
         var pinnedHtml = '';
         if (pinnedMapObj) { pinnedMapObj.pinned = true; pinnedHtml += renderWorkCard(pinnedMapObj, 'map'); }
         if (pinnedBlogObj) { pinnedBlogObj.pinned = true; pinnedHtml += renderWorkCard(pinnedBlogObj, 'blog'); }
@@ -241,7 +238,6 @@
             rightDelay += 0.06;
         }
 
-        // 其他地图
         var otherMaps = memberMaps.filter(function(m) { return !pinnedMapObj || m.id !== pinnedMapObj.id; });
         var mapsHtml = otherMaps.length ?
             otherMaps.map(function(m) { return renderWorkCard(m, 'map'); }).join('') :
@@ -249,7 +245,6 @@
         rightHtml.push('<div class="slide-right" style="animation-delay:'+rightDelay+'s;width:100%;"><div class="section-title"><i class="fas fa-map"></i> 发布的地图 <span class="count">(' + otherMaps.length + ')</span></div><div class="work-grid">' + mapsHtml + '</div></div>');
         rightDelay += 0.06;
 
-        // 其他博客
         var otherBlogs = memberBlogs.filter(function(b) { return !pinnedBlogObj || b.id !== pinnedBlogObj.id; });
         var blogsHtml = otherBlogs.length ?
             otherBlogs.map(function(b) { return renderWorkCard(b, 'blog'); }).join('') :
@@ -257,35 +252,31 @@
         rightHtml.push('<div class="slide-right" style="animation-delay:'+rightDelay+'s;width:100%;"><div class="section-title"><i class="fas fa-pen"></i> 发布的博客 <span class="count">(' + otherBlogs.length + ')</span></div><div class="work-grid">' + blogsHtml + '</div></div>');
         rightDelay += 0.06;
 
-        // ===== 灵动岛（新增） =====
+        // ===== 灵动岛 =====
         if (member.island) {
             var islandHtml = '';
             var islandType = member.island.type || '留言';
             var islandContent = member.island.content || '✨ 这里有一片灵动岛 ✨';
 
             if (islandType === '音乐') {
-                // 音乐播放器
                 islandHtml = '<div class="card island-card slide-right" style="animation-delay:'+rightDelay+'s;background:linear-gradient(135deg,#f0f4ff,#e8edff);border-color:#c8d4f0;">' +
                     '<div class="island-title"><i class="fas fa-music"></i> 灵动岛 · 音乐</div>' +
                     '<audio controls style="width:100%;margin-top:6px;border-radius:8px;">' +
                     '<source src="' + islandContent + '" type="audio/mpeg">' +
                     '您的浏览器不支持音频播放。</audio></div>';
             } else if (islandType === '动画') {
-                // 动画容器（需在CSS中定义 .pulse-glow 等动画类）
                 islandHtml = '<div class="card island-card slide-right" style="animation-delay:'+rightDelay+'s;background:linear-gradient(135deg,#fff5f5,#ffe8e8);border-color:#f0c8c8;">' +
                     '<div class="island-title"><i class="fas fa-film"></i> 灵动岛 · 动画</div>' +
                     '<div class="' + islandContent + '" style="padding:20px 0;text-align:center;font-size:28px;">✨</div></div>';
             } else {
-                // 留言（默认）
                 islandHtml = '<div class="card island-card slide-right" style="animation-delay:'+rightDelay+'s;background:linear-gradient(135deg,#f0faff,#dff0ff);border-color:#b8d4f0;">' +
                     '<div class="island-title"><i class="fas fa-comment-dots"></i> 灵动岛 · 留言</div>' +
                     '<div style="font-size:15px;color:#1e293b;line-height:1.7;padding:4px 0;">' + islandContent + '</div></div>';
             }
             rightHtml.push(islandHtml);
-            // 不再增加 delay，因为已是最后一个
         }
 
-        // ---- 组装左右列 ----
+        // ---- 组装 ----
         var html = '<div class="modal-columns">';
         html += '<div class="column-left">' + leftHtml.join('') + '</div>';
         html += '<div class="column-right">' + rightHtml.join('') + '</div>';
@@ -295,7 +286,7 @@
     }
 
     // ============================================================
-    // 公共API
+    // 公共 API
     // ============================================================
     window.openMemberModal = function(name) {
         var allMembers = window._memberData || [];
@@ -304,7 +295,7 @@
         var modalContent = document.getElementById('modalContent');
 
         if (!modalOverlay || !modalContent) {
-            console.warn('弹窗元素未找到');
+            console.warn('弹窗元素未找到，请确保页面中存在 #modalOverlay 和 #modalContent');
             return;
         }
 
@@ -324,7 +315,7 @@
         }
     };
 
-    // 弹窗关闭事件（保持不变）
+    // ---- 关闭事件 ----
     document.addEventListener('DOMContentLoaded', function() {
         var modalClose = document.getElementById('modalClose');
         var modalOverlay = document.getElementById('modalOverlay');
