@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>地图库 - 极光创工作室</title>
+    <title>地图库 · 极光创工作室</title>
     <meta name="description" content="极光创工作室地图库 - 迷你世界地图作品展示" />
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    <!-- 公共组件样式 -->
     <link rel="stylesheet" href="../assets/css/components.css" />
 
     <style>
@@ -1139,7 +1138,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏（完全保留原样） ===== -->
+    <!-- ===== 导航栏 ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -1161,7 +1160,6 @@
     <main>
         <div class="container">
 
-            <!-- 头部 -->
             <div class="page-header">
                 <div>
                     <h1>地图库</h1>
@@ -1169,7 +1167,6 @@
                 </div>
             </div>
 
-            <!-- 搜索 -->
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="搜索地图名称、作者、迷你号" />
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
@@ -1177,24 +1174,18 @@
 
             <!-- ===== 分类栏：三行 ===== -->
             <div class="filter-section">
-
-                <!-- 第一行：平台 -->
                 <div class="filter-row" id="platformRow">
                     <span class="filter-label">平台</span>
                     <span class="filter-item active" data-filter="platform" data-value="all">全部</span>
                     <span class="filter-item" data-filter="platform" data-value="迷你世界">迷你世界</span>
                     <span class="filter-item" data-filter="platform" data-value="我的世界">我的世界</span>
                 </div>
-
-                <!-- 第二行：类型 -->
                 <div class="filter-row" id="typeRow">
                     <span class="filter-label">类型</span>
                     <span class="filter-item active" data-filter="type" data-value="all">全部</span>
                     <span class="filter-item" data-filter="type" data-value="地图">地图</span>
                     <span class="filter-item" data-filter="type" data-value="模型/模组">模型 / 模组</span>
                 </div>
-
-                <!-- 第三行：状态 -->
                 <div class="filter-row" id="statusRow">
                     <span class="filter-label">状态</span>
                     <span class="filter-item active" data-filter="status" data-value="all">全部</span>
@@ -1237,19 +1228,17 @@
         </div>
     </main>
 
-    <!-- ===== 详情弹窗（新布局） ===== -->
+    <!-- ===== 详情弹窗 ===== -->
     <div class="detail-overlay" id="detailOverlay">
         <div class="detail-modal" id="detailModal">
             <button class="detail-close" id="detailClose">&times;</button>
             <div class="detail-body" id="detailBody">
-                <!-- 左侧：封面 + 描述 -->
                 <div class="detail-left" id="detailLeft">
                     <div class="cover-wrap" id="detailCoverWrap">
                         <div class="placeholder"><i class="fas fa-image"></i></div>
                     </div>
                     <div class="left-desc" id="detailLeftDesc">地图描述</div>
                 </div>
-                <!-- 右侧：标题、标签、元数据、公告等 -->
                 <div class="detail-right" id="detailRight">
                     <div class="mod mod-1 detail-title" id="detailTitle">地图名称</div>
                     <div class="mod mod-2 detail-tags" id="detailTags"></div>
@@ -1379,15 +1368,49 @@
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) dateStr = '未知';
 
+                // ----- 处理标题前缀 -----
                 var prefixInfo = extractTitlePrefix(title);
                 var displayTitle = title;
+                var isFeatured = false;
+                var tagFromPrefix = null;
+
                 if (prefixInfo) {
-                    displayTitle = prefixInfo.cleanTitle;
-                    tag = prefixInfo.prefix;
+                    var prefix = prefixInfo.prefix;
+                    var clean = prefixInfo.cleanTitle;
+                    displayTitle = clean || title;
+                    if (prefix === '精选') {
+                        isFeatured = true;
+                        // 不设置 tag，让正文标签或为空
+                    } else {
+                        tagFromPrefix = prefix; // 作为备选状态
+                    }
                 }
 
-                var isFeatured = /\[精选\]/.test(title) || tag === '精选';
+                // 如果正文标签是 "精选"，也视为精选
+                if (tag === '精选') {
+                    isFeatured = true;
+                    tag = ''; // 清空，因为精选单独显示
+                }
 
+                // 决定最终 tag：优先正文，其次前缀（非精选），最后空
+                var finalTag = tag || tagFromPrefix || '';
+
+                // 如果 finalTag 为 '精选'，但我们已经处理了，这里不会出现
+                // 如果正文标签非空且不是“精选”，则使用正文；否则用前缀
+                // 但我们已经把正文 tag 赋值，如果正文为“精选”则清空，所以 finalTag 为空或正文非精选。
+                // 但注意，如果正文有标签且不是精选，则 tag 保持，否则 tag 为空。
+
+                // 但上述逻辑中，如果正文标签是“精选”，我们清空了 tag，但 finalTag 会变成 tagFromPrefix（如果有）。但如果同时有标题前缀“精选”，则 tagFromPrefix 为 null，所以最终 tag 为空。
+                // 如果正文没有标签，但标题前缀为“制作中”，则 finalTag = tagFromPrefix = '制作中'，isFeatured = false。
+                // 符合预期。
+
+                // 单独处理：如果 finalTag 是 '精选'（理论上不会），但也转为精选标志。
+                if (finalTag === '精选') {
+                    isFeatured = true;
+                    finalTag = '';
+                }
+
+                // 推断平台和类型（如果未显式）
                 if (title.indexOf('迷你世界') > -1) platform = '迷你世界';
                 else if (title.indexOf('我的世界') > -1 || title.indexOf('MC') > -1) platform = '我的世界';
 
@@ -1400,15 +1423,14 @@
                     author: author,
                     cover: cover,
                     desc: desc,
-                    tag: tag || '',
+                    tag: finalTag,
                     minid: minid || '',
                     date: dateStr,
                     platform: platform,
                     type: type,
                     announcement: announcement || '暂无公告',
                     raw: issue,
-                    isFeatured: isFeatured,
-                    isGreenTag: !!prefixInfo
+                    isFeatured: isFeatured
                 };
             }
 
@@ -1550,20 +1572,21 @@
                     '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                     '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
 
-                var tagClass = map.isFeatured ? 'tag-gold' : 'tag-status';
-                var tagHtml = map.tag ? '<span class="tag-pill ' + tagClass + '">' + map.tag + '</span>' : '';
+                // 平台、类型、状态（蓝色），精选（金色）
                 var platformHtml = '<span class="tag-pill tag-platform">' + map.platform + '</span>';
                 var typeHtml = '<span class="tag-pill tag-type">' + map.type + '</span>';
+                var statusHtml = map.tag ? '<span class="tag-pill tag-status">' + map.tag + '</span>' : '';
+                var featuredHtml = map.isFeatured ? '<span class="tag-pill tag-gold">精选</span>' : '';
 
                 var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
-                '未知');
+                    '未知');
                 var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' + map
                     .author + '</span>';
 
                 var html = '<div class="map-card" data-id="' + map.id + '">';
                 html += coverHtml;
                 html += '<div class="body">';
-                html += '<div class="tag-row">' + platformHtml + typeHtml + tagHtml + '</div>';
+                html += '<div class="tag-row">' + platformHtml + typeHtml + statusHtml + featuredHtml + '</div>';
                 html += '<span class="title">' + map.title + '</span>';
                 html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                 html += '<div class="meta-row">' + authorHtml + '<span class="minid">迷你号 ' + finalMinid + '</span></div>';
@@ -1642,7 +1665,7 @@
             }
 
             // ============================================================
-            // 详情弹窗 - 新布局
+            // 详情弹窗
             // ============================================================
             function openDetail(map) {
                 if (!map) return;
@@ -1657,21 +1680,17 @@
                     detailCoverWrap.innerHTML = '<div class="placeholder"><i class="fas fa-image"></i></div>';
                 }
 
-                // 左侧描述
                 detailLeftDesc.textContent = map.desc || '暂无描述';
-
-                // 右侧标题
                 detailTitle.textContent = map.title;
 
-                // 标签
-                var tagClass = map.isFeatured ? 'gold' : '';
+                // 标签：平台、类型、状态（蓝色），精选（金色）
                 var tagsHtml = '';
                 tagsHtml += '<span class="tag-pill tag-platform">' + map.platform + '</span>';
                 tagsHtml += '<span class="tag-pill tag-type">' + map.type + '</span>';
-                if (map.tag) tagsHtml += '<span class="tag-pill ' + tagClass + '">' + map.tag + '</span>';
+                if (map.tag) tagsHtml += '<span class="tag-pill tag-status">' + map.tag + '</span>';
+                if (map.isFeatured) tagsHtml += '<span class="tag-pill gold">精选</span>';
                 detailTags.innerHTML = tagsHtml;
 
-                // 元数据：作者、迷你号、日期
                 var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
                     '未知');
                 var metaHtml = '';
@@ -1681,7 +1700,6 @@
                 metaHtml += '<span><i class="fas fa-calendar-alt"></i> ' + map.date + '</span>';
                 detailMeta.innerHTML = metaHtml;
 
-                // 绑定作者点击
                 detailMeta.querySelector('.d-author').addEventListener('click', function() {
                     var name = this.dataset.author;
                     if (detailOpen) {
@@ -1695,15 +1713,13 @@
                     }
                 });
 
-                // 扩展信息：平台、类型、状态（去掉结束和编号）
                 var extraHtml = '';
                 extraHtml += '<div class="extra-item"><strong>平台</strong> ' + map.platform + '</div>';
                 extraHtml += '<div class="extra-item"><strong>类型</strong> ' + map.type + '</div>';
-                extraHtml += '<div class="extra-item"><strong>状态</strong> <span class="badge ' + (map.isFeatured ?
-                    'gold' : '') + '">' + (map.tag || '未知') + '</span></div>';
+                extraHtml += '<div class="extra-item"><strong>状态</strong> <span class="badge">' + (map.tag || '未知') +
+                    '</span></div>';
                 detailExtra.innerHTML = extraHtml;
 
-                // 公告
                 detailAnnounce.textContent = '📢 ' + (map.announcement || '暂无公告');
 
                 // 重置动画
