@@ -21,7 +21,7 @@
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
 
     // 段位颜色（1~5 从蓝到金）
-    var RANK_COLORS = ['#5f7fff', '#4facfe', '#a855f7', '#f59e0b', '#fbbf24']; // 蓝→紫→橙→金
+    var RANK_COLORS = ['#5f7fff', '#4facfe', '#a855f7', '#f59e0b', '#fbbf24'];
     var DEFAULT_COLOR = '#5f7fff';
 
     function parseIdNumber(id) {
@@ -85,23 +85,20 @@
         if (match) {
             var rank = parseInt(match[1]);
             var name = match[2].trim() || trimmed;
-            // 段位 1~5 对应颜色，超出使用默认
             var color = (rank >= 1 && rank <= 5) ? RANK_COLORS[rank-1] : DEFAULT_COLOR;
             return { rank: rank, name: name, color: color };
         } else {
-            // 无段位，直接显示，颜色默认
             return { rank: null, name: trimmed, color: DEFAULT_COLOR };
         }
     }
 
     // ----- 主渲染函数 -----
     function renderMemberModal(member) {
-        // 归一化：将字符串转为数组（兼容旧数据）
+        // 归一化
         if (member.groups && typeof member.groups === 'string') {
             member.groups = member.groups.split(/[,，]\s*/).filter(Boolean);
         }
 
-        // 荣誉字段：优先使用 workHonors/gameHonors，否则尝试 honors_work/honors_game
         var workHonors = member.workHonors || member.honors_work || '';
         var gameHonors = member.gameHonors || member.honors_game || '';
         if (typeof workHonors === 'string') {
@@ -115,7 +112,6 @@
         var modalInner = document.getElementById('modalInner');
         if (!modalContent || !modalInner) return;
 
-        // 背景
         var bgUrl = (member.background && member.background.trim().startsWith('http')) 
             ? member.background.trim() 
             : 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
@@ -124,11 +120,10 @@
         modalContent.style.backgroundBlendMode = 'overlay, normal';
         modalContent.classList.add('has-bg');
 
-        var leftHtml = [];
-        var rightHtml = [];
+        var leftHtml = [], rightHtml = [];
         var delay = 0.05;
 
-        // ----- 左列：个人信息 -----
+        // ----- 左列 -----
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
             member.name.charAt(0);
@@ -153,7 +148,6 @@
         leftHtml.push('</div>');
         delay += 0.06;
 
-        // 编号解析卡
         if (member.id && member.id !== '未知' && member.id.length >= 10) {
             leftHtml.push(renderIdCard(member.id, delay));
         } else {
@@ -161,7 +155,6 @@
         }
         delay += 0.06;
 
-        // 简介
         if (member.bio && member.bio.trim()) {
             leftHtml.push('<div class="card bio-card fade-up" style="animation-delay:'+delay+'s">' + member.bio + '</div>');
         } else {
@@ -169,7 +162,6 @@
         }
         delay += 0.06;
 
-        // 入室天数
         var days = getDaysSince(member.joinDate);
         if (days !== null && days >= 0) {
             leftHtml.push('<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>');
@@ -180,14 +172,13 @@
         }
         delay += 0.06;
 
-        // ----- 右列：荣誉 + 作品 -----
+        // ----- 右列 -----
         var rDelay = 0.06;
 
-        // 1. 工作室荣誉（始终显示）
+        // 工作室荣誉
         rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">工作室荣誉</div>');
         if (workHonors && workHonors.length) {
-            // 按段位排序（升序）
             var parsedWork = workHonors.map(function(h) { return parseHonorItem(h); });
             parsedWork.sort(function(a, b) { return (a.rank || 99) - (b.rank || 99); });
             var workItems = parsedWork.map(function(p) {
@@ -200,7 +191,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 2. 游戏荣誉（始终显示）
+        // 游戏荣誉
         rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">游戏荣誉</div>');
         if (gameHonors && gameHonors.length) {
@@ -216,7 +207,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 3. 作品数据准备
+        // 作品数据
         var allMaps = window._mapData || [];
         var allBlogs = window._blogData || [];
         var memberMaps = allMaps.filter(function(m) { return m.author === member.name || m.author.includes(member.name); });
@@ -247,7 +238,7 @@
                 '<div class="work-meta">' + meta + '</div></div>';
         }
 
-        // 4. 置顶作品（如果有）
+        // 置顶
         var pinnedHtml = '';
         if (pinnedMapObj) { pinnedMapObj.pinned = true; pinnedHtml += renderWorkCard(pinnedMapObj, 'map'); }
         if (pinnedBlogObj) { pinnedBlogObj.pinned = true; pinnedHtml += renderWorkCard(pinnedBlogObj, 'blog'); }
@@ -259,7 +250,7 @@
             rDelay += 0.06;
         }
 
-        // 5. 发布的地图（始终显示）
+        // 地图
         rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">发布的地图 <span class="count">(' + memberMaps.length + ')</span></div>');
         var otherMaps = memberMaps.filter(function(m) { return !pinnedMapObj || m.id !== pinnedMapObj.id; });
@@ -272,7 +263,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 6. 发布的博客（始终显示）
+        // 博客
         rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">发布的博客 <span class="count">(' + memberBlogs.length + ')</span></div>');
         var otherBlogs = memberBlogs.filter(function(b) { return !pinnedBlogObj || b.id !== pinnedBlogObj.id; });
@@ -285,7 +276,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 7. 灵动岛（如果有）
+        // 灵动岛
         var islandType = member.liveType || member.islandType || '';
         var islandContent = member.liveContent || member.islandContent || '';
         if (islandType && islandContent) {
@@ -298,7 +289,7 @@
                 islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(255,245,245,0.7);">' +
                     '<div class="island-title">灵动岛 · 动画</div>' +
                     '<div style="padding:16px 0;text-align:center;font-size:20px;color:#7f6b6b;">' + islandContent + '</div></div>';
-            } else { // 留言
+            } else {
                 islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(240,250,255,0.7);">' +
                     '<div class="island-title">灵动岛 · 留言</div>' +
                     '<div style="font-size:14px;color:#1e293b;line-height:1.6;">' + islandContent + '</div></div>';
@@ -344,7 +335,7 @@
         }
     };
 
-    // 关闭事件（同前）
+    // 关闭事件
     document.addEventListener('DOMContentLoaded', function() {
         var modalClose = document.getElementById('modalClose');
         var modalOverlay = document.getElementById('modalOverlay');
