@@ -1,10 +1,6 @@
-/**
- * 公共组件样式 — 成员档案弹窗 + 全局模态框
- * 包含：模态框容器、左右分栏、卡片、荣誉标签、灵动岛、入场动画
- */
-
 /* ============================================================
-   成员档案弹窗 — 左右列 · 卡片化 · 左右移入动画
+   成员档案弹窗 — 左右列 · 卡片化 · 左右移入动画 · 灵动岛
+   配合 member-modal.js 使用
    ============================================================ */
 
 /* ---- 弹窗容器 ---- */
@@ -20,9 +16,7 @@
     align-items: center;
     padding: 20px;
 }
-.modal-overlay.active {
-    display: flex;
-}
+.modal-overlay.active { display: flex; }
 
 /* ---- 弹窗主体 ---- */
 .modal-content {
@@ -55,14 +49,8 @@
 }
 
 @keyframes modalIn {
-    0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.92);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateY(40px) scale(0.92); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ---- 关闭按钮 ---- */
@@ -71,7 +59,7 @@
     top: 12px;
     float: right;
     font-size: 26px;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255,255,255,0.8);
     border: none;
     color: #4a5a6a;
     cursor: pointer;
@@ -124,24 +112,12 @@
 }
 
 @keyframes slideInLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(-30px) scale(0.96);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateX(-30px) scale(0.96); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 @keyframes slideInRight {
-    0% {
-        opacity: 0;
-        transform: translateX(30px) scale(0.96);
-    }
-    100% {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateX(30px) scale(0.96); }
+    100% { opacity: 1; transform: translateX(0) scale(1); }
 }
 
 /* ===== 卡片通用样式 ===== */
@@ -236,7 +212,7 @@
     background: #5f7fff;
     color: #fff;
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(95,127,255,0.2);
 }
 .profile-card .meta {
     display: flex;
@@ -251,10 +227,7 @@
     align-items: center;
     gap: 4px;
 }
-.profile-card .meta i {
-    font-size: 12px;
-    opacity: 0.4;
-}
+.profile-card .meta i { font-size: 12px; opacity: 0.4; }
 
 /* ---- 成员属性标签 ---- */
 .member-attr-badge {
@@ -270,15 +243,9 @@
     box-shadow: 0 2px 8px rgba(95, 127, 255, 0.2);
     transition: transform 0.25s, box-shadow 0.25s;
 }
-.member-attr-badge.green {
-    background: linear-gradient(135deg, #10b981, #34d399);
-}
-.member-attr-badge.blue {
-    background: linear-gradient(135deg, #5f7fff, #7c8cff);
-}
-.member-attr-badge.purple {
-    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-}
+.member-attr-badge.green { background: linear-gradient(135deg, #10b981, #34d399); }
+.member-attr-badge.blue { background: linear-gradient(135deg, #5f7fff, #7c8cff); }
+.member-attr-badge.purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
 .member-attr-badge:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 16px rgba(95, 127, 255, 0.3);
@@ -307,10 +274,7 @@
     color: #4c6a9e;
     font-family: 'Inter', -apple-system, sans-serif;
 }
-.id-card .parts .val {
-    color: #1e293b;
-    font-weight: 600;
-}
+.id-card .parts .val { color: #1e293b; font-weight: 600; }
 .id-card .raw {
     font-size: 11px;
     color: #4c6a9e;
@@ -331,9 +295,7 @@
     text-decoration: underline;
     transition: color 0.2s;
 }
-.bio-card a:hover {
-    color: #3d5fd9;
-}
+.bio-card a:hover { color: #3d5fd9; }
 
 /* ---- 入室天数卡片 ---- */
 .days-card {
@@ -390,17 +352,16 @@
     font-size: 12px;
     font-weight: 500;
     color: #fff;
-    background: #5f7fff;
     letter-spacing: 0.3px;
     transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 2px 6px rgba(95, 127, 255, 0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 .honor-item:hover {
     transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 6px 20px rgba(95, 127, 255, 0.25);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ---- 地图/博客卡片网格 ---- */
+/* ---- 作品网格 ---- */
 .section-title {
     font-size: 13px;
     font-weight: 700;
@@ -437,7 +398,7 @@
     transition: transform 0.35s, box-shadow 0.35s, border-color 0.35s;
     cursor: pointer;
     overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
 }
 .work-card:hover {
     transform: translateY(-4px) scale(1.01);
@@ -507,44 +468,59 @@
     text-transform: uppercase;
 }
 
-/* ---- 灵动岛卡片 ---- */
+/* ===== 灵动岛卡片 ===== */
 .island-card {
-    background: linear-gradient(135deg, #f0faff, #dff0ff);
-    border: 1px solid #b8d4f0;
     border-radius: 12px;
     padding: 14px 18px;
     transition: transform 0.3s, box-shadow 0.3s;
 }
-.island-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(95, 127, 255, 0.06);
-}
 .island-card .island-title {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: #1e293b;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 .island-card .island-title i {
+    font-size: 16px;
     color: #5f7fff;
-    opacity: 0.6;
 }
 .island-card audio {
     width: 100%;
     border-radius: 8px;
-    margin-top: 4px;
+    outline: none;
+}
+.island-card audio::-webkit-media-controls-panel {
+    background: #f0f4ff;
 }
 
-/* ---- 响应式：移动端变为上下排列，动画改为上滑 ---- */
+/* ---- 内置动画类（供灵动岛使用） ---- */
+.pulse-glow {
+    animation: pulseGlow 2s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 0.8; text-shadow: 0 0 10px #5f7fff; }
+    50% { transform: scale(1.15); opacity: 1; text-shadow: 0 0 30px #5f7fff; }
+}
+.float-up {
+    animation: floatUp 3s ease-in-out infinite;
+}
+@keyframes floatUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+.spin-slow {
+    animation: spinSlow 6s linear infinite;
+}
+@keyframes spinSlow {
+    100% { transform: rotate(360deg); }
+}
+
+/* ---- 响应式 ---- */
 @media (max-width: 768px) {
-    .modal-content.has-bg .modal-inner {
-        padding: 16px 16px 20px;
-    }
+    .modal-content.has-bg .modal-inner { padding: 16px 16px 20px; }
     .modal-columns {
         flex-direction: column;
         gap: 16px;
@@ -561,14 +537,8 @@
         animation-name: slideUp !important;
     }
     @keyframes slideUp {
-        0% {
-            opacity: 0;
-            transform: translateY(20px) scale(0.96);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+        100% { opacity: 1; transform: translateY(0) scale(1); }
     }
     .profile-card .avatar {
         width: 64px;
@@ -590,9 +560,7 @@
     .work-grid {
         grid-template-columns: 1fr;
     }
-    .modal-content.has-bg .modal-inner {
-        padding: 12px 12px 16px;
-    }
+    .modal-content.has-bg .modal-inner { padding: 12px 12px 16px; }
     .profile-card .avatar {
         width: 56px;
         height: 56px;
@@ -616,55 +584,7 @@
         height: 30px;
         font-size: 20px;
     }
-}
-
-/* ---- 灵动岛配套动画（供 `动画` 类型使用） ---- */
-.pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite;
-}
-@keyframes pulseGlow {
-    0%,
-    100% {
-        transform: scale(1);
-        opacity: 0.8;
-        text-shadow: 0 0 10px #5f7fff;
-    }
-    50% {
-        transform: scale(1.2);
-        opacity: 1;
-        text-shadow: 0 0 30px #5f7fff;
-    }
-}
-.float-up {
-    animation: floatUp 3s ease-in-out infinite;
-}
-@keyframes floatUp {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-8px);
-    }
-}
-.spin-slow {
-    animation: spinSlow 6s linear infinite;
-}
-@keyframes spinSlow {
-    100% {
-        transform: rotate(360deg);
-    }
-}
-.shimmer {
-    background: linear-gradient(120deg, #e0e7ff 0%, #ffffff 30%, #e0e7ff 60%);
-    background-size: 200% 100%;
-    animation: shimmer 2.5s ease-in-out infinite;
-}
-@keyframes shimmer {
-    0% {
-        background-position: -200% 0;
-    }
-    100% {
-        background-position: 200% 0;
+    .island-card audio {
+        width: 100%;
     }
 }
