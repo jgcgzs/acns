@@ -1,5 +1,5 @@
 /* ============================================================
-   components.css – 成员档案弹窗样式（毛玻璃 + 圆角 + 动画）
+   components.css – 成员档案弹窗（毛玻璃、圆角、左右卡片）
    独立于主站，仅用于成员档案页面
    ============================================================ */
 
@@ -25,13 +25,13 @@
     to { opacity: 1; }
 }
 
-/* ----- 弹窗主体（毛玻璃 + 圆角） ----- */
+/* ----- 弹窗主体 ----- */
 .modal-content {
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.35);
-    border-radius: 20px;  /* 圆角 */
+    border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
     max-width: 960px;
     width: 100%;
@@ -66,11 +66,11 @@
     outline: none;
 }
 
-/* ----- 弹窗内部左右布局（卡片化） ----- */
+/* ----- 左右两栏（卡片化） ----- */
 .modal-inner {
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 30px;
+    gap: 28px;
     margin-top: 8px;
     height: 100%;
     max-height: calc(90vh - 80px);
@@ -93,12 +93,12 @@
 .modal-left {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
 }
 .left-card {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 16px;
-    padding: 16px 18px;
+    padding: 14px 16px;
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
     animation: slideLeft 0.5s ease both;
@@ -113,7 +113,7 @@
 .left-card:nth-child(4) { animation-delay: 0.26s; }
 .left-card:nth-child(5) { animation-delay: 0.33s; }
 
-/* 成员基础信息 */
+/* 头像 */
 .member-avatar-lg {
     width: 72px;
     height: 72px;
@@ -128,7 +128,7 @@
     color: #1a7fc4;
     overflow: hidden;
     flex-shrink: 0;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 .member-avatar-lg img {
     width: 100%;
@@ -165,7 +165,7 @@
     gap: 2px 16px;
     font-size: 13px;
     color: #4a5a6a;
-    margin: 4px 0;
+    margin: 3px 0;
 }
 .detail-row i {
     width: 18px;
@@ -185,7 +185,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin: 4px 0;
+    margin: 4px 0 6px;
 }
 .group-tag {
     background: rgba(26, 127, 196, 0.1);
@@ -233,7 +233,7 @@
     padding: 2px 12px;
     border-radius: 20px;
     color: #fff;
-    background: #9ca3af; /* rank 1 default */
+    background: #9ca3af; /* rank 1 默认 */
 }
 .honor-tag.rank-1 { background: #9ca3af; }
 .honor-tag.rank-2 { background: #60a5fa; }
@@ -317,7 +317,7 @@
     opacity: 0.4;
 }
 
-/* 地图卡片 */
+/* 卡片（地图/博客） */
 .item-card {
     background: rgba(255, 255, 255, 0.55);
     border-radius: 16px;
