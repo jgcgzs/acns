@@ -1,17 +1,12 @@
 /**
- * 成员档案弹窗 — 完整逻辑（已修复）
+ * 成员档案弹窗 — 全新重制版
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
- * 解析字段：组别、迷你号、编号、入室时间、头像、背景、简介、置顶地图、置顶博客、
- *          工作室荣誉、游戏荣誉、灵动岛
  */
 
 (function() {
 
-    // ============================================================
-    // 工具函数
-    // ============================================================
-
+    // ----- 工具函数 -----
     function getSiteRoot() {
         var path = window.location.pathname;
         if (path.indexOf('/acns/') === 0) return '/acns/';
@@ -20,18 +15,10 @@
         return '/';
     }
 
-    // 编号解析（保留原有机制）
+    // 编号解析（去掉了“·”和“▸”）
     var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
     var GAME_MAP = { '1': '迷你世界', '2': 'Minecraft', '3': '迷你世界 + Minecraft' };
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
-    var DEFAULT_BG = 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
-
-    // 8 种内置颜色
-    var COLOR_MAP = {
-        '红': '#e74c3c', '蓝': '#5f7fff', '绿': '#10b981',
-        '紫': '#8b5cf6', '橙': '#f59e0b', '金': '#f1c40f',
-        '粉': '#ec4899', '青': '#06b6d4'
-    };
 
     function parseIdNumber(id) {
         if (!id || id === '未知' || id.length < 10) return null;
@@ -55,14 +42,20 @@
 
     function renderIdCard(id, delay) {
         var info = parseIdNumber(id);
-        if (!info) return '<div class="card id-card slide-left" style="animation-delay:'+delay+'s"><span style="opacity:0.3;">编号格式无效</span></div>';
-        var html = '<div class="card id-card slide-left" style="animation-delay:'+delay+'s"><div class="label">编号解析</div><div class="parts">';
-        html += '<span>▸ ' + info.attrName + ' <span style="opacity:0.3;">(' + id.charAt(0) + ')</span></span>';
-        html += '<span>▸ ' + info.gameName + ' <span style="opacity:0.3;">(' + id.charAt(1) + ')</span></span>';
-        html += '<span>▸ ' + info.date + '</span>';
-        html += '<span>▸ ' + info.groupDisplay + '</span>';
-        if (info.dup && info.dup !== '无') html += '<span>▸ 防重#' + info.dup + '</span>';
-        html += '</div><div class="raw">完整编号：' + info.raw + '</div></div>';
+        if (!info) {
+            return '<div class="card id-card fade-up" style="animation-delay:'+delay+'s"><span class="muted">编号格式无效</span></div>';
+        }
+        var html = '<div class="card id-card fade-up" style="animation-delay:'+delay+'s">';
+        html += '<div class="id-label">编号解析</div>';
+        html += '<div class="id-parts">';
+        html += '<span><span class="id-key">属性</span> ' + info.attrName + ' (' + id.charAt(0) + ')</span>';
+        html += '<span><span class="id-key">平台</span> ' + info.gameName + ' (' + id.charAt(1) + ')</span>';
+        html += '<span><span class="id-key">入室</span> ' + info.date + '</span>';
+        html += '<span><span class="id-key">组别</span> ' + info.groupDisplay + '</span>';
+        if (info.dup && info.dup !== '无') html += '<span><span class="id-key">副本</span> ' + info.dup + '</span>';
+        html += '</div>';
+        html += '<div class="id-raw">' + info.raw + '</div>';
+        html += '</div>';
         return html;
     }
 
@@ -78,7 +71,13 @@
         return Math.floor(diff / (1000*60*60*24));
     }
 
-    // 解析荣誉项（支持 “名称（颜色）” 或 “名称|颜色”）
+    // 解析荣誉（颜色支持中文名或#hex）
+    var COLOR_MAP = {
+        '红': '#e74c3c', '蓝': '#5f7fff', '绿': '#10b981',
+        '紫': '#8b5cf6', '橙': '#f59e0b', '金': '#f1c40f',
+        '粉': '#ec4899', '青': '#06b6d4'
+    };
+
     function parseHonorItem(line) {
         var text = line.trim();
         var color = '#5f7fff';
@@ -105,54 +104,45 @@
                 else if (c2.startsWith('#')) color = c2;
             }
         }
-        return { text, color };
+        return { text: text, color: color };
     }
 
-    // ============================================================
-    // 主渲染函数（修复版）
-    // ============================================================
+    // ----- 主渲染函数 -----
     function renderMemberModal(member) {
-        // ----- 数据归一化（新增：兼容字符串格式）-----
-        // 组别
+        // 数据归一化（字符串→数组）
         if (member.groups && typeof member.groups === 'string') {
             member.groups = member.groups.split(/[,，]\s*/).filter(Boolean);
         }
-        // 工作室荣誉
         if (member.honors_work && typeof member.honors_work === 'string') {
             member.honors_work = member.honors_work.split(/[,，]\s*/).filter(Boolean);
         }
-        // 游戏荣誉
         if (member.honors_game && typeof member.honors_game === 'string') {
             member.honors_game = member.honors_game.split(/[,，]\s*/).filter(Boolean);
         }
-
-        // ----- 背景处理（增强容错）-----
-        var bgUrl = (member.background && member.background.trim().startsWith('http')) 
-            ? member.background.trim() 
-            : DEFAULT_BG;
-        // 后备渐变（当图片加载失败时显示）
-        var fallbackGradient = 'linear-gradient(135deg, #e8edf5, #d5dff0)';
 
         var modalContent = document.getElementById('modalContent');
         var modalInner = document.getElementById('modalInner');
         if (!modalContent || !modalInner) return;
 
-        // 同时设置背景图片和渐变，保证不空白
-        modalContent.style.backgroundImage = 'url(' + bgUrl + '), ' + fallbackGradient;
+        // 背景图片（带后备渐变）
+        var bgUrl = (member.background && member.background.trim().startsWith('http')) 
+            ? member.background.trim() 
+            : 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
+        modalContent.style.backgroundImage = 'url(' + bgUrl + '), linear-gradient(135deg, #e8edf5, #d5dff0)';
         modalContent.style.backgroundSize = 'cover, cover';
-        modalContent.style.backgroundBlendMode = 'overlay, normal'; // 让图片叠在渐变上
+        modalContent.style.backgroundBlendMode = 'overlay, normal';
         modalContent.classList.add('has-bg');
 
-        // --- 左侧列 ---
+        // ----- 左列 -----
         var leftHtml = [];
-        var leftDelay = 0.04;
+        var delay = 0.05;
 
-        // 1. 头像卡片
+        // 1. 头像 + 姓名 + 组别
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
             member.name.charAt(0);
         var groupsHtml = member.groups && member.groups.length ?
-            member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
+            member.groups.map(function(g) { return '<span class="group-tag">' + g + '</span>'; }).join('') : '';
         var attrBadge = '';
         if (member.id && member.id.length >= 1) {
             var first = member.id.charAt(0);
@@ -160,69 +150,74 @@
             if (first === '1') { attrName = '正式成员'; cls = 'green'; }
             else if (first === '2') { attrName = '外部成员'; cls = 'blue'; }
             else if (first === '3') { attrName = '特招成员'; cls = 'purple'; }
-            if (attrName) attrBadge = '<span class="member-attr-badge ' + cls + '">' + attrName + '</span>';
+            if (attrName) attrBadge = '<span class="attr-badge ' + cls + '">' + attrName + '</span>';
         }
-        var profileHtml = '<div class="profile-card slide-left" style="animation-delay:'+leftDelay+'s">';
-        profileHtml += '<div class="avatar">' + avatarHtml + '</div>';
-        profileHtml += '<div class="name">' + member.name + ' ' + attrBadge + '</div>';
-        profileHtml += (member.role ? '<div class="role">' + member.role + '</div>' : '');
-        profileHtml += (groupsHtml ? '<div class="groups">' + groupsHtml + '</div>' : '');
-        profileHtml += '<div class="meta">';
-        profileHtml += '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>';
-        profileHtml += '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>';
-        profileHtml += '</div></div>';
-        leftHtml.push(profileHtml);
-        leftDelay += 0.06;
 
-        // 2. 编号卡片
+        leftHtml.push('<div class="profile-card fade-up" style="animation-delay:'+delay+'s">');
+        leftHtml.push('<div class="avatar">' + avatarHtml + '</div>');
+        leftHtml.push('<div class="name">' + member.name + ' ' + attrBadge + '</div>');
+        if (member.role) leftHtml.push('<div class="role">' + member.role + '</div>');
+        if (groupsHtml) leftHtml.push('<div class="groups">' + groupsHtml + '</div>');
+        leftHtml.push('<div class="meta"><span>编号 ' + member.id + '</span><span>迷你号 ' + member.minid + '</span></div>');
+        leftHtml.push('</div>');
+        delay += 0.06;
+
+        // 2. 编号解析卡
         if (member.id && member.id !== '未知' && member.id.length >= 10) {
-            leftHtml.push(renderIdCard(member.id, leftDelay));
+            leftHtml.push(renderIdCard(member.id, delay));
         } else {
-            leftHtml.push('<div class="card id-card slide-left" style="animation-delay:'+leftDelay+'s"><span style="opacity:0.3;">编号：' + member.id + '</span></div>');
+            leftHtml.push('<div class="card id-card fade-up" style="animation-delay:'+delay+'s"><span class="muted">编号 ' + member.id + '</span></div>');
         }
-        leftDelay += 0.06;
+        delay += 0.06;
 
-        // 3. 简介卡片
+        // 3. 简介
         if (member.bio && member.bio.trim()) {
-            leftHtml.push('<div class="card bio-card slide-left" style="animation-delay:'+leftDelay+'s">' + member.bio + '</div>');
-            leftDelay += 0.06;
+            leftHtml.push('<div class="card bio-card fade-up" style="animation-delay:'+delay+'s">' + member.bio + '</div>');
+            delay += 0.06;
         }
 
-        // 4. 入室天数卡片
+        // 4. 入室天数
         var days = getDaysSince(member.joinDate);
-        var daysHtml = (days !== null && days >= 0) ?
-            '<div class="card days-card slide-left" style="animation-delay:'+leftDelay+'s"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>' :
-            (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') ?
-            '<div class="card days-card slide-left" style="animation-delay:'+leftDelay+'s"><span>入室时间</span><span>' + member.joinDate + '</span></div>' :
-            '<div class="card days-card slide-left" style="animation-delay:'+leftDelay+'s"><span>入室时间</span><span style="opacity:0.3;">未录入</span></div>';
+        var daysHtml = '';
+        if (days !== null && days >= 0) {
+            daysHtml = '<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>';
+        } else if (member.joinDate && member.joinDate !== '未知' && member.joinDate !== '') {
+            daysHtml = '<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>入室时间</span><span>' + member.joinDate + '</span></div>';
+        } else {
+            daysHtml = '<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>入室时间</span><span class="muted">未录入</span></div>';
+        }
         leftHtml.push(daysHtml);
-        leftDelay += 0.06;
+        delay += 0.06;
 
-        // --- 右侧列 ---
+        // ----- 右列 -----
         var rightHtml = [];
-        var rightDelay = 0.06;
+        var rDelay = 0.06;
 
         // 1. 工作室荣誉
         if (member.honors_work && member.honors_work.length) {
             var items = member.honors_work.map(function(h) {
                 var p = parseHonorItem(h);
-                return '<span class="honor-item" style="background:' + p.color + ';">' + p.text + '</span>';
+                return '<span class="honor-tag" style="background:' + p.color + ';">' + p.text + '</span>';
             }).join('');
-            rightHtml.push('<div class="honor-card slide-right" style="animation-delay:'+rightDelay+'s"><div class="title"><i class="fas fa-trophy"></i> 工作室荣誉</div><div class="list">' + items + '</div></div>');
-            rightDelay += 0.06;
+            rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
+            rightHtml.push('<div class="section-title">工作室荣誉</div>');
+            rightHtml.push('<div class="honor-list">' + items + '</div></div>');
+            rDelay += 0.06;
         }
 
         // 2. 游戏荣誉
         if (member.honors_game && member.honors_game.length) {
             var items = member.honors_game.map(function(h) {
                 var p = parseHonorItem(h);
-                return '<span class="honor-item" style="background:' + p.color + ';">' + p.text + '</span>';
+                return '<span class="honor-tag" style="background:' + p.color + ';">' + p.text + '</span>';
             }).join('');
-            rightHtml.push('<div class="honor-card slide-right" style="animation-delay:'+rightDelay+'s"><div class="title"><i class="fas fa-gamepad"></i> 游戏荣誉</div><div class="list">' + items + '</div></div>');
-            rightDelay += 0.06;
+            rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
+            rightHtml.push('<div class="section-title">游戏荣誉</div>');
+            rightHtml.push('<div class="honor-list">' + items + '</div></div>');
+            rDelay += 0.06;
         }
 
-        // 3. 置顶作品 & 发布作品
+        // 3. 作品（置顶 + 发布）
         var allMaps = window._mapData || [];
         var allBlogs = window._blogData || [];
         var memberMaps = allMaps.filter(function(m) { return m.author === member.name || m.author.includes(member.name); });
@@ -243,74 +238,74 @@
         function renderWorkCard(item, type) {
             var isMap = (type === 'map');
             var coverHtml = (item.cover && item.cover.trim().startsWith('http')) ?
-                '<img class="cover" src="' + item.cover.trim() + '" alt="' + item.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-                '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
+                '<img class="work-cover" src="' + item.cover.trim() + '" alt="' + item.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                '<div class="work-cover placeholder"></div>';
             var link = siteRoot + (isMap ? 'map/?id=' : 'blog/post.html?id=') + item.id;
-            var meta = isMap ? (item.tag ? item.tag + ' · ' : '') + item.date : item.category + ' · ' + item.date;
+            var meta = isMap ? (item.tag ? item.tag + '  ' + item.date : item.date) : item.category + '  ' + item.date;
             return '<div class="work-card" onclick="location.href=\'' + link + '\'">' +
                 coverHtml +
-                '<div class="title">' + item.title + (item.pinned ? ' <span class="pinned-badge">置顶</span>' : '') + '</div>' +
-                '<div class="meta">' + meta + '</div></div>';
+                '<div class="work-title">' + item.title + (item.pinned ? ' <span class="pinned">置顶</span>' : '') + '</div>' +
+                '<div class="work-meta">' + meta + '</div></div>';
         }
 
         var pinnedHtml = '';
         if (pinnedMapObj) { pinnedMapObj.pinned = true; pinnedHtml += renderWorkCard(pinnedMapObj, 'map'); }
         if (pinnedBlogObj) { pinnedBlogObj.pinned = true; pinnedHtml += renderWorkCard(pinnedBlogObj, 'blog'); }
         if (pinnedHtml) {
-            rightHtml.push('<div class="slide-right" style="animation-delay:'+rightDelay+'s;width:100%;"><div class="section-title"><i class="fas fa-thumbtack"></i> 置顶</div><div class="work-grid">' + pinnedHtml + '</div></div>');
-            rightDelay += 0.06;
+            rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
+            rightHtml.push('<div class="section-title">置顶作品</div>');
+            rightHtml.push('<div class="work-grid">' + pinnedHtml + '</div></div>');
+            rDelay += 0.06;
         }
 
         var otherMaps = memberMaps.filter(function(m) { return !pinnedMapObj || m.id !== pinnedMapObj.id; });
         var mapsHtml = otherMaps.length ?
             otherMaps.map(function(m) { return renderWorkCard(m, 'map'); }).join('') :
-            '<div class="work-empty">该成员暂无发布的地图</div>';
-        rightHtml.push('<div class="slide-right" style="animation-delay:'+rightDelay+'s;width:100%;"><div class="section-title"><i class="fas fa-map"></i> 发布的地图 <span class="count">(' + otherMaps.length + ')</span></div><div class="work-grid">' + mapsHtml + '</div></div>');
-        rightDelay += 0.06;
+            '<div class="work-empty">暂无发布的地图</div>';
+        rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
+        rightHtml.push('<div class="section-title">发布的地图 <span class="count">(' + otherMaps.length + ')</span></div>');
+        rightHtml.push('<div class="work-grid">' + mapsHtml + '</div></div>');
+        rDelay += 0.06;
 
         var otherBlogs = memberBlogs.filter(function(b) { return !pinnedBlogObj || b.id !== pinnedBlogObj.id; });
         var blogsHtml = otherBlogs.length ?
             otherBlogs.map(function(b) { return renderWorkCard(b, 'blog'); }).join('') :
-            '<div class="work-empty">该成员暂无发布的博客</div>';
-        rightHtml.push('<div class="slide-right" style="animation-delay:'+rightDelay+'s;width:100%;"><div class="section-title"><i class="fas fa-pen"></i> 发布的博客 <span class="count">(' + otherBlogs.length + ')</span></div><div class="work-grid">' + blogsHtml + '</div></div>');
-        rightDelay += 0.06;
+            '<div class="work-empty">暂无发布的博客</div>';
+        rightHtml.push('<div class="work-section fade-up" style="animation-delay:'+rDelay+'s">');
+        rightHtml.push('<div class="section-title">发布的博客 <span class="count">(' + otherBlogs.length + ')</span></div>');
+        rightHtml.push('<div class="work-grid">' + blogsHtml + '</div></div>');
+        rDelay += 0.06;
 
-        // ===== 灵动岛 =====
+        // 4. 灵动岛（无表情，纯文字）
         if (member.island) {
-            var islandHtml = '';
             var islandType = member.island.type || '留言';
-            var islandContent = member.island.content || '✨ 这里有一片灵动岛 ✨';
-
+            var islandContent = member.island.content || '这里有一片灵动岛';
+            var islandHtml = '';
             if (islandType === '音乐') {
-                islandHtml = '<div class="card island-card slide-right" style="animation-delay:'+rightDelay+'s;background:linear-gradient(135deg,#f0f4ff,#e8edff);border-color:#c8d4f0;">' +
-                    '<div class="island-title"><i class="fas fa-music"></i> 灵动岛 · 音乐</div>' +
-                    '<audio controls style="width:100%;margin-top:6px;border-radius:8px;">' +
-                    '<source src="' + islandContent + '" type="audio/mpeg">' +
-                    '您的浏览器不支持音频播放。</audio></div>';
+                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(240,244,255,0.7);">' +
+                    '<div class="island-title">灵动岛 · 音乐</div>' +
+                    '<audio controls style="width:100%;border-radius:6px;"><source src="' + islandContent + '" type="audio/mpeg">您的浏览器不支持音频播放。</audio></div>';
             } else if (islandType === '动画') {
-                islandHtml = '<div class="card island-card slide-right" style="animation-delay:'+rightDelay+'s;background:linear-gradient(135deg,#fff5f5,#ffe8e8);border-color:#f0c8c8;">' +
-                    '<div class="island-title"><i class="fas fa-film"></i> 灵动岛 · 动画</div>' +
-                    '<div class="' + islandContent + '" style="padding:20px 0;text-align:center;font-size:28px;">✨</div></div>';
+                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(255,245,245,0.7);">' +
+                    '<div class="island-title">灵动岛 · 动画</div>' +
+                    '<div style="padding:16px 0;text-align:center;font-size:20px;color:#7f6b6b;">' + islandContent + '</div></div>';
             } else {
-                islandHtml = '<div class="card island-card slide-right" style="animation-delay:'+rightDelay+'s;background:linear-gradient(135deg,#f0faff,#dff0ff);border-color:#b8d4f0;">' +
-                    '<div class="island-title"><i class="fas fa-comment-dots"></i> 灵动岛 · 留言</div>' +
-                    '<div style="font-size:15px;color:#1e293b;line-height:1.7;padding:4px 0;">' + islandContent + '</div></div>';
+                islandHtml = '<div class="card island-card fade-up" style="animation-delay:'+rDelay+'s;background:rgba(240,250,255,0.7);">' +
+                    '<div class="island-title">灵动岛 · 留言</div>' +
+                    '<div style="font-size:14px;color:#1e293b;line-height:1.6;">' + islandContent + '</div></div>';
             }
             rightHtml.push(islandHtml);
         }
 
-        // ---- 组装 ----
+        // ----- 组装 -----
         var html = '<div class="modal-columns">';
         html += '<div class="column-left">' + leftHtml.join('') + '</div>';
         html += '<div class="column-right">' + rightHtml.join('') + '</div>';
         html += '</div>';
-
         modalInner.innerHTML = html;
     }
 
-    // ============================================================
-    // 公共 API
-    // ============================================================
+    // ----- 公共 API -----
     window.openMemberModal = function(name) {
         var allMembers = window._memberData || [];
         var member = allMembers.find(function(m) { return m.name === name; });
@@ -323,7 +318,6 @@
         }
 
         if (member) {
-            // 重置背景样式（由 renderMemberModal 重新设置）
             modalContent.style.backgroundImage = '';
             modalContent.style.backgroundBlendMode = '';
             modalContent.classList.remove('has-bg');
@@ -341,51 +335,30 @@
         }
     };
 
-    // ---- 关闭事件 ----
+    // ----- 关闭事件 -----
     document.addEventListener('DOMContentLoaded', function() {
         var modalClose = document.getElementById('modalClose');
         var modalOverlay = document.getElementById('modalOverlay');
 
-        if (modalClose) {
-            modalClose.addEventListener('click', function() {
-                modalOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-                var modalContent = document.getElementById('modalContent');
-                if (modalContent) { 
-                    modalContent.style.backgroundImage = '';
-                    modalContent.style.backgroundBlendMode = '';
-                    modalContent.classList.remove('has-bg'); 
-                }
-            });
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            var modalContent = document.getElementById('modalContent');
+            if (modalContent) {
+                modalContent.style.backgroundImage = '';
+                modalContent.style.backgroundBlendMode = '';
+                modalContent.classList.remove('has-bg');
+            }
         }
+
+        if (modalClose) modalClose.addEventListener('click', closeModal);
         if (modalOverlay) {
             modalOverlay.addEventListener('click', function(e) {
-                if (e.target === modalOverlay) {
-                    modalOverlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    var modalContent = document.getElementById('modalContent');
-                    if (modalContent) { 
-                        modalContent.style.backgroundImage = '';
-                        modalContent.style.backgroundBlendMode = '';
-                        modalContent.classList.remove('has-bg'); 
-                    }
-                }
+                if (e.target === modalOverlay) closeModal();
             });
         }
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                var overlay = document.getElementById('modalOverlay');
-                if (overlay) {
-                    overlay.classList.remove('active');
-                    document.body.style.overflow = '';
-                    var modalContent = document.getElementById('modalContent');
-                    if (modalContent) { 
-                        modalContent.style.backgroundImage = '';
-                        modalContent.style.backgroundBlendMode = '';
-                        modalContent.classList.remove('has-bg'); 
-                    }
-                }
-            }
+            if (e.key === 'Escape') closeModal();
         });
     });
 
