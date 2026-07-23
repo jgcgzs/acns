@@ -1360,7 +1360,7 @@
             }
 
             // ============================================================
-            // 解析成员（仅迷你号映射和完整数据）
+            // 解析成员（仅迷你号映射和完整数据，增加荣誉和灵动岛字段）
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -1375,6 +1375,10 @@
                     pinnedMap = '',
                     pinnedBlog = '',
                     role = '';
+                var workHonors = '',
+                    gameHonors = '',
+                    liveType = '',
+                    liveContent = '';
                 var parts = title.split('-');
                 var name = parts[0].trim();
                 if (parts.length > 1) role = parts.slice(1).join('-').trim();
@@ -1403,11 +1407,20 @@
                         pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
                     } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
                         pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^工作室荣誉[：:]\s*(.+)/)) {
+                        workHonors = trimmed.replace(/^工作室荣誉[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^游戏荣誉[：:]\s*(.+)/)) {
+                        gameHonors = trimmed.replace(/^游戏荣誉[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^灵动岛类型[：:]\s*(.+)/)) {
+                        liveType = trimmed.replace(/^灵动岛类型[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^灵动岛内容[：:]\s*(.+)/)) {
+                        liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
                     }
                 });
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
+                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
+                         workHonors, gameHonors, liveType, liveContent };
             }
 
             function parseBlogIssue(issue) {
