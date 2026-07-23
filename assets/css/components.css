@@ -36,11 +36,11 @@
     background-repeat: no-repeat;
 }
 .modal-content.has-bg {
-    background-color: rgba(255, 255, 255, 0.92);
+    background-color: rgba(255, 255, 255, 0.85); /* 降低透明度使背景图片更明显 */
     background-blend-mode: overlay;
 }
 .modal-content.has-bg .modal-inner {
-    background: rgba(255, 255, 255, 0.86);
+    background: rgba(255, 255, 255, 0.80);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     border-radius: 16px;
