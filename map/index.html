@@ -4,21 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>地图库 · 极光创工作室</title>
-    <meta name="description" content="极光创工作室地图库 - 迷你世界地图作品展示" />
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- 公共组件样式（成员档案弹窗依赖） -->
     <link rel="stylesheet" href="../assets/css/components.css" />
 
     <style>
         /* ===== 全局重置 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
             background: #f0f6ff;
@@ -27,22 +21,11 @@
             font-size: 16px;
             padding-top: 68px;
         }
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
-        .container {
-            max-width: 1160px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; height: auto; display: block; }
+        .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
 
-        /* ===== 蔚蓝 + 米哈游风格配色 ===== */
+        /* ===== 蔚蓝主题配色 ===== */
         :root {
             --blue-primary: #4a6cf7;
             --blue-primary-dark: #3651c7;
@@ -58,11 +41,10 @@
             --text-light: #7a8aa0;
             --radius: 12px;
             --radius-sm: 8px;
-            --transition: 0.4s cubic-bezier(0.22, 1, 0.36, 1);
             --gold: #f5a623;
         }
 
-        /* ===== 导航栏（完全保留原样） ===== */
+        /* ===== 导航栏（保持原样，不改） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -129,16 +111,12 @@
             background: var(--blue-bg);
             color: var(--blue-primary);
         }
-        .nav-links li a:hover::after {
-            width: 50%;
-        }
+        .nav-links li a:hover::after { width: 50%; }
         .nav-links li a.active {
             color: var(--blue-primary);
             font-weight: 600;
         }
-        .nav-links li a.active::after {
-            width: 50%;
-        }
+        .nav-links li a.active::after { width: 50%; }
         .menu-toggle {
             display: none;
             background: none;
@@ -166,9 +144,7 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-        .footer .sep {
-            color: rgba(255, 255, 255, 0.08);
-        }
+        .footer .sep { color: rgba(255, 255, 255, 0.08); }
 
         /* ===== 页面头部 ===== */
         .page-header {
@@ -234,14 +210,10 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 24px rgba(74, 108, 247, 0.35);
         }
-        .search-bar .search-btn:active {
-            transform: scale(0.96);
-        }
+        .search-bar .search-btn:active { transform: scale(0.96); }
 
-        /* ===== 分类栏（三行） ===== */
-        .filter-section {
-            margin-bottom: 4px;
-        }
+        /* ===== 分类栏（三行，保持蓝色统一） ===== */
+        .filter-section { margin-bottom: 4px; }
         .filter-row {
             display: flex;
             flex-wrap: nowrap;
@@ -251,15 +223,8 @@
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
         }
-        .filter-row::-webkit-scrollbar {
-            height: 3px;
-            background: var(--blue-border);
-            border-radius: 4px;
-        }
-        .filter-row::-webkit-scrollbar-thumb {
-            background: var(--blue-primary);
-            border-radius: 4px;
-        }
+        .filter-row::-webkit-scrollbar { height: 3px; background: var(--blue-border); border-radius: 4px; }
+        .filter-row::-webkit-scrollbar-thumb { background: var(--blue-primary); border-radius: 4px; }
         .filter-label {
             flex: 0 0 auto;
             font-size: 12px;
@@ -303,9 +268,7 @@
         }
 
         /* ===== 预告栏 ===== */
-        .preview-section {
-            margin: 8px 0 24px;
-        }
+        .preview-section { margin: 8px 0 24px; }
         .preview-section .preview-header {
             display: flex;
             justify-content: space-between;
@@ -334,15 +297,8 @@
             margin: 0 -4px;
             scrollbar-width: thin;
         }
-        .preview-scroll::-webkit-scrollbar {
-            height: 4px;
-            background: var(--blue-border);
-            border-radius: 4px;
-        }
-        .preview-scroll::-webkit-scrollbar-thumb {
-            background: var(--blue-primary);
-            border-radius: 4px;
-        }
+        .preview-scroll::-webkit-scrollbar { height: 4px; background: var(--blue-border); border-radius: 4px; }
+        .preview-scroll::-webkit-scrollbar-thumb { background: var(--blue-primary); border-radius: 4px; }
         .preview-grid {
             display: flex;
             flex-wrap: nowrap;
@@ -385,9 +341,7 @@
             color: var(--blue-primary);
             opacity: 0.2;
         }
-        .preview-card .body {
-            padding: 10px 12px 12px;
-        }
+        .preview-card .body { padding: 10px 12px 12px; }
         .preview-card .body .title {
             font-size: 13px;
             font-weight: 700;
@@ -412,9 +366,7 @@
         }
 
         /* ===== 地图网格 ===== */
-        .map-grid-container {
-            margin-top: 4px;
-        }
+        .map-grid-container { margin-top: 4px; }
         .map-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -446,9 +398,7 @@
             border-bottom: 1px solid var(--blue-border);
             transition: transform 0.6s ease;
         }
-        .map-card:hover .cover {
-            transform: scale(1.02);
-        }
+        .map-card:hover .cover { transform: scale(1.02); }
         .map-card .cover-placeholder {
             width: 100%;
             aspect-ratio: 16/9;
@@ -474,7 +424,8 @@
             flex-wrap: wrap;
             margin-bottom: 2px;
         }
-        .map-card .body .tag-pill {
+        /* ----- 通用标签基类 ----- */
+        .tag-pill {
             font-size: 10px;
             font-weight: 700;
             padding: 1px 12px;
@@ -483,30 +434,67 @@
             display: inline-block;
             line-height: 1.7;
             border: 1.5px solid transparent;
+        }
+        .tag-platform {
             background: rgba(74, 108, 247, 0.08);
             border-color: rgba(74, 108, 247, 0.25);
             color: var(--blue-primary);
         }
-        .tag-pill.tag-gold {
+        .tag-type {
+            background: rgba(74, 108, 247, 0.08);
+            border-color: rgba(74, 108, 247, 0.25);
+            color: var(--blue-primary);
+        }
+        /* ----- 金色精选（独立） ----- */
+        .tag-gold {
             background: rgba(245, 166, 35, 0.10);
             border-color: rgba(245, 166, 35, 0.30);
             color: var(--gold);
         }
-        .tag-pill.tag-platform {
+        /* ----- 状态标签彩色方案 ----- */
+        .tag-status {
+            /* 默认蓝色（fallback） */
             background: rgba(74, 108, 247, 0.08);
             border-color: rgba(74, 108, 247, 0.25);
             color: var(--blue-primary);
         }
-        .tag-pill.tag-type {
-            background: rgba(74, 108, 247, 0.08);
-            border-color: rgba(74, 108, 247, 0.25);
-            color: var(--blue-primary);
+        .tag-status-planning { /* 策划中 */
+            background: #e0e7ff;
+            border-color: #818cf8;
+            color: #4f46e5;
         }
-        .tag-pill.tag-status {
-            background: rgba(74, 108, 247, 0.08);
-            border-color: rgba(74, 108, 247, 0.25);
-            color: var(--blue-primary);
+        .tag-status-making { /* 制作中 */
+            background: #fed7aa;
+            border-color: #fb923c;
+            color: #7c2d12;
         }
+        .tag-status-updating { /* 更新中 */
+            background: #d1fae5;
+            border-color: #34d399;
+            color: #065f46;
+        }
+        .tag-status-publishing { /* 待发布 */
+            background: #ede9fe;
+            border-color: #a78bfa;
+            color: #5b21b6;
+        }
+        .tag-status-testing { /* 测试中 */
+            background: #fef3c7;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+        .tag-status-finished { /* 已完结 */
+            background: #dbeafe;
+            border-color: #60a5fa;
+            color: #1e40af;
+        }
+        .tag-status-stopped { /* 停更（自定义） */
+            background: #fecaca;
+            border-color: #f87171;
+            color: #991b1b;
+        }
+        /* 其他未匹配状态使用默认蓝色 */
+
         .map-card .body .title {
             font-size: 15px;
             font-weight: 700;
@@ -525,10 +513,7 @@
             gap: 4px;
             margin-top: 1px;
         }
-        .map-card .body .date-row i {
-            font-size: 11px;
-            opacity: 0.4;
-        }
+        .map-card .body .date-row i { font-size: 11px; opacity: 0.4; }
         .map-card .body .meta-row {
             display: flex;
             align-items: center;
@@ -552,10 +537,7 @@
             color: var(--blue-primary-dark);
             text-decoration: underline;
         }
-        .map-card .body .meta-row .author i {
-            font-size: 10px;
-            opacity: 0.5;
-        }
+        .map-card .body .meta-row .author i { font-size: 10px; opacity: 0.5; }
         .map-card .body .meta-row .minid {
             font-family: 'SF Mono', 'Menlo', monospace;
             font-size: 11px;
@@ -603,9 +585,7 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(74, 108, 247, 0.35);
         }
-        .map-card .body .btn-detail:active {
-            transform: scale(0.94);
-        }
+        .map-card .body .btn-detail:active { transform: scale(0.94); }
 
         /* ===== 分页 ===== */
         .pagination {
@@ -670,15 +650,11 @@
             margin-bottom: 12px;
             animation: spin 1.2s linear infinite;
         }
-        @keyframes spin {
-            100% {
-                transform: rotate(360deg);
-            }
-        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* ============================================================
-                   详情弹窗 - 模块化 + 左右入场 (新布局)
-                   ============================================================ */
+           详情弹窗（左右分栏，与之前一致）
+           ============================================================ */
         .detail-overlay {
             position: fixed;
             inset: 0;
@@ -691,10 +667,7 @@
             justify-content: center;
             padding: 20px;
         }
-        .detail-overlay.open {
-            display: flex;
-        }
-
+        .detail-overlay.open { display: flex; }
         .detail-modal {
             position: relative;
             max-width: 900px;
@@ -707,7 +680,6 @@
             display: flex;
             flex-direction: column;
         }
-
         .detail-modal .detail-close {
             position: absolute;
             top: 14px;
@@ -733,7 +705,6 @@
             transform: rotate(90deg) scale(1.05);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
         }
-
         .detail-body {
             display: flex;
             flex-direction: row;
@@ -741,8 +712,6 @@
             flex: 1;
             max-height: 90vh;
         }
-
-        /* 左侧：封面 + 描述 (从左侧滑入) */
         .detail-left {
             flex: 0 0 42%;
             min-width: 200px;
@@ -791,19 +760,10 @@
             overflow-y: auto;
             max-height: 180px;
         }
-
         @keyframes slideInLeft {
-            0% {
-                opacity: 0;
-                transform: translateX(-60px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            0% { opacity: 0; transform: translateX(-60px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
-
-        /* 右侧：标题、标签、元数据、公告等 (模块从右侧滑入) */
         .detail-right {
             flex: 1;
             padding: 28px 30px 30px;
@@ -817,33 +777,15 @@
             opacity: 0;
             transform: translateX(60px);
         }
-        .detail-right .mod-1 {
-            animation-delay: 0.05s;
-        }
-        .detail-right .mod-2 {
-            animation-delay: 0.12s;
-        }
-        .detail-right .mod-3 {
-            animation-delay: 0.19s;
-        }
-        .detail-right .mod-4 {
-            animation-delay: 0.26s;
-        }
-        .detail-right .mod-5 {
-            animation-delay: 0.33s;
-        }
-
+        .detail-right .mod-1 { animation-delay: 0.05s; }
+        .detail-right .mod-2 { animation-delay: 0.12s; }
+        .detail-right .mod-3 { animation-delay: 0.19s; }
+        .detail-right .mod-4 { animation-delay: 0.26s; }
+        .detail-right .mod-5 { animation-delay: 0.33s; }
         @keyframes slideInRight {
-            0% {
-                opacity: 0;
-                transform: translateX(60px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            0% { opacity: 0; transform: translateX(60px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
-
         .detail-right .detail-title {
             font-size: 22px;
             font-weight: 800;
@@ -856,6 +798,7 @@
             gap: 4px;
             margin: 2px 0 2px;
         }
+        /* 详情页内的标签同样应用颜色类 */
         .detail-right .detail-tags .tag-pill {
             font-size: 10px;
             font-weight: 700;
@@ -863,15 +806,8 @@
             border-radius: 50px;
             letter-spacing: 0.3px;
             border: 1.5px solid transparent;
-            background: rgba(74, 108, 247, 0.08);
-            border-color: rgba(74, 108, 247, 0.25);
-            color: var(--blue-primary);
         }
-        .detail-right .detail-tags .tag-pill.gold {
-            background: rgba(245, 166, 35, 0.10);
-            border-color: rgba(245, 166, 35, 0.30);
-            color: var(--gold);
-        }
+        /* 在详情页中，状态标签也使用同样的颜色类，这里不需要额外定义，因为类名相同 */
         .detail-right .detail-meta {
             display: flex;
             flex-wrap: wrap;
@@ -895,10 +831,7 @@
             color: var(--blue-primary-dark);
             text-decoration: underline;
         }
-        .detail-right .detail-meta i {
-            opacity: 0.4;
-            font-size: 12px;
-        }
+        .detail-right .detail-meta i { opacity: 0.4; font-size: 12px; }
         .detail-right .detail-extra {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -943,23 +876,13 @@
 
         /* ===== 响应式 ===== */
         @media (max-width: 992px) {
-            .map-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .detail-left {
-                flex: 0 0 38%;
-            }
+            .map-grid { grid-template-columns: repeat(3, 1fr); }
+            .detail-left { flex: 0 0 38%; }
         }
         @media (max-width: 768px) {
-            body {
-                padding-top: 60px;
-            }
-            .navbar {
-                height: 60px;
-            }
-            .menu-toggle {
-                display: block;
-            }
+            body { padding-top: 60px; }
+            .navbar { height: 60px; }
+            .menu-toggle { display: block; }
             .nav-links {
                 display: none;
                 position: absolute;
@@ -973,42 +896,21 @@
                 border-top: 1px solid var(--blue-border);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
             }
-            .nav-links.open {
-                display: flex;
-            }
+            .nav-links.open { display: flex; }
             .nav-links li a {
                 padding: 10px 16px;
                 font-size: 16px;
                 width: 100%;
                 text-align: center;
             }
-            .map-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 14px;
-            }
-            .preview-card {
-                flex: 0 0 150px;
-                max-width: 150px;
-            }
-            .page-header h1 {
-                font-size: 22px;
-            }
-            .filter-item {
-                font-size: 12px;
-                padding: 4px 14px;
-            }
-            .filter-label {
-                font-size: 11px;
-            }
-            .navbar-brand .brand-text {
-                font-size: 17px;
-            }
-            .navbar-brand .logo {
-                height: 28px;
-            }
-            .detail-body {
-                flex-direction: column;
-            }
+            .map-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .preview-card { flex: 0 0 150px; max-width: 150px; }
+            .page-header h1 { font-size: 22px; }
+            .filter-item { font-size: 12px; padding: 4px 14px; }
+            .filter-label { font-size: 11px; }
+            .navbar-brand .brand-text { font-size: 17px; }
+            .navbar-brand .logo { height: 28px; }
+            .detail-body { flex-direction: column; }
             .detail-left {
                 flex: 0 0 auto;
                 min-height: 200px;
@@ -1018,127 +920,47 @@
                 flex-wrap: wrap;
                 gap: 10px;
             }
-            .detail-left .cover-wrap {
-                flex: 0 0 40%;
-                min-width: 120px;
-            }
-            .detail-left .left-desc {
-                flex: 1;
-                max-height: 120px;
-                min-width: 140px;
-            }
-            .detail-right {
-                padding: 18px 18px 22px;
-            }
-            .detail-right .detail-title {
-                font-size: 19px;
-            }
-            .detail-right .detail-extra {
-                grid-template-columns: 1fr;
-            }
-            .detail-modal {
-                max-height: 95vh;
-            }
+            .detail-left .cover-wrap { flex: 0 0 40%; min-width: 120px; }
+            .detail-left .left-desc { flex: 1; max-height: 120px; min-width: 140px; }
+            .detail-right { padding: 18px 18px 22px; }
+            .detail-right .detail-title { font-size: 19px; }
+            .detail-right .detail-extra { grid-template-columns: 1fr; }
+            .detail-modal { max-height: 95vh; }
             @keyframes slideInLeft {
-                0% {
-                    opacity: 0;
-                    transform: translateY(-30px);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                0% { opacity: 0; transform: translateY(-30px); }
+                100% { opacity: 1; transform: translateY(0); }
             }
             @keyframes slideInRight {
-                0% {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                100% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                0% { opacity: 0; transform: translateY(30px); }
+                100% { opacity: 1; transform: translateY(0); }
             }
         }
         @media (max-width: 480px) {
-            .map-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .map-card .body {
-                padding: 8px 10px 10px;
-            }
-            .map-card .body .title {
-                font-size: 13px;
-            }
-            .map-card .body .desc-box {
-                font-size: 11px;
-                padding: 4px 8px;
-                min-height: 32px;
-                -webkit-line-clamp: 2;
-            }
-            .map-card .body .tag-pill {
-                font-size: 9px;
-                padding: 0 10px;
-            }
-            .map-card .body .date-row {
-                font-size: 11px;
-            }
-            .map-card .body .meta-row {
-                font-size: 11px;
-            }
-            .map-card .body .btn-detail {
-                font-size: 11px;
-                padding: 3px 14px;
-            }
-            .preview-card {
-                flex: 0 0 130px;
-                max-width: 130px;
-            }
-            .preview-card .body .title {
-                font-size: 12px;
-            }
-            .search-bar input {
-                font-size: 13px;
-                padding: 8px 14px;
-            }
-            .search-bar .search-btn {
-                font-size: 13px;
-                padding: 8px 18px;
-            }
-            .container {
-                padding: 0 14px;
-            }
-            .filter-item {
-                font-size: 11px;
-                padding: 3px 12px;
-            }
-            .filter-row {
-                gap: 4px;
-                padding: 4px 0 8px;
-            }
-            .detail-left {
-                flex-direction: column;
-                min-height: 160px;
-                max-height: 280px;
-            }
-            .detail-left .cover-wrap {
-                flex: 0 0 auto;
-                width: 100%;
-                max-height: 140px;
-            }
-            .detail-left .left-desc {
-                max-height: 80px;
-            }
-            .detail-right .detail-extra .extra-item {
-                font-size: 12px;
-            }
+            .map-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .map-card .body { padding: 8px 10px 10px; }
+            .map-card .body .title { font-size: 13px; }
+            .map-card .body .desc-box { font-size: 11px; padding: 4px 8px; min-height: 32px; -webkit-line-clamp: 2; }
+            .map-card .body .tag-pill { font-size: 9px; padding: 0 10px; }
+            .map-card .body .date-row { font-size: 11px; }
+            .map-card .body .meta-row { font-size: 11px; }
+            .map-card .body .btn-detail { font-size: 11px; padding: 3px 14px; }
+            .preview-card { flex: 0 0 130px; max-width: 130px; }
+            .preview-card .body .title { font-size: 12px; }
+            .search-bar input { font-size: 13px; padding: 8px 14px; }
+            .search-bar .search-btn { font-size: 13px; padding: 8px 18px; }
+            .container { padding: 0 14px; }
+            .filter-item { font-size: 11px; padding: 3px 12px; }
+            .filter-row { gap: 4px; padding: 4px 0 8px; }
+            .detail-left { flex-direction: column; min-height: 160px; max-height: 280px; }
+            .detail-left .cover-wrap { flex: 0 0 auto; width: 100%; max-height: 140px; }
+            .detail-left .left-desc { max-height: 80px; }
+            .detail-right .detail-extra .extra-item { font-size: 12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（完全保留原样） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -1159,7 +981,6 @@
     <!-- ===== 主内容 ===== -->
     <main>
         <div class="container">
-
             <div class="page-header">
                 <div>
                     <h1>地图库</h1>
@@ -1167,12 +988,13 @@
                 </div>
             </div>
 
+            <!-- 搜索 -->
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="搜索地图名称、作者、迷你号" />
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
-            <!-- ===== 分类栏：三行 ===== -->
+            <!-- ===== 分类栏（三行，全部蓝色） ===== -->
             <div class="filter-section">
                 <div class="filter-row" id="platformRow">
                     <span class="filter-label">平台</span>
@@ -1224,7 +1046,6 @@
                 <span id="pageInfo" class="info">第 1 / 1 页</span>
                 <button id="nextPage" disabled><i class="fas fa-chevron-right"></i></button>
             </div>
-
         </div>
     </main>
 
@@ -1269,7 +1090,7 @@
         </div>
     </footer>
 
-    <!-- ===== 公共脚本 ===== -->
+    <!-- ===== 公共脚本（成员档案弹窗） ===== -->
     <script src="../assets/js/components.js"></script>
 
     <!-- ============================================================
@@ -1368,7 +1189,7 @@
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) dateStr = '未知';
 
-                // ----- 处理标题前缀 -----
+                // 处理标题前缀
                 var prefixInfo = extractTitlePrefix(title);
                 var displayTitle = title;
                 var isFeatured = false;
@@ -1380,37 +1201,24 @@
                     displayTitle = clean || title;
                     if (prefix === '精选') {
                         isFeatured = true;
-                        // 不设置 tag，让正文标签或为空
                     } else {
-                        tagFromPrefix = prefix; // 作为备选状态
+                        tagFromPrefix = prefix;
                     }
                 }
 
-                // 如果正文标签是 "精选"，也视为精选
                 if (tag === '精选') {
                     isFeatured = true;
-                    tag = ''; // 清空，因为精选单独显示
+                    tag = '';
                 }
 
-                // 决定最终 tag：优先正文，其次前缀（非精选），最后空
                 var finalTag = tag || tagFromPrefix || '';
 
-                // 如果 finalTag 为 '精选'，但我们已经处理了，这里不会出现
-                // 如果正文标签非空且不是“精选”，则使用正文；否则用前缀
-                // 但我们已经把正文 tag 赋值，如果正文为“精选”则清空，所以 finalTag 为空或正文非精选。
-                // 但注意，如果正文有标签且不是精选，则 tag 保持，否则 tag 为空。
-
-                // 但上述逻辑中，如果正文标签是“精选”，我们清空了 tag，但 finalTag 会变成 tagFromPrefix（如果有）。但如果同时有标题前缀“精选”，则 tagFromPrefix 为 null，所以最终 tag 为空。
-                // 如果正文没有标签，但标题前缀为“制作中”，则 finalTag = tagFromPrefix = '制作中'，isFeatured = false。
-                // 符合预期。
-
-                // 单独处理：如果 finalTag 是 '精选'（理论上不会），但也转为精选标志。
                 if (finalTag === '精选') {
                     isFeatured = true;
                     finalTag = '';
                 }
 
-                // 推断平台和类型（如果未显式）
+                // 推断平台和类型
                 if (title.indexOf('迷你世界') > -1) platform = '迷你世界';
                 else if (title.indexOf('我的世界') > -1 || title.indexOf('MC') > -1) platform = '我的世界';
 
@@ -1434,7 +1242,7 @@
                 };
             }
 
-            // ===== 解析成员 Issue =====
+            // ===== 解析成员 Issue（简化，仅用于迷你号映射） =====
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
@@ -1483,7 +1291,7 @@
                 return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
             }
 
-            // ===== 解析博客 =====
+            // ===== 解析博客（简略） =====
             function parseBlogIssue(issue) {
                 var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
                 var body = issue.body || '';
@@ -1521,6 +1329,23 @@
                 }
                 var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
                 return { id: issue.number, title, author, category, summary, date: dateStr };
+            }
+
+            // ============================================================
+            // 状态颜色映射函数（核心新增）
+            // ============================================================
+            function getStatusClass(status) {
+                if (!status) return 'tag-status';
+                var map = {
+                    '策划中': 'tag-status-planning',
+                    '制作中': 'tag-status-making',
+                    '更新中': 'tag-status-updating',
+                    '待发布': 'tag-status-publishing',
+                    '测试中': 'tag-status-testing',
+                    '已完结': 'tag-status-finished',
+                    '停更': 'tag-status-stopped'
+                };
+                return map[status] || 'tag-status';
             }
 
             // ============================================================
@@ -1572,10 +1397,11 @@
                     '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                     '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
 
-                // 平台、类型、状态（蓝色），精选（金色）
+                // 平台、类型（蓝色），状态（彩色），精选（金色）
                 var platformHtml = '<span class="tag-pill tag-platform">' + map.platform + '</span>';
                 var typeHtml = '<span class="tag-pill tag-type">' + map.type + '</span>';
-                var statusHtml = map.tag ? '<span class="tag-pill tag-status">' + map.tag + '</span>' : '';
+                var statusClass = getStatusClass(map.tag);
+                var statusHtml = map.tag ? '<span class="tag-pill ' + statusClass + '">' + map.tag + '</span>' : '';
                 var featuredHtml = map.isFeatured ? '<span class="tag-pill tag-gold">精选</span>' : '';
 
                 var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
@@ -1672,7 +1498,6 @@
                 currentDetailMap = map;
                 detailOpen = true;
 
-                // 左侧封面
                 if (map.cover && map.cover.trim().startsWith('http')) {
                     detailCoverWrap.innerHTML = '<img src="' + map.cover.trim() + '" alt="' + map.title +
                         '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'placeholder\\\'><i class=\\\'fas fa-image\\\'></i></div>\'">';
@@ -1683,12 +1508,15 @@
                 detailLeftDesc.textContent = map.desc || '暂无描述';
                 detailTitle.textContent = map.title;
 
-                // 标签：平台、类型、状态（蓝色），精选（金色）
+                // 标签：平台、类型、状态（彩色）、精选（金色）
                 var tagsHtml = '';
                 tagsHtml += '<span class="tag-pill tag-platform">' + map.platform + '</span>';
                 tagsHtml += '<span class="tag-pill tag-type">' + map.type + '</span>';
-                if (map.tag) tagsHtml += '<span class="tag-pill tag-status">' + map.tag + '</span>';
-                if (map.isFeatured) tagsHtml += '<span class="tag-pill gold">精选</span>';
+                if (map.tag) {
+                    var cls = getStatusClass(map.tag);
+                    tagsHtml += '<span class="tag-pill ' + cls + '">' + map.tag + '</span>';
+                }
+                if (map.isFeatured) tagsHtml += '<span class="tag-pill tag-gold">精选</span>';
                 detailTags.innerHTML = tagsHtml;
 
                 var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map.minid ||
