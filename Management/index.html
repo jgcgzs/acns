@@ -572,7 +572,7 @@
             };
 
             // ============================================================
-            // 解析成员Issue
+            // 解析成员Issue（增加荣誉、灵动岛字段）
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -587,6 +587,10 @@
                     pinnedMap = '',
                     pinnedBlog = '',
                     role = '';
+                var workHonors = '',
+                    gameHonors = '',
+                    liveType = '',
+                    liveContent = '';
                 var parts = title.split('-');
                 var name = parts[0].trim();
                 if (parts.length > 1) role = parts.slice(1).join('-').trim();
@@ -615,6 +619,14 @@
                         pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
                     } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
                         pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^工作室荣誉[：:]\s*(.+)/)) {
+                        workHonors = trimmed.replace(/^工作室荣誉[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^游戏荣誉[：:]\s*(.+)/)) {
+                        gameHonors = trimmed.replace(/^游戏荣誉[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^灵动岛类型[：:]\s*(.+)/)) {
+                        liveType = trimmed.replace(/^灵动岛类型[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^灵动岛内容[：:]\s*(.+)/)) {
+                        liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
                     }
                 });
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
@@ -630,7 +642,7 @@
                 }
 
                 return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
-                    attrType };
+                         attrType, workHonors, gameHonors, liveType, liveContent };
             }
 
             // ============================================================
