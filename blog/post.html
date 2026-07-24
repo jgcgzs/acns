@@ -7,11 +7,11 @@
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- 公共组件样式 + 脚本（成员档案弹窗） -->
+    <!-- 公共组件样式 -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* ===== 极光创主题样式（合并原样式） ===== */
+        /* ===== 极光创主题样式 ===== */
         :root {
             --bg-primary: #f5f9fe;
             --bg-card: #ffffff;
@@ -45,7 +45,7 @@
             padding: 0 24px;
         }
 
-        /* ===== 导航栏（极光创风格） ===== */
+        /* ===== 导航栏（极光创风格，无下划线） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -94,30 +94,15 @@
             color: #222222;
             border-radius: 2px;
             transition: background 0.2s, color 0.2s;
-            position: relative;
-        }
-        .nav-links li a::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            width: 0;
-            height: 2.5px;
-            background: var(--accent);
-            transition: width 0.25s ease;
-            transform: translateX(-50%);
-            border-radius: 2px;
         }
         .nav-links li a:hover {
             background: var(--accent-light);
             color: var(--accent);
         }
-        .nav-links li a:hover::after { width: 50%; }
         .nav-links li a.active {
             color: var(--accent);
             font-weight: 600;
         }
-        .nav-links li a.active::after { width: 50%; }
 
         .menu-toggle {
             display: none;
@@ -129,7 +114,7 @@
             padding: 4px 8px;
         }
 
-        /* ===== 底部（极光创风格） ===== */
+        /* ===== 底部 ===== */
         .footer {
             background: #1a2a3a;
             color: rgba(255, 255, 255, 0.55);
@@ -146,9 +131,7 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-        .footer .sep {
-            color: rgba(255, 255, 255, 0.12);
-        }
+        .footer .sep { color: rgba(255, 255, 255, 0.12); }
 
         /* ===== 返回按钮 ===== */
         .back-bar {
@@ -207,7 +190,6 @@
             opacity: .7;
             align-items: center;
         }
-        /* ★★★ 作者可点击 ★★★ */
         .post-meta .author {
             display: inline-flex;
             align-items: center;
@@ -231,12 +213,8 @@
             border-radius: 50%;
             border: 1px solid var(--border-light);
         }
-        .post-meta .author .name {
-            font-weight: 500;
-        }
-        .post-meta .author:hover .name {
-            text-decoration: underline;
-        }
+        .post-meta .author .name { font-weight: 500; }
+        .post-meta .author:hover .name { text-decoration: underline; }
 
         .post-categories {
             display: flex;
@@ -266,9 +244,7 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
-        .post-body h1, .post-body h2, .post-body h3 {
-            scroll-margin-top: 80px;
-        }
+        .post-body h1, .post-body h2, .post-body h3 { scroll-margin-top: 80px; }
         .post-body h1 { font-size: 2rem; font-weight: 700; margin: 1.8rem 0 .8rem; border-bottom: 2px solid var(--border-light); padding-bottom: .3rem; }
         .post-body h2 { font-size: 1.6rem; font-weight: 700; margin: 1.6rem 0 .6rem; }
         .post-body h3 { font-size: 1.3rem; font-weight: 600; margin: 1.4rem 0 .4rem; }
@@ -525,7 +501,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏（极光创） ===== -->
+    <!-- ===== 导航栏 ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -546,11 +522,9 @@
     <!-- ===== 文章主体 ===== -->
     <section class="post-detail">
         <div class="container">
-            <!-- 返回按钮 -->
             <div class="back-bar">
                 <a href="../blog/" class="back-btn"><i class="fas fa-arrow-left"></i> 返回博客主页</a>
             </div>
-
             <div id="postContainer">
                 <div class="post-loading"><i class="fas fa-spinner fa-pulse"></i>加载文章中...</div>
             </div>
@@ -570,7 +544,7 @@
         <i class="fas fa-list-ul"></i>
     </button>
 
-    <!-- ===== 底部（极光创） ===== -->
+    <!-- ===== 底部 ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -589,6 +563,25 @@
         function getQueryParam(name) {
             var urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
+        }
+
+        function parseDateFromBody(body) {
+            var patterns = [
+                /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
+                /(\d{4})\/(\d{1,2})\/(\d{1,2})/
+            ];
+            for (var i = 0; i < patterns.length; i++) {
+                var match = body.match(patterns[i]);
+                if (match) {
+                    var year = parseInt(match[1]),
+                        month = parseInt(match[2]),
+                        day = parseInt(match[3]);
+                    if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                        return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                    }
+                }
+            }
+            return null;
         }
 
         function parseMetadata(body) {
@@ -801,7 +794,99 @@
         });
 
         // ============================================================
-        // 加载文章（含作者点击绑定）
+        // ★★★ 成员数据加载（确保点击作者时弹窗有数据） ★★★
+        // ============================================================
+        function loadMemberData() {
+            if (window._memberData && window._memberData.length) {
+                console.log('成员数据已存在，共 ' + window._memberData.length + ' 人');
+                return Promise.resolve(window._memberData);
+            }
+
+            var REPO_OWNER = 'jgcgzs';
+            var REPO_NAME = 'acns';
+            var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+
+            return fetch(memberApi)
+                .then(function(res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function(issues) {
+                    if (!issues || issues.length === 0) {
+                        window._memberData = [];
+                        return [];
+                    }
+                    var members = issues.map(function(issue) {
+                        return parseMemberIssue(issue);
+                    });
+                    members = members.filter(function(m) {
+                        if (m.groups && m.groups.length) return true;
+                        if (m.role === '室长' || m.role === '副室长') return true;
+                        return false;
+                    });
+                    window._memberData = members;
+                    console.log('成员数据加载完成，共 ' + members.length + ' 人');
+                    return members;
+                })
+                .catch(function(err) {
+                    console.warn('成员数据加载失败:', err);
+                    window._memberData = [];
+                    return [];
+                });
+        }
+
+        // 解析成员 Issue（简化版）
+        function parseMemberIssue(issue) {
+            var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
+            var body = issue.body || '';
+            var groups = [],
+                minid = '未知',
+                id = '未知',
+                joinDate = '未知',
+                avatar = '',
+                background = '',
+                bio = '',
+                pinnedMap = '',
+                pinnedBlog = '',
+                role = '';
+            var parts = title.split('-');
+            var name = parts[0].trim();
+            if (parts.length > 1) role = parts.slice(1).join('-').trim();
+            var lines = body.split('\n');
+            lines.forEach(function(line) {
+                var trimmed = line.trim();
+                if (trimmed.match(/^组别[：:]\s*(.+)/)) {
+                    var g = trimmed.replace(/^组别[：:]\s*/, '').trim();
+                    groups = g.split(/[,，、\s]+/).filter(function(s) { return s.trim().length > 0; });
+                } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                    minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
+                } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
+                    id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
+                } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
+                    var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
+                    var parsed = parseDateFromBody(d);
+                    if (parsed) joinDate = parsed;
+                    else joinDate = d || '未知';
+                } else if (trimmed.match(/^头像[：:]\s*(.+)/)) {
+                    avatar = trimmed.replace(/^头像[：:]\s*/, '').trim();
+                } else if (trimmed.match(/^背景[：:]\s*(.+)/)) {
+                    background = trimmed.replace(/^背景[：:]\s*/, '').trim();
+                } else if (trimmed.match(/^简介[：:]\s*(.+)/)) {
+                    bio = trimmed.replace(/^简介[：:]\s*/, '').trim();
+                } else if (trimmed.match(/^置顶地图[：:]\s*(.+)/)) {
+                    pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
+                } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
+                    pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                }
+            });
+            if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
+            if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+            return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
+        }
+
+        // ============================================================
+        // 加载文章
         // ============================================================
         var issueNumber = getQueryParam('id');
         var container = document.getElementById('postContainer');
@@ -813,7 +898,11 @@
             var REPO_NAME = 'acns';
             var apiUrl = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME + '/issues/' + issueNumber;
 
-            fetch(apiUrl)
+            // 先加载成员数据，再加载文章
+            loadMemberData()
+                .then(function() {
+                    return fetch(apiUrl);
+                })
                 .then(function(res) {
                     if (!res.ok) throw new Error('HTTP ' + res.status);
                     return res.json();
@@ -831,11 +920,9 @@
                     var customAvatar = meta.avatar;
                     var mapLink = meta.map;
 
-                    // ★★★ 优先使用正文中的作者和头像，否则回退到 issue.user ★★★
                     var authorName = customAuthor || issue.user.login;
                     var authorAvatar = customAvatar || issue.user.avatar_url;
 
-                    // 检测是否仅包含单个 html-embed
                     var isOnlyEmbed = false;
                     var trimmed = cleanBody.trim();
                     if (trimmed.match(/^\[html-embed\s*[^\]]*\][\s\S]*\[\/html-embed\]\s*$/)) {
@@ -851,7 +938,6 @@
                     html += '<div class="post-title">' + displayTitle + '</div>';
                     html += '<div class="post-meta">';
                     html += '<span>' + dateStr + '</span>';
-                    // ★★★ 作者区域（包含头像和名字，均可点击） ★★★
                     html += '<span class="author" data-author="' + authorName + '">';
                     html += '<img src="' + authorAvatar + '" alt="' + authorName + '" loading="lazy">';
                     html += '<span class="name">' + authorName + '</span>';
@@ -864,10 +950,8 @@
                         });
                         html += '</div>';
                     }
-                    html += '</div>'; // .post-header
-
+                    html += '</div>';
                     html += '<div class="post-body">' + htmlContent + '</div>';
-
                     if (mapLink) {
                         var mapUrl = 'https://github.com/' + REPO_OWNER + '/' + REPO_NAME + '/issues/' + mapLink;
                         if (/^\d+$/.test(mapLink)) {
@@ -878,17 +962,14 @@
                             '" target="_blank">' + mapLink + '</a>';
                         html += '</div>';
                     }
-
-                    html += '</div>'; // .post-main
-
+                    html += '</div>';
                     if (!isOnlyEmbed) {
                         html += '<div class="post-toc" id="postTOC">';
                         html += '<div class="toc-title"><i class="fas fa-list-ul"></i> 目录</div>';
                         html += '<ul class="toc-list"></ul>';
                         html += '</div>';
                     }
-
-                    html += '</div>'; // .post-wrapper
+                    html += '</div>';
 
                     container.innerHTML = html;
                     document.title = displayTitle + ' · 极创博客';
@@ -900,7 +981,7 @@
                     }
 
                     // ============================================================
-                    // ★★★ 绑定作者点击事件（打开成员档案弹窗） ★★★
+                    // ★★★ 绑定作者点击事件 ★★★
                     // ============================================================
                     var authorEl = container.querySelector('.post-meta .author');
                     if (authorEl) {
@@ -908,21 +989,22 @@
                             e.stopPropagation();
                             var authorName = this.getAttribute('data-author');
                             if (authorName) {
-                                // 检查 openMemberModal 是否可用
                                 if (typeof window.openMemberModal === 'function') {
-                                    window.openMemberModal(authorName);
+                                    // 确保成员数据已加载
+                                    if (!window._memberData || window._memberData.length === 0) {
+                                        loadMemberData().then(function() {
+                                            window.openMemberModal(authorName);
+                                        });
+                                    } else {
+                                        window.openMemberModal(authorName);
+                                    }
                                 } else {
-                                    // 如果函数未定义，尝试重新加载 components.js 或提示
-                                    console.warn('openMemberModal 未定义，请确保 components.js 已加载');
-                                    // 可选的备用方案：尝试动态加载 components.js
-                                    alert('成员档案功能尚未加载，请稍后刷新页面重试。');
+                                    console.warn('openMemberModal 未定义');
+                                    alert('成员档案功能未加载，请刷新页面重试。');
                                 }
                             }
                         });
-                        // 添加鼠标悬停样式提示
                         authorEl.style.cursor = 'pointer';
-                    } else {
-                        console.warn('未找到作者元素，可能解析失败');
                     }
                 })
                 .catch(function(err) {
@@ -953,14 +1035,7 @@
             });
         });
 
-        // 检查 components.js 是否加载成功（仅用于调试）
-        if (typeof window.openMemberModal === 'undefined') {
-            console.warn('提示：成员档案弹窗函数未加载，请确认 assets/js/components.js 已正确引用。');
-        } else {
-            console.log('成员档案弹窗已就绪，点击作者姓名可查看档案。');
-        }
-
-        console.log('>> 极创博客 · 文章详情页（作者点击已启用）');
+        console.log('>> 极创博客 · 文章详情页（成员数据已预加载，点击作者可查看档案）');
     </script>
 </body>
 </html>
