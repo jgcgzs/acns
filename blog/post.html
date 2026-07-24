@@ -7,11 +7,11 @@
     <meta name="description" content="极光创工作室博客文章详情">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 公共组件样式 -->
+    <!-- 公共组件样式（成员档案弹窗） -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* ===== 文章详情独有样式（导航栏与博客列表页完全一致） ===== */
+        /* ===== 文章详情样式（导航栏与博客列表页完全一致） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -58,7 +58,7 @@
             --toc-width: 240px;
         }
 
-        /* ===== 导航栏（与博客列表页完全一致） ===== */
+        /* ===== 导航栏（含 ::after 下划线） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -224,7 +224,7 @@
             opacity: .7;
             align-items: center;
         }
-        /* 作者可点击 */
+        /* 作者可点击，头像从成员数据中获取 */
         .post-meta .author {
             display: inline-flex;
             align-items: center;
@@ -246,6 +246,7 @@
             height: 24px;
             border-radius: 50%;
             border: 1px solid var(--border-light);
+            background: var(--blue-bg-pale);
         }
         .post-meta .author .name {
             font-weight: 500;
@@ -644,14 +645,13 @@
             };
 
             // ============================================================
-            // 解析元数据（作者、头像、分类、地图）
+            // 解析元数据（作者、分类、地图）
             // ============================================================
             function parseMetadata(body) {
                 body = typeof body === 'string' ? body : '';
                 var result = {
                     author: null,
                     categories: [],
-                    avatar: null,
                     map: null,
                     cleanBody: body
                 };
@@ -670,14 +670,6 @@
                     result.cleanBody = result.cleanBody.replace(/^分类[：:]\s*.+?[\n\r]/, '');
                 }
 
-                var avatarMatch = result.cleanBody.match(/^头像[：:]\s*(.+?)\s*[\n\r]/i);
-                if (!avatarMatch) avatarMatch = result.cleanBody.match(/^avatar[：:]\s*(.+?)\s*[\n\r]/i);
-                if (avatarMatch && avatarMatch[1]) {
-                    result.avatar = avatarMatch[1].trim();
-                    result.cleanBody = result.cleanBody.replace(/^头像[：:]\s*.+?[\n\r]/, '');
-                    result.cleanBody = result.cleanBody.replace(/^avatar[：:]\s*.+?[\n\r]/, '');
-                }
-
                 var mapMatch = result.cleanBody.match(/^地图[：:]\s*(.+?)\s*[\n\r]/i);
                 if (!mapMatch) mapMatch = result.cleanBody.match(/^map[：:]\s*(.+?)\s*[\n\r]/i);
                 if (mapMatch && mapMatch[1]) {
@@ -686,6 +678,7 @@
                     result.cleanBody = result.cleanBody.replace(/^map[：:]\s*.+?[\n\r]/, '');
                 }
 
+                // 注意：不再解析头像，头像将从成员数据中获取
                 return result;
             }
 
@@ -866,7 +859,7 @@
             });
 
             // ============================================================
-            // 加载成员数据（确保弹窗有数据）
+            // ★★★ 核心修正：加载成员数据 + 根据作者名字获取头像 ★★★
             // ============================================================
             function loadMemberData() {
                 if (window._memberData && window._memberData.length) {
@@ -953,6 +946,13 @@
                     });
             }
 
+            // 根据作者名字从成员数据中获取头像
+            function getMemberAvatar(authorName) {
+                if (!window._memberData || !window._memberData.length) return null;
+                var member = window._memberData.find(function(m) { return m.name === authorName; });
+                return member ? member.avatar : null;
+            }
+
             // ============================================================
             // 加载文章
             // ============================================================
@@ -985,12 +985,17 @@
                         var cleanBody = meta.cleanBody || '';
                         var customAuthor = meta.author;
                         var categories = meta.categories;
-                        var customAvatar = meta.avatar;
                         var mapLink = meta.map;
 
-                        // ★★★ 优先使用正文中的作者和头像，否则回退到 issue.user ★★★
+                        // 作者名字（从正文解析，若无则用 issue.user.login）
                         var authorName = customAuthor || issue.user.login;
-                        var authorAvatar = customAvatar || issue.user.avatar_url;
+
+                        // ★★★ 根据作者名字从成员数据中获取头像 ★★★
+                        var authorAvatar = getMemberAvatar(authorName);
+                        // 如果没找到，使用默认头像或 issue.user.avatar_url 作为回退
+                        if (!authorAvatar) {
+                            authorAvatar = issue.user.avatar_url || 'https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png';
+                        }
 
                         // 检测是否仅包含单个 html-embed
                         var isOnlyEmbed = false;
@@ -1008,7 +1013,7 @@
                         html += '<div class="post-title">' + displayTitle + '</div>';
                         html += '<div class="post-meta">';
                         html += '<span>' + dateStr + '</span>';
-                        // 作者（可点击）
+                        // 作者（可点击，头像从成员数据获取）
                         html += '<span class="author" data-author="' + authorName + '">';
                         html += '<img src="' + authorAvatar + '" alt="' + authorName + '" loading="lazy">';
                         html += '<span class="name">' + authorName + '</span>';
