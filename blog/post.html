@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>文章详情 - 极光创工作室</title>
+    <title>文章详情 · 极光创工作室</title>
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <!-- 公共组件样式（成员档案弹窗） -->
+    <!-- 公共组件样式 + 脚本（成员档案弹窗） -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -176,7 +176,7 @@
             color: #fff;
         }
 
-        /* ===== 文章正文样式（保留原功能） ===== */
+        /* ===== 文章正文样式 ===== */
         .post-detail { padding: 20px 0 40px; }
         .post-wrapper {
             display: flex;
@@ -207,21 +207,23 @@
             opacity: .7;
             align-items: center;
         }
-        /* ★★★ 作者名可点击 ★★★ */
+        /* ★★★ 作者可点击 ★★★ */
         .post-meta .author {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
             cursor: pointer;
-            padding: 2px 8px 2px 2px;
+            padding: 2px 10px 2px 2px;
             border-radius: 20px;
             transition: background 0.2s, color 0.2s;
             color: var(--text-secondary);
             text-decoration: none;
+            border: 1px solid transparent;
         }
         .post-meta .author:hover {
             background: var(--accent-light);
             color: var(--accent);
+            border-color: var(--accent);
         }
         .post-meta .author img {
             width: 24px;
@@ -232,7 +234,7 @@
         .post-meta .author .name {
             font-weight: 500;
         }
-        .post-meta .author .name:hover {
+        .post-meta .author:hover .name {
             text-decoration: underline;
         }
 
@@ -799,7 +801,7 @@
         });
 
         // ============================================================
-        // ★★★ 加载文章（含作者点击绑定） ★★★
+        // 加载文章（含作者点击绑定）
         // ============================================================
         var issueNumber = getQueryParam('id');
         var container = document.getElementById('postContainer');
@@ -829,6 +831,7 @@
                     var customAvatar = meta.avatar;
                     var mapLink = meta.map;
 
+                    // ★★★ 优先使用正文中的作者和头像，否则回退到 issue.user ★★★
                     var authorName = customAuthor || issue.user.login;
                     var authorAvatar = customAvatar || issue.user.avatar_url;
 
@@ -848,9 +851,9 @@
                     html += '<div class="post-title">' + displayTitle + '</div>';
                     html += '<div class="post-meta">';
                     html += '<span>' + dateStr + '</span>';
-                    // ★★★ 作者元素添加 data-author 属性和点击事件 ★★★
+                    // ★★★ 作者区域（包含头像和名字，均可点击） ★★★
                     html += '<span class="author" data-author="' + authorName + '">';
-                    html += '<img src="' + authorAvatar + '" alt="' + authorName + '">';
+                    html += '<img src="' + authorAvatar + '" alt="' + authorName + '" loading="lazy">';
                     html += '<span class="name">' + authorName + '</span>';
                     html += '</span>';
                     html += '</div>';
@@ -904,15 +907,22 @@
                         authorEl.addEventListener('click', function(e) {
                             e.stopPropagation();
                             var authorName = this.getAttribute('data-author');
-                            if (authorName && typeof window.openMemberModal === 'function') {
-                                window.openMemberModal(authorName);
-                            } else if (authorName) {
-                                // 降级：如果公共组件未加载，尝试加载成员数据并打开
-                                console.warn('openMemberModal 未定义，尝试加载成员数据...');
-                                // 可以在这里添加备用逻辑
-                                alert('成员档案功能加载中，请稍后重试');
+                            if (authorName) {
+                                // 检查 openMemberModal 是否可用
+                                if (typeof window.openMemberModal === 'function') {
+                                    window.openMemberModal(authorName);
+                                } else {
+                                    // 如果函数未定义，尝试重新加载 components.js 或提示
+                                    console.warn('openMemberModal 未定义，请确保 components.js 已加载');
+                                    // 可选的备用方案：尝试动态加载 components.js
+                                    alert('成员档案功能尚未加载，请稍后刷新页面重试。');
+                                }
                             }
                         });
+                        // 添加鼠标悬停样式提示
+                        authorEl.style.cursor = 'pointer';
+                    } else {
+                        console.warn('未找到作者元素，可能解析失败');
                     }
                 })
                 .catch(function(err) {
@@ -942,6 +952,13 @@
                 navLinks.classList.remove('open');
             });
         });
+
+        // 检查 components.js 是否加载成功（仅用于调试）
+        if (typeof window.openMemberModal === 'undefined') {
+            console.warn('提示：成员档案弹窗函数未加载，请确认 assets/js/components.js 已正确引用。');
+        } else {
+            console.log('成员档案弹窗已就绪，点击作者姓名可查看档案。');
+        }
 
         console.log('>> 极创博客 · 文章详情页（作者点击已启用）');
     </script>
