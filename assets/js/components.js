@@ -1,11 +1,12 @@
 /**
- * 成员档案弹窗 — 最终版
+ * 成员档案弹窗 — 最终优化版（性能提升）
  * 左右独立滚动 · 灵动岛16样式 · 置顶标签前置
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
  */
 
 (function() {
+    'use strict';
 
     // ----- 工具函数 -----
     function getSiteRoot() {
@@ -16,32 +17,18 @@
         return '/';
     }
 
-    // 编号解析映射
     var ATTR_MAP = { '1': '正式成员', '2': '外部成员', '3': '特招成员' };
     var GAME_MAP = { '1': '迷你世界', '2': 'Minecraft', '3': '迷你世界 + Minecraft' };
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
-
-    // 段位颜色（1~5 从蓝到金）
     var RANK_COLORS = ['#1a7fc4', '#4facfe', '#a855f7', '#f59e0b', '#fbbf24'];
     var DEFAULT_COLOR = '#1a7fc4';
 
-    // 16种灵动岛样式名称映射（用于CSS类）
     var STYLE_CLASSES = {
-        '标准': 'island-style-标准',
-        '黑暗': 'island-style-黑暗',
-        '恐怖': 'island-style-恐怖',
-        '梦幻': 'island-style-梦幻',
-        '简约': 'island-style-简约',
-        '霓虹': 'island-style-霓虹',
-        '复古': 'island-style-复古',
-        '海洋': 'island-style-海洋',
-        '森林': 'island-style-森林',
-        '星空': 'island-style-星空',
-        '暖阳': 'island-style-暖阳',
-        '冷月': 'island-style-冷月',
-        '极光': 'island-style-极光',
-        '蒸汽波': 'island-style-蒸汽波',
-        '赛博': 'island-style-赛博',
+        '标准': 'island-style-标准', '黑暗': 'island-style-黑暗', '恐怖': 'island-style-恐怖',
+        '梦幻': 'island-style-梦幻', '简约': 'island-style-简约', '霓虹': 'island-style-霓虹',
+        '复古': 'island-style-复古', '海洋': 'island-style-海洋', '森林': 'island-style-森林',
+        '星空': 'island-style-星空', '暖阳': 'island-style-暖阳', '冷月': 'island-style-冷月',
+        '极光': 'island-style-极光', '蒸汽波': 'island-style-蒸汽波', '赛博': 'island-style-赛博',
         '水墨': 'island-style-水墨'
     };
     var DEFAULT_STYLE = 'island-style-标准';
@@ -97,9 +84,6 @@
         return Math.floor(diff / (1000*60*60*24));
     }
 
-    /**
-     * 解析荣誉项，提取段位数字和名称
-     */
     function parseHonorItem(text) {
         var trimmed = text.trim();
         var match = trimmed.match(/^\[(\d+)\]\s*(.*)/);
@@ -113,24 +97,20 @@
         }
     }
 
-    /**
-     * 解析灵动岛内容和样式
-     * 格式：内容 | 样式名（可选），若包含 | 则分离，否则全部为内容，样式为默认
-     */
     function parseIslandContent(raw) {
         if (!raw) return { content: '', style: DEFAULT_STYLE };
         var parts = raw.split('|').map(function(s) { return s.trim(); });
         if (parts.length === 1) {
             return { content: parts[0], style: DEFAULT_STYLE };
         } else {
-            var content = parts.slice(0, -1).join(' | '); // 允许内容中包含多个 |
+            var content = parts.slice(0, -1).join(' | ');
             var styleName = parts[parts.length - 1];
             var styleClass = STYLE_CLASSES[styleName] || DEFAULT_STYLE;
             return { content: content, style: styleClass };
         }
     }
 
-    // ----- 主渲染函数 -----
+    // ----- 主渲染函数（优化：减少 DOM 操作，缓存变量）-----
     function renderMemberModal(member) {
         // 归一化
         if (member.groups && typeof member.groups === 'string') {
@@ -162,7 +142,7 @@
         var leftHtml = [], rightHtml = [];
         var delay = 0.05;
 
-        // ----- 左栏：基本信息（头像、姓名、职位、组别、编号、简介、入室天数）-----
+        // ----- 左栏 -----
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
             member.name.charAt(0);
@@ -187,7 +167,6 @@
         leftHtml.push('</div>');
         delay += 0.06;
 
-        // 编号解析卡
         if (member.id && member.id !== '未知' && member.id.length >= 10) {
             leftHtml.push(renderIdCard(member.id, delay));
         } else {
@@ -195,7 +174,6 @@
         }
         delay += 0.06;
 
-        // 简介
         if (member.bio && member.bio.trim()) {
             leftHtml.push('<div class="card bio-card fade-up" style="animation-delay:'+delay+'s">' + member.bio + '</div>');
         } else {
@@ -203,7 +181,6 @@
         }
         delay += 0.06;
 
-        // 入室天数
         var days = getDaysSince(member.joinDate);
         if (days !== null && days >= 0) {
             leftHtml.push('<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>加入工作室</span><span class="num">' + days + '</span><span>天</span></div>');
@@ -212,12 +189,11 @@
         } else {
             leftHtml.push('<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>入室时间</span><span class="muted">未录入</span></div>');
         }
-        delay += 0.06;
 
-        // ----- 右栏：灵动岛、荣誉、作品 -----
+        // ----- 右栏 -----
         var rDelay = 0.06;
 
-        // 1. 灵动岛（如果有）
+        // 1. 灵动岛
         var islandType = member.liveType || member.islandType || '';
         var islandRaw = member.liveContent || member.islandContent || '';
         if (islandType && islandRaw) {
@@ -232,9 +208,8 @@
             } else if (islandType === '图片') {
                 contentHtml = '<img src="' + content + '" alt="灵动岛图片" loading="lazy">';
             } else if (islandType === '视频') {
-                // 如果内容包含 iframe 标签则直接插入，否则生成 video 标签
                 if (content.indexOf('<iframe') !== -1 || content.indexOf('<video') !== -1) {
-                    contentHtml = content; // 信任用户输入的 HTML
+                    contentHtml = content;
                 } else {
                     contentHtml = '<video controls src="' + content + '"></video>';
                 }
@@ -280,7 +255,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 4. 作品数据准备
+        // 4. 作品数据
         var allMaps = window._mapData || [];
         var allBlogs = window._blogData || [];
         var memberMaps = allMaps.filter(function(m) { return m.author === member.name || m.author.includes(member.name); });
@@ -312,7 +287,7 @@
                 '<div class="work-meta">' + meta + '</div></div>';
         }
 
-        // 4. 合并所有地图（含置顶标记）
+        // 合并地图（置顶+其他）
         var allMapItems = [];
         if (pinnedMapObj) { pinnedMapObj.pinned = true; allMapItems.push(pinnedMapObj); }
         var otherMaps = memberMaps.filter(function(m) { return !pinnedMapObj || m.id !== pinnedMapObj.id; });
