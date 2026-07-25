@@ -1,6 +1,6 @@
 /* ============================================================
-   components.css — 成员档案弹窗（最终版）
-   左右独立滚动 · 灵动岛16样式 · 置顶标签前置
+   components.css — 成员档案弹窗（最终优化版）
+   修复：布局错乱、手机适配、卡顿掉帧
    ============================================================ */
 
 /* ---- 弹窗覆盖层 ---- */
@@ -8,9 +8,9 @@
     display: none;
     position: fixed;
     inset: 0;
-    background: rgba(10, 20, 40, 0.6);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
+    background: rgba(10, 20, 40, 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     justify-content: center;
     align-items: center;
     padding: 20px;
@@ -35,14 +35,15 @@
     max-width: 960px;
     width: 100%;
     max-height: 90vh;
-    overflow: hidden;
+    overflow: hidden; /* 防止内容溢出 */
     position: relative;
     padding: 24px 28px 28px;
-    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3);
-    animation: modalIn 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.25);
+    animation: modalIn 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    will-change: transform, opacity;
 }
 @keyframes modalIn {
-    0% { opacity: 0; transform: scale(0.92) translateY(30px); }
+    0% { opacity: 0; transform: scale(0.95) translateY(20px); }
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
@@ -63,7 +64,7 @@
     top: 0;
     float: right;
     font-size: 24px;
-    background: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(4px);
     border: none;
     color: #2c3e50;
@@ -74,29 +75,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
+    transition: transform 0.25s, background 0.25s;
     z-index: 10;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    will-change: transform;
 }
 .modal-close:hover {
     transform: rotate(90deg) scale(1.1);
     background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
 /* ---- 左右列布局（各自滚动） ---- */
 .modal-columns {
     display: flex;
-    gap: 28px;
+    gap: 24px;
     margin-top: 0;
-    height: calc(90vh - 100px);
-    min-height: 400px;
+    height: calc(90vh - 120px); /* 减去 padding 和关闭按钮高度 */
+    min-height: 300px;
+    overflow: hidden; /* 防止内容溢出容器 */
 }
 .column-left,
 .column-right {
     overflow-y: auto;
-    padding-right: 4px;
+    padding-right: 6px;
     flex: 1;
+    scroll-behavior: smooth;
+    will-change: scroll-position;
 }
 .column-left {
     flex: 0 0 38%;
@@ -106,10 +110,11 @@
     flex: 1;
 }
 
-/* 自定义滚动条 */
+/* 自定义滚动条（更细、更透明） */
 .column-left::-webkit-scrollbar,
 .column-right::-webkit-scrollbar {
     width: 4px;
+    background: transparent;
 }
 .column-left::-webkit-scrollbar-track,
 .column-right::-webkit-scrollbar-track {
@@ -125,31 +130,37 @@
     background: rgba(26, 127, 196, 0.4);
 }
 
-/* ---- 卡片动画 ---- */
+/* ---- 卡片动画（使用 transform 和 opacity） ---- */
 .fade-up {
     opacity: 0;
-    animation: fadeUp 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    animation: fadeUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+    will-change: transform, opacity;
 }
 @keyframes fadeUp {
-    0% { opacity: 0; transform: translateY(20px) scale(0.96); }
+    0% { opacity: 0; transform: translateY(12px) scale(0.97); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 /* ---- 卡片通用 ---- */
 .card {
     background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 16px;
-    padding: 16px 20px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
-    transition: transform 0.25s, box-shadow 0.3s, border-color 0.3s;
+    padding: 14px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s, box-shadow 0.25s;
+    will-change: transform;
+}
+.card:last-child {
+    margin-bottom: 0;
 }
 .card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.04);
-    border-color: rgba(26, 127, 196, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+    border-color: rgba(26, 127, 196, 0.15);
 }
 
 /* ---- 个人信息 ---- */
@@ -159,23 +170,24 @@
     border: none;
     padding: 0;
     box-shadow: none;
+    margin-bottom: 8px;
 }
 .profile-card .avatar {
-    width: 80px;
-    height: 80px;
+    width: 76px;
+    height: 76px;
     border-radius: 50%;
     background: linear-gradient(135deg, #eef4ff, #dce6f5);
     border: 3px solid #ffffff;
-    box-shadow: 0 8px 30px rgba(26, 127, 196, 0.08);
+    box-shadow: 0 4px 16px rgba(26, 127, 196, 0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 32px;
+    font-size: 28px;
     font-weight: 700;
     color: #1a7fc4;
     overflow: hidden;
-    margin-bottom: 12px;
-    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 10px;
+    transition: transform 0.25s, box-shadow 0.25s;
 }
 .profile-card .avatar img {
     width: 100%;
@@ -184,57 +196,53 @@
 }
 .profile-card .avatar:hover {
     transform: scale(1.04);
-    box-shadow: 0 8px 40px rgba(26, 127, 196, 0.15);
+    box-shadow: 0 6px 24px rgba(26, 127, 196, 0.12);
 }
 .profile-card .name {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 700;
     color: #1a2a3a;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
-    letter-spacing: -0.3px;
+    gap: 8px;
 }
 .profile-card .role {
     font-size: 14px;
     color: #4a5a6a;
     opacity: 0.6;
-    font-weight: 400;
     margin-top: 2px;
 }
 .profile-card .groups {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
+    gap: 6px;
+    margin-top: 8px;
 }
 .profile-card .groups .group-tag {
     font-size: 11px;
     font-weight: 600;
-    padding: 4px 14px;
-    background: rgba(26, 127, 196, 0.12);
+    padding: 3px 12px;
+    background: rgba(26, 127, 196, 0.1);
     color: #1a7fc4;
     border-radius: 20px;
-    letter-spacing: 0.3px;
-    transition: all 0.2s;
+    transition: background 0.2s, color 0.2s;
 }
 .profile-card .groups .group-tag:hover {
     background: #1a7fc4;
     color: #fff;
-    transform: translateY(-2px);
 }
 .profile-card .meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px 24px;
-    margin-top: 12px;
+    gap: 8px 20px;
+    margin-top: 10px;
     font-size: 13px;
     color: #4a5a6a;
 }
 .profile-card .meta span {
     background: rgba(255,255,255,0.5);
-    padding: 2px 12px;
+    padding: 2px 10px;
     border-radius: 12px;
     font-family: 'JetBrains Mono', monospace;
 }
@@ -242,11 +250,11 @@
     display: inline-block;
     font-size: 11px;
     font-weight: 600;
-    padding: 3px 16px;
+    padding: 2px 14px;
     border-radius: 20px;
     color: #fff;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 .attr-badge.green { background: #10b981; }
 .attr-badge.blue { background: #1a7fc4; }
@@ -261,33 +269,33 @@
     font-weight: 600;
     color: #1a7fc4;
     letter-spacing: 0.5px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
     text-transform: uppercase;
 }
 .id-card .id-parts {
     display: flex;
     flex-wrap: wrap;
-    gap: 4px 20px;
+    gap: 2px 16px;
     font-size: 13px;
     color: #1a2a3a;
 }
 .id-card .id-parts span {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     align-items: baseline;
 }
 .id-card .id-key {
     color: #4a5a6a;
-    opacity: 0.5;
+    opacity: 0.4;
     font-weight: 300;
-    font-size: 11px;
+    font-size: 10px;
     text-transform: uppercase;
 }
 .id-card .id-raw {
     font-size: 11px;
     color: #4a5a6a;
-    opacity: 0.3;
-    margin-top: 8px;
+    opacity: 0.25;
+    margin-top: 6px;
     font-family: monospace;
 }
 
@@ -310,13 +318,13 @@
     background: rgba(248, 250, 255, 0.6);
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
     font-size: 14px;
     color: #4a5a6a;
 }
 .days-card .num {
     font-weight: 700;
-    font-size: 28px;
+    font-size: 26px;
     background: linear-gradient(135deg, #1a7fc4, #4facfe);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -328,45 +336,48 @@
 .honor-section {
     background: rgba(255,255,255,0.3);
     border-radius: 16px;
-    padding: 14px 18px;
+    padding: 12px 16px;
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.4);
     margin-bottom: 12px;
+}
+.honor-section:last-child {
+    margin-bottom: 0;
 }
 .section-title {
     font-size: 13px;
     font-weight: 600;
     color: #1a2a3a;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
     text-transform: uppercase;
-    margin-bottom: 10px;
-    opacity: 0.7;
+    margin-bottom: 8px;
+    opacity: 0.6;
 }
 .honor-list {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px;
 }
 .honor-tag {
     display: inline-block;
-    padding: 4px 18px;
+    padding: 3px 14px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 500;
     color: #fff;
-    letter-spacing: 0.3px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    letter-spacing: 0.2px;
+    transition: transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 .honor-tag:hover {
-    transform: translateY(-3px) scale(1.04);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 .honor-empty {
     font-size: 13px;
     color: #4a5a6a;
     opacity: 0.3;
-    padding: 6px 0;
+    padding: 4px 0;
     font-style: italic;
 }
 
@@ -374,7 +385,7 @@
 .work-section {
     background: rgba(255,255,255,0.3);
     border-radius: 16px;
-    padding: 14px 18px;
+    padding: 12px 16px;
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.4);
     margin-bottom: 12px;
@@ -387,13 +398,14 @@
 .work-scroll {
     overflow-x: auto;
     overflow-y: hidden;
-    padding-bottom: 8px;
+    padding-bottom: 6px;
+    margin: 0 -4px;
     scrollbar-width: thin;
     -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
 }
 .work-scroll::-webkit-scrollbar {
-    height: 4px;
+    height: 3px;
 }
 .work-scroll::-webkit-scrollbar-track {
     background: transparent;
@@ -405,24 +417,25 @@
 .work-grid {
     display: flex;
     flex-wrap: nowrap;
-    gap: 12px;
+    gap: 10px;
+    padding: 0 4px;
     width: max-content;
-    padding: 4px 2px;
 }
 .work-card {
-    flex: 0 0 160px;
-    max-width: 160px;
+    flex: 0 0 150px;
+    max-width: 150px;
     background: rgba(255,255,255,0.5);
     border-radius: 12px;
-    padding: 10px 12px 12px;
+    padding: 8px 10px 10px;
     cursor: pointer;
-    transition: transform 0.25s, box-shadow 0.3s, background 0.3s;
+    transition: transform 0.2s, box-shadow 0.25s;
     border: 1px solid rgba(255,255,255,0.3);
     scroll-snap-align: start;
+    will-change: transform;
 }
 .work-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
     background: rgba(255,255,255,0.8);
 }
 .work-card .work-cover {
@@ -431,7 +444,7 @@
     object-fit: cover;
     background: #eef4ff;
     border-radius: 8px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 .work-card .work-cover.placeholder {
     background: linear-gradient(135deg, #eef4ff, #dce6f5);
@@ -460,16 +473,15 @@
     font-size: 11px;
     color: #4a5a6a;
     opacity: 0.4;
-    margin-top: 4px;
+    margin-top: 2px;
     font-family: 'JetBrains Mono', monospace;
 }
 .work-empty {
     font-size: 13px;
     color: #4a5a6a;
     opacity: 0.3;
-    padding: 10px 0;
+    padding: 8px 0;
     text-align: center;
-    width: 100%;
     font-style: italic;
 }
 .section-title .count {
@@ -479,22 +491,25 @@
     margin-left: 6px;
 }
 
-/* ---- 灵动岛（支持16种样式） ---- */
+/* ---- 灵动岛（16种样式） ---- */
 .island-card {
     background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(6px);
+    backdrop-filter: blur(4px);
     border: 1px solid rgba(255,255,255,0.5);
     border-radius: 16px;
-    padding: 14px 18px;
+    padding: 12px 16px;
     margin-bottom: 12px;
-    transition: all 0.3s ease;
+    transition: border-color 0.2s;
+}
+.island-card:last-child {
+    margin-bottom: 0;
 }
 .island-card .island-title {
     font-size: 13px;
     font-weight: 600;
     color: #1a2a3a;
-    margin-bottom: 8px;
-    opacity: 0.7;
+    margin-bottom: 6px;
+    opacity: 0.6;
 }
 .island-card audio,
 .island-card video {
@@ -513,13 +528,13 @@
     line-height: 1.6;
 }
 
-/* ----- 16种灵动岛样式（仅修改背景/边框/文字/阴影） ----- */
+/* ----- 16种灵动岛样式 ----- */
 .island-style-标准 { background: rgba(255,255,255,0.6); border-color: rgba(255,255,255,0.5); color: #1a2a3a; }
 .island-style-黑暗 { background: rgba(30,30,40,0.7); border-color: rgba(60,60,80,0.5); color: #e8e8e8; }
 .island-style-恐怖 { background: rgba(40,10,10,0.7); border-color: rgba(180,40,40,0.5); color: #f0d0d0; }
 .island-style-梦幻 { background: rgba(200,180,255,0.4); border-color: rgba(180,150,255,0.4); color: #3a2a5a; }
 .island-style-简约 { background: rgba(245,245,245,0.5); border-color: rgba(200,200,200,0.4); color: #2a2a2a; }
-.island-style-霓虹 { background: rgba(10,10,30,0.6); border-color: rgba(0,255,255,0.5); color: #00ffff; box-shadow: 0 0 20px rgba(0,255,255,0.1); }
+.island-style-霓虹 { background: rgba(10,10,30,0.6); border-color: rgba(0,255,255,0.5); color: #00ffff; box-shadow: 0 0 20px rgba(0,255,255,0.08); }
 .island-style-复古 { background: rgba(220,200,170,0.5); border-color: rgba(160,130,90,0.4); color: #5a3a2a; }
 .island-style-海洋 { background: rgba(0,80,120,0.4); border-color: rgba(0,150,200,0.4); color: #d0f0ff; }
 .island-style-森林 { background: rgba(20,60,30,0.4); border-color: rgba(40,120,60,0.4); color: #d0f0d0; }
@@ -527,8 +542,8 @@
 .island-style-暖阳 { background: rgba(255,200,100,0.3); border-color: rgba(255,180,80,0.4); color: #4a3a1a; }
 .island-style-冷月 { background: rgba(180,200,220,0.4); border-color: rgba(150,180,210,0.4); color: #1a2a3a; }
 .island-style-极光 { background: rgba(0,40,60,0.5); border-color: rgba(0,255,200,0.3); color: #b0f0ff; background-image: linear-gradient(135deg, rgba(0,255,200,0.1), rgba(100,0,255,0.1)); }
-.island-style-蒸汽波 { background: rgba(255,100,200,0.2); border-color: rgba(255,0,150,0.3); color: #ff66aa; text-shadow: 0 0 10px rgba(255,0,200,0.2); }
-.island-style-赛博 { background: rgba(0,0,20,0.7); border-color: rgba(0,255,255,0.5); color: #00ffff; box-shadow: 0 0 20px rgba(0,255,255,0.1); font-family: 'Courier New', monospace; }
+.island-style-蒸汽波 { background: rgba(255,100,200,0.2); border-color: rgba(255,0,150,0.3); color: #ff66aa; text-shadow: 0 0 10px rgba(255,0,200,0.15); }
+.island-style-赛博 { background: rgba(0,0,20,0.7); border-color: rgba(0,255,255,0.5); color: #00ffff; box-shadow: 0 0 20px rgba(0,255,255,0.08); font-family: 'Courier New', monospace; }
 .island-style-水墨 { background: rgba(240,240,235,0.6); border-color: rgba(80,80,80,0.3); color: #2a2a2a; font-family: '华文楷体', 'KaiTi', serif; }
 
 /* ---- 手机端适配 ---- */
@@ -540,24 +555,32 @@
     }
     .modal-columns {
         flex-direction: column;
-        height: auto;
+        height: auto; /* 高度自适应 */
+        max-height: 80vh; /* 限制最大高度，不溢出屏幕 */
+        overflow-y: auto; /* 整体滚动 */
         gap: 16px;
-        max-height: 80vh;
-        overflow-y: auto;
     }
-    .column-left, .column-right {
+    .column-left,
+    .column-right {
         flex: 1;
-        overflow-y: visible;
-        max-height: none;
+        overflow-y: visible; /* 由父容器控制滚动 */
         padding-right: 0;
+        max-height: none;
     }
     .column-left {
         flex: 0 0 auto;
     }
+    /* 移动端卡片间距微调 */
+    .card,
+    .honor-section,
+    .work-section,
+    .island-card {
+        margin-bottom: 10px;
+    }
     .profile-card .avatar {
-        width: 64px;
-        height: 64px;
-        font-size: 24px;
+        width: 60px;
+        height: 60px;
+        font-size: 22px;
     }
     .profile-card .name {
         font-size: 20px;
@@ -567,21 +590,22 @@
         max-width: 130px;
     }
     .modal-close {
-        top: 8px;
-        right: 8px;
+        top: 4px;
+        right: 4px;
         width: 34px;
         height: 34px;
         font-size: 20px;
     }
 }
+
 @media (max-width: 480px) {
     .modal-content {
         padding: 12px;
     }
     .profile-card .avatar {
-        width: 56px;
-        height: 56px;
-        font-size: 20px;
+        width: 52px;
+        height: 52px;
+        font-size: 18px;
     }
     .profile-card .name {
         font-size: 18px;
@@ -595,6 +619,10 @@
     }
     .honor-tag {
         font-size: 11px;
-        padding: 3px 14px;
+        padding: 2px 12px;
+    }
+    .id-card .id-parts {
+        font-size: 12px;
+        gap: 2px 10px;
     }
 }
