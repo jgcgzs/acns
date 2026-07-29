@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/components.css">
     <style>
-        /* ===== 基础变量（与之前相同） ===== */
+        /* ===== 基础变量 ===== */
         :root {
             --blue-primary: #1a7fc4;
             --blue-primary-dark: #0f6aad;
@@ -40,104 +40,94 @@
             --filter-active-bg: #1a7fc4;
             --filter-active-text: #fff;
             --filter-active-border: #1a7fc4;
+            --notice-bg: #e8f2fa;
+            --notice-border: #dce6ef;
+            --shadow-glow: 0 0 30px rgba(26, 127, 196, 0.08);
         }
 
-        /* ===== 暗黑剧场模式（言行大帝） ===== */
+        /* ============================================================
+           ★★★ 暗黑剧场模式（言行大帝）★★★
+           更灵动、更富戏剧感
+           ============================================================ */
         body.theater-mode {
-            --bg-body: #1a1a2e;
-            --bg-card: #1f1f35;
-            --card-border: #3a3a5a;
-            --text-color: #e0d6c8;
-            --text-secondary: #b0a898;
-            --tag-border: #f5a623;
-            --tag-color: #f5a623;
-            --tag-bg: rgba(245, 166, 35, 0.1);
-            --nav-bg: #1a1a2e;
-            --nav-border: #3a3a5a;
-            --nav-text: #e0d6c8;
-            --nav-text-hover: #f5a623;
-            --filter-bg: transparent;
-            --filter-border: #3a3a5a;
-            --filter-text: #b0a898;
-            --filter-active-bg: #f5a623;
-            --filter-active-text: #1a1a2e;
-            --filter-active-border: #f5a623;
-            --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.3);
-            --shadow-hover: 0 8px 28px rgba(245, 166, 35, 0.1);
+            --bg-body: #0d0a1a;
+            --bg-card: #161025;
+            --card-border: #3a2a5a;
+            --text-color: #e8dcc8;
+            --text-secondary: #b0a090;
+            --tag-border: #d4a050;
+            --tag-color: #d4a050;
+            --tag-bg: rgba(212, 160, 80, 0.12);
+            --nav-bg: #0d0a1a;
+            --nav-border: #3a2a5a;
+            --nav-text: #d4c8b0;
+            --nav-text-hover: #e8c84a;
+            --filter-bg: rgba(255, 255, 255, 0.03);
+            --filter-border: #3a2a5a;
+            --filter-text: #b0a090;
+            --filter-active-bg: #d4a050;
+            --filter-active-text: #0d0a1a;
+            --filter-active-border: #d4a050;
+            --shadow-sm: 0 4px 24px rgba(0, 0, 0, 0.5);
+            --shadow-hover: 0 8px 48px rgba(212, 160, 80, 0.15);
+            --shadow-glow: 0 0 60px rgba(212, 160, 80, 0.06);
+            --notice-bg: rgba(212, 160, 80, 0.05);
+            --notice-border: #3a2a5a;
         }
+
+        /* 导航栏暗黑 */
         body.theater-mode .navbar {
-            background: #1a1a2e !important;
-            border-bottom-color: #3a3a5a !important;
+            background: #0d0a1a !important;
+            border-bottom-color: #3a2a5a !important;
+            box-shadow: 0 2px 40px rgba(0, 0, 0, 0.6) !important;
         }
         body.theater-mode .navbar .brand-text {
-            color: #e0d6c8 !important;
+            color: #e8dcc8 !important;
         }
         body.theater-mode .navbar .nav-links li a {
-            color: #b0a898 !important;
+            color: #b0a090 !important;
         }
         body.theater-mode .navbar .nav-links li a:hover {
-            color: #f5a623 !important;
-            background: rgba(245, 166, 35, 0.1) !important;
+            color: #e8c84a !important;
+            background: rgba(212, 160, 80, 0.08) !important;
         }
         body.theater-mode .navbar .nav-links li a.active {
-            color: #f5a623 !important;
+            color: #e8c84a !important;
         }
         body.theater-mode .navbar .nav-links li a::after {
-            background: #f5a623 !important;
+            background: #e8c84a !important;
         }
         body.theater-mode .navbar .menu-toggle {
-            color: #e0d6c8 !important;
+            color: #e8dcc8 !important;
         }
+
+        /* 底部暗黑 */
         body.theater-mode .footer {
-            background: #0d0d1a !important;
-            border-top-color: #2a2a4a !important;
+            background: #08061a !important;
+            border-top-color: #2a1a4a !important;
         }
         body.theater-mode .footer .container {
-            color: #8a7a6a !important;
+            color: #6a5a4a !important;
         }
-        body.theater-mode .blog-card {
-            border-color: #3a3a5a !important;
-            background: #1f1f35 !important;
-        }
-        body.theater-mode .blog-card:hover {
-            border-color: #f5a623 !important;
-            box-shadow: 0 8px 28px rgba(245, 166, 35, 0.1) !important;
-        }
-        body.theater-mode .blog-card .body .tag {
-            border-color: #f5a623 !important;
-            color: #f5a623 !important;
-            background: rgba(245, 166, 35, 0.1) !important;
-        }
-        body.theater-mode .blog-card .body .title {
-            color: #e0d6c8 !important;
-        }
-        body.theater-mode .blog-card .body .date-row {
-            color: #8a7a6a !important;
-        }
-        body.theater-mode .blog-card .body .author {
-            color: #8a7a6a !important;
-        }
-        body.theater-mode .blog-card .body .author:hover {
-            color: #f5a623 !important;
-        }
-        body.theater-mode .blog-card .body .summary {
-            color: #b0a898 !important;
-        }
-        body.theater-mode .blog-card .body .read-more {
-            color: #f5a623 !important;
+
+        /* 页面头部暗黑 */
+        body.theater-mode .page-header {
+            border-bottom-color: #3a2a5a !important;
         }
         body.theater-mode .page-header h1 {
-            color: #e0d6c8 !important;
+            color: #e8dcc8 !important;
         }
         body.theater-mode .page-header .sub {
             color: #8a7a6a !important;
         }
+
+        /* 搜索栏暗黑 */
         body.theater-mode .blog-toolbar .search-box {
-            border-color: #3a3a5a !important;
-            background: #1a1a2e !important;
+            border-color: #3a2a5a !important;
+            background: rgba(255, 255, 255, 0.04) !important;
         }
         body.theater-mode .blog-toolbar .search-box input {
-            color: #e0d6c8 !important;
+            color: #e8dcc8 !important;
             background: transparent !important;
         }
         body.theater-mode .blog-toolbar .search-box input::placeholder {
@@ -147,66 +137,145 @@
             color: #8a7a6a !important;
         }
         body.theater-mode .blog-toolbar .search-box button:hover {
-            color: #f5a623 !important;
+            color: #e8c84a !important;
         }
         body.theater-mode .blog-toolbar .result-count {
             color: #8a7a6a !important;
         }
+
+        /* 分类按钮暗黑 */
         body.theater-mode .blog-categories-filter .filter-btn {
-            border-color: #3a3a5a !important;
+            border-color: #3a2a5a !important;
             color: #8a7a6a !important;
+            background: rgba(255, 255, 255, 0.02) !important;
         }
         body.theater-mode .blog-categories-filter .filter-btn:hover {
-            border-color: #f5a623 !important;
-            color: #f5a623 !important;
+            border-color: #d4a050 !important;
+            color: #e8c84a !important;
+            background: rgba(212, 160, 80, 0.06) !important;
         }
         body.theater-mode .blog-categories-filter .filter-btn.active {
-            background: #f5a623 !important;
-            border-color: #f5a623 !important;
-            color: #1a1a2e !important;
+            background: #d4a050 !important;
+            border-color: #d4a050 !important;
+            color: #0d0a1a !important;
+            box-shadow: 0 0 30px rgba(212, 160, 80, 0.2) !important;
         }
         body.theater-mode .blog-categories-filter .filter-btn.all-btn {
-            border-color: #f5a623 !important;
-            color: #f5a623 !important;
+            border-color: #d4a050 !important;
+            color: #d4a050 !important;
         }
         body.theater-mode .blog-categories-filter .filter-btn.all-btn.active {
-            background: #f5a623 !important;
-            color: #1a1a2e !important;
+            background: #d4a050 !important;
+            color: #0d0a1a !important;
         }
+        body.theater-mode .blog-categories-filter .filter-btn.theater-btn {
+            border-color: #d4a050 !important;
+            color: #d4a050 !important;
+            box-shadow: 0 0 20px rgba(212, 160, 80, 0.1);
+        }
+        body.theater-mode .blog-categories-filter .filter-btn.theater-btn.active {
+            background: #d4a050 !important;
+            color: #0d0a1a !important;
+            box-shadow: 0 0 40px rgba(212, 160, 80, 0.3) !important;
+        }
+
+        /* 博客卡片暗黑 - 增加浮动和光晕效果 */
+        body.theater-mode .blog-card {
+            border-color: #3a2a5a !important;
+            background: linear-gradient(145deg, #161025, #1a0f30) !important;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(212, 160, 80, 0.05) !important;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+        body.theater-mode .blog-card:hover {
+            border-color: #d4a050 !important;
+            transform: translateY(-6px) scale(1.01) !important;
+            box-shadow: 0 12px 48px rgba(212, 160, 80, 0.12), 0 0 60px rgba(212, 160, 80, 0.04) !important;
+        }
+        body.theater-mode .blog-card .body .tag {
+            border-color: #d4a050 !important;
+            color: #d4a050 !important;
+            background: rgba(212, 160, 80, 0.08) !important;
+            box-shadow: 0 0 12px rgba(212, 160, 80, 0.04) !important;
+        }
+        body.theater-mode .blog-card .body .title {
+            color: #f0e4d0 !important;
+            text-shadow: 0 0 20px rgba(212, 160, 80, 0.04) !important;
+        }
+        body.theater-mode .blog-card .body .date-row {
+            color: #6a5a4a !important;
+        }
+        body.theater-mode .blog-card .body .author {
+            color: #8a7a6a !important;
+        }
+        body.theater-mode .blog-card .body .author:hover {
+            color: #e8c84a !important;
+        }
+        body.theater-mode .blog-card .body .summary {
+            color: #c0b0a0 !important;
+        }
+        body.theater-mode .blog-card .body .read-more {
+            color: #d4a050 !important;
+        }
+        body.theater-mode .blog-card .body .read-more:hover {
+            color: #e8c84a !important;
+        }
+
+        /* 分页暗黑 */
         body.theater-mode .pagination button {
-            border-color: #3a3a5a !important;
-            background: transparent !important;
+            border-color: #3a2a5a !important;
+            background: rgba(255, 255, 255, 0.03) !important;
             color: #8a7a6a !important;
         }
         body.theater-mode .pagination button:hover:not(:disabled) {
-            border-color: #f5a623 !important;
-            color: #f5a623 !important;
+            border-color: #d4a050 !important;
+            color: #e8c84a !important;
+            background: rgba(212, 160, 80, 0.06) !important;
+            box-shadow: 0 0 20px rgba(212, 160, 80, 0.08) !important;
         }
         body.theater-mode .pagination button.active {
-            background: #f5a623 !important;
-            border-color: #f5a623 !important;
-            color: #1a1a2e !important;
+            background: #d4a050 !important;
+            border-color: #d4a050 !important;
+            color: #0d0a1a !important;
+            box-shadow: 0 0 30px rgba(212, 160, 80, 0.2) !important;
         }
         body.theater-mode .pagination .info {
-            color: #8a7a6a !important;
+            color: #6a5a4a !important;
         }
-        body.theater-mode .empty-placeholder {
-            color: #8a7a6a !important;
-        }
+
+        /* 加载 & 空状态暗黑 */
         body.theater-mode .loading-placeholder {
             color: #8a7a6a !important;
         }
         body.theater-mode .loading-placeholder i {
-            color: #f5a623 !important;
+            color: #d4a050 !important;
+        }
+        body.theater-mode .empty-placeholder {
+            color: #8a7a6a !important;
         }
         body.theater-mode .blog-error {
             color: #8a7a6a !important;
         }
         body.theater-mode .blog-error i {
-            color: #f5a623 !important;
+            color: #d4a050 !important;
         }
 
-        /* ===== 全局样式（与之前完全相同） ===== */
+        /* ============================================================
+           滚动条暗黑
+           ============================================================ */
+        body.theater-mode ::-webkit-scrollbar-track {
+            background: #1a0f30 !important;
+        }
+        body.theater-mode ::-webkit-scrollbar-thumb {
+            background: #3a2a5a !important;
+            border-radius: 4px !important;
+        }
+        body.theater-mode ::-webkit-scrollbar-thumb:hover {
+            background: #d4a050 !important;
+        }
+
+        /* ============================================================
+           全局样式
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -222,7 +291,7 @@
             line-height: 1.7;
             font-size: 16px;
             padding-top: 68px;
-            transition: background-color 0.4s ease, color 0.4s ease;
+            transition: background-color 0.6s ease, color 0.6s ease;
         }
         a {
             text-decoration: none;
@@ -252,7 +321,7 @@
             align-items: center;
             border-bottom: 1px solid var(--nav-border);
             box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
-            transition: background 0.4s ease, border-color 0.4s ease;
+            transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
         }
         .navbar .container {
             display: flex;
@@ -275,7 +344,7 @@
             color: #1a1a1a;
             letter-spacing: 0.3px;
             white-space: nowrap;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .nav-links {
             display: flex;
@@ -289,7 +358,7 @@
             font-weight: 500;
             color: var(--nav-text);
             border-radius: var(--radius);
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.3s ease, color 0.3s ease;
             position: relative;
         }
         .nav-links li a::after {
@@ -300,7 +369,7 @@
             width: 0;
             height: 2px;
             background: var(--blue-primary);
-            transition: width 0.25s ease;
+            transition: width 0.3s ease, background 0.3s ease;
             transform: translateX(-50%);
             border-radius: var(--radius);
         }
@@ -326,7 +395,7 @@
             color: var(--nav-text);
             cursor: pointer;
             padding: 4px 8px;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
 
         /* ===== 底部 ===== */
@@ -338,7 +407,7 @@
             font-size: 14px;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 48px;
-            transition: background 0.4s ease, border-color 0.4s ease;
+            transition: background 0.5s ease, border-color 0.5s ease;
         }
         .footer .container {
             display: flex;
@@ -356,19 +425,19 @@
             padding: 24px 0 12px;
             border-bottom: 1px solid var(--border-light);
             margin-bottom: 24px;
-            transition: border-color 0.4s ease;
+            transition: border-color 0.5s ease;
         }
         .page-header h1 {
             font-size: 28px;
             font-weight: 700;
             color: var(--text-dark);
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .page-header .sub {
             font-size: 14px;
             color: var(--text-muted);
             opacity: 0.6;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
 
         /* ===== 搜索 + 分类工具栏 ===== */
@@ -386,7 +455,7 @@
             gap: 0;
             border: 1px solid var(--border-light);
             background: var(--white);
-            transition: border-color 0.3s, background 0.4s ease;
+            transition: border-color 0.3s ease, background 0.5s ease;
         }
         .blog-toolbar .search-box:focus-within {
             border-color: var(--blue-primary);
@@ -400,7 +469,7 @@
             font-size: 14px;
             font-family: inherit;
             outline: none;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .blog-toolbar .search-box input::placeholder {
             color: var(--text-muted);
@@ -412,7 +481,7 @@
             border: none;
             color: var(--text-muted);
             cursor: pointer;
-            transition: color 0.3s;
+            transition: color 0.3s ease;
         }
         .blog-toolbar .search-box button:hover {
             color: var(--blue-primary);
@@ -422,7 +491,7 @@
             color: var(--text-muted);
             opacity: 0.5;
             white-space: nowrap;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
 
         /* ===== 分类筛选（横向滚动） ===== */
@@ -455,7 +524,7 @@
             background: var(--filter-bg);
             color: var(--filter-text);
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             font-family: inherit;
             white-space: nowrap;
         }
@@ -477,12 +546,12 @@
             color: #fff;
         }
         .blog-categories-filter .filter-btn.theater-btn {
-            border-color: #f5a623;
-            color: #f5a623;
+            border-color: #d4a050;
+            color: #d4a050;
         }
         .blog-categories-filter .filter-btn.theater-btn.active {
-            background: #f5a623;
-            color: #1a1a2e;
+            background: #d4a050;
+            color: #0d0a1a;
         }
 
         /* ===== 博客网格 ===== */
@@ -498,7 +567,10 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s, background 0.4s ease;
+            transition: box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                border-color 0.4s ease,
+                background 0.5s ease;
             display: flex;
             flex-direction: column;
             cursor: pointer;
@@ -547,7 +619,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .blog-card .body .date-row {
             font-size: 12px;
@@ -556,7 +628,7 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .blog-card .body .date-row i {
             font-size: 11px;
@@ -590,7 +662,7 @@
             overflow: hidden;
             margin-top: 2px;
             flex: 1;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .blog-card .body .read-more {
             font-size: 12px;
@@ -602,7 +674,7 @@
         }
         .blog-card .body .read-more i {
             font-size: 11px;
-            transition: transform 0.2s;
+            transition: transform 0.3s ease;
         }
         .blog-card:hover .read-more i {
             transform: translateX(4px);
@@ -625,7 +697,10 @@
             color: var(--text-dark);
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s, background 0.4s ease, border-color 0.4s ease, color 0.4s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                background 0.5s ease,
+                border-color 0.5s ease,
+                color 0.5s ease;
             min-width: 36px;
         }
         .pagination button:hover:not(:disabled) {
@@ -646,7 +721,7 @@
             color: var(--text-muted);
             opacity: 0.5;
             padding: 0 8px;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
 
         /* ===== 加载 & 空状态 ===== */
@@ -658,21 +733,21 @@
             opacity: 0.4;
             font-size: 15px;
             grid-column: 1 / -1;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .loading-placeholder i {
             display: block;
             font-size: 28px;
             color: var(--blue-primary);
             margin-bottom: 10px;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .blog-error {
             text-align: center;
             padding: 60px 0;
             color: var(--text-muted);
             grid-column: 1 / -1;
-            transition: color 0.4s ease;
+            transition: color 0.5s ease;
         }
         .blog-error i {
             display: block;
@@ -681,7 +756,9 @@
             margin-bottom: 10px;
         }
 
-        /* ===== 响应式 ===== */
+        /* ============================================================
+           响应式
+           ============================================================ */
         @media (max-width: 992px) {
             .blog-grid {
                 grid-template-columns: repeat(3, 1fr);
@@ -709,7 +786,7 @@
                 gap: 2px;
                 border-top: 1px solid var(--nav-border);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-                transition: background 0.4s ease, border-color 0.4s ease;
+                transition: background 0.5s ease, border-color 0.5s ease;
             }
             .nav-links.open {
                 display: flex;
@@ -1176,8 +1253,6 @@
                 // ★ 检查是否存在“言行大帝”标签，如果有则添加到末尾（并标记为特殊按钮）
                 var hasTheater = allCats.indexOf(THEATER_CATEGORY) !== -1;
                 if (hasTheater) {
-                    // 如果“言行大帝”已经在列表中，确保它在最后（可能排序后不在最后，但我们需要它固定在末尾）
-                    // 从列表中移除然后重新追加到末尾
                     var idx = catList.indexOf(THEATER_CATEGORY);
                     if (idx !== -1) {
                         catList.splice(idx, 1);
@@ -1189,7 +1264,6 @@
                 catList.forEach(function(cat) {
                     var active = (selectedCategory === cat) ? ' active' : '';
                     var cls = (cat === '全部') ? 'filter-btn all-btn' : 'filter-btn';
-                    // “言行大帝”特殊样式
                     if (cat === THEATER_CATEGORY) {
                         cls += ' theater-btn';
                     }
@@ -1217,7 +1291,7 @@
             }
 
             // ============================================================
-            // 筛选逻辑（“言行大帝”特殊：显示所有文章，但应用暗黑模式）
+            // ★★★ 筛选逻辑（“言行大帝”必须包含该标签，且切换暗黑模式） ★★★
             // ============================================================
             function getFilteredPosts() {
                 return allPosts.filter(function(post) {
@@ -1226,8 +1300,8 @@
                     if (selectedCategory === '全部') {
                         // 全部
                     } else if (selectedCategory === THEATER_CATEGORY) {
-                        // “言行大帝”：显示所有文章，不筛除任何文章
-                        // 但条件：只当有文章包含此标签时才会显示此按钮，所以此处直接放行
+                        // ★ 修正：必须包含“言行大帝”标签 ★
+                        if (articleCats.indexOf(THEATER_CATEGORY) === -1) return false;
                     } else {
                         // 普通分类：文章必须包含该分类
                         if (articleCats.indexOf(selectedCategory) === -1) return false;
@@ -1250,7 +1324,6 @@
                 var authorHtml = '<span class="author" data-author="' + post.author + '"><i class="fas fa-user"></i> ' + post
                     .author + '</span>';
 
-                // ★★★ 显示所有分类标签 ★★★
                 var tagsHtml = '';
                 if (post.categories && post.categories.length > 0) {
                     tagsHtml = '<div class="tags-container">';
@@ -1381,7 +1454,6 @@
                     window._mapData = allMaps;
                     window._blogData = allBlogs;
 
-                    // 默认选中“全部”
                     selectedCategory = '全部';
                     toggleTheaterMode(false);
                     renderCategories();
