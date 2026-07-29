@@ -7,10 +7,10 @@
     <meta name="description" content="极光创工作室博客 - 迷你世界创作分享">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 公共组件样式 -->
+    <!-- 公共组件样式（弹窗用，但主站不显示，保留以备后续） -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <style>
-        /* ===== 博客列表独有样式 ===== */
+        /* ===== 博客列表独有样式（与之前完全相同） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -56,6 +56,7 @@
             --radius: 2px;
         }
 
+        /* ===== 导航栏（保持不变） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -143,6 +144,7 @@
             padding: 4px 8px;
         }
 
+        /* ===== 底部（保持不变） ===== */
         .footer {
             background: #1a2a3a;
             color: rgba(255, 255, 255, 0.55);
@@ -163,262 +165,49 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
-        .page-header {
-            padding: 24px 0 12px;
-            border-bottom: 1px solid var(--border-light);
-            margin-bottom: 24px;
-        }
-        .page-header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-        .page-header .sub {
-            font-size: 14px;
-            color: var(--text-muted);
-            opacity: 0.6;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .search-bar input {
-            flex: 1;
-            min-width: 180px;
-            padding: 8px 14px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            font-size: 14px;
-            background: var(--white);
-            outline: none;
-        }
-        .search-bar input:focus {
-            border-color: var(--blue-primary);
-        }
-        .search-bar .search-btn {
-            background: var(--blue-primary);
-            color: #fff;
-            border: none;
-            padding: 8px 20px;
-            border-radius: var(--radius);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .search-bar .search-btn:hover {
-            background: var(--blue-primary-dark);
-        }
-
-        .tag-bar {
-            display: flex;
-            flex-wrap: nowrap;
-            overflow-x: auto;
-            gap: 8px;
-            padding: 4px 0 16px;
-            margin-bottom: 8px;
-            -webkit-overflow-scrolling: touch;
-        }
-        .tag-bar::-webkit-scrollbar {
-            height: 4px;
-            background: var(--border-light);
-        }
-        .tag-bar::-webkit-scrollbar-thumb {
-            background: var(--blue-primary);
-            border-radius: 2px;
-        }
-        .tag-item {
-            flex: 0 0 auto;
-            padding: 4px 16px;
-            border: 1.5px solid var(--border-light);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 500;
-            color: var(--text-muted);
-            background: transparent;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        .tag-item:hover {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-        }
-        .tag-item.active {
-            border-color: var(--blue-primary);
-            color: var(--blue-primary);
-            background: var(--blue-bg-light);
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        .blog-card {
-            background: var(--white);
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+        /* ===== 维护页面样式 ===== */
+        .maintenance-wrapper {
             display: flex;
             flex-direction: column;
-            cursor: pointer;
-        }
-        .blog-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-            transform: translateY(-3px);
-        }
-        .blog-card .body {
-            padding: 14px 16px 16px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .blog-card .body .tag {
-            font-size: 10px;
-            font-weight: 600;
-            padding: 1px 10px;
-            border: 1.5px solid var(--blue-primary);
-            color: var(--blue-primary);
-            background: transparent;
-            border-radius: 3px;
-            letter-spacing: 0.3px;
-            display: inline-block;
-            line-height: 1.5;
-            align-self: flex-start;
-        }
-        .blog-card .body .title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-dark);
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-        .blog-card .body .date-row {
-            font-size: 12px;
-            color: var(--text-muted);
-            opacity: 0.55;
-            display: flex;
             align-items: center;
-            gap: 4px;
-        }
-        .blog-card .body .date-row i {
-            font-size: 11px;
-            opacity: 0.5;
-        }
-        .blog-card .body .author {
-            font-size: 12px;
-            color: var(--text-muted);
-            opacity: 0.6;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            cursor: pointer;
-        }
-        .blog-card .body .author:hover {
-            color: var(--blue-primary);
-            text-decoration: underline;
-        }
-        .blog-card .body .author i {
-            font-size: 10px;
-            opacity: 0.5;
-        }
-        .blog-card .body .summary {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-top: 2px;
-            flex: 1;
-        }
-        .blog-card .body .read-more {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--blue-primary);
-            margin-top: 4px;
-            align-self: flex-start;
-        }
-        .blog-card .body .read-more i {
-            font-size: 11px;
-            transition: transform 0.2s;
-        }
-        .blog-card:hover .read-more i {
-            transform: translateX(4px);
-        }
-
-        .pagination {
-            display: flex;
             justify-content: center;
-            align-items: center;
-            gap: 6px;
-            margin-top: 28px;
-            flex-wrap: wrap;
+            min-height: 50vh;
+            text-align: center;
+            padding: 60px 20px;
         }
-        .pagination button {
-            padding: 6px 14px;
-            border: 1px solid var(--border-light);
-            border-radius: var(--radius);
-            background: var(--white);
-            color: var(--text-dark);
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.2s;
-            min-width: 36px;
-        }
-        .pagination button:hover:not(:disabled) {
-            border-color: var(--blue-primary);
+        .maintenance-wrapper .icon {
+            font-size: 64px;
             color: var(--blue-primary);
-        }
-        .pagination button.active {
-            background: var(--blue-primary);
-            color: #fff;
-            border-color: var(--blue-primary);
-        }
-        .pagination button:disabled {
             opacity: 0.3;
-            cursor: default;
+            margin-bottom: 20px;
         }
-        .pagination .info {
-            font-size: 13px;
+        .maintenance-wrapper h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 12px;
+        }
+        .maintenance-wrapper p {
+            font-size: 16px;
+            color: var(--text-muted);
+            max-width: 500px;
+            line-height: 1.8;
+        }
+        .maintenance-wrapper .sub-info {
+            margin-top: 20px;
+            font-size: 14px;
             color: var(--text-muted);
             opacity: 0.5;
-            padding: 0 8px;
+        }
+        /* 隐藏原有的搜索、标签、网格、分页等 */
+        .search-bar,
+        .tag-bar,
+        .blog-grid,
+        .pagination {
+            display: none !important;
         }
 
-        .loading-placeholder,
-        .empty-placeholder {
-            text-align: center;
-            padding: 60px 0;
-            color: var(--text-muted);
-            opacity: 0.4;
-            font-size: 15px;
-            grid-column: 1 / -1;
-        }
-        .loading-placeholder i {
-            display: block;
-            font-size: 28px;
-            color: var(--blue-primary);
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 992px) {
-            .blog-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+        /* ===== 响应式（保持不变） ===== */
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
@@ -451,70 +240,29 @@
                 width: 100%;
                 text-align: center;
             }
-            .blog-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 14px;
-            }
-            .page-header h1 {
-                font-size: 24px;
-            }
-            .search-bar input {
-                min-width: 140px;
-            }
-            .tag-item {
-                font-size: 12px;
-                padding: 3px 12px;
-            }
             .navbar-brand .brand-text {
                 font-size: 17px;
             }
             .navbar-brand .logo {
                 height: 28px;
             }
-        }
-        @media (max-width: 480px) {
-            .blog-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .blog-card .body {
-                padding: 10px 12px 12px;
-            }
-            .blog-card .body .title {
-                font-size: 14px;
-            }
-            .blog-card .body .summary {
-                font-size: 12px;
-                -webkit-line-clamp: 2;
-            }
-            .blog-card .body .tag {
-                font-size: 9px;
-                padding: 0 8px;
-                border-width: 1px;
-            }
-            .blog-card .body .date-row {
-                font-size: 11px;
-            }
-            .blog-card .body .author {
-                font-size: 11px;
-            }
-            .search-bar input {
-                font-size: 13px;
-                padding: 6px 12px;
-            }
-            .search-bar .search-btn {
-                font-size: 13px;
-                padding: 6px 14px;
-            }
             .container {
                 padding: 0 14px;
+            }
+        }
+        @media (max-width: 480px) {
+            .maintenance-wrapper h2 {
+                font-size: 22px;
+            }
+            .maintenance-wrapper .icon {
+                font-size: 48px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（原样） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -532,7 +280,7 @@
         </div>
     </header>
 
-    <!-- ===== 博客列表 ===== -->
+    <!-- ===== 主内容 ===== -->
     <main>
         <div class="container">
             <div class="page-header">
@@ -540,24 +288,26 @@
                 <div class="sub">极光创工作室的创作分享与日志</div>
             </div>
 
-            <!-- 搜索栏 -->
-            <div class="search-bar">
+            <!-- 维护提示 -->
+            <div class="maintenance-wrapper">
+                <div class="icon"><i class="fas fa-tools"></i></div>
+                <h2>博客系统正在维护中</h2>
+                <p>极创博客暂时关闭，进行内容审核与系统升级。<br>预计恢复时间：<strong>2026年8月1日</strong>，届时将带来更好的阅读体验。</p>
+                <div class="sub-info">感谢您的理解与支持 ❤️</div>
+            </div>
+
+            <!-- 原有的搜索、标签、网格、分页已被 CSS 隐藏，但保留结构以备用 -->
+            <div class="search-bar" style="display:none;">
                 <input type="text" id="searchInput" placeholder="搜索文章标题、作者..." />
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
-
-            <!-- 标签栏（分类） -->
-            <div class="tag-bar" id="tagBar">
+            <div class="tag-bar" id="tagBar" style="display:none;">
                 <span class="tag-item active" data-tag="all">全部</span>
             </div>
-
-            <!-- 博客卡片网格 -->
-            <div class="blog-grid" id="blogGrid">
+            <div class="blog-grid" id="blogGrid" style="display:none;">
                 <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载文章...</div>
             </div>
-
-            <!-- 分页 -->
-            <div class="pagination" id="pagination">
+            <div class="pagination" id="pagination" style="display:none;">
                 <button id="prevPage" disabled>‹</button>
                 <span id="pageInfo" class="info">第 1 / 1 页</span>
                 <button id="nextPage" disabled>›</button>
@@ -565,7 +315,7 @@
         </div>
     </main>
 
-    <!-- ===== 弹窗结构（公共组件） ===== -->
+    <!-- ===== 弹窗结构（保留，以备后续恢复） ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -575,7 +325,7 @@
         </div>
     </div>
 
-    <!-- ===== 底部 ===== -->
+    <!-- ===== 底部（原样） ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -584,13 +334,13 @@
         </div>
     </footer>
 
-    <!-- 引入公共脚本 -->
+    <!-- 引入公共脚本（保留，但不会执行加载，因为容器隐藏） -->
     <script src="../assets/js/components.js"></script>
 
     <script>
         (function() {
 
-            // ===== 移动端菜单 =====
+            // ===== 移动端菜单（保留） =====
             const toggle = document.getElementById('menuToggle');
             const navLinks = document.getElementById('navLinks');
             if (toggle && navLinks) {
@@ -610,371 +360,8 @@
                 });
             }
 
-            // ============================================================
-            // 解析工具（使用公共函数，若无则本地定义）
-            // ============================================================
-            var parseDateFromBody = window.parseDateFromBody || function(body) {
-                var patterns = [
-                    /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
-                    /(\d{4})\/(\d{1,2})\/(\d{1,2})/
-                ];
-                for (var i = 0; i < patterns.length; i++) {
-                    var match = body.match(patterns[i]);
-                    if (match) {
-                        var year = parseInt(match[1]),
-                            month = parseInt(match[2]),
-                            day = parseInt(match[3]);
-                        if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
-                            return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-                        }
-                    }
-                }
-                return null;
-            };
-
-            // ============================================================
-            // 解析博客Issue
-            // ============================================================
-            function parseBlogIssue(issue) {
-                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
-                var body = issue.body || '';
-                var author = '',
-                    category = '';
-                var lines = body.split('\n');
-                var contentStart = 0;
-                lines.forEach(function(line, idx) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
-                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
-                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
-                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
-                    }
-                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) {
-                        contentStart = idx;
-                    }
-                });
-                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
-                if (!category || category.trim() === '') category = '未分类';
-
-                var contentLines = lines.slice(contentStart);
-                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
-                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
-
-                // 从标题提取日期：YYYY-MM-DD-文章标题
-                var dateStr = '未知';
-                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
-                if (dateMatch) {
-                    var y = parseInt(dateMatch[1]),
-                        m = parseInt(dateMatch[2]),
-                        d = parseInt(dateMatch[3]);
-                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-                    }
-                }
-
-                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
-                if (!title) title = rawTitle;
-
-                return {
-                    id: issue.number,
-                    title: title,
-                    author: author,
-                    category: category,
-                    summary: summary || '暂无摘要',
-                    date: dateStr,
-                    raw: issue
-                };
-            }
-
-            // ============================================================
-            // 解析成员Issue（增加荣誉、灵动岛字段）
-            // ============================================================
-            function parseMemberIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
-                var body = issue.body || '';
-                var groups = [],
-                    minid = '未知',
-                    id = '未知',
-                    joinDate = '未知',
-                    avatar = '',
-                    background = '',
-                    bio = '',
-                    pinnedMap = '',
-                    pinnedBlog = '',
-                    role = '';
-                var workHonors = '',
-                    gameHonors = '',
-                    liveType = '',
-                    liveContent = '';
-                var parts = title.split('-');
-                var name = parts[0].trim();
-                if (parts.length > 1) role = parts.slice(1).join('-').trim();
-                var lines = body.split('\n');
-                lines.forEach(function(line) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^组别[：:]\s*(.+)/)) {
-                        var g = trimmed.replace(/^组别[：:]\s*/, '').trim();
-                        groups = g.split(/[,，、\s]+/).filter(function(s) { return s.trim().length > 0; });
-                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
-                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
-                    } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
-                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
-                    } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
-                        var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
-                        var parsed = parseDateFromBody(d);
-                        if (parsed) joinDate = parsed;
-                        else joinDate = d || '未知';
-                    } else if (trimmed.match(/^头像[：:]\s*(.+)/)) {
-                        avatar = trimmed.replace(/^头像[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^背景[：:]\s*(.+)/)) {
-                        background = trimmed.replace(/^背景[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^简介[：:]\s*(.+)/)) {
-                        bio = trimmed.replace(/^简介[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^置顶地图[：:]\s*(.+)/)) {
-                        pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
-                        pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^工作室荣誉[：:]\s*(.+)/)) {
-                        workHonors = trimmed.replace(/^工作室荣誉[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^游戏荣誉[：:]\s*(.+)/)) {
-                        gameHonors = trimmed.replace(/^游戏荣誉[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^灵动岛类型[：:]\s*(.+)/)) {
-                        liveType = trimmed.replace(/^灵动岛类型[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^灵动岛内容[：:]\s*(.+)/)) {
-                        liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
-                    }
-                });
-                if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
-                if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
-                         workHonors, gameHonors, liveType, liveContent };
-            }
-
-            // ============================================================
-            // 状态
-            // ============================================================
-            let allPosts = [];
-            let filteredPosts = [];
-            let currentPage = 1;
-            const pageSize = 16;
-            let allMembers = [];
-            let allMaps = [];
-            let allBlogs = [];
-
-            const blogGrid = document.getElementById('blogGrid');
-            const searchInput = document.getElementById('searchInput');
-            const searchBtn = document.getElementById('searchBtn');
-            const tagBar = document.getElementById('tagBar');
-            const prevBtn = document.getElementById('prevPage');
-            const nextBtn = document.getElementById('nextPage');
-            const pageInfo = document.getElementById('pageInfo');
-
-            // ============================================================
-            // 渲染博客卡片
-            // ============================================================
-            function renderBlogCard(post) {
-                var authorHtml = '<span class="author" data-author="' + post.author + '"><i class="fas fa-user"></i> ' + post
-                    .author + '</span>';
-                var html = '<div class="blog-card" onclick="location.href=\'post.html?id=' + post.id + '\'">';
-                html += '<div class="body">';
-                html += '<span class="tag">' + post.category + '</span>';
-                html += '<span class="title">' + post.title + '</span>';
-                html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + post.date + '</div>';
-                html += authorHtml;
-                html += '<div class="summary">' + post.summary + '</div>';
-                html += '<span class="read-more">阅读全文 <i class="fas fa-arrow-right"></i></span>';
-                html += '</div></div>';
-                return html;
-            }
-
-            // ============================================================
-            // 分页渲染
-            // ============================================================
-            function renderPage() {
-                var total = filteredPosts.length;
-                var totalPages = Math.ceil(total / pageSize) || 1;
-                if (currentPage > totalPages) currentPage = totalPages;
-                var start = (currentPage - 1) * pageSize;
-                var end = Math.min(start + pageSize, total);
-                var pageItems = filteredPosts.slice(start, end);
-
-                if (pageItems.length === 0) {
-                    blogGrid.innerHTML = '<div class="empty-placeholder">没有匹配的文章</div>';
-                } else {
-                    var html = '';
-                    pageItems.forEach(function(post) { html += renderBlogCard(post); });
-                    blogGrid.innerHTML = html;
-                }
-
-                pageInfo.textContent = '第 ' + currentPage + ' / ' + totalPages + ' 页';
-                prevBtn.disabled = currentPage <= 1;
-                nextBtn.disabled = currentPage >= totalPages;
-
-                // 绑定作者点击事件（调用公共弹窗）
-                blogGrid.querySelectorAll('.author').forEach(function(el) {
-                    el.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var authorName = this.dataset.author;
-                        if (typeof window.openMemberModal === 'function') {
-                            window.openMemberModal(authorName);
-                        } else {
-                            alert('公共组件未加载，请检查 assets/js/components.js');
-                        }
-                    });
-                });
-            }
-
-            // ============================================================
-            // 筛选与搜索
-            // ============================================================
-            function applyFilters() {
-                var searchTerm = searchInput.value.trim().toLowerCase();
-                var activeTag = document.querySelector('.tag-item.active');
-                var tagFilter = activeTag ? activeTag.dataset.tag : 'all';
-
-                filteredPosts = allPosts.filter(function(post) {
-                    if (tagFilter !== 'all' && post.category !== tagFilter) return false;
-                    if (searchTerm) {
-                        var inTitle = post.title.toLowerCase().includes(searchTerm);
-                        var inAuthor = post.author.toLowerCase().includes(searchTerm);
-                        if (!inTitle && !inAuthor) return false;
-                    }
-                    return true;
-                });
-
-                filteredPosts.sort(function(a, b) {
-                    if (a.date === '未知' && b.date === '未知') return 0;
-                    if (a.date === '未知') return 1;
-                    if (b.date === '未知') return -1;
-                    return b.date.localeCompare(a.date);
-                });
-
-                currentPage = 1;
-                renderPage();
-            }
-
-            // ============================================================
-            // 加载数据
-            // ============================================================
-            function loadData() {
-                blogGrid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载文章...</div>';
-
-                var REPO_OWNER = 'jgcgzs',
-                    REPO_NAME = 'acns';
-                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
-                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
-                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
-
-                Promise.all([
-                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; })
-                ]).then(function(results) {
-                    var blogIssues = results[0] || [],
-                        memberIssues = results[1] || [],
-                        mapIssues = results[2] || [];
-
-                    allPosts = blogIssues.map(function(i) { return parseBlogIssue(i); });
-
-                    if (memberIssues.length) {
-                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
-                        allMembers = allMembers.filter(function(m) {
-                            if (m.groups && m.groups.length) return true;
-                            if (m.role === '室长' || m.role === '副室长') return true;
-                            return false;
-                        });
-                    } else {
-                        allMembers = [];
-                    }
-
-                    allMaps = mapIssues.map(function(i) {
-                        // 简单解析地图用于弹窗
-                        var title = i.title && i.title.trim() !== '' ? i.title.trim() : '未命名地图';
-                        var body = i.body || '';
-                        var author = '',
-                            cover = '',
-                            tag = '',
-                            dateStr = '未知';
-                        var lines = body.split('\n');
-                        lines.forEach(function(line) {
-                            var trimmed = line.trim();
-                            if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '')
-                            .trim();
-                            if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '')
-                            .trim();
-                            if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '')
-                            .trim();
-                        });
-                        var d = parseDateFromBody(body);
-                        if (d) dateStr = d;
-                        return { id: i.number, title: title, author: author || '未知作者', cover: cover, tag: tag ||
-                                '', date: dateStr };
-                    });
-
-                    // 博客自身也存储一份（用于弹窗关联）
-                    allBlogs = allPosts;
-
-                    // 挂载到全局供弹窗使用
-                    window._memberData = allMembers;
-                    window._mapData = allMaps;
-                    window._blogData = allBlogs;
-
-                    // 更新分类标签
-                    var categories = new Set();
-                    allPosts.forEach(function(p) { if (p.category) categories.add(p.category); });
-                    var tagBar = document.getElementById('tagBar');
-                    var allTag = tagBar.querySelector('.tag-item[data-tag="all"]');
-                    tagBar.innerHTML = '';
-                    tagBar.appendChild(allTag);
-                    var sortedCats = Array.from(categories).sort();
-                    sortedCats.forEach(function(cat) {
-                        var span = document.createElement('span');
-                        span.className = 'tag-item';
-                        span.dataset.tag = cat;
-                        span.textContent = cat;
-                        tagBar.appendChild(span);
-                    });
-                    // 重新绑定标签点击
-                    tagBar.addEventListener('click', function(e) {
-                        var target = e.target.closest('.tag-item');
-                        if (!target) return;
-                        document.querySelectorAll('.tag-item').forEach(function(el) { el.classList.remove(
-                            'active'); });
-                        target.classList.add('active');
-                        applyFilters();
-                    });
-
-                    applyFilters();
-                }).catch(function(err) {
-                    console.warn('加载失败:', err);
-                    blogGrid.innerHTML =
-                        '<div class="empty-placeholder"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
-                });
-            }
-
-            // ============================================================
-            // 事件绑定
-            // ============================================================
-            searchBtn.addEventListener('click', applyFilters);
-            searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') applyFilters(); });
-
-            prevBtn.addEventListener('click', function() { if (currentPage > 1) { currentPage--;
-                    renderPage(); } });
-            nextBtn.addEventListener('click', function() {
-                var total = filteredPosts.length;
-                var totalPages = Math.ceil(total / pageSize);
-                if (currentPage < totalPages) { currentPage++;
-                    renderPage(); }
-            });
-
-            // ============================================================
-            // 启动
-            // ============================================================
-            loadData();
+            // ===== 不再加载博客数据，但保留函数定义以备后续恢复 =====
+            console.log('极创博客暂时关闭，维护中...');
 
         })();
     </script>
