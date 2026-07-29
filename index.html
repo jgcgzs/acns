@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>极光创工作室官网</title>
-    <meta name="description" content="迷你世界极光创工作室">
-    <meta name="keywords" content="极光创,迷你世界,迷你,迷你世界极光创工作室,迷你世界极光创,极光创工作室">
+    <title>极光创工作室</title>
+    <meta name="description" content="极光创工作室 - 迷你世界创作团队">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 引入公共样式 -->
+    <!-- 公共组件样式（成员档案弹窗） -->
     <link rel="stylesheet" href="assets/css/components.css">
     <style>
-        /* ===== 主站独有样式（不包含弹窗） ===== */
+        /* ===== 主站样式（极光创风格） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -55,9 +54,10 @@
             --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
             --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
             --radius: 2px;
-            --green-primary: #16a34a;
+            --gold: #f5a623;
         }
 
+        /* ===== 导航栏 ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -145,6 +145,28 @@
             padding: 4px 8px;
         }
 
+        /* ===== 底部 ===== */
+        .footer {
+            background: #1a2a3a;
+            color: rgba(255, 255, 255, 0.55);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 48px;
+        }
+        .footer .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .footer .sep {
+            color: rgba(255, 255, 255, 0.12);
+        }
+
+        /* ===== 英雄区 ===== */
         .hero {
             padding: 72px 0 48px;
             background: linear-gradient(135deg, #e8f2fa 0%, #f5f9fe 100%);
@@ -248,6 +270,7 @@
             transform: translateY(-2px);
         }
 
+        /* ===== 板块通用 ===== */
         .section {
             padding: 48px 0;
         }
@@ -304,10 +327,8 @@
             color: #fff;
             transform: translateY(-2px);
         }
-        .section-title .view-all i {
-            font-size: 12px;
-        }
 
+        /* ===== 发展历程 ===== */
         .timeline {
             display: flex;
             flex-direction: column;
@@ -383,15 +404,166 @@
                 font-size: 18px;
                 min-width: auto;
             }
-            .section-title {
-                flex-direction: column;
-                align-items: flex-start;
+        }
+
+        /* ===== 公告板块（横向滑动） ===== */
+        .notice-section {
+            background: var(--blue-bg-pale);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .notice-scroll-wrapper {
+            overflow-x: auto;
+            overflow-y: visible;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            padding: 4px 0 12px;
+            margin: 0 -4px;
+        }
+        .notice-scroll-wrapper::-webkit-scrollbar {
+            height: 6px;
+            background: var(--border-light);
+            border-radius: 3px;
+        }
+        .notice-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: var(--blue-primary);
+            border-radius: 3px;
+        }
+        .notice-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            width: max-content;
+            padding: 0 4px;
+        }
+        .notice-card {
+            flex: 0 0 260px;
+            max-width: 260px;
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .notice-card:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--blue-primary);
+            transform: translateY(-3px);
+        }
+        .notice-card .cover {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            background: var(--blue-bg-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .notice-card .cover-placeholder {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: var(--blue-bg-light);
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            color: var(--blue-primary);
+            opacity: 0.15;
+        }
+        .notice-card .body {
+            padding: 12px 14px 14px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .notice-card .body .title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .notice-card .body .date-row {
+            font-size: 12px;
+            color: var(--text-muted);
+            opacity: 0.55;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .notice-card .body .date-row i {
+            font-size: 11px;
+            opacity: 0.5;
+        }
+        .notice-card .body .summary {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex: 1;
+        }
+        .notice-empty {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-muted);
+            opacity: 0.4;
+            font-size: 15px;
+            width: 100%;
+        }
+        .notice-loading {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-muted);
+            font-size: 15px;
+            width: 100%;
+        }
+        .notice-loading i {
+            display: block;
+            font-size: 24px;
+            color: var(--blue-primary);
+            margin-bottom: 8px;
+        }
+        @media (max-width: 768px) {
+            .notice-card {
+                flex: 0 0 200px;
+                max-width: 200px;
             }
-            .section-title .view-all {
-                align-self: flex-start;
+            .notice-card .body .title {
+                font-size: 13px;
+            }
+            .notice-card .body .summary {
+                font-size: 12px;
+                -webkit-line-clamp: 2;
+            }
+        }
+        @media (max-width: 480px) {
+            .notice-card {
+                flex: 0 0 170px;
+                max-width: 170px;
+            }
+            .notice-card .body {
+                padding: 10px 12px 12px;
+            }
+            .notice-card .body .title {
+                font-size: 12px;
+            }
+            .notice-card .body .summary {
+                font-size: 11px;
+                -webkit-line-clamp: 2;
             }
         }
 
+        /* ===== 地图展示（横向滑动） ===== */
         .map-section {
             background: var(--blue-bg-pale);
             border-top: 1px solid var(--border-light);
@@ -432,13 +604,7 @@
             transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             display: flex;
             flex-direction: column;
-            opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, border-color 0.3s;
-        }
-        .map-card.visible {
-            opacity: 1;
-            transform: translateY(0);
+            cursor: pointer;
         }
         .map-card:hover {
             box-shadow: var(--shadow-hover);
@@ -484,19 +650,6 @@
             line-height: 1.5;
             align-self: flex-start;
         }
-        .map-card .body .tag-green {
-            font-size: 10px;
-            font-weight: 600;
-            padding: 1px 10px;
-            border: 1.5px solid var(--green-primary);
-            color: var(--green-primary);
-            background: transparent;
-            border-radius: 3px;
-            letter-spacing: 0.3px;
-            display: inline-block;
-            line-height: 1.5;
-            align-self: flex-start;
-        }
         .map-card .body .title {
             font-size: 15px;
             font-weight: 700;
@@ -514,7 +667,6 @@
             display: flex;
             align-items: center;
             gap: 4px;
-            margin-top: 1px;
         }
         .map-card .body .date-row i {
             font-size: 11px;
@@ -566,7 +718,6 @@
             overflow: hidden;
             min-height: 48px;
         }
-
         .map-empty {
             text-align: center;
             padding: 40px 0;
@@ -593,45 +744,15 @@
                 flex: 0 0 170px;
                 max-width: 170px;
             }
-            .map-card .body {
-                padding: 10px 12px 12px;
-            }
-            .map-card .body .title {
-                font-size: 13px;
-            }
-            .map-card .body .desc {
-                font-size: 12px;
-                -webkit-line-clamp: 2;
-            }
-            .map-card .body .tag-blue,
-            .map-card .body .tag-green {
-                font-size: 9px;
-                padding: 1px 8px;
-            }
-            .map-card .body .minid {
-                font-size: 10px;
-            }
         }
         @media (max-width: 480px) {
             .map-card {
                 flex: 0 0 150px;
                 max-width: 150px;
             }
-            .map-card .body {
-                padding: 8px 10px 10px;
-            }
-            .map-card .body .title {
-                font-size: 12px;
-            }
-            .map-card .body .desc {
-                font-size: 11px;
-                -webkit-line-clamp: 2;
-            }
-            .map-card .body .meta-row .author {
-                font-size: 10px;
-            }
         }
 
+        /* ===== 加入工作室 ===== */
         .join-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -704,6 +825,7 @@
             }
         }
 
+        /* ===== 腾讯QQ频道 ===== */
         .channel-section {
             padding: 48px 0;
             background: var(--white);
@@ -798,6 +920,7 @@
             }
         }
 
+        /* ===== 联系我们 ===== */
         .contact-wrapper {
             background: var(--white);
             border: 1px solid var(--border-light);
@@ -890,27 +1013,7 @@
             }
         }
 
-        .footer {
-            background: #1a2a3a;
-            color: rgba(255, 255, 255, 0.55);
-            text-align: center;
-            padding: 20px 0;
-            font-size: 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 48px;
-        }
-        .footer .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .footer .sep {
-            color: rgba(255, 255, 255, 0.12);
-        }
-
-        /* 响应式 */
+        /* ===== 响应式通用 ===== */
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
@@ -998,6 +1101,11 @@
                 padding: 18px 14px;
             }
         }
+
+        /* ===== 工具类 ===== */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -1037,6 +1145,26 @@
                 <div class="hero-actions">
                     <a class="btn-primary" href="#history">发展历程</a>
                     <a class="btn-outline" href="#join">加入我们</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    ★★★ 新增：公告板块（横向滑动，无公告则不显示） ★★★
+    ============================================================ -->
+    <section id="notice" class="section notice-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="left">
+                    <h2>📢 工作室公告</h2>
+                    <div class="line"></div>
+                </div>
+                <a href="./blog/" class="view-all">查看全部公告 →</a>
+            </div>
+            <div class="notice-scroll-wrapper">
+                <div class="notice-grid" id="noticeGrid">
+                    <div class="notice-loading"><i class="fas fa-spinner fa-pulse"></i>加载公告...</div>
                 </div>
             </div>
         </div>
@@ -1129,7 +1257,7 @@
         </div>
     </section>
 
-    <!-- ===== 地图展示（最新5张，横向滚动） ===== -->
+    <!-- ===== 地图展示（横向滑动） ===== -->
     <section id="maps" class="section map-section">
         <div class="container">
             <div class="section-title">
@@ -1137,7 +1265,7 @@
                     <h2>地图展示 <span class="sub">最新创作</span></h2>
                     <div class="line"></div>
                 </div>
-                <a href="./map/" class="view-all">查看全部 <i class="fas fa-arrow-right"></i></a>
+                <a href="./map/" class="view-all">查看全部 →</a>
             </div>
             <div class="map-scroll-wrapper">
                 <div class="map-grid" id="mapGrid">
@@ -1242,7 +1370,7 @@
         </div>
     </section>
 
-    <!-- ===== 弹窗结构（由公共组件控制） ===== -->
+    <!-- ===== 弹窗结构（成员档案） ===== -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -1257,7 +1385,7 @@
         <div class="container">
             <span>极光创工作室</span>
             <span class="sep">·</span>
-            <span> Aurora Creation Studio</span>
+            <span>Aurora Creation Studio</span>
         </div>
     </footer>
 
@@ -1288,7 +1416,7 @@
             }
 
             // ============================================================
-            // 解析工具（使用公共函数）
+            // 工具函数
             // ============================================================
             var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
@@ -1309,58 +1437,89 @@
                 return null;
             };
 
-            var extractTitlePrefix = window.extractTitlePrefix || function(title) {
-                var match = title.match(/^\[([^\]]+)\]\s*(.*)/);
-                if (match) { return { prefix: match[1].trim(), cleanTitle: match[2].trim() || title }; }
-                return null;
-            };
-
             // ============================================================
-            // 解析地图
+            // 解析博客Issue（提取分类和封面）
             // ============================================================
-            function parseMapIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+            function parseBlogIssue(issue) {
+                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
                 var body = issue.body || '';
                 var author = '',
-                    cover = '',
-                    desc = '',
-                    tag = '',
-                    minid = '';
+                    cover = '';
+                var categories = [];
+
                 var lines = body.split('\n');
-                lines.forEach(function(line) {
+                var contentStart = 0;
+
+                lines.forEach(function(line, idx) {
                     var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) {
+                        author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
+                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
+                        categories = cats.split(/[,，、\s]+/).filter(function(c) { return c.trim().length > 0; });
+                    } else if (trimmed.match(/^封面[：:]\s*(.+)/)) {
+                        cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
+                    }
+                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类|封面)[：:]/)) {
+                        contentStart = idx;
+                    }
                 });
-                if (!author || author.trim() === '') author = '未知作者';
-                if (!desc || desc.trim() === '') desc = '暂无描述';
-                var dateStr = parseDateFromBody(body);
-                if (!dateStr) dateStr = '未知';
-                var prefixInfo = extractTitlePrefix(title);
-                var displayTitle = title;
-                if (prefixInfo) { displayTitle = prefixInfo.cleanTitle;
-                    tag = prefixInfo.prefix; }
-                var isFeatured = /\[精选\]/.test(title) || tag === '精选';
+
+                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
+
+                // 封面：手动指定 > 自动提取
+                if (!cover) {
+                    var fullBody = body;
+                    var mdMatch = fullBody.match(/!\[[^\]]*\]\(([^)]+)\)/);
+                    if (mdMatch) {
+                        cover = mdMatch[1];
+                    } else {
+                        var htmlMatch = fullBody.match(/<img[^>]+src=["']([^"']+)["']/i);
+                        if (htmlMatch) {
+                            cover = htmlMatch[1];
+                        }
+                    }
+                }
+
+                // 摘要：去HTML标签后截取
+                var contentLines = lines.slice(contentStart);
+                var contentText = contentLines.join(' ');
+                contentText = contentText.replace(/<[^>]*>/g, ' ');
+                contentText = contentText.replace(/[#*`>\[\]()]/g, ' ');
+                contentText = contentText.replace(/\s+/g, ' ').trim();
+                var summary = contentText.substring(0, 120) + (contentText.length > 120 ? '...' : '');
+
+                var dateStr = '未知';
+                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (dateMatch) {
+                    var y = parseInt(dateMatch[1]),
+                        m = parseInt(dateMatch[2]),
+                        d = parseInt(dateMatch[3]);
+                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+                    }
+                } else {
+                    var bodyDate = parseDateFromBody(body);
+                    if (bodyDate) dateStr = bodyDate;
+                }
+
+                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim();
+                if (!title) title = rawTitle;
+
                 return {
                     id: issue.number,
-                    title: displayTitle,
+                    title: title,
                     author: author,
-                    cover: cover,
-                    desc: desc,
-                    tag: tag || '',
-                    minid: minid || '',
+                    categories: categories,
+                    summary: summary || '暂无摘要',
                     date: dateStr,
-                    raw: issue,
-                    isFeatured: isFeatured,
-                    isGreenTag: !!prefixInfo
+                    cover: cover,
+                    raw: issue
                 };
             }
 
             // ============================================================
-            // 解析成员（仅迷你号映射和完整数据，增加荣誉和灵动岛字段）
+            // 解析成员Issue（用于弹窗）
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -1375,10 +1534,6 @@
                     pinnedMap = '',
                     pinnedBlog = '',
                     role = '';
-                var workHonors = '',
-                    gameHonors = '',
-                    liveType = '',
-                    liveContent = '';
                 var parts = title.split('-');
                 var name = parts[0].trim();
                 if (parts.length > 1) role = parts.slice(1).join('-').trim();
@@ -1407,120 +1562,184 @@
                         pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
                     } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
                         pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^工作室荣誉[：:]\s*(.+)/)) {
-                        workHonors = trimmed.replace(/^工作室荣誉[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^游戏荣誉[：:]\s*(.+)/)) {
-                        gameHonors = trimmed.replace(/^游戏荣誉[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^灵动岛类型[：:]\s*(.+)/)) {
-                        liveType = trimmed.replace(/^灵动岛类型[：:]\s*/, '').trim();
-                    } else if (trimmed.match(/^灵动岛内容[：:]\s*(.+)/)) {
-                        liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
                     }
                 });
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
-                         workHonors, gameHonors, liveType, liveContent };
+                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
             }
 
-            function parseBlogIssue(issue) {
-                var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
+            // ============================================================
+            // 解析地图（用于弹窗）
+            // ============================================================
+            function parseMapForModal(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
                 var author = '',
-                    category = '';
+                    cover = '',
+                    tag = '',
+                    dateStr = '未知';
                 var lines = body.split('\n');
-                var contentStart = 0;
-                lines.forEach(function(line, idx) {
+                lines.forEach(function(line) {
                     var trimmed = line.trim();
                     if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^分类[：:]\s*(.+)/)) {
-                        var cats = trimmed.replace(/^分类[：:]\s*/, '').trim();
-                        category = cats.split(/[,，、\s]+/)[0] || '未分类';
-                    }
-                    if (contentStart === 0 && trimmed && !trimmed.match(/^(作者|分类)[：:]/)) contentStart = idx;
+                    if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
+                    if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
                 });
-                if (!author) author = issue.user ? issue.user.login : '未知作者';
-                if (!category) category = '未分类';
-                var contentLines = lines.slice(contentStart);
-                var contentText = contentLines.join(' ').replace(/[#*`>\[\]()]/g, ' ').replace(/\s+/g, ' ').trim();
-                var summary = contentText.substring(0, 150) + (contentText.length > 150 ? '...' : '');
-                var dateStr = '未知';
-                var dateMatch = rawTitle.match(/^(\d{4})-(\d{2})-(\d{2})/);
-                if (dateMatch) {
-                    var y = parseInt(dateMatch[1]),
-                        m = parseInt(dateMatch[2]),
-                        d = parseInt(dateMatch[3]);
-                    if (y >= 2000 && y <= 2100 && m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-                        dateStr = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
-                    }
-                } else {
-                    var d = new Date(issue.created_at);
-                    dateStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate())
-                        .padStart(2, '0');
-                }
-                var title = rawTitle.replace(/^\d{4}-\d{2}-\d{2}-/, '').trim() || rawTitle;
-                return { id: issue.number, title, author, category, summary, date: dateStr };
+                var d = parseDateFromBody(body);
+                if (d) dateStr = d;
+                return { id: issue.number, title: title, author: author || '未知作者', cover: cover, tag: tag || '',
+                    date: dateStr };
             }
 
             // ============================================================
-            // 数据加载与渲染
+            // ★★★ 公告板块 ★★★
             // ============================================================
-            var mapGrid = document.getElementById('mapGrid');
-            var allMaps = [],
-                allMembers = [],
-                allBlogs = [];
-            var memberMinidMap = {};
+            var noticeGrid = document.getElementById('noticeGrid');
+            var noticeSection = document.getElementById('notice');
 
-            function renderMaps() {
-                if (allMaps.length === 0) {
-                    mapGrid.innerHTML = '<div class="map-empty"><i class="fas fa-map" style="display:block;font-size:28px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>暂无地图，在 GitHub Issues 中创建带 map 标签的文章</div>';
+            function renderNotices(notices) {
+                if (!notices || notices.length === 0) {
+                    // 无公告，隐藏整个板块
+                    noticeSection.style.display = 'none';
                     return;
                 }
-                var sorted = allMaps.slice().sort(function(a, b) {
-                    if (a.date === '未知' && b.date === '未知') return 0;
-                    if (a.date === '未知') return 1;
-                    if (b.date === '未知') return -1;
-                    return b.date.localeCompare(a.date);
-                });
+                noticeSection.style.display = 'block';
+
                 var html = '';
-                sorted.forEach(function(map, index) {
+                notices.forEach(function(notice) {
+                    var coverHtml = (notice.cover && notice.cover.trim().startsWith('http')) ?
+                        '<img class="cover" src="' + notice.cover.trim() + '" alt="' + notice.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
+                        '<div class="cover-placeholder"><i class="fas fa-file-alt"></i></div>';
+                    html += '<div class="notice-card" onclick="location.href=\'./blog/post.html?id=' + notice.id +
+                        '\'">';
+                    html += coverHtml;
+                    html += '<div class="body">';
+                    html += '<div class="title">' + notice.title + '</div>';
+                    html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + notice.date + '</div>';
+                    if (notice.summary) {
+                        html += '<div class="summary">' + notice.summary + '</div>';
+                    }
+                    html += '</div></div>';
+                });
+                noticeGrid.innerHTML = html;
+            }
+
+            function loadNotices() {
+                noticeGrid.innerHTML =
+                '<div class="notice-loading"><i class="fas fa-spinner fa-pulse"></i>加载公告...</div>';
+                var REPO_OWNER = 'jgcgzs',
+                    REPO_NAME = 'acns';
+                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
+
+                fetch(blogApi)
+                    .then(function(res) {
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return res.json();
+                    })
+                    .then(function(issues) {
+                        if (!issues || issues.length === 0) {
+                            renderNotices([]);
+                            return;
+                        }
+                        // 解析所有博客文章
+                        var posts = issues.map(function(i) { return parseBlogIssue(i); });
+                        // 筛选出分类包含“公告”的文章（不区分大小写）
+                        var notices = posts.filter(function(p) {
+                            return p.categories && p.categories.some(function(c) {
+                                return c.trim().toLowerCase() === '公告';
+                            });
+                        });
+                        // 按日期排序（最新在前）
+                        notices.sort(function(a, b) {
+                            if (a.date === '未知' && b.date === '未知') return 0;
+                            if (a.date === '未知') return 1;
+                            if (b.date === '未知') return -1;
+                            return b.date.localeCompare(a.date);
+                        });
+                        renderNotices(notices);
+                    })
+                    .catch(function(err) {
+                        console.warn('公告加载失败:', err);
+                        noticeGrid.innerHTML = '<div class="notice-empty">加载公告失败，请稍后重试</div>';
+                    });
+            }
+
+            // ============================================================
+            // 地图展示（从 GitHub 拉取最新5张，保持原有功能）
+            // ============================================================
+            var mapGrid = document.getElementById('mapGrid');
+            var memberMinidMap = {};
+
+            function parseMapIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+                var body = issue.body || '';
+                var author = '',
+                    cover = '',
+                    desc = '',
+                    tag = '',
+                    minid = '';
+                var lines = body.split('\n');
+                lines.forEach(function(line) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                });
+                if (!author) author = '未知作者';
+                if (!desc) desc = '暂无描述';
+                var dateStr = parseDateFromBody(body);
+                if (!dateStr) dateStr = '未知';
+                var prefixMatch = title.match(/^\[([^\]]+)\]\s*(.*)/);
+                var displayTitle = title;
+                if (prefixMatch) {
+                    displayTitle = prefixMatch[2] || title;
+                    if (!tag) tag = prefixMatch[1];
+                }
+                return {
+                    id: issue.number,
+                    title: displayTitle,
+                    author: author,
+                    cover: cover,
+                    desc: desc,
+                    tag: tag || '',
+                    minid: minid || '',
+                    date: dateStr,
+                    raw: issue
+                };
+            }
+
+            function renderMaps(maps) {
+                if (!maps || maps.length === 0) {
+                    mapGrid.innerHTML = '<div class="map-empty">暂无地图</div>';
+                    return;
+                }
+                var html = '';
+                maps.forEach(function(map) {
                     var coverHtml = (map.cover && map.cover.trim().startsWith('http')) ?
                         '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                         '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
-                    var tagClass = map.isGreenTag ? 'tag-green' : 'tag-blue';
-                    var tagHtml = map.tag ? '<span class="' + tagClass + '">' + map.tag + '</span>' : '';
                     var finalMinid = (map.author && memberMinidMap[map.author]) ? memberMinidMap[map.author] : (map
                         .minid || '未知');
                     var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' +
                         map.author + '</span>';
-                    html += '<div class="map-card" style="animation-delay:' + (index * 0.06) + 's">';
+                    html += '<div class="map-card" onclick="location.href=\'./map/?id=' + map.id + '\'">';
                     html += coverHtml;
                     html += '<div class="body">';
-                    html += tagHtml;
-                    html += '<span class="title">' + map.title + '</span>';
+                    html += '<div class="tag-blue">' + (map.tag || '地图') + '</div>';
+                    html += '<div class="title">' + map.title + '</div>';
                     html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                     html += '<div class="meta-row">' + authorHtml + '<span class="minid">迷你号 ' + finalMinid +
-                    '</span></div>';
+                        '</span></div>';
                     html += '<div class="desc-box">' + map.desc + '</div>';
                     html += '</div></div>';
                 });
                 mapGrid.innerHTML = html;
 
-                // 触发卡片动画
-                var mapCards = mapGrid.querySelectorAll('.map-card');
-                if (mapCards.length && 'IntersectionObserver' in window) {
-                    var cardObserver = new IntersectionObserver(function(entries) {
-                        entries.forEach(function(entry) {
-                            if (entry.isIntersecting) { entry.target.classList.add('visible');
-                                cardObserver.unobserve(entry.target); }
-                        });
-                    }, { threshold: 0.1, rootMargin: '0px 0px -20px 0px' });
-                    mapCards.forEach(function(card) { cardObserver.observe(card); });
-                } else {
-                    mapCards.forEach(function(card) { card.classList.add('visible'); });
-                }
-
-                // 绑定作者点击事件（调用公共弹窗）
+                // 绑定作者点击事件（弹窗）
                 mapGrid.querySelectorAll('.author').forEach(function(el) {
                     el.addEventListener('click', function(e) {
                         e.stopPropagation();
@@ -1534,7 +1753,7 @@
                 });
             }
 
-            function loadData() {
+            function loadMaps() {
                 mapGrid.innerHTML = '<div class="map-loading"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>';
                 var REPO_OWNER = 'jgcgzs',
                     REPO_NAME = 'acns';
@@ -1542,55 +1761,50 @@
                     '/issues?labels=map&state=open&sort=created&direction=desc&per_page=5';
                 var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
                     '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
-                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
 
                 Promise.all([
                     fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
+                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; })
                 ]).then(function(results) {
                     var mapIssues = results[0] || [],
-                        memberIssues = results[1] || [],
-                        blogIssues = results[2] || [];
-                    allMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
+                        memberIssues = results[1] || [];
+                    var parsedMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
                     if (memberIssues.length) {
-                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
-                        allMembers = allMembers.filter(function(m) {
+                        var members = memberIssues.map(function(i) {
+                            return parseMemberIssue(i);
+                        });
+                        members = members.filter(function(m) {
                             if (m.groups && m.groups.length) return true;
                             if (m.role === '室长' || m.role === '副室长') return true;
                             return false;
                         });
                         memberMinidMap = {};
-                        allMembers.forEach(function(m) { if (m.name && m.minid) memberMinidMap[m.name] = m.minid; });
-                    } else {
-                        allMembers = [];
-                        memberMinidMap = {};
+                        members.forEach(function(m) {
+                            if (m.name && m.minid) memberMinidMap[m.name] = m.minid;
+                        });
                     }
-                    allBlogs = blogIssues.map(function(i) { return parseBlogIssue(i); });
-                    // 挂载到全局供弹窗使用
-                    window._memberData = allMembers;
-                    window._mapData = allMaps;
-                    window._blogData = allBlogs;
-                    renderMaps();
+                    // 挂载成员数据到全局
+                    window._memberData = members || [];
+                    renderMaps(parsedMaps);
                 }).catch(function(err) {
-                    console.warn('加载失败:', err);
-                    mapGrid.innerHTML =
-                        '<div class="map-empty"><i class="fas fa-exclamation-circle" style="display:block;font-size:24px;margin-bottom:8px;color:var(--blue-primary);opacity:0.3;"></i>加载失败，请稍后重试</div>';
+                    console.warn('地图加载失败:', err);
+                    mapGrid.innerHTML = '<div class="map-empty">加载失败，请稍后重试</div>';
                 });
             }
 
             // ============================================================
-            // 保证其他模块可见
+            // 日期实时更新
             // ============================================================
-            function ensureVisible() {
-                document.querySelectorAll('.timeline-item, .join-card, .channel-card, .contact-card').forEach(function(el) {
-                    var rect = el.getBoundingClientRect();
-                    var winHeight = window.innerHeight || document.documentElement.clientHeight;
-                    if (rect.top < winHeight + 50 && rect.bottom > -50) el.classList.add('visible');
-                });
-            }
+            (function updateDate() {
+                var now = new Date();
+                document.getElementById('statYear').textContent = now.getFullYear();
+                document.getElementById('statMonth').textContent = now.getMonth() + 1;
+                document.getElementById('statDay').textContent = now.getDate();
+            })();
 
+            // ============================================================
+            // 其它动画：监听可见性
+            // ============================================================
             function initObservers() {
                 var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
                 var elements = document.querySelectorAll(selectors);
@@ -1598,8 +1812,10 @@
                 if ('IntersectionObserver' in window) {
                     var observer = new IntersectionObserver(function(entries) {
                         entries.forEach(function(entry) {
-                            if (entry.isIntersecting) { entry.target.classList.add('visible');
-                                observer.unobserve(entry.target); }
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add('visible');
+                                observer.unobserve(entry.target);
+                            }
                         });
                     }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
                     elements.forEach(function(el) { observer.observe(el); });
@@ -1609,22 +1825,13 @@
             }
 
             // ============================================================
-            // 日期更新
-            // ============================================================
-            var now = new Date();
-            document.getElementById('statYear').textContent = now.getFullYear();
-            document.getElementById('statMonth').textContent = now.getMonth() + 1;
-            document.getElementById('statDay').textContent = now.getDate();
-
-            // ============================================================
             // 启动
             // ============================================================
-            loadData();
+            loadNotices();
+            loadMaps();
             setTimeout(initObservers, 200);
-            setTimeout(ensureVisible, 500);
 
         })();
     </script>
-
 </body>
 </html>
