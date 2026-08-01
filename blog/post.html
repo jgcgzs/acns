@@ -7,11 +7,10 @@
     <meta name="description" content="极光创工作室博客文章详情">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 公共组件样式（成员档案弹窗） -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
-        /* ===== 文章详情样式（导航栏与博客列表页完全一致） ===== */
+        /* ===== 文章详情样式（与博客列表页完全一致） ===== */
         * {
             margin: 0;
             padding: 0;
@@ -58,7 +57,7 @@
             --toc-width: 240px;
         }
 
-        /* ===== 导航栏（含 ::after 下划线） ===== */
+        /* ===== 导航栏 ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -224,7 +223,6 @@
             opacity: .7;
             align-items: center;
         }
-        /* 作者可点击，头像从成员数据中获取 */
         .post-meta .author {
             display: inline-flex;
             align-items: center;
@@ -542,7 +540,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏（与博客列表页完全一致） ===== -->
+    <!-- ===== 导航栏 ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -678,7 +676,6 @@
                     result.cleanBody = result.cleanBody.replace(/^map[：:]\s*.+?[\n\r]/, '');
                 }
 
-                // 注意：不再解析头像，头像将从成员数据中获取
                 return result;
             }
 
@@ -751,7 +748,7 @@
             }
 
             // ============================================================
-            // 生成目录
+            // ★★★ 生成目录（修复移动端点击） ★★★
             // ============================================================
             function generateTOC() {
                 var postBody = document.querySelector('.post-body');
@@ -776,29 +773,44 @@
                     tocHtml += '</li>';
                 });
 
+                // 填充桌面端和移动端目录
                 var tocList = document.querySelector('.post-toc .toc-list');
                 if (tocList) tocList.innerHTML = tocHtml;
 
                 var tocMobileList = document.getElementById('tocMobileList');
                 if (tocMobileList) tocMobileList.innerHTML = tocHtml;
 
+                // 获取所有目录链接（桌面 + 移动）
                 var allTocLinks = document.querySelectorAll('.post-toc .toc-list a, .toc-mobile .toc-list a');
                 var allHeadings = document.querySelectorAll('.post-body h1, .post-body h2, .post-body h3');
 
+                // ★★★ 统一绑定点击事件（移动端处理关闭浮层延迟） ★★★
                 allTocLinks.forEach(function(link) {
                     link.addEventListener('click', function(e) {
                         e.preventDefault();
                         var targetId = this.getAttribute('data-target');
                         var target = document.getElementById(targetId);
-                        if (target) {
-                            var offset = 80;
+                        if (!target) return;
+
+                        var isMobile = window.innerWidth <= 860;
+                        var offset = window.innerWidth <= 768 ? 60 : 80;
+
+                        function doScroll() {
                             var top = target.getBoundingClientRect().top + window.scrollY - offset;
                             window.scrollTo({ top: top, behavior: 'smooth' });
+                        }
+
+                        if (isMobile && tocMobile.classList.contains('open')) {
+                            // 关闭浮层，等待动画完成后再滚动
                             closeMobileTOC();
+                            setTimeout(doScroll, 400);
+                        } else {
+                            doScroll();
                         }
                     });
                 });
 
+                // 更新高亮
                 function updateActiveTOC() {
                     var scrollY = window.scrollY;
                     var activeIndex = -1;
@@ -859,7 +871,7 @@
             });
 
             // ============================================================
-            // ★★★ 核心修正：加载成员数据 + 根据作者名字获取头像 ★★★
+            // ★★★ 核心：加载成员数据 + 根据作者名字获取头像 ★★★
             // ============================================================
             function loadMemberData() {
                 if (window._memberData && window._memberData.length) {
@@ -987,12 +999,8 @@
                         var categories = meta.categories;
                         var mapLink = meta.map;
 
-                        // 作者名字（从正文解析，若无则用 issue.user.login）
                         var authorName = customAuthor || issue.user.login;
-
-                        // ★★★ 根据作者名字从成员数据中获取头像 ★★★
                         var authorAvatar = getMemberAvatar(authorName);
-                        // 如果没找到，使用默认头像或 issue.user.avatar_url 作为回退
                         if (!authorAvatar) {
                             authorAvatar = issue.user.avatar_url || 'https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png';
                         }
@@ -1013,7 +1021,6 @@
                         html += '<div class="post-title">' + displayTitle + '</div>';
                         html += '<div class="post-meta">';
                         html += '<span>' + dateStr + '</span>';
-                        // 作者（可点击，头像从成员数据获取）
                         html += '<span class="author" data-author="' + authorName + '">';
                         html += '<img src="' + authorAvatar + '" alt="' + authorName + '" loading="lazy">';
                         html += '<span class="name">' + authorName + '</span>';
