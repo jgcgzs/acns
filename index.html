@@ -4,13 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>极光创工作室</title>
-    <meta name="description" content="极光创工作室 - 迷你世界创作团队">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 公共组件样式（成员档案弹窗） -->
     <link rel="stylesheet" href="assets/css/components.css">
     <style>
-        /* ===== 主站样式（极光创风格） ===== */
+        /* ============================================================
+           极光创工作室 · 正式官网（保留缓动，响应迅速）
+           ============================================================ */
+        :root {
+            --blue-primary: #1a7fc4;
+            --blue-primary-dark: #0f6aad;
+            --blue-bg-light: #ecf5fa;
+            --blue-bg-pale: #f5f9fe;
+            --white: #ffffff;
+            --text-dark: #1a2a3a;
+            --text-muted: #4a5a6a;
+            --border-light: #dce6ef;
+            --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
+            --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
+            --radius: 12px;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -26,6 +40,7 @@
             line-height: 1.7;
             font-size: 16px;
             padding-top: 68px;
+            overflow-x: hidden;
         }
         a {
             text-decoration: none;
@@ -40,21 +55,6 @@
             max-width: 1120px;
             margin: 0 auto;
             padding: 0 24px;
-        }
-
-        :root {
-            --blue-primary: #1a7fc4;
-            --blue-primary-dark: #0f6aad;
-            --blue-bg-light: #ecf5fa;
-            --blue-bg-pale: #f5f9fe;
-            --white: #ffffff;
-            --text-dark: #1a2a3a;
-            --text-muted: #4a5a6a;
-            --border-light: #dce6ef;
-            --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
-            --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
-            --radius: 2px;
-            --gold: #f5a623;
         }
 
         /* ===== 导航栏 ===== */
@@ -105,7 +105,7 @@
             font-weight: 500;
             color: #222222;
             border-radius: var(--radius);
-            transition: background 0.2s, color 0.2s;
+            transition: background 0.15s ease, color 0.15s ease;
             position: relative;
         }
         .nav-links li a::after {
@@ -116,7 +116,7 @@
             width: 0;
             height: 2px;
             background: var(--blue-primary);
-            transition: width 0.25s ease;
+            transition: width 0.2s ease;
             transform: translateX(-50%);
             border-radius: var(--radius);
         }
@@ -145,6 +145,57 @@
             padding: 4px 8px;
         }
 
+        .nav-links {
+            transition: max-height 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding: 0 24px;
+            background: #fff;
+            border-top: 1px solid var(--border-light);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+            flex-direction: column;
+            gap: 0;
+            width: 100%;
+            order: 3;
+        }
+        .nav-links.open {
+            max-height: 400px;
+            opacity: 1;
+            padding: 12px 24px 20px;
+        }
+        .nav-links li a {
+            padding: 10px 16px;
+            font-size: 16px;
+            width: 100%;
+            text-align: center;
+        }
+
+        @media (min-width: 769px) {
+            .nav-links {
+                max-height: none;
+                opacity: 1;
+                overflow: visible;
+                padding: 0;
+                background: transparent;
+                border-top: none;
+                box-shadow: none;
+                flex-direction: row;
+                gap: 2px;
+                width: auto;
+                order: 0;
+            }
+            .nav-links li a {
+                width: auto;
+                padding: 8px 16px;
+                font-size: 15px;
+                text-align: center;
+            }
+            .menu-toggle {
+                display: none;
+            }
+        }
+
         /* ===== 底部 ===== */
         .footer {
             background: #1a2a3a;
@@ -162,20 +213,21 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-        .footer .sep {
-            color: rgba(255, 255, 255, 0.12);
-        }
 
         /* ===== 英雄区 ===== */
         .hero {
-            padding: 72px 0 48px;
+            padding: 56px 0 40px;
             background: linear-gradient(135deg, #e8f2fa 0%, #f5f9fe 100%);
             border-bottom: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
         }
         .hero-content {
             max-width: 800px;
             margin: 0 auto;
             text-align: left;
+            position: relative;
+            z-index: 1;
         }
         .hero-content h1 {
             font-size: 46px;
@@ -185,12 +237,15 @@
             letter-spacing: -0.5px;
             margin-bottom: 8px;
         }
+        .hero-content h1 .hl {
+            color: var(--blue-primary);
+        }
         .hero-content .sub {
             font-size: 18px;
             color: var(--text-muted);
-            letter-spacing: 1.5px;
+            letter-spacing: 2px;
             font-weight: 300;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
         .hero-content .desc {
             font-size: 16px;
@@ -204,7 +259,7 @@
             display: flex;
             gap: 16px 32px;
             flex-wrap: wrap;
-            margin: 18px 0 24px;
+            margin: 16px 0 22px;
         }
         .hero-stats .stat {
             background: var(--white);
@@ -212,11 +267,11 @@
             padding: 4px 18px;
             border-radius: var(--radius);
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.25s, transform 0.25s;
+            transition: box-shadow 0.2s ease, transform 0.15s ease;
         }
         .hero-stats .stat:hover {
             box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
         .hero-stats .stat .num {
             font-size: 22px;
@@ -243,7 +298,7 @@
             font-weight: 600;
             font-size: 16px;
             border: none;
-            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.2s ease;
             box-shadow: 0 2px 8px rgba(26, 127, 196, 0.2);
             cursor: pointer;
         }
@@ -261,7 +316,7 @@
             font-weight: 600;
             font-size: 16px;
             border: 2px solid var(--blue-primary);
-            transition: background 0.25s, color 0.25s, transform 0.2s;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
             cursor: pointer;
         }
         .btn-outline:hover {
@@ -276,6 +331,8 @@
         }
         .section-alt {
             background: var(--white);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
         }
         .section-title {
             display: flex;
@@ -316,7 +373,7 @@
             padding: 6px 16px;
             border: 1px solid var(--blue-primary);
             border-radius: var(--radius);
-            transition: background 0.25s, color 0.25s, transform 0.2s;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
             white-space: nowrap;
             display: inline-flex;
             align-items: center;
@@ -328,7 +385,128 @@
             transform: translateY(-2px);
         }
 
-        /* ===== 发展历程 ===== */
+        /* ============================================================
+           ★★★ 卡片入场动画（快速响应 + 缓动） ★★★
+           ============================================================ */
+        .card-enter {
+            opacity: 0;
+            transform: translateY(30px) scale(0.97);
+            transition: opacity 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+                        transform 0.35s cubic-bezier(0.23, 1, 0.32, 1),
+                        box-shadow 0.3s ease;
+            position: relative;
+            will-change: transform, opacity;
+            overflow: hidden;
+        }
+        .card-enter::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(26, 127, 196, 0.12), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            pointer-events: none;
+            z-index: 1;
+            border-radius: inherit;
+        }
+        .card-enter.entered {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .card-enter.entered::before {
+            transform: translateX(100%);
+        }
+
+        .notice-card.card-enter {
+            transform: translateX(-15px) scale(0.97);
+        }
+        .notice-card.card-enter.entered {
+            transform: translateX(0) scale(1);
+        }
+        .map-card.card-enter {
+            transform: translateX(15px) scale(0.97);
+        }
+        .map-card.card-enter.entered {
+            transform: translateX(0) scale(1);
+        }
+
+        /* ============================================================
+           ★★★ 鼠标触碰立即反应（极短过渡） ★★★
+           ============================================================ */
+        .notice-card,
+        .map-card,
+        .timeline-item,
+        .join-card,
+        .channel-card,
+        .contact-card {
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.15s ease,
+                        border-color 0.15s ease,
+                        background 0.15s ease;
+            will-change: transform;
+        }
+        .notice-card:hover,
+        .map-card:hover,
+        .timeline-item:hover,
+        .join-card:hover,
+        .channel-card:hover,
+        .contact-card:hover {
+            transform: translateY(-5px) scale(1.012) !important;
+            box-shadow: 0 12px 32px rgba(26, 127, 196, 0.12), 0 4px 16px rgba(26, 127, 196, 0.04) !important;
+            border-color: var(--blue-primary) !important;
+        }
+        .notice-card:not(:hover),
+        .map-card:not(:hover),
+        .timeline-item:not(:hover),
+        .join-card:not(:hover),
+        .channel-card:not(:hover),
+        .contact-card:not(:hover) {
+            transform: translateY(0) scale(1) !important;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.2s ease,
+                        border-color 0.2s ease;
+        }
+
+        .notice-card:hover .cover,
+        .map-card:hover .cover {
+            transform: scale(1.03);
+            transition: transform 0.2s ease;
+        }
+        .notice-card:not(:hover) .cover,
+        .map-card:not(:hover) .cover {
+            transform: scale(1);
+            transition: transform 0.2s ease;
+        }
+        .timeline-item:hover .year {
+            color: var(--blue-primary-dark);
+            transform: scale(1.05);
+            transition: color 0.15s, transform 0.15s;
+        }
+        .timeline-item:not(:hover) .year {
+            color: var(--blue-primary);
+            transform: scale(1);
+            transition: color 0.2s, transform 0.2s;
+        }
+        .join-card:hover .badge {
+            transform: scale(1.12);
+            transition: transform 0.15s ease;
+        }
+        .join-card:not(:hover) .badge {
+            transform: scale(1);
+            transition: transform 0.2s ease;
+        }
+        .contact-card:hover .icon {
+            transform: scale(1.15) rotate(3deg);
+            transition: transform 0.15s ease;
+        }
+        .contact-card:not(:hover) .icon {
+            transform: scale(1) rotate(0deg);
+            transition: transform 0.2s ease;
+        }
+
+        /* ============================================================
+           发展历程
+           ============================================================ */
         .timeline {
             display: flex;
             flex-direction: column;
@@ -344,19 +522,6 @@
             padding: 20px 26px;
             box-shadow: var(--shadow-sm);
             align-items: flex-start;
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
-            opacity: 0;
-            transform: translateY(24px);
-            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.3s, border-color 0.3s;
-        }
-        .timeline-item.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .timeline-item:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-            transform: translateY(-3px);
         }
         .timeline-item .year {
             font-size: 22px;
@@ -390,23 +555,8 @@
             height: auto;
             display: block;
         }
-        @media (max-width: 768px) {
-            .timeline-item {
-                flex-direction: column;
-                padding: 16px 18px;
-                gap: 14px;
-            }
-            .timeline-item .img-wrap {
-                flex: 1 1 auto;
-                max-width: 100%;
-            }
-            .timeline-item .year {
-                font-size: 18px;
-                min-width: auto;
-            }
-        }
 
-        /* ===== 公告板块（横向滑动） ===== */
+        /* ===== 公告 ===== */
         .notice-section {
             background: var(--blue-bg-pale);
             border-top: 1px solid var(--border-light);
@@ -419,6 +569,7 @@
             scroll-behavior: smooth;
             padding: 4px 0 12px;
             margin: 0 -4px;
+            scrollbar-width: thin;
         }
         .notice-scroll-wrapper::-webkit-scrollbar {
             height: 6px;
@@ -444,15 +595,9 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             display: flex;
             flex-direction: column;
             cursor: pointer;
-        }
-        .notice-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-            transform: translateY(-3px);
         }
         .notice-card .cover {
             width: 100%;
@@ -533,41 +678,16 @@
             color: var(--blue-primary);
             margin-bottom: 8px;
         }
-        @media (max-width: 768px) {
-            .notice-card {
-                flex: 0 0 200px;
-                max-width: 200px;
-            }
-            .notice-card .body .title {
-                font-size: 13px;
-            }
-            .notice-card .body .summary {
-                font-size: 12px;
-                -webkit-line-clamp: 2;
-            }
-        }
-        @media (max-width: 480px) {
-            .notice-card {
-                flex: 0 0 170px;
-                max-width: 170px;
-            }
-            .notice-card .body {
-                padding: 10px 12px 12px;
-            }
-            .notice-card .body .title {
-                font-size: 12px;
-            }
-            .notice-card .body .summary {
-                font-size: 11px;
-                -webkit-line-clamp: 2;
-            }
-        }
 
-        /* ===== 地图展示（横向滑动） ===== */
+        /* ===== 地图（带左右箭头） ===== */
         .map-section {
             background: var(--blue-bg-pale);
             border-top: 1px solid var(--border-light);
             border-bottom: 1px solid var(--border-light);
+        }
+        .map-wrapper {
+            position: relative;
+            overflow: hidden;
         }
         .map-scroll-wrapper {
             overflow-x: auto;
@@ -576,6 +696,7 @@
             scroll-behavior: smooth;
             padding: 4px 0 12px;
             margin: 0 -4px;
+            scrollbar-width: thin;
         }
         .map-scroll-wrapper::-webkit-scrollbar {
             height: 6px;
@@ -593,6 +714,60 @@
             width: max-content;
             padding: 0 4px;
         }
+
+        .map-arrows {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 8px;
+        }
+        .map-arrows button {
+            background: var(--white);
+            border: 1px solid var(--border-light);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-size: 18px;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .map-arrows button:hover {
+            background: var(--blue-primary);
+            color: #fff;
+            border-color: var(--blue-primary);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+        }
+        .map-arrows button:active {
+            transform: scale(0.92);
+        }
+        .map-arrows button:disabled {
+            opacity: 0.25;
+            cursor: default;
+            transform: none !important;
+            box-shadow: none !important;
+            background: var(--white);
+            color: var(--text-muted);
+            border-color: var(--border-light);
+        }
+        @media (max-width: 768px) {
+            .map-arrows button {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
+            }
+        }
+        @media (min-width: 769px) {
+            .map-arrows {
+                display: flex;
+            }
+        }
+
         .map-card {
             flex: 0 0 220px;
             max-width: 220px;
@@ -601,15 +776,9 @@
             border-radius: var(--radius);
             overflow: hidden;
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             display: flex;
             flex-direction: column;
             cursor: pointer;
-        }
-        .map-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-            transform: translateY(-3px);
         }
         .map-card .cover {
             width: 100%;
@@ -628,7 +797,7 @@
             justify-content: center;
             font-size: 2.4rem;
             color: var(--blue-primary);
-            opacity: 0.2;
+            opacity: 0.15;
         }
         .map-card .body {
             padding: 12px 14px 14px;
@@ -644,7 +813,7 @@
             border: 1.5px solid var(--blue-primary);
             color: var(--blue-primary);
             background: transparent;
-            border-radius: 3px;
+            border-radius: 4px;
             letter-spacing: 0.3px;
             display: inline-block;
             line-height: 1.5;
@@ -689,7 +858,7 @@
             cursor: pointer;
             color: var(--blue-primary);
             font-weight: 500;
-            transition: color 0.2s;
+            transition: color 0.15s ease;
         }
         .map-card .body .meta-row .author:hover {
             color: var(--blue-primary-dark);
@@ -702,6 +871,8 @@
         .map-card .body .meta-row .minid {
             font-family: 'SF Mono', 'Menlo', monospace;
             font-size: 11px;
+            color: var(--text-muted);
+            opacity: 0.5;
         }
         .map-card .body .desc-box {
             background: var(--blue-bg-light);
@@ -739,18 +910,6 @@
             color: var(--blue-primary);
             margin-bottom: 8px;
         }
-        @media (max-width: 768px) {
-            .map-card {
-                flex: 0 0 170px;
-                max-width: 170px;
-            }
-        }
-        @media (max-width: 480px) {
-            .map-card {
-                flex: 0 0 150px;
-                max-width: 150px;
-            }
-        }
 
         /* ===== 加入工作室 ===== */
         .join-grid {
@@ -765,19 +924,13 @@
             border-radius: var(--radius);
             padding: 24px 26px;
             box-shadow: var(--shadow-sm);
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(18px);
-            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.15s, border-color 0.15s;
         }
         .join-card.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-        .join-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-            transform: translateY(-3px);
         }
         .join-card h3 {
             font-size: 20px;
@@ -818,14 +971,8 @@
             color: var(--blue-primary);
             font-weight: 600;
         }
-        @media (max-width: 768px) {
-            .join-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-        }
 
-        /* ===== 腾讯QQ频道 ===== */
+        /* ===== 频道 ===== */
         .channel-section {
             padding: 48px 0;
             background: var(--white);
@@ -843,18 +990,13 @@
             align-items: center;
             justify-content: center;
             gap: 28px 40px;
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(18px);
-            transition: opacity 0.55s ease, transform 0.55s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.15s, border-color 0.15s;
         }
         .channel-card.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-        .channel-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
         }
         .channel-card .channel-img {
             flex: 0 0 180px;
@@ -892,7 +1034,7 @@
             font-weight: 600;
             font-size: 15px;
             border: none;
-            transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+            transition: background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
             box-shadow: 0 2px 8px rgba(26, 127, 196, 0.2);
             cursor: pointer;
         }
@@ -900,24 +1042,6 @@
             background: var(--blue-primary-dark);
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(26, 127, 196, 0.25);
-        }
-        @media (max-width: 640px) {
-            .channel-card {
-                flex-direction: column;
-                text-align: center;
-                padding: 20px 16px;
-                gap: 16px;
-            }
-            .channel-card .channel-img {
-                flex: 1 1 auto;
-                max-width: 140px;
-            }
-            .channel-card .channel-info {
-                text-align: center;
-            }
-            .channel-card .channel-info h2 {
-                font-size: 19px;
-            }
         }
 
         /* ===== 联系我们 ===== */
@@ -939,19 +1063,13 @@
             border-radius: var(--radius);
             padding: 14px 12px;
             text-align: center;
-            transition: box-shadow 0.3s, transform 0.3s, border-color 0.3s;
             opacity: 0;
             transform: translateY(14px);
-            transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, border-color 0.3s;
+            transition: opacity 0.35s ease, transform 0.35s ease, box-shadow 0.15s, border-color 0.15s;
         }
         .contact-card.visible {
             opacity: 1;
             transform: translateY(0);
-        }
-        .contact-card:hover {
-            box-shadow: var(--shadow-hover);
-            border-color: var(--blue-primary);
-            transform: translateY(-2px);
         }
         .contact-card .icon {
             font-size: 18px;
@@ -979,6 +1097,10 @@
         .contact-card.span-full {
             grid-column: 1 / -1;
         }
+
+        /* ============================================================
+           响应式
+           ============================================================ */
         @media (max-width: 992px) {
             .contact-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -986,6 +1108,81 @@
             }
             .contact-card.span-full {
                 grid-column: 1 / -1;
+            }
+        }
+        @media (max-width: 768px) {
+            body {
+                padding-top: 60px;
+            }
+            .navbar {
+                height: 60px;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .hero-content h1 {
+                font-size: 32px;
+            }
+            .hero {
+                padding: 40px 0 32px;
+            }
+            .section {
+                padding: 32px 0;
+            }
+            .section-title .left h2 {
+                font-size: 26px;
+            }
+            .navbar-brand .brand-text {
+                font-size: 17px;
+            }
+            .navbar-brand .logo {
+                height: 28px;
+            }
+            .join-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            .channel-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px 16px;
+                gap: 16px;
+            }
+            .channel-card .channel-img {
+                flex: 1 1 auto;
+                max-width: 140px;
+            }
+            .channel-card .channel-info {
+                text-align: center;
+            }
+            .channel-card .channel-info h2 {
+                font-size: 19px;
+            }
+            .notice-card {
+                flex: 0 0 200px;
+                max-width: 200px;
+            }
+            .map-card {
+                flex: 0 0 170px;
+                max-width: 170px;
+            }
+            .timeline-item {
+                flex-direction: column;
+                padding: 16px 18px;
+                gap: 14px;
+            }
+            .timeline-item .img-wrap {
+                flex: 1 1 auto;
+                max-width: 100%;
+            }
+            .timeline-item .year {
+                font-size: 18px;
+                min-width: auto;
+            }
+            .map-arrows button {
+                width: 38px;
+                height: 38px;
+                font-size: 15px;
             }
         }
         @media (max-width: 600px) {
@@ -1006,66 +1203,19 @@
                 font-size: 13px;
             }
         }
-        @media (max-width: 420px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-        }
-
-        /* ===== 响应式通用 ===== */
-        @media (max-width: 768px) {
+        @media (max-width: 480px) {
             body {
-                padding-top: 60px;
+                padding-top: 54px;
             }
             .navbar {
-                height: 60px;
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                background: #fff;
-                padding: 12px 24px 20px;
-                gap: 2px;
-                border-top: 1px solid var(--border-light);
-                box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-            }
-            .nav-links.open {
-                display: flex;
-            }
-            .nav-links li a {
-                padding: 10px 16px;
-                font-size: 16px;
-                width: 100%;
-                text-align: center;
-            }
-            .hero-content h1 {
-                font-size: 32px;
-            }
-            .hero {
-                padding: 52px 0 36px;
-            }
-            .section {
-                padding: 36px 0;
-            }
-            .section-title .left h2 {
-                font-size: 26px;
-            }
-            .navbar-brand .brand-text {
-                font-size: 17px;
+                height: 54px;
             }
             .navbar-brand .logo {
-                height: 28px;
+                height: 24px;
             }
-        }
-        @media (max-width: 480px) {
+            .navbar-brand .brand-text {
+                font-size: 15px;
+            }
             .hero-content h1 {
                 font-size: 26px;
             }
@@ -1091,26 +1241,179 @@
             .container {
                 padding: 0 14px;
             }
-            .timeline-item {
-                padding: 14px 14px;
-            }
             .join-card {
                 padding: 18px 16px;
             }
             .channel-card {
                 padding: 18px 14px;
             }
+            .notice-card {
+                flex: 0 0 170px;
+                max-width: 170px;
+            }
+            .map-card {
+                flex: 0 0 150px;
+                max-width: 150px;
+            }
+            .section-title .left h2 {
+                font-size: 22px;
+            }
+            .map-card .body .title {
+                font-size: 13px;
+            }
+            .notice-card .body .title {
+                font-size: 13px;
+            }
+            .timeline-item {
+                padding: 14px 14px;
+            }
+            .map-arrows button {
+                width: 34px;
+                height: 34px;
+                font-size: 13px;
+            }
+        }
+        @media (max-width: 420px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .notice-card {
+                flex: 0 0 150px;
+                max-width: 150px;
+            }
+            .map-card {
+                flex: 0 0 130px;
+                max-width: 130px;
+            }
         }
 
-        /* ===== 工具类 ===== */
-        .hidden {
-            display: none !important;
+        /* ============================================================
+           隐藏彩蛋（双击英雄区触发，无表情）
+           ============================================================ */
+        .egg-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            z-index: 999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(16px);
+            border: 2px solid var(--blue-primary);
+            border-radius: var(--radius);
+            padding: 32px 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0.4s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        .egg-popup.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .egg-popup .egg-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .egg-popup h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+        }
+        .egg-popup p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+        .egg-popup .btn-close-egg {
+            background: var(--blue-primary);
+            color: #fff;
+            border: none;
+            padding: 10px 32px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        .egg-popup .btn-close-egg:hover {
+            background: var(--blue-primary-dark);
+        }
+        .egg-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 998;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .egg-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* 彩纸特效（仅彩蛋时触发） */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confettiFall 3s ease-in forwards;
+        }
+        @keyframes confettiFall {
+            0% { opacity: 1; transform: translateY(-10vh) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translateY(110vh) rotate(720deg) scale(0.5); }
+        }
+
+        .firework {
+            position: fixed;
+            pointer-events: none;
+            z-index: 60;
+            font-size: 20px;
+            animation: fireworkBurst 0.8s ease-out forwards;
+            will-change: transform, opacity;
+        }
+        @keyframes fireworkBurst {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--fx), var(--fy)) scale(1.5); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ============================================================
+       彩蛋弹出层
+       ============================================================ -->
+    <div class="egg-overlay" id="eggOverlay"></div>
+    <div class="egg-popup" id="eggPopup">
+        <span class="egg-icon">✦</span>
+        <h2>极光之约</h2>
+        <p>你发现了一处隐藏的极光能量。</p>
+        <button class="btn-close-egg" id="eggCloseBtn">接受光芒</button>
+    </div>
+
+    <!-- ============================================================
+       导航栏
+       ============================================================ -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -1128,14 +1431,16 @@
         </div>
     </header>
 
-    <!-- ===== 英雄区 ===== -->
+    <!-- ============================================================
+       英雄区
+       ============================================================ -->
     <section id="hero" class="hero">
         <div class="container">
             <div class="hero-content">
                 <h1>极光创工作室</h1>
-                <div class="sub">Aurora Creation Studio · ACNS</div>
+                <div class="sub">Aurora Creation Studio  ACNS  2021 至今</div>
                 <div class="desc">
-                    极光创工作室 英文名：Aurora Creation Studio 简称：ACNS，成立于2021年1月24日，主要为游戏《迷你世界》内的工作室，由"徐灭绝"带领建立，旗下有《江都市》《永昌市》《安州市》《棍母空间》等优质建筑、玩法地图，我们一直秉承着"仔细认真打造每一张地图"的理念，欢迎各位玩家加入极光创工作室
+                    极光创工作室 英文名：Aurora Creation Studio 简称：ACNS，成立于2021年1月24日，主要为游戏《迷你世界》内的工作室，由"徐灭绝"带领建立。我们一直秉承着"仔细认真打造每一张地图"的理念，欢迎各位玩家加入极光创工作室。
                 </div>
                 <div class="hero-stats">
                     <div class="stat"><span class="num" id="statYear">2021</span><span class="lbl">年</span></div>
@@ -1151,13 +1456,13 @@
     </section>
 
     <!-- ============================================================
-    ★★★ 新增：公告板块（横向滑动，无公告则不显示） ★★★
-    ============================================================ -->
+       公告板块
+       ============================================================ -->
     <section id="notice" class="section notice-section">
         <div class="container">
             <div class="section-title">
                 <div class="left">
-                    <h2>📢 工作室公告</h2>
+                    <h2>工作室公告</h2>
                     <div class="line"></div>
                 </div>
                 <a href="./blog/" class="view-all">查看全部公告 →</a>
@@ -1170,7 +1475,9 @@
         </div>
     </section>
 
-    <!-- ===== 发展历程 ===== -->
+    <!-- ============================================================
+       发展历程（原样）
+       ============================================================ -->
     <section id="history" class="section section-alt">
         <div class="container">
             <div class="section-title">
@@ -1179,17 +1486,15 @@
                     <div class="line"></div>
                 </div>
             </div>
-            <div class="timeline">
-                <!-- 2021 -->
-                <div class="timeline-item">
+            <div class="timeline" id="timelineContainer">
+                <div class="timeline-item card-enter">
                     <div class="year">2021</div>
                     <div class="content">
                         <p>2021年1月，极光创工作室的前身"迷创工作室"于2021年1月24日正式成立</p>
                         <p>2021年7月，在工作室成立的七个月内，工作室的第一张地图《规则类怪谈》正式发布，在发布后的几个月内，地图迎来的反响十分不错，受到广大玩家的喜欢，为后来的玩法类地图奠定了坚实的基础</p>
                     </div>
                 </div>
-                <!-- 2022 -->
-                <div class="timeline-item">
+                <div class="timeline-item card-enter">
                     <div class="year">2022</div>
                     <div class="content">
                         <p>2022年8月，在《规则类怪谈》发布后，"迷创工作室"持续对《规则类怪谈》进行更新</p>
@@ -1200,8 +1505,7 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/Fux2tNpR_bfNDAnpQLJuHTC0ecLn.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2022年工作室图片" loading="lazy">
                     </div>
                 </div>
-                <!-- 2023 -->
-                <div class="timeline-item">
+                <div class="timeline-item card-enter">
                     <div class="year">2023</div>
                     <div class="content">
                         <p>2023年1月，因《城市生活》建筑技术落后规划混乱等种种原因，最终导致《城市生活》于2023年3月正式下架</p>
@@ -1210,8 +1514,7 @@
                         <p>2023年12月，《江都市》（第一代）地图项目正式开始建设</p>
                     </div>
                 </div>
-                <!-- 2024 -->
-                <div class="timeline-item">
+                <div class="timeline-item card-enter">
                     <div class="year">2024</div>
                     <div class="content">
                         <p>2024年1月，因游戏更新导致存档丢失，《江都市》（第一代）地图项目停止建设</p>
@@ -1221,8 +1524,7 @@
                         <p>2024年7月，《江都市》（第三代）地图项目正式开始建设</p>
                     </div>
                 </div>
-                <!-- 2025 -->
-                <div class="timeline-item">
+                <div class="timeline-item card-enter">
                     <div class="year">2025</div>
                     <div class="content">
                         <p>2025年6月，随着游戏的更新迭代，《江都市》（第三代）使用的技术已经远远落后，在随后的几个月中也下架</p>
@@ -1239,8 +1541,7 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/FkzvRIEKHLj4YJHosq1dEaDuqbN6.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2025年工作室图片" loading="lazy">
                     </div>
                 </div>
-                <!-- 2026 -->
-                <div class="timeline-item">
+                <div class="timeline-item card-enter">
                     <div class="year">2026</div>
                     <div class="content">
                         <p>2026年1月，极光创工作室正式迎来五周年</p>
@@ -1253,53 +1554,70 @@
                         <img src="https://user-assets.sxlcdn.com/images/1291382/FjcTTWJyBp_pcj8OvqZVDY8C3MpT.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg" alt="2026年工作室图片" loading="lazy">
                     </div>
                 </div>
+                <div class="timeline-item card-enter">
+                    <div class="year">2027</div>
+                    <div class="content">
+                        <p>极光创工作室第六年，新征程，新光芒。</p>
+                        <p>更多精彩，敬请期待。</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- ===== 地图展示（横向滑动） ===== -->
+    <!-- ============================================================
+       地图展示（带左右箭头）
+       ============================================================ -->
     <section id="maps" class="section map-section">
         <div class="container">
             <div class="section-title">
                 <div class="left">
-                    <h2>地图展示 <span class="sub">最新创作</span></h2>
+                    <h2>地图展示  最新创作</h2>
                     <div class="line"></div>
                 </div>
                 <a href="./map/" class="view-all">查看全部 →</a>
             </div>
-            <div class="map-scroll-wrapper">
-                <div class="map-grid" id="mapGrid">
-                    <div class="map-loading"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>
+            <div class="map-wrapper">
+                <div class="map-scroll-wrapper" id="mapScrollWrapper">
+                    <div class="map-grid" id="mapGrid">
+                        <div class="map-loading"><i class="fas fa-spinner fa-pulse"></i>加载地图中...</div>
+                    </div>
                 </div>
+            </div>
+            <div class="map-arrows" id="mapArrows">
+                <button id="mapPrev" aria-label="上一页"><i class="fas fa-chevron-left"></i></button>
+                <button id="mapNext" aria-label="下一页"><i class="fas fa-chevron-right"></i></button>
             </div>
         </div>
     </section>
 
-    <!-- ===== 加入工作室 ===== -->
+    <!-- ============================================================
+       加入工作室
+       ============================================================ -->
     <section id="join" class="section">
         <div class="container">
             <div class="section-title">
                 <div class="left">
-                    <h2>欢迎加入极光创工作室</h2>
+                    <h2>加入极光创  共创未来</h2>
                     <div class="line"></div>
                 </div>
             </div>
             <p style="max-width:700px; margin-bottom:22px; color:var(--text-muted); font-size:16px;">
-                我们工作室内部目前设有四个组，分别为建筑组，玩法组，模型组，编辑组，加入工作室转正后便可以在各个组群中交流您遇到的问题，同时您可以选择加入我们后成为正式成员或者外部成员
+                我们工作室内部目前设有四个组，分别为建筑组，玩法组，模型组，编辑组。加入工作室转正后便可以在各个组群中交流您遇到的问题，同时您可以选择加入我们后成为正式成员或者外部成员。
             </p>
             <div class="join-grid">
-                <div class="join-card">
+                <div class="join-card card-enter">
                     <h3>正式成员 <span class="badge">核心</span></h3>
                     <ul>
-                        <li>游戏中需加入工作室，只要有一定技术水平后便可以申请成为工作室的中高层</li>
+                        <li>游戏中需加入工作室，有一定技术水平后可申请成为中高层</li>
                         <li>游戏中发布的地图可直接发布为极光创工作室的地图</li>
                         <li><span class="highlight">不支持多工作室</span></li>
                     </ul>
                 </div>
-                <div class="join-card">
-                    <h3>外部成员 <span class="badge" style="background:var(--text-muted);">协作</span></h3>
+                <div class="join-card card-enter">
+                    <h3>外部成员 <span class="badge" style="background:var(--text-muted);color:#fff;">协作</span></h3>
                     <ul>
-                        <li>游戏中无需加入工作室，但同时也无法担任工作室的中高层职位</li>
+                        <li>游戏中无需加入工作室，但无法担任中高层职位</li>
                         <li>无法在游戏中发布极光创工作室的地图</li>
                         <li>仅能参与工作室地图中的建设</li>
                     </ul>
@@ -1308,15 +1626,17 @@
         </div>
     </section>
 
-    <!-- ===== 腾讯QQ频道 ===== -->
+    <!-- ============================================================
+       频道
+       ============================================================ -->
     <section class="channel-section">
         <div class="container">
-            <div class="channel-card">
+            <div class="channel-card card-enter">
                 <div class="channel-img">
                     <img src="https://user-assets.sxlcdn.com/images/1291382/FgNnaZYxLINO3f8da-lw5jO6vrpm.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png" alt="极光创工作室腾讯QQ社区频道" loading="lazy">
                 </div>
                 <div class="channel-info">
-                    <h2>极光创工作室 · 腾讯QQ社区频道</h2>
+                    <h2>极光创工作室  腾讯QQ社区频道</h2>
                     <p class="sub">加入频道，获取最新动态与活动资讯</p>
                     <a href="https://pd.qq.com/s/1j5op5f1j?b=9" target="_blank" rel="noopener" class="btn-join">立即加入</a>
                 </div>
@@ -1324,7 +1644,9 @@
         </div>
     </section>
 
-    <!-- ===== 联系我们 ===== -->
+    <!-- ============================================================
+       联系我们
+       ============================================================ -->
     <section id="contact" class="section section-alt">
         <div class="container">
             <div class="section-title">
@@ -1335,31 +1657,31 @@
             </div>
             <div class="contact-wrapper">
                 <div class="contact-grid">
-                    <div class="contact-card">
+                    <div class="contact-card card-enter">
                         <div class="icon"><i class="fas fa-user"></i></div>
                         <div class="card-title">腾讯QQ</div>
                         <div class="card-value">3371308397</div>
                         <div class="card-note">加入优先联系</div>
                     </div>
-                    <div class="contact-card">
+                    <div class="contact-card card-enter">
                         <div class="icon"><i class="fas fa-users"></i></div>
                         <div class="card-title">主社区群</div>
                         <div class="card-value">816939807</div>
                         <div class="card-note">腾讯QQ群</div>
                     </div>
-                    <div class="contact-card">
+                    <div class="contact-card card-enter">
                         <div class="icon"><i class="fas fa-users"></i></div>
                         <div class="card-title">中政区群</div>
                         <div class="card-value">1033753144</div>
                         <div class="card-note">腾讯QQ群</div>
                     </div>
-                    <div class="contact-card">
+                    <div class="contact-card card-enter">
                         <div class="icon"><i class="fas fa-users"></i></div>
                         <div class="card-title">天华省制作组</div>
                         <div class="card-value">1080942993</div>
                         <div class="card-note">腾讯QQ群</div>
                     </div>
-                    <div class="contact-card span-full">
+                    <div class="contact-card card-enter span-full">
                         <div class="icon"><i class="fas fa-gamepad"></i></div>
                         <div class="card-title">迷你世界</div>
                         <div class="card-value">1038208325</div>
@@ -1370,7 +1692,9 @@
         </div>
     </section>
 
-    <!-- ===== 弹窗结构（成员档案） ===== -->
+    <!-- ============================================================
+       弹窗结构（成员档案）
+       ============================================================ -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-content" id="modalContent">
             <button class="modal-close" id="modalClose">&times;</button>
@@ -1380,43 +1704,106 @@
         </div>
     </div>
 
-    <!-- ===== 底部 ===== -->
+    <!-- ============================================================
+       底部
+       ============================================================ -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
-            <span class="sep">·</span>
+            <span class="sep">|</span>
             <span>Aurora Creation Studio</span>
         </div>
     </footer>
 
-    <!-- 引入公共脚本 -->
+    <!-- ============================================================
+       公共脚本
+       ============================================================ -->
     <script src="assets/js/components.js"></script>
 
     <script>
         (function() {
 
-            // ===== 移动端菜单 =====
+            // ============================================================
+            // 移动端菜单（带展开动画）
+            // ============================================================
             const toggle = document.getElementById('menuToggle');
             const navLinks = document.getElementById('navLinks');
+            let menuOpen = false;
+
             if (toggle && navLinks) {
                 toggle.addEventListener('click', function(e) {
                     e.stopPropagation();
+                    menuOpen = !menuOpen;
                     navLinks.classList.toggle('open');
+                    this.innerHTML = menuOpen ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
                 });
                 document.addEventListener('click', function(e) {
-                    if (!navLinks.contains(e.target) && !toggle.contains(e.target)) {
+                    if (!navLinks.contains(e.target) && !toggle.contains(e.target) && menuOpen) {
+                        menuOpen = false;
                         navLinks.classList.remove('open');
+                        toggle.innerHTML = '<i class="fas fa-bars"></i>';
                     }
                 });
                 navLinks.querySelectorAll('a').forEach(function(link) {
                     link.addEventListener('click', function() {
-                        navLinks.classList.remove('open');
+                        if (menuOpen) {
+                            menuOpen = false;
+                            navLinks.classList.remove('open');
+                            toggle.innerHTML = '<i class="fas fa-bars"></i>';
+                        }
                     });
                 });
             }
 
             // ============================================================
-            // 工具函数
+            // 地图左右箭头控制（电脑端）
+            // ============================================================
+            (function initMapArrows() {
+                const wrapper = document.getElementById('mapScrollWrapper');
+                const prevBtn = document.getElementById('mapPrev');
+                const nextBtn = document.getElementById('mapNext');
+
+                if (!wrapper || !prevBtn || !nextBtn) return;
+
+                let scrollAmount = 260;
+
+                function updateScrollAmount() {
+                    const width = window.innerWidth;
+                    if (width < 480) scrollAmount = 160;
+                    else if (width < 768) scrollAmount = 190;
+                    else if (width < 992) scrollAmount = 220;
+                    else scrollAmount = 260;
+                }
+                updateScrollAmount();
+
+                function updateArrows() {
+                    const maxScroll = wrapper.scrollWidth - wrapper.clientWidth;
+                    prevBtn.disabled = wrapper.scrollLeft <= 2;
+                    nextBtn.disabled = wrapper.scrollLeft >= maxScroll - 2;
+                }
+
+                prevBtn.addEventListener('click', function() {
+                    wrapper.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+                });
+                nextBtn.addEventListener('click', function() {
+                    wrapper.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+                });
+
+                wrapper.addEventListener('scroll', updateArrows);
+                window.addEventListener('resize', function() {
+                    updateScrollAmount();
+                    setTimeout(updateArrows, 200);
+                });
+                setTimeout(updateArrows, 500);
+
+                const observer = new MutationObserver(function() {
+                    updateArrows();
+                });
+                observer.observe(wrapper, { childList: true, subtree: true });
+            })();
+
+            // ============================================================
+            // 解析工具
             // ============================================================
             var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
@@ -1438,7 +1825,7 @@
             };
 
             // ============================================================
-            // 解析博客Issue（提取分类和封面）
+            // 解析公告
             // ============================================================
             function parseBlogIssue(issue) {
                 var rawTitle = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名文章';
@@ -1465,9 +1852,6 @@
                     }
                 });
 
-                if (!author || author.trim() === '') author = issue.user ? issue.user.login : '未知作者';
-
-                // 封面：手动指定 > 自动提取
                 if (!cover) {
                     var fullBody = body;
                     var mdMatch = fullBody.match(/!\[[^\]]*\]\(([^)]+)\)/);
@@ -1481,7 +1865,6 @@
                     }
                 }
 
-                // 摘要：去HTML标签后截取
                 var contentLines = lines.slice(contentStart);
                 var contentText = contentLines.join(' ');
                 contentText = contentText.replace(/<[^>]*>/g, ' ');
@@ -1519,7 +1902,51 @@
             }
 
             // ============================================================
-            // 解析成员Issue（用于弹窗）
+            // 解析地图
+            // ============================================================
+            function parseMapIssue(issue) {
+                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
+                var body = issue.body || '';
+                var author = '',
+                    cover = '',
+                    desc = '',
+                    tag = '',
+                    minid = '';
+                var lines = body.split('\n');
+                lines.forEach(function(line) {
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
+                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
+                });
+                if (!author) author = '未知作者';
+                if (!desc) desc = '暂无描述';
+                var dateStr = parseDateFromBody(body);
+                if (!dateStr) dateStr = '未知';
+                var prefixMatch = title.match(/^\[([^\]]+)\]\s*(.*)/);
+                var displayTitle = title;
+                if (prefixMatch) {
+                    displayTitle = prefixMatch[2] || title;
+                    if (!tag) tag = prefixMatch[1];
+                }
+                return {
+                    id: issue.number,
+                    title: displayTitle,
+                    author: author,
+                    cover: cover,
+                    desc: desc,
+                    tag: tag || '',
+                    minid: minid || '',
+                    date: dateStr,
+                    raw: issue,
+                    isFeatured: tag === '精选'
+                };
+            }
+
+            // ============================================================
+            // 解析成员（用于弹窗）
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -1570,49 +1997,24 @@
             }
 
             // ============================================================
-            // 解析地图（用于弹窗）
-            // ============================================================
-            function parseMapForModal(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
-                var body = issue.body || '';
-                var author = '',
-                    cover = '',
-                    tag = '',
-                    dateStr = '未知';
-                var lines = body.split('\n');
-                lines.forEach(function(line) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
-                    if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                });
-                var d = parseDateFromBody(body);
-                if (d) dateStr = d;
-                return { id: issue.number, title: title, author: author || '未知作者', cover: cover, tag: tag || '',
-                    date: dateStr };
-            }
-
-            // ============================================================
-            // ★★★ 公告板块 ★★★
+            // 加载公告
             // ============================================================
             var noticeGrid = document.getElementById('noticeGrid');
             var noticeSection = document.getElementById('notice');
 
             function renderNotices(notices) {
                 if (!notices || notices.length === 0) {
-                    // 无公告，隐藏整个板块
                     noticeSection.style.display = 'none';
                     return;
                 }
                 noticeSection.style.display = 'block';
-
                 var html = '';
                 notices.forEach(function(notice) {
                     var coverHtml = (notice.cover && notice.cover.trim().startsWith('http')) ?
                         '<img class="cover" src="' + notice.cover.trim() + '" alt="' + notice.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                         '<div class="cover-placeholder"><i class="fas fa-file-alt"></i></div>';
-                    html += '<div class="notice-card" onclick="location.href=\'./blog/post.html?id=' + notice.id +
-                        '\'">';
+                    html += '<div class="notice-card card-enter" onclick="location.href=\'./blog/post.html?id=' +
+                        notice.id + '\'">';
                     html += coverHtml;
                     html += '<div class="body">';
                     html += '<div class="title">' + notice.title + '</div>';
@@ -1623,11 +2025,19 @@
                     html += '</div></div>';
                 });
                 noticeGrid.innerHTML = html;
+                setTimeout(function() {
+                    document.querySelectorAll('.notice-card.card-enter').forEach(function(el, i) {
+                        el.style.transitionDelay = (i * 0.03) + 's';
+                        setTimeout(function() {
+                            el.classList.add('entered');
+                        }, i * 30);
+                    });
+                }, 150);
             }
 
             function loadNotices() {
                 noticeGrid.innerHTML =
-                '<div class="notice-loading"><i class="fas fa-spinner fa-pulse"></i>加载公告...</div>';
+                    '<div class="notice-loading"><i class="fas fa-spinner fa-pulse"></i>加载公告...</div>';
                 var REPO_OWNER = 'jgcgzs',
                     REPO_NAME = 'acns';
                 var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
@@ -1643,15 +2053,12 @@
                             renderNotices([]);
                             return;
                         }
-                        // 解析所有博客文章
                         var posts = issues.map(function(i) { return parseBlogIssue(i); });
-                        // 筛选出分类包含“公告”的文章（不区分大小写）
                         var notices = posts.filter(function(p) {
                             return p.categories && p.categories.some(function(c) {
                                 return c.trim().toLowerCase() === '公告';
                             });
                         });
-                        // 按日期排序（最新在前）
                         notices.sort(function(a, b) {
                             if (a.date === '未知' && b.date === '未知') return 0;
                             if (a.date === '未知') return 1;
@@ -1662,59 +2069,24 @@
                     })
                     .catch(function(err) {
                         console.warn('公告加载失败:', err);
-                        noticeGrid.innerHTML = '<div class="notice-empty">加载公告失败，请稍后重试</div>';
+                        noticeGrid.innerHTML = '<div class="notice-empty">加载公告失败</div>';
                     });
             }
 
             // ============================================================
-            // 地图展示（从 GitHub 拉取最新5张，保持原有功能）
+            // 加载地图
             // ============================================================
             var mapGrid = document.getElementById('mapGrid');
             var memberMinidMap = {};
-
-            function parseMapIssue(issue) {
-                var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
-                var body = issue.body || '';
-                var author = '',
-                    cover = '',
-                    desc = '',
-                    tag = '',
-                    minid = '';
-                var lines = body.split('\n');
-                lines.forEach(function(line) {
-                    var trimmed = line.trim();
-                    if (trimmed.match(/^作者[：:]\s*(.+)/)) author = trimmed.replace(/^作者[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^封面[：:]\s*(.+)/)) cover = trimmed.replace(/^封面[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^描述[：:]\s*(.+)/)) desc = trimmed.replace(/^描述[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^标签[：:]\s*(.+)/)) tag = trimmed.replace(/^标签[：:]\s*/, '').trim();
-                    else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim();
-                });
-                if (!author) author = '未知作者';
-                if (!desc) desc = '暂无描述';
-                var dateStr = parseDateFromBody(body);
-                if (!dateStr) dateStr = '未知';
-                var prefixMatch = title.match(/^\[([^\]]+)\]\s*(.*)/);
-                var displayTitle = title;
-                if (prefixMatch) {
-                    displayTitle = prefixMatch[2] || title;
-                    if (!tag) tag = prefixMatch[1];
-                }
-                return {
-                    id: issue.number,
-                    title: displayTitle,
-                    author: author,
-                    cover: cover,
-                    desc: desc,
-                    tag: tag || '',
-                    minid: minid || '',
-                    date: dateStr,
-                    raw: issue
-                };
-            }
+            var allMembers = [];
 
             function renderMaps(maps) {
                 if (!maps || maps.length === 0) {
                     mapGrid.innerHTML = '<div class="map-empty">暂无地图</div>';
+                    setTimeout(function() {
+                        var evt = new Event('scroll');
+                        document.getElementById('mapScrollWrapper')?.dispatchEvent(evt);
+                    }, 100);
                     return;
                 }
                 var html = '';
@@ -1726,10 +2098,13 @@
                         .minid || '未知');
                     var authorHtml = '<span class="author" data-author="' + map.author + '"><i class="fas fa-user"></i> ' +
                         map.author + '</span>';
-                    html += '<div class="map-card" onclick="location.href=\'./map/?id=' + map.id + '\'">';
+                    var tagHtml = map.isFeatured ?
+                        '<div class="tag-blue" style="border-color:#f5a623;color:#f5a623;">精选</div>' :
+                        (map.tag ? '<div class="tag-blue">' + map.tag + '</div>' : '');
+                    html += '<div class="map-card card-enter" onclick="location.href=\'./map/?id=' + map.id + '\'">';
                     html += coverHtml;
                     html += '<div class="body">';
-                    html += '<div class="tag-blue">' + (map.tag || '地图') + '</div>';
+                    if (tagHtml) html += tagHtml;
                     html += '<div class="title">' + map.title + '</div>';
                     html += '<div class="date-row"><i class="fas fa-calendar-alt"></i> ' + map.date + '</div>';
                     html += '<div class="meta-row">' + authorHtml + '<span class="minid">迷你号 ' + finalMinid +
@@ -1739,18 +2114,84 @@
                 });
                 mapGrid.innerHTML = html;
 
-                // 绑定作者点击事件（弹窗）
+                setTimeout(function() {
+                    document.querySelectorAll('.map-card.card-enter').forEach(function(el, i) {
+                        el.style.transitionDelay = (i * 0.03) + 's';
+                        setTimeout(function() {
+                            el.classList.add('entered');
+                        }, i * 30);
+                    });
+                    setTimeout(function() {
+                        var evt = new Event('scroll');
+                        document.getElementById('mapScrollWrapper')?.dispatchEvent(evt);
+                    }, 200);
+                }, 150);
+
                 mapGrid.querySelectorAll('.author').forEach(function(el) {
                     el.addEventListener('click', function(e) {
                         e.stopPropagation();
-                        var authorName = this.dataset.author;
-                        if (typeof window.openMemberModal === 'function') {
-                            window.openMemberModal(authorName);
-                        } else {
-                            alert('公共组件未加载，请检查 assets/js/components.js');
+                        var authorName = this.getAttribute('data-author');
+                        if (authorName) {
+                            if (!window._memberData || window._memberData.length === 0) {
+                                loadMemberData().then(function() {
+                                    if (typeof window.openMemberModal === 'function') {
+                                        window.openMemberModal(authorName);
+                                    } else {
+                                        console.warn('openMemberModal 未定义');
+                                        alert('成员档案功能加载中，请稍后重试');
+                                    }
+                                });
+                            } else {
+                                if (typeof window.openMemberModal === 'function') {
+                                    window.openMemberModal(authorName);
+                                } else {
+                                    console.warn('openMemberModal 未定义');
+                                    alert('成员档案功能加载中，请稍后重试');
+                                }
+                            }
                         }
                     });
                 });
+            }
+
+            function loadMemberData() {
+                if (window._memberData && window._memberData.length) {
+                    return Promise.resolve(window._memberData);
+                }
+
+                var REPO_OWNER = 'jgcgzs';
+                var REPO_NAME = 'acns';
+                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+
+                return fetch(memberApi)
+                    .then(function(res) {
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return res.json();
+                    })
+                    .then(function(issues) {
+                        if (!issues || issues.length === 0) {
+                            window._memberData = [];
+                            return [];
+                        }
+                        var members = issues.map(function(i) { return parseMemberIssue(i); });
+                        members = members.filter(function(m) {
+                            if (m.groups && m.groups.length) return true;
+                            if (m.role === '室长' || m.role === '副室长') return true;
+                            return false;
+                        });
+                        window._memberData = members;
+                        memberMinidMap = {};
+                        members.forEach(function(m) {
+                            if (m.name && m.minid) memberMinidMap[m.name] = m.minid;
+                        });
+                        return members;
+                    })
+                    .catch(function(err) {
+                        console.warn('成员数据加载失败:', err);
+                        window._memberData = [];
+                        return [];
+                    });
             }
 
             function loadMaps() {
@@ -1758,42 +2199,191 @@
                 var REPO_OWNER = 'jgcgzs',
                     REPO_NAME = 'acns';
                 var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=5';
-                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=10';
 
-                Promise.all([
-                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; })
-                ]).then(function(results) {
-                    var mapIssues = results[0] || [],
-                        memberIssues = results[1] || [];
-                    var parsedMaps = mapIssues.map(function(i) { return parseMapIssue(i); });
-                    if (memberIssues.length) {
-                        var members = memberIssues.map(function(i) {
-                            return parseMemberIssue(i);
+                loadMemberData()
+                    .then(function() {
+                        return fetch(mapApi);
+                    })
+                    .then(function(res) {
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return res.json();
+                    })
+                    .then(function(issues) {
+                        if (!issues || issues.length === 0) {
+                            renderMaps([]);
+                            return;
+                        }
+                        var parsedMaps = issues.map(function(i) { return parseMapIssue(i); });
+                        parsedMaps.sort(function(a, b) {
+                            if (a.date === '未知' && b.date === '未知') return 0;
+                            if (a.date === '未知') return 1;
+                            if (b.date === '未知') return -1;
+                            return b.date.localeCompare(a.date);
                         });
-                        members = members.filter(function(m) {
-                            if (m.groups && m.groups.length) return true;
-                            if (m.role === '室长' || m.role === '副室长') return true;
-                            return false;
-                        });
-                        memberMinidMap = {};
-                        members.forEach(function(m) {
-                            if (m.name && m.minid) memberMinidMap[m.name] = m.minid;
-                        });
-                    }
-                    // 挂载成员数据到全局
-                    window._memberData = members || [];
-                    renderMaps(parsedMaps);
-                }).catch(function(err) {
-                    console.warn('地图加载失败:', err);
-                    mapGrid.innerHTML = '<div class="map-empty">加载失败，请稍后重试</div>';
+                        renderMaps(parsedMaps);
+                    })
+                    .catch(function(err) {
+                        console.warn('地图加载失败:', err);
+                        mapGrid.innerHTML = '<div class="map-empty">加载失败，请稍后重试</div>';
+                    });
+            }
+
+            // ============================================================
+            // 发展历程卡片入场触发
+            // ============================================================
+            function initTimelineObserver() {
+                var items = document.querySelectorAll('.timeline-item.card-enter');
+                if (!items.length) return;
+                var observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('entered');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+                items.forEach(function(el, index) {
+                    el.style.transitionDelay = (index * 0.03) + 's';
+                    observer.observe(el);
+                });
+                setTimeout(function() {
+                    items.forEach(function(el) {
+                        var rect = el.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            el.classList.add('entered');
+                            observer.unobserve(el);
+                        }
+                    });
+                }, 100);
+            }
+
+            // ============================================================
+            // 其他卡片入场
+            // ============================================================
+            function initCardEntrance() {
+                var cards = document.querySelectorAll('.join-card.card-enter, .channel-card.card-enter, .contact-card.card-enter');
+                if (!cards.length) return;
+                var observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('entered');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+                cards.forEach(function(el, index) {
+                    el.style.transitionDelay = (index * 0.03) + 's';
+                    observer.observe(el);
+                });
+                setTimeout(function() {
+                    cards.forEach(function(el) {
+                        var rect = el.getBoundingClientRect();
+                        if (rect.top < window.innerHeight && rect.bottom > 0) {
+                            el.classList.add('entered');
+                            observer.unobserve(el);
+                        }
+                    });
+                }, 100);
+            }
+
+            // ============================================================
+            // 彩纸爆发
+            // ============================================================
+            function launchConfetti() {
+                var container = document.createElement('div');
+                container.className = 'confetti-container';
+                document.body.appendChild(container);
+                var colors = ['#1a7fc4', '#4facfe', '#8b5cf6', '#f5a623', '#10b981', '#f59e0b', '#ef4444'];
+                for (var i = 0; i < 60; i++) {
+                    var el = document.createElement('div');
+                    el.className = 'confetti';
+                    var size = 6 + Math.random() * 12;
+                    var color = colors[Math.floor(Math.random() * colors.length)];
+                    el.style.width = size + 'px';
+                    el.style.height = size + 'px';
+                    el.style.background = color;
+                    el.style.left = Math.random() * 100 + 'vw';
+                    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                    el.style.animationDuration = (2 + Math.random() * 2) + 's';
+                    el.style.animationDelay = Math.random() * 2 + 's';
+                    container.appendChild(el);
+                }
+                setTimeout(function() {
+                    if (container.parentNode) container.remove();
+                }, 5000);
+            }
+
+            // ============================================================
+            // 烟花爆发
+            // ============================================================
+            function createFireworkBurst(cx, cy) {
+                var emojis = ['✦', '✧', '⭐', '✨', '🌟'];
+                for (var i = 0; i < 50; i++) {
+                    var el = document.createElement('div');
+                    el.className = 'firework';
+                    var angle = Math.random() * Math.PI * 2;
+                    var dist = 60 + Math.random() * 160;
+                    var fx = Math.cos(angle) * dist;
+                    var fy = Math.sin(angle) * dist - 50;
+                    el.style.left = cx + 'px';
+                    el.style.top = cy + 'px';
+                    el.style.color = ['#1a7fc4', '#4facfe', '#8b5cf6', '#f5a623', '#10b981', '#f59e0b'][Math.floor(Math
+                        .random() * 6)];
+                    el.style.fontSize = (14 + Math.random() * 20) + 'px';
+                    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                    el.style.setProperty('--fx', fx + 'px');
+                    el.style.setProperty('--fy', fy + 'px');
+                    el.style.animationDuration = (0.8 + Math.random() * 0.6) + 's';
+                    document.body.appendChild(el);
+                    setTimeout(function() {
+                        if (el.parentNode) el.remove();
+                    }, 1500);
+                }
+            }
+
+            // ============================================================
+            // 隐藏彩蛋（双击英雄区触发，无表情）
+            // ============================================================
+            var heroSection = document.getElementById('hero');
+            var eggPopup = document.getElementById('eggPopup');
+            var eggOverlay = document.getElementById('eggOverlay');
+            var eggCloseBtn = document.getElementById('eggCloseBtn');
+            var eggTriggered = false;
+
+            if (heroSection) {
+                heroSection.addEventListener('dblclick', function(e) {
+                    if (eggTriggered) return;
+                    eggTriggered = true;
+                    eggOverlay.classList.add('open');
+                    eggPopup.classList.add('open');
+                    createFireworkBurst(window.innerWidth / 2, window.innerHeight / 2);
+                    launchConfetti();
+                    setTimeout(function() {
+                        eggOverlay.classList.remove('open');
+                        eggPopup.classList.remove('open');
+                        eggTriggered = false;
+                    }, 4000);
+                });
+            }
+
+            if (eggCloseBtn) {
+                eggCloseBtn.addEventListener('click', function() {
+                    eggOverlay.classList.remove('open');
+                    eggPopup.classList.remove('open');
+                    eggTriggered = false;
+                });
+            }
+            if (eggOverlay) {
+                eggOverlay.addEventListener('click', function() {
+                    eggOverlay.classList.remove('open');
+                    eggPopup.classList.remove('open');
+                    eggTriggered = false;
                 });
             }
 
             // ============================================================
-            // 日期实时更新
+            // 日期更新
             // ============================================================
             (function updateDate() {
                 var now = new Date();
@@ -1803,35 +2393,37 @@
             })();
 
             // ============================================================
-            // 其它动画：监听可见性
-            // ============================================================
-            function initObservers() {
-                var selectors = '.timeline-item, .join-card, .channel-card, .contact-card';
-                var elements = document.querySelectorAll(selectors);
-                if (!elements.length) return;
-                if ('IntersectionObserver' in window) {
-                    var observer = new IntersectionObserver(function(entries) {
-                        entries.forEach(function(entry) {
-                            if (entry.isIntersecting) {
-                                entry.target.classList.add('visible');
-                                observer.unobserve(entry.target);
-                            }
-                        });
-                    }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
-                    elements.forEach(function(el) { observer.observe(el); });
-                } else {
-                    elements.forEach(function(el) { el.classList.add('visible'); });
-                }
-            }
-
-            // ============================================================
             // 启动
             // ============================================================
             loadNotices();
             loadMaps();
-            setTimeout(initObservers, 200);
+            setTimeout(initTimelineObserver, 200);
+            setTimeout(initCardEntrance, 250);
+
+            window.openMemberModal = window.openMemberModal || function(name) {
+                if (window._memberData && window._memberData.length) {
+                    var member = window._memberData.find(function(m) { return m.name === name; });
+                    if (member && typeof window._openMemberModalImpl === 'function') {
+                        window._openMemberModalImpl(name);
+                    } else {
+                        console.warn('成员档案弹窗未初始化');
+                        alert('成员档案功能加载中，请稍后重试');
+                    }
+                } else {
+                    loadMemberData().then(function() {
+                        if (typeof window._openMemberModalImpl === 'function') {
+                            window._openMemberModalImpl(name);
+                        } else {
+                            alert('成员档案功能加载中，请稍后重试');
+                        }
+                    });
+                }
+            };
+
+            console.log('>> 极光创工作室官网已加载');
 
         })();
     </script>
+
 </body>
 </html>
