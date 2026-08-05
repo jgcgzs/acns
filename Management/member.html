@@ -7,7 +7,6 @@
     <meta name="description" content="极光创工作室成员档案">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- 公共组件样式 -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <style>
         /* ===== 成员档案独有样式 ===== */
@@ -542,9 +541,10 @@
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
+            <!-- ★★★ 标签栏：管理层 → ACCM ★★★ -->
             <div class="tag-bar" id="tagBar">
                 <span class="tag-item active" data-tag="全部">全部</span>
-                <span class="tag-item" data-tag="管理层">管理层</span>
+                <span class="tag-item" data-tag="ACCM">ACCM</span>
                 <span class="tag-item" data-tag="建筑组">建筑组</span>
                 <span class="tag-item" data-tag="玩法组">玩法组</span>
                 <span class="tag-item" data-tag="模型组">模型组</span>
@@ -625,7 +625,7 @@
             };
 
             // ============================================================
-            // 解析成员Issue (修改点：增加荣誉、灵动岛字段)
+            // 解析成员Issue
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -682,7 +682,8 @@
                         liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
                     }
                 });
-                if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
+                // ★★★ 室长/副室长自动加入 ACCM 组 ★★★
+                if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['ACCM'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
 
                 var attrType = '未知';
@@ -831,7 +832,7 @@
             }
 
             // ============================================================
-            // 筛选
+            // ★★★ 筛选逻辑（ACCM 支持新旧数据） ★★★
             // ============================================================
             function applyFilters() {
                 var searchTerm = searchInput.value.trim().toLowerCase();
@@ -840,7 +841,14 @@
 
                 filteredMembers = allMembers.filter(function(m) {
                     if (tagFilter !== '全部') {
-                        if (!m.groups || !m.groups.includes(tagFilter)) return false;
+                        if (tagFilter === 'ACCM') {
+                            // ★★★ ACCM 筛选：检查 groups 包含 'ACCM' 或 '管理层'（兼容旧数据） ★★★
+                            if (!m.groups || !m.groups.some(function(g) { return g === 'ACCM' || g === '管理层'; })) {
+                                return false;
+                            }
+                        } else {
+                            if (!m.groups || !m.groups.includes(tagFilter)) return false;
+                        }
                     }
                     if (searchTerm) {
                         var inName = m.name.toLowerCase().includes(searchTerm);
