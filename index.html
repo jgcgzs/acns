@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/components.css">
     <style>
-        /* ===== 基础变量（与成员档案一致） ===== */
+        /* ===== 基础变量（与原版一致） ===== */
         :root {
             --blue-primary: #1a7fc4;
             --blue-primary-dark: #0f6aad;
@@ -912,7 +912,7 @@
             })();
 
             // ============================================================
-            // 工具
+            // 工具函数
             // ============================================================
             var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
@@ -1009,7 +1009,7 @@
             }
 
             // ============================================================
-            // 解析成员（弹窗）
+            // ★★★ 核心修复：parseMemberIssue 提取荣誉和灵动岛 ★★★
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -1024,28 +1024,64 @@
                     pinnedMap = '',
                     pinnedBlog = '',
                     role = '';
+                // ★★★ 新增字段 ★★★
+                var workHonors = '',
+                    gameHonors = '',
+                    liveType = '',
+                    liveContent = '';
                 var parts = title.split('-');
                 var name = parts[0].trim();
                 if (parts.length > 1) role = parts.slice(1).join('-').trim();
                 var lines = body.split('\n');
                 lines.forEach(function(line) {
-                    var t = line.trim();
-                    if (t.match(/^组别[：:]\s*(.+)/)) { var g = t.replace(/^组别[：:]\s*/, '').trim();
-                        groups = g.split(/[,，、\s]+/).filter(Boolean); } else if (t.match(/^迷你号[：:]\s*(.+)/)) minid = t
-                        .replace(/^迷你号[：:]\s*/, '').trim() || '未知';
-                    else if (t.match(/^编号[：:]\s*(.+)/)) id = t.replace(/^编号[：:]\s*/, '').trim() || '未知';
-                    else if (t.match(/^入室时间[：:]\s*(.+)/)) { var d = t.replace(/^入室时间[：:]\s*/, '').trim(); var p =
-                            parseDateFromBody(d);
-                        joinDate = p || d || '未知'; } else if (t.match(/^头像[：:]\s*(.+)/)) avatar = t.replace(
-                        /^头像[：:]\s*/, '').trim();
-                    else if (t.match(/^背景[：:]\s*(.+)/)) background = t.replace(/^背景[：:]\s*/, '').trim();
-                    else if (t.match(/^简介[：:]\s*(.+)/)) bio = t.replace(/^简介[：:]\s*/, '').trim();
-                    else if (t.match(/^置顶地图[：:]\s*(.+)/)) pinnedMap = t.replace(/^置顶地图[：:]\s*/, '').trim();
-                    else if (t.match(/^置顶博客[：:]\s*(.+)/)) pinnedBlog = t.replace(/^置顶博客[：:]\s*/, '').trim();
+                    var trimmed = line.trim();
+                    if (trimmed.match(/^组别[：:]\s*(.+)/)) {
+                        var g = trimmed.replace(/^组别[：:]\s*/, '').trim();
+                        groups = g.split(/[,，、\s]+/).filter(function(s) { return s.trim().length > 0; });
+                    } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
+                        minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
+                    } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
+                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
+                    } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
+                        var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
+                        var parsed = parseDateFromBody(d);
+                        if (parsed) joinDate = parsed;
+                        else joinDate = d || '未知';
+                    } else if (trimmed.match(/^头像[：:]\s*(.+)/)) {
+                        avatar = trimmed.replace(/^头像[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^背景[：:]\s*(.+)/)) {
+                        background = trimmed.replace(/^背景[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^简介[：:]\s*(.+)/)) {
+                        bio = trimmed.replace(/^简介[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^置顶地图[：:]\s*(.+)/)) {
+                        pinnedMap = trimmed.replace(/^置顶地图[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^置顶博客[：:]\s*(.+)/)) {
+                        pinnedBlog = trimmed.replace(/^置顶博客[：:]\s*/, '').trim();
+                    // ★★★ 新增解析 ★★★
+                    } else if (trimmed.match(/^工作室荣誉[：:]\s*(.+)/)) {
+                        workHonors = trimmed.replace(/^工作室荣誉[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^游戏荣誉[：:]\s*(.+)/)) {
+                        gameHonors = trimmed.replace(/^游戏荣誉[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^灵动岛类型[：:]\s*(.+)/)) {
+                        liveType = trimmed.replace(/^灵动岛类型[：:]\s*/, '').trim();
+                    } else if (trimmed.match(/^灵动岛内容[：:]\s*(.+)/)) {
+                        liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
+                    }
                 });
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
-                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog };
+
+                var attrType = '未知';
+                if (id && id.length >= 1) {
+                    var firstChar = id.charAt(0);
+                    if (firstChar === '1') attrType = '正式成员';
+                    else if (firstChar === '2') attrType = '外部成员';
+                    else if (firstChar === '3') attrType = '特招成员';
+                }
+
+                // ★★★ 返回对象增加新字段 ★★★
+                return { name, role, groups, minid, id, joinDate, avatar, background, bio, pinnedMap, pinnedBlog,
+                         attrType, workHonors, gameHonors, liveType, liveContent };
             }
 
             // ============================================================
@@ -1104,7 +1140,7 @@
             }
 
             // ============================================================
-            // 加载地图
+            // 加载地图（含成员数据，修复作者点击）
             // ============================================================
             var mapGrid = document.getElementById('mapGrid');
             var memberMinidMap = {};
@@ -1149,21 +1185,28 @@
                     setTimeout(function() { var evt = new Event('scroll');
                         document.getElementById('mapScrollWrapper')?.dispatchEvent(evt); }, 200);
                 }, 150);
+
+                // ★★★ 绑定作者点击事件（调用成员档案弹窗） ★★★
                 mapGrid.querySelectorAll('.author').forEach(function(el) {
                     el.addEventListener('click', function(e) {
                         e.stopPropagation();
                         var name = this.dataset.author;
                         if (name) {
+                            // 确保成员数据已加载
                             if (!window._memberData || !window._memberData.length) {
                                 loadMemberData().then(function() {
-                                    if (typeof window.openMemberModal === 'function') window
-                                        .openMemberModal(name);
-                                    else alert('成员档案功能加载中，请稍后重试');
+                                    if (typeof window.openMemberModal === 'function') {
+                                        window.openMemberModal(name);
+                                    } else {
+                                        alert('成员档案功能加载中，请稍后重试');
+                                    }
                                 });
                             } else {
-                                if (typeof window.openMemberModal === 'function') window.openMemberModal(
-                                name);
-                                else alert('成员档案功能加载中，请稍后重试');
+                                if (typeof window.openMemberModal === 'function') {
+                                    window.openMemberModal(name);
+                                } else {
+                                    alert('成员档案功能加载中，请稍后重试');
+                                }
                             }
                         }
                     });
