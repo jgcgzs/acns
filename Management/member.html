@@ -541,10 +541,10 @@
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
-            <!-- ★★★ 标签栏：管理层 → ACCM ★★★ -->
+            <!-- ★★★ 标签栏：管理层 → ACCM最高管 ★★★ -->
             <div class="tag-bar" id="tagBar">
                 <span class="tag-item active" data-tag="全部">全部</span>
-                <span class="tag-item" data-tag="ACCM">ACCM</span>
+                <span class="tag-item" data-tag="ACCM最高管">ACCM最高管</span>
                 <span class="tag-item" data-tag="建筑组">建筑组</span>
                 <span class="tag-item" data-tag="玩法组">玩法组</span>
                 <span class="tag-item" data-tag="模型组">模型组</span>
@@ -682,8 +682,8 @@
                         liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
                     }
                 });
-                // ★★★ 室长/副室长自动加入 ACCM 组 ★★★
-                if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['ACCM'];
+                // ★★★ 室长/副室长自动加入 ACCM最高管 组（兼容旧数据） ★★★
+                if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['ACCM最高管'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
 
                 var attrType = '未知';
@@ -832,7 +832,7 @@
             }
 
             // ============================================================
-            // ★★★ 筛选逻辑（ACCM 支持新旧数据） ★★★
+            // ★★★ 筛选逻辑（ACCM最高管，兼容旧"管理层"数据） ★★★
             // ============================================================
             function applyFilters() {
                 var searchTerm = searchInput.value.trim().toLowerCase();
@@ -841,9 +841,9 @@
 
                 filteredMembers = allMembers.filter(function(m) {
                     if (tagFilter !== '全部') {
-                        if (tagFilter === 'ACCM') {
-                            // ★★★ ACCM 筛选：检查 groups 包含 'ACCM' 或 '管理层'（兼容旧数据） ★★★
-                            if (!m.groups || !m.groups.some(function(g) { return g === 'ACCM' || g === '管理层'; })) {
+                        if (tagFilter === 'ACCM最高管') {
+                            // ★★★ ACCM最高管 筛选：检查 groups 包含 'ACCM最高管' 或 '管理层'（兼容旧数据） ★★★
+                            if (!m.groups || !m.groups.some(function(g) { return g === 'ACCM最高管' || g === '管理层'; })) {
                                 return false;
                             }
                         } else {
