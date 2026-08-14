@@ -1,6 +1,4 @@
 /**
- * 成员档案弹窗 — 正式版（灵动岛集成）
- * 完全仿照苹果灵动岛规范：弹性动画、液态玻璃、内容切换
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
  */
