@@ -1,4 +1,5 @@
 /**
+ * 成员档案弹窗
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
  */
@@ -6,7 +7,7 @@
 (function() {
     'use strict';
 
-    // ----- 工具函数（原版保留）-----
+    // ----- 工具函数 -----
     function getSiteRoot() {
         var path = window.location.pathname;
         if (path.indexOf('/acns/') === 0) return '/acns/';
@@ -20,16 +21,6 @@
     var GROUP_MAP = { '1': '建筑组', '2': '玩法组', '3': '模型组', '4': '编辑组', '0': '无' };
     var RANK_COLORS = ['#1a7fc4', '#4facfe', '#a855f7', '#f59e0b', '#fbbf24'];
     var DEFAULT_COLOR = '#1a7fc4';
-
-    var STYLE_CLASSES = {
-        '标准': 'island-style-标准', '黑暗': 'island-style-黑暗', '恐怖': 'island-style-恐怖',
-        '梦幻': 'island-style-梦幻', '简约': 'island-style-简约', '霓虹': 'island-style-霓虹',
-        '复古': 'island-style-复古', '海洋': 'island-style-海洋', '森林': 'island-style-森林',
-        '星空': 'island-style-星空', '暖阳': 'island-style-暖阳', '冷月': 'island-style-冷月',
-        '极光': 'island-style-极光', '蒸汽波': 'island-style-蒸汽波', '赛博': 'island-style-赛博',
-        '水墨': 'island-style-水墨'
-    };
-    var DEFAULT_STYLE = 'island-style-标准';
 
     function parseIdNumber(id) {
         if (!id || id === '未知' || id.length < 10) return null;
@@ -95,442 +86,8 @@
         }
     }
 
-    function parseIslandContent(raw) {
-        if (!raw) return { content: '', style: '' };
-        var parts = raw.split('|').map(function(s) { return s.trim(); });
-        if (parts.length === 1) {
-            return { content: parts[0], style: '' };
-        } else {
-            var content = parts.slice(0, -1).join(' | ');
-            var styleName = parts[parts.length - 1];
-            return { content: content, style: styleName };
-        }
-    }
-
-    // ================================================================
-    // 灵动岛管理 — 完整弹簧动画系统
-    // ================================================================
-
-    var islandState = 'hidden';      // 'hidden' | 'compact'
-    var currentScene = 'music';
-    var isVisible = false;
-    var autoSwitchTimer = null;
-    var autoSwitchEnabled = true;
-    var switchInterval = 5000;
-    var displayMode = 'content';     // 'content' | 'name'
-    var memberName = '';
-    var islandContent = '';
-    var isAnimating = false;
-
-    // 场景配置
-    var scenes = {
-        music: { icon: '🎵', text: '正在播放', badge: '▶' },
-        timer: { icon: '⏱️', text: '计时器 05:32', badge: '' },
-        notification: { icon: '💬', text: '新消息', badge: '3' },
-        faceid: { icon: '😊', text: 'Face ID 认证中', badge: '●' },
-        navigation: { icon: '🗺️', text: '导航中 15分钟', badge: '🚗' }
-    };
-
-    function getScene() {
-        return scenes[currentScene] || scenes.music;
-    }
-
-    function getCompactWidth() {
-        var w = window.innerWidth;
-        if (w >= 430) return 250;
-        if (w >= 393) return 230;
-        return Math.min(200, w - 40);
-    }
-
-    function getDisplayText() {
-        var scene = getScene();
-        if (displayMode === 'name' && memberName) {
-            return memberName;
-        }
-        return islandContent || scene.text;
-    }
-
-    // 执行整体回弹动画（收缩 → 更新 → 回弹）
-    function performBounceAnimation(callback) {
-        var contentEl = document.getElementById('islandContent');
-        if (!contentEl || isAnimating) {
-            if (callback) callback();
-            return;
-        }
-        isAnimating = true;
-
-        contentEl.classList.remove('bounce-in');
-        contentEl.classList.add('bounce-out');
-
-        setTimeout(function() {
-            if (callback) callback();
-            contentEl.classList.remove('bounce-out');
-            contentEl.classList.add('bounce-in');
-            setTimeout(function() {
-                isAnimating = false;
-            }, 550);
-        }, 380);
-    }
-
-    // 应用UI（不触发动画）
-    function applyIslandUI() {
-        var island = document.getElementById('dynamicIsland');
-        if (!island) return;
-
-        var scene = getScene();
-        var cw = getCompactWidth();
-
-        island.classList.remove('state-hidden', 'state-compact', 'visible');
-
-        if (islandState === 'hidden' || !isVisible) {
-            island.classList.add('state-hidden');
-            island.style.width = '36px';
-            island.style.height = '36px';
-            island.style.pointerEvents = 'none';
-            return;
-        }
-
-        island.classList.add('state-compact', 'visible');
-        island.style.width = cw + 'px';
-        island.style.height = '36px';
-        island.style.pointerEvents = 'auto';
-
-        var iconEl = document.getElementById('islandIcon');
-        var badgeEl = document.getElementById('islandBadge');
-        var textEl = document.getElementById('islandText');
-
-        if (iconEl) iconEl.textContent = scene.icon;
-        if (badgeEl) {
-            if (scene.badge) {
-                badgeEl.textContent = scene.badge;
-                badgeEl.style.display = '';
-            } else {
-                badgeEl.style.display = 'none';
-            }
-        }
-        if (textEl) {
-            textEl.textContent = getDisplayText();
-            textEl.classList.remove('switching');
-            textEl.classList.add('switch-in');
-        }
-    }
-
-    // ---- 状态切换（隐藏 ↔ 紧凑）----
-    function setIslandState(state) {
-        if (isAnimating) return;
-        var island = document.getElementById('dynamicIsland');
-        if (!island) return;
-        var wrapper = document.getElementById('dynamicIslandWrapper');
-
-        if (state === 'compact' && islandState === 'hidden') {
-            // 展开动画
-            isVisible = true;
-            islandState = 'compact';
-            displayMode = 'content';
-            if (wrapper) wrapper.classList.add('active');
-
-            island.classList.remove('visible', 'state-compact');
-            island.classList.add('state-hidden');
-            island.style.width = '36px';
-            island.style.height = '36px';
-            island.style.opacity = '0';
-            island.style.transform = 'scale(0.5)';
-            island.style.pointerEvents = 'none';
-
-            void island.offsetWidth;
-
-            applyIslandUI();
-
-            island.classList.remove('state-hidden');
-            island.classList.add('state-compact', 'visible');
-            island.style.width = getCompactWidth() + 'px';
-            island.style.height = '36px';
-            island.style.opacity = '1';
-            island.style.transform = 'scale(1)';
-            island.style.pointerEvents = 'auto';
-
-            if (autoSwitchEnabled) startAutoSwitch();
-
-        } else if (state === 'hidden' && islandState === 'compact') {
-            // 收拢动画
-            stopAutoSwitch();
-
-            island.classList.remove('visible', 'state-compact');
-            island.classList.add('state-hidden');
-            island.style.width = '36px';
-            island.style.height = '36px';
-            island.style.opacity = '0';
-            island.style.transform = 'scale(0.4)';
-            island.style.pointerEvents = 'none';
-
-            isVisible = false;
-            islandState = 'hidden';
-
-            setTimeout(function() {
-                if (wrapper && islandState === 'hidden') {
-                    wrapper.classList.remove('active');
-                }
-            }, 650);
-        }
-    }
-
-    // ---- 内容切换（整体回弹）----
-    function switchContent(newText, newIcon, newBadge) {
-        if (islandState === 'hidden' || !isVisible) return;
-
-        var textEl = document.getElementById('islandText');
-        var iconEl = document.getElementById('islandIcon');
-        var badgeEl = document.getElementById('islandBadge');
-
-        if (!textEl) return;
-
-        performBounceAnimation(function() {
-            if (newIcon !== undefined && iconEl) iconEl.textContent = newIcon;
-            if (newBadge !== undefined) {
-                if (badgeEl) {
-                    if (newBadge) {
-                        badgeEl.textContent = newBadge;
-                        badgeEl.style.display = '';
-                    } else {
-                        badgeEl.style.display = 'none';
-                    }
-                }
-            }
-            if (newText !== undefined) {
-                textEl.textContent = newText;
-            }
-            textEl.classList.remove('switching');
-            textEl.classList.add('switch-in');
-        });
-    }
-
-    // ---- 切换显示模式（内容 ↔ 名字）----
-    function toggleDisplayMode() {
-        if (islandState === 'hidden' || !isVisible || isAnimating) return;
-
-        var scene = getScene();
-        var currentText = getDisplayText();
-        var newText;
-
-        if (displayMode === 'content') {
-            displayMode = 'name';
-            newText = memberName || '成员';
-        } else {
-            displayMode = 'content';
-            newText = islandContent || scene.text;
-        }
-
-        if (currentText === newText) {
-            displayMode = (displayMode === 'content') ? 'name' : 'content';
-            newText = (displayMode === 'content') ? (islandContent || scene.text) : (memberName || '成员');
-        }
-
-        switchContent(newText);
-    }
-
-    // ---- 切换场景 ----
-    function switchScene(scene) {
-        if (currentScene === scene && islandState === 'compact') {
-            triggerBounce();
-            return;
-        }
-
-        currentScene = scene;
-        var sceneData = getScene();
-        var newText = displayMode === 'name' ? (memberName || '成员') : (islandContent || sceneData.text);
-        switchContent(newText, sceneData.icon, sceneData.badge);
-    }
-
-    // ---- 手动触发回弹演示 ----
-    function triggerBounce() {
-        if (islandState === 'hidden' || !isVisible) return;
-        var contentEl = document.getElementById('islandContent');
-        if (!contentEl) return;
-
-        contentEl.classList.remove('bounce-in');
-        contentEl.classList.add('bounce-out');
-
-        setTimeout(function() {
-            contentEl.classList.remove('bounce-out');
-            contentEl.classList.add('bounce-in');
-        }, 400);
-    }
-
-    // ---- 自动切换 ----
-    function startAutoSwitch() {
-        stopAutoSwitch();
-        if (!autoSwitchEnabled || islandState === 'hidden' || !isVisible) return;
-        autoSwitchTimer = setInterval(function() {
-            toggleDisplayMode();
-        }, switchInterval);
-    }
-
-    function stopAutoSwitch() {
-        if (autoSwitchTimer) {
-            clearInterval(autoSwitchTimer);
-            autoSwitchTimer = null;
-        }
-    }
-
-    function toggleAutoSwitch() {
-        autoSwitchEnabled = !autoSwitchEnabled;
-        if (autoSwitchEnabled && isVisible && islandState !== 'hidden') {
-            startAutoSwitch();
-        } else {
-            stopAutoSwitch();
-        }
-    }
-
-    // ---- 交互事件 ----
-    function handleIslandClick() {
-        if (islandState === 'compact') {
-            toggleDisplayMode();
-        }
-    }
-
-    var swipeStartY = 0;
-    var isSwiping = false;
-
-    function handleTouchStart(e) {
-        var touch = e.touches[0];
-        swipeStartY = touch.clientY;
-        isSwiping = true;
-    }
-
-    function handleTouchMove(e) {
-        if (!isSwiping) return;
-        var touch = e.touches[0];
-        var deltaY = touch.clientY - swipeStartY;
-
-        if (deltaY < -40) {
-            if (islandState === 'compact') {
-                setIslandState('hidden');
-                isSwiping = false;
-            }
-        } else if (deltaY > 40) {
-            if (islandState === 'hidden') {
-                setIslandState('compact');
-                isSwiping = false;
-            }
-        }
-    }
-
-    function handleTouchEnd() {
-        isSwiping = false;
-    }
-
-    function handleWheel(e) {
-        var delta = e.deltaY;
-        if (delta < -30) {
-            if (islandState === 'compact') {
-                setIslandState('hidden');
-                e.preventDefault();
-            }
-        } else if (delta > 30) {
-            if (islandState === 'hidden') {
-                setIslandState('compact');
-                e.preventDefault();
-            }
-        }
-    }
-
-    function handleResize() {
-        if (islandState === 'compact' && isVisible) {
-            var island = document.getElementById('dynamicIsland');
-            if (island) {
-                island.style.width = getCompactWidth() + 'px';
-            }
-        }
-    }
-
-    // 鼠标跟随光晕
-    function setupCursorGlow() {
-        var modal = document.getElementById('modalContent');
-        var glow = document.getElementById('cursorGlow');
-        if (!modal || !glow) return;
-        modal.addEventListener('mousemove', function(e) {
-            var rect = modal.getBoundingClientRect();
-            glow.style.left = (e.clientX - rect.left) + 'px';
-            glow.style.top = (e.clientY - rect.top) + 'px';
-        });
-    }
-
-    // ---- 从成员数据提取灵动岛内容 ----
-    function getIslandContent(member) {
-        var liveType = member.liveType || member.islandType || '';
-        var liveContent = member.liveContent || member.islandContent || '';
-
-        if (liveType && liveContent) {
-            var parsed = parseIslandContent(liveContent);
-            var content = parsed.content || '';
-            if (liveType === '音乐') {
-                return { icon: '🎵', text: content || '正在播放', badge: '▶' };
-            } else if (liveType === '视频') {
-                return { icon: '▶️', text: content || '视频播放中', badge: '●' };
-            } else if (liveType === '留言') {
-                return { icon: '💬', text: content || '新消息', badge: '1' };
-            } else if (liveType === '图片') {
-                return { icon: '🖼️', text: content || '查看图片', badge: '' };
-            }
-        }
-        return null;
-    }
-
-    // ---- 创建灵动岛DOM ----
-    function ensureIslandDOM() {
-        if (document.getElementById('dynamicIslandWrapper')) return;
-
-        var wrapper = document.createElement('div');
-        wrapper.className = 'dynamic-island-wrapper';
-        wrapper.id = 'dynamicIslandWrapper';
-
-        var island = document.createElement('div');
-        island.className = 'dynamic-island';
-        island.id = 'dynamicIsland';
-
-        var dots = document.createElement('div');
-        dots.className = 'island-dots';
-        dots.innerHTML = '<span class="dot camera"></span><span class="dot sensor"></span>';
-        island.appendChild(dots);
-
-        var content = document.createElement('div');
-        content.className = 'island-content';
-        content.id = 'islandContent';
-        content.innerHTML = `
-            <span class="island-icon" id="islandIcon">🎵</span>
-            <span class="island-text switch-in" id="islandText">正在播放</span>
-            <span class="island-badge" id="islandBadge">▶</span>
-        `;
-        island.appendChild(content);
-
-        wrapper.appendChild(island);
-        document.body.appendChild(wrapper);
-
-        // 绑定事件
-        island.addEventListener('click', handleIslandClick);
-        island.addEventListener('touchstart', handleTouchStart);
-        island.addEventListener('touchmove', handleTouchMove);
-        island.addEventListener('touchend', handleTouchEnd);
-        island.addEventListener('touchcancel', handleTouchEnd);
-        island.addEventListener('wheel', handleWheel, { passive: false });
-
-        window.addEventListener('resize', handleResize);
-
-        // 初始隐藏
-        islandState = 'hidden';
-        isVisible = false;
-        wrapper.classList.remove('active');
-
-        // 鼠标光晕
-        setTimeout(setupCursorGlow, 100);
-    }
-
-    // ================================================================
-    // 主渲染函数（原版保留，增加灵动岛逻辑）
-    // ================================================================
-
+    // ----- 主渲染函数（保留原始逻辑）-----
     function renderMemberModal(member) {
-        // 归一化
         if (member.groups && typeof member.groups === 'string') {
             member.groups = member.groups.split(/[,，]\s*/).filter(Boolean);
         }
@@ -548,89 +105,19 @@
         var modalInner = document.getElementById('modalInner');
         if (!modalContent || !modalInner) return;
 
-        // 设置背景
+        // 背景图
         var bgUrl = (member.background && member.background.trim().startsWith('http')) 
             ? member.background.trim() 
             : 'https://user-assets.sxlcdn.com/images/1138507/FmpO0QT0oZTcs8whHzHAjM_5Jss2.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png';
         modalContent.style.backgroundImage = 'url(' + bgUrl + ')';
         modalContent.style.backgroundSize = 'cover';
         modalContent.style.backgroundPosition = 'center';
-        modalContent.style.backgroundBlendMode = 'normal';
         modalContent.classList.add('has-bg');
 
-        // ---- 灵动岛逻辑 ----
-        var islandData = getIslandContent(member);
-        memberName = member.name || '成员';
-        var hasLiveContent = !!(member.liveContent || member.islandContent);
-
-        if (hasLiveContent && islandData) {
-            islandContent = islandData.text || '内容';
-            // 注册自定义场景
-            var customScene = {
-                icon: islandData.icon || '📱',
-                text: islandData.text || '内容',
-                badge: islandData.badge || '',
-            };
-            var sceneName = 'custom_' + Date.now();
-            scenes[sceneName] = customScene;
-            currentScene = sceneName;
-            displayMode = 'content';
-
-            // 执行展开动画
-            var island = document.getElementById('dynamicIsland');
-            var wrapper = document.getElementById('dynamicIslandWrapper');
-            if (island && wrapper) {
-                isVisible = true;
-                islandState = 'compact';
-
-                wrapper.classList.add('active');
-
-                island.classList.remove('visible', 'state-compact');
-                island.classList.add('state-hidden');
-                island.style.width = '36px';
-                island.style.height = '36px';
-                island.style.opacity = '0';
-                island.style.transform = 'scale(0.5)';
-                island.style.pointerEvents = 'none';
-
-                void island.offsetWidth;
-
-                applyIslandUI();
-
-                island.classList.remove('state-hidden');
-                island.classList.add('state-compact', 'visible');
-                island.style.width = getCompactWidth() + 'px';
-                island.style.height = '36px';
-                island.style.opacity = '1';
-                island.style.transform = 'scale(1)';
-                island.style.pointerEvents = 'auto';
-
-                if (autoSwitchEnabled) startAutoSwitch();
-            }
-        } else {
-            // 没有内容：确保隐藏
-            isVisible = false;
-            islandState = 'hidden';
-            stopAutoSwitch();
-            var island = document.getElementById('dynamicIsland');
-            var wrapper = document.getElementById('dynamicIslandWrapper');
-            if (island) {
-                island.classList.remove('visible', 'state-compact');
-                island.classList.add('state-hidden');
-                island.style.width = '36px';
-                island.style.height = '36px';
-                island.style.opacity = '0';
-                island.style.transform = 'scale(0.4)';
-                island.style.pointerEvents = 'none';
-            }
-            if (wrapper) wrapper.classList.remove('active');
-        }
-
-        // ---- 渲染左右列（原版完全保留）----
         var leftHtml = [], rightHtml = [];
         var delay = 0.05;
 
-        // 左栏
+        // ----- 左栏 -----
         var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
             '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
             member.name.charAt(0);
@@ -678,10 +165,9 @@
             leftHtml.push('<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>入室时间</span><span class="muted">未录入</span></div>');
         }
 
-        // 右栏
+        // ----- 右栏 -----
         var rDelay = 0.06;
 
-        // 工作室荣誉
         rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">工作室荣誉</div>');
         if (workHonors && workHonors.length) {
@@ -697,7 +183,6 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 游戏荣誉
         rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
         rightHtml.push('<div class="section-title">游戏荣誉</div>');
         if (gameHonors && gameHonors.length) {
@@ -786,10 +271,7 @@
         modalInner.innerHTML = html;
     }
 
-    // ================================================================
-    // 公共 API
-    // ================================================================
-
+    // ----- 公共 API -----
     window.openMemberModal = function(name) {
         var allMembers = window._memberData || [];
         var member = allMembers.find(function(m) { return m.name === name; });
@@ -801,19 +283,12 @@
             return;
         }
 
-        // 确保灵动岛DOM存在
-        ensureIslandDOM();
-
         if (member) {
-            // 重置
-            isVisible = false;
-            islandState = 'hidden';
-            stopAutoSwitch();
-
             modalContent.style.backgroundImage = '';
             modalContent.style.backgroundBlendMode = '';
             modalContent.classList.remove('has-bg');
             renderMemberModal(member);
+            modalOverlay.classList.remove('exiting');
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         } else {
@@ -821,51 +296,33 @@
             modalContent.style.backgroundBlendMode = '';
             modalContent.classList.remove('has-bg');
             document.getElementById('modalInner').innerHTML =
-                '<div style="padding:60px 20px;text-align:center;color:rgba(255,255,255,0.3);">未找到该成员档案</div>';
+                '<div style="padding:60px 20px;text-align:center;color:rgba(255,255,255,0.5);">未找到该成员档案</div>';
+            modalOverlay.classList.remove('exiting');
             modalOverlay.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
     };
 
-    // 暴露灵动岛控制（供调试）
-    window.setIslandState = setIslandState;
-    window.switchScene = switchScene;
-    window.toggleAutoSwitch = toggleAutoSwitch;
-    window.triggerBounce = triggerBounce;
-
-    // ---- 关闭事件 ----
-    document.addEventListener('DOMContentLoaded', function() {
-        var modalClose = document.getElementById('modalClose');
-        var modalOverlay = document.getElementById('modalOverlay');
-
-        function closeModal() {
-            modalOverlay.classList.remove('active');
+    // 关闭事件（支持动画）
+    function closeModal() {
+        var overlay = document.getElementById('modalOverlay');
+        if (!overlay) return;
+        overlay.classList.add('exiting');
+        setTimeout(function() {
+            overlay.classList.remove('active', 'exiting');
             document.body.style.overflow = '';
-
-            // 收拢灵动岛
-            stopAutoSwitch();
-            var island = document.getElementById('dynamicIsland');
-            var wrapper = document.getElementById('dynamicIslandWrapper');
-            if (island) {
-                island.classList.remove('visible', 'state-compact');
-                island.classList.add('state-hidden');
-                island.style.width = '36px';
-                island.style.height = '36px';
-                island.style.opacity = '0';
-                island.style.transform = 'scale(0.4)';
-                island.style.pointerEvents = 'none';
-            }
-            if (wrapper) wrapper.classList.remove('active');
-            islandState = 'hidden';
-            isVisible = false;
-
             var modalContent = document.getElementById('modalContent');
             if (modalContent) {
                 modalContent.style.backgroundImage = '';
                 modalContent.style.backgroundBlendMode = '';
                 modalContent.classList.remove('has-bg');
             }
-        }
+        }, 550);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var modalClose = document.getElementById('modalClose');
+        var modalOverlay = document.getElementById('modalOverlay');
 
         if (modalClose) modalClose.addEventListener('click', closeModal);
         if (modalOverlay) {
