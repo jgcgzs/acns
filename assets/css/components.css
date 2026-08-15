@@ -1,8 +1,8 @@
 /* ============================================================
-   无需多言，你也别看了，这个是AI生成的，小调皮
+   components.css — 成员档案弹窗
    ============================================================ */
 
-/* ---- 弹窗覆盖层：只模糊屏幕背景，不加黑 ---- */
+/* ---- 弹窗覆盖层 ---- */
 .modal-overlay {
     display: none;
     position: fixed;
@@ -14,135 +14,51 @@
     align-items: center;
     padding: 20px;
     z-index: 200;
-    animation: overlayFade 0.4s ease;
+    opacity: 0;
+    transition: opacity 0.5s ease;
 }
 .modal-overlay.active {
     display: flex;
+    opacity: 1;
 }
-@keyframes overlayFade {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.modal-overlay.exiting {
+    opacity: 0;
+    pointer-events: none;
 }
 
-/* ---- 弹窗主体：苹果液态玻璃 ---- */
+/* ---- 弹窗主体 ---- */
 .modal-content {
-    background: rgba(255, 255, 255, 0.04);
-    backdrop-filter: blur(28px) saturate(1.6) brightness(1.02);
-    -webkit-backdrop-filter: blur(28px) saturate(1.6) brightness(1.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 28px;
+    position: relative;
     max-width: 1000px;
     width: 100%;
     max-height: 90vh;
+    border-radius: 28px;
     overflow: hidden;
-    position: relative;
-    padding: 28px 32px 32px;
-    animation: modalIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: transform, opacity;
-    box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.20),
-        0 10px 30px rgba(0, 0, 0, 0.08),
-        inset 0 1px 0 rgba(255, 255, 255, 0.10),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.02),
-        inset 0 0 60px rgba(255, 255, 255, 0.02);
-    background-image:
-        radial-gradient(ellipse at 20% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(255, 255, 255, 0.04) 0%, transparent 40%),
-        repeating-linear-gradient(45deg,
-            transparent,
-            transparent 20px,
-            rgba(255, 255, 255, 0.01) 20px,
-            rgba(255, 255, 255, 0.01) 21px,
-            transparent 21px,
-            transparent 40px);
-    background-blend-mode: normal;
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(12px) saturate(1.2);
+    -webkit-backdrop-filter: blur(12px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+    transform: scale(0.96);
+    opacity: 0;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
 }
-.modal-content.has-bg {
-    background-blend-mode: normal;
+.modal-overlay.active .modal-content {
+    transform: scale(1);
+    opacity: 1;
 }
-
-/* 动态光泽 */
-.modal-content::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 28px;
-    z-index: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(ellipse at 20% 15%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 75%, rgba(255, 255, 255, 0.06) 0%, transparent 40%),
-        radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.02) 0%, transparent 60%);
-    animation: liquidGlow 10s ease-in-out infinite alternate;
-}
-@keyframes liquidGlow {
-    0% { opacity: 0.6; transform: scale(1) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1.06) rotate(2deg); }
-    100% { opacity: 0.6; transform: scale(1) rotate(0deg); }
-}
-
-/* 动态聚光扫光 */
-.modal-content::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    border-radius: 28px;
-    z-index: 0;
-    pointer-events: none;
-    background:
-        radial-gradient(ellipse at 30% 20%,
-            rgba(255, 255, 255, 0.08) 0%,
-            rgba(255, 255, 255, 0.02) 30%,
-            transparent 60%),
-        radial-gradient(ellipse at 70% 80%,
-            rgba(255, 255, 255, 0.04) 0%,
-            transparent 40%);
-    animation: lensing 14s ease-in-out infinite;
-}
-@keyframes lensing {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-    25% { transform: translate(8%, -8%) scale(1.15); opacity: 0.8; }
-    50% { transform: translate(-5%, 12%) scale(0.9); opacity: 0.5; }
-    75% { transform: translate(12%, 5%) scale(1.1); opacity: 0.9; }
-    100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
-}
-
-/* 棱镜条纹 */
-.modal-content .prism-stripe {
-    position: absolute;
-    inset: 0;
-    border-radius: 28px;
-    z-index: 0;
-    pointer-events: none;
-    background: repeating-linear-gradient(110deg,
-            transparent,
-            transparent 30px,
-            rgba(255, 255, 255, 0.02) 30px,
-            rgba(255, 255, 255, 0.02) 31px,
-            transparent 31px,
-            transparent 60px);
-    animation: prismMove 20s linear infinite;
-    opacity: 0.6;
-}
-@keyframes prismMove {
-    0% { background-position: 0 0; }
-    100% { background-position: 120px 120px; }
-}
-
-@keyframes modalIn {
-    0% { opacity: 0; transform: scale(0.96) translateY(20px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
+.modal-overlay.exiting .modal-content {
+    transform: scale(0.94);
+    opacity: 0;
 }
 
 .modal-content .modal-inner {
     position: relative;
     z-index: 1;
-    border-radius: 28px;
+    padding: 28px 32px 32px;
     background: transparent;
     height: 100%;
+    border-radius: 28px;
 }
 
 /* ---- 关闭按钮 ---- */
@@ -151,10 +67,10 @@
     top: 0;
     float: right;
     font-size: 22px;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(255, 255, 255, 0.06);
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
     cursor: pointer;
     width: 40px;
     height: 40px;
@@ -163,14 +79,14 @@
     align-items: center;
     justify-content: center;
     transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
-        background 0.25s ease,
-        box-shadow 0.3s ease;
+                background 0.25s ease,
+                box-shadow 0.3s ease;
     z-index: 10;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 .modal-close:hover {
     transform: rotate(90deg) scale(1.08);
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.15);
     color: #fff;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
@@ -194,10 +110,14 @@
     padding-right: 6px;
     flex: 1;
     scroll-behavior: smooth;
-    will-change: scroll-position;
 }
-.column-left { flex: 0 0 38%; min-width: 0; }
-.column-right { flex: 1; }
+.column-left {
+    flex: 0 0 38%;
+    min-width: 0;
+}
+.column-right {
+    flex: 1;
+}
 
 /* 自定义滚动条 */
 .column-left::-webkit-scrollbar,
@@ -212,47 +132,59 @@
 }
 .column-left::-webkit-scrollbar-thumb,
 .column-right::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.10);
+    background: rgba(255, 255, 255, 0.12);
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.02);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition: background 0.3s ease;
 }
 .column-left::-webkit-scrollbar-thumb:hover,
 .column-right::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.20);
 }
 
-/* ---- 卡片动画 ---- */
+/* ---- 卡片入场动画（错落延迟） ---- */
 .fade-up {
     opacity: 0;
-    animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(24px) scale(0.96);
+    animation: fadeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     will-change: transform, opacity;
 }
 @keyframes fadeUp {
-    0% { opacity: 0; transform: translateY(18px) scale(0.96); }
+    0% { opacity: 0; transform: translateY(24px) scale(0.96); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ---- 卡片系统：液态玻璃 ---- */
+.profile-card.fade-up { animation-delay: 0.04s; }
+.id-card.fade-up { animation-delay: 0.08s; }
+.bio-card.fade-up { animation-delay: 0.12s; }
+.days-card.fade-up { animation-delay: 0.16s; }
+.honor-section.fade-up { animation-delay: 0.06s; }
+.honor-section.fade-up:nth-of-type(2) { animation-delay: 0.10s; }
+.work-section.fade-up { animation-delay: 0.14s; }
+.work-section.fade-up:nth-of-type(2) { animation-delay: 0.18s; }
+
+/* ---- 卡片系统（毛玻璃） ---- */
 .card,
 .honor-section,
 .work-section {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px) saturate(1.3);
-    -webkit-backdrop-filter: blur(12px) saturate(1.3);
-    border: 1px solid rgba(255, 255, 255, 0.04);
-    border-radius: 18px;
+    position: relative;
+    border-radius: 20px;
     padding: 16px 20px;
     margin-bottom: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px) saturate(1.2);
+    -webkit-backdrop-filter: blur(8px) saturate(1.2);
+    border: 1px solid rgba(255, 255, 255, 0.04);
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255, 255, 255, 0.06),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.02);
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.4s ease,
-        border-color 0.3s ease;
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    transition:
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.4s ease,
+        background 0.4s ease;
     will-change: transform;
-    position: relative;
     overflow: visible;
 }
 .card:last-child,
@@ -268,13 +200,13 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 18px;
+    border-radius: 20px;
     pointer-events: none;
-    background: radial-gradient(ellipse at 30% 20%,
-            rgba(255, 255, 255, 0.06) 0%,
+    background: radial-gradient(ellipse at 25% 15%,
+            rgba(255, 255, 255, 0.04) 0%,
             transparent 50%);
-    transition: opacity 0.4s ease;
-    opacity: 0.6;
+    opacity: 0.4;
+    transition: opacity 0.5s ease;
 }
 .card:hover::before,
 .honor-section:hover::before,
@@ -289,56 +221,64 @@
     content: '';
     position: absolute;
     top: -1px;
-    left: 10%;
-    right: 10%;
+    left: 8%;
+    right: 8%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
     border-radius: 50%;
     filter: blur(1px);
     opacity: 0;
-    transition: opacity 0.4s ease, left 0.4s ease, right 0.4s ease;
+    transition: opacity 0.5s ease, left 0.5s ease, right 0.5s ease;
 }
 .card:hover::after,
 .honor-section:hover::after,
 .work-section:hover::after {
     opacity: 1;
-    left: 5%;
-    right: 5%;
+    left: 3%;
+    right: 3%;
 }
 
+/* 悬停反馈 */
 .card:hover,
 .honor-section:hover,
 .work-section:hover {
-    transform: translateY(-4px);
-    background: rgba(255, 255, 255, 0.05);
+    transform: translateY(-6px) scale(1.01);
+    background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 255, 255, 0.08);
     box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.06),
-        0 2px 12px rgba(0, 0, 0, 0.04),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08),
-        inset 0 0 30px rgba(255, 255, 255, 0.02);
+        0 12px 40px rgba(0, 0, 0, 0.10),
+        0 4px 16px rgba(0, 0, 0, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 .card:active,
 .honor-section:active,
 .work-section:active {
-    transform: scale(0.97) translateY(2px);
+    transform: scale(0.96) translateY(2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     transition-duration: 0.08s;
 }
+
+/* 文字基础样式（保证可读性） */
 .card *,
 .honor-section *,
 .work-section * {
-    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* ---- 个人信息 ---- */
+/* ---- 个人信息（特殊，无背景） ---- */
 .profile-card {
-    background: transparent;
-    backdrop-filter: none;
-    border: none;
-    padding: 0;
-    box-shadow: none;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border: none !important;
+    padding: 0 !important;
+    box-shadow: none !important;
     margin-bottom: 8px;
+    transform: none !important;
+}
+.profile-card::before,
+.profile-card::after {
+    display: none !important;
 }
 .profile-card .avatar {
     width: 80px;
@@ -358,9 +298,10 @@
     color: #4facfe;
     overflow: hidden;
     margin-bottom: 12px;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.4s ease,
-        border-color 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.4s ease;
+    will-change: transform;
 }
 .profile-card .avatar img {
     width: 100%;
@@ -368,19 +309,19 @@
     object-fit: cover;
 }
 .profile-card .avatar:hover {
-    transform: scale(1.04);
+    transform: scale(1.06);
     box-shadow: 0 12px 48px rgba(0, 0, 0, 0.12);
     border-color: rgba(255, 255, 255, 0.10);
 }
 .profile-card .avatar:active {
-    transform: scale(0.94);
-    transition-duration: 0.06s;
+    transform: scale(0.92);
+    transition-duration: 0.08s;
 }
 
 .profile-card .name {
     font-size: 24px;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.92);
+    color: #fff;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -389,7 +330,7 @@
 }
 .profile-card .role {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     margin-top: 2px;
     text-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
@@ -409,27 +350,29 @@
     border: 1px solid rgba(26, 127, 196, 0.06);
     backdrop-filter: blur(8px);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-        background 0.25s ease,
-        box-shadow 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.3s ease,
+                box-shadow 0.4s ease;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    will-change: transform;
 }
 .profile-card .groups .group-tag:hover {
-    transform: scale(1.04);
+    transform: scale(1.06);
     background: rgba(26, 127, 196, 0.25);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
 }
 .profile-card .groups .group-tag:active {
-    transform: scale(0.94);
-    transition-duration: 0.06s;
+    transform: scale(0.92);
+    transition-duration: 0.08s;
 }
+
 .profile-card .meta {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 20px;
     margin-top: 10px;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.7);
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
 }
 .profile-card .meta span {
@@ -440,6 +383,12 @@
     backdrop-filter: blur(4px);
     border: 1px solid rgba(255, 255, 255, 0.02);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+    transition: background 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    color: #fff;
+}
+.profile-card .meta span:hover {
+    background: rgba(0, 0, 0, 0.25);
+    transform: translateY(-2px);
 }
 
 .attr-badge {
@@ -453,16 +402,17 @@
     letter-spacing: 0.3px;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease;
+    will-change: transform;
 }
 .attr-badge:hover {
-    transform: scale(1.04);
+    transform: scale(1.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
 }
 .attr-badge:active {
-    transform: scale(0.94);
-    transition-duration: 0.06s;
+    transform: scale(0.92);
+    transition-duration: 0.08s;
 }
 .attr-badge.green { background: rgba(16, 185, 129, 0.8); }
 .attr-badge.blue { background: rgba(26, 127, 196, 0.8); }
@@ -483,19 +433,19 @@
     flex-wrap: wrap;
     gap: 2px 16px;
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.8);
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.10);
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
 }
 .id-card .id-parts span { display: flex; gap: 4px; align-items: baseline; }
 .id-card .id-key {
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.5);
     font-weight: 300;
     font-size: 10px;
     text-transform: uppercase;
 }
 .id-card .id-raw {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.3);
     margin-top: 6px;
     font-family: monospace;
 }
@@ -503,12 +453,12 @@
 /* ---- 简介 ---- */
 .bio-card {
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.75);
+    color: #fff;
     line-height: 1.8;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.10);
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.12);
 }
 .bio-card .muted {
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 /* ---- 入室天数 ---- */
@@ -517,8 +467,8 @@
     align-items: center;
     gap: 10px;
     font-size: 14px;
-    color: rgba(255, 255, 255, 0.6);
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.10);
+    color: #fff;
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
 }
 .days-card .num {
     font-weight: 700;
@@ -536,11 +486,11 @@
 .work-section .section-title {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.5);
     letter-spacing: 0.3px;
     text-transform: uppercase;
     margin-bottom: 8px;
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
 }
 .honor-list {
     display: flex;
@@ -556,20 +506,21 @@
     color: #fff;
     text-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.25s ease;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease;
+    will-change: transform;
 }
 .honor-tag:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px) scale(1.04);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 .honor-tag:active {
-    transform: scale(0.94);
-    transition-duration: 0.06s;
+    transform: scale(0.92);
+    transition-duration: 0.08s;
 }
 .honor-empty {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
     padding: 4px 0;
     font-style: italic;
 }
@@ -599,7 +550,12 @@
 .work-scroll::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.10);
     border-radius: 4px;
+    transition: background 0.3s ease;
 }
+.work-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.20);
+}
+
 .work-grid {
     display: flex;
     flex-wrap: nowrap;
@@ -616,25 +572,26 @@
     border-radius: 16px;
     padding: 8px 10px 12px;
     cursor: pointer;
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-        box-shadow 0.4s ease,
-        background 0.3s ease,
-        border-color 0.3s ease;
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                background 0.4s ease,
+                border-color 0.4s ease;
     scroll-snap-align: start;
     box-shadow:
         0 4px 20px rgba(0, 0, 0, 0.08),
         inset 0 1px 0 rgba(255, 255, 255, 0.02);
     overflow: visible;
+    will-change: transform;
 }
 .work-card:hover {
-    transform: translateY(-6px) scale(1.02);
+    transform: translateY(-6px) scale(1.04);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12),
-        0 4px 16px rgba(0, 0, 0, 0.04);
-    background: rgba(255, 255, 255, 0.03);
+                0 4px 16px rgba(0, 0, 0, 0.04);
+    background: rgba(255, 255, 255, 0.04);
     border-color: rgba(255, 255, 255, 0.06);
 }
 .work-card:active {
-    transform: scale(0.94) translateY(2px);
+    transform: scale(0.92) translateY(2px);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition-duration: 0.08s;
 }
@@ -645,6 +602,10 @@
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin-bottom: 6px;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.work-card:hover .work-cover {
+    transform: scale(1.02);
 }
 .work-card .work-cover.placeholder {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.02), rgba(200, 220, 255, 0.02));
@@ -652,13 +613,13 @@
 .work-card .work-title {
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.8);
+    color: #fff;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     line-height: 1.3;
-    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.10);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.12);
 }
 .work-card .work-title .pinned {
     font-size: 9px;
@@ -670,28 +631,28 @@
     margin-right: 4px;
     text-transform: uppercase;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.work-card:hover .work-title .pinned {
+    transform: scale(1.05);
 }
 .work-card .work-meta {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.25);
+    color: rgba(255, 255, 255, 0.4);
     margin-top: 2px;
     font-family: 'JetBrains Mono', monospace;
 }
 .work-empty {
     font-size: 13px;
-    color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.4);
     padding: 8px 0;
     text-align: center;
     font-style: italic;
 }
 
-/* ---- 手机端适配 ---- */
+/* ---- 响应式 ---- */
 @media (max-width: 768px) {
-    .modal-content {
-        padding: 16px;
-        max-height: 95vh;
-        border-radius: 24px;
-    }
+    .modal-content .modal-inner { padding: 16px; }
     .modal-columns {
         flex-direction: column;
         height: auto;
@@ -706,50 +667,26 @@
         padding-right: 0;
         max-height: none;
     }
-    .column-left {
-        flex: 0 0 auto;
-    }
+    .column-left { flex: 0 0 auto; }
     .card,
     .honor-section,
-    .work-section {
-        margin-bottom: 12px;
-        padding: 12px 16px;
-    }
-    .profile-card .avatar {
-        width: 64px;
-        height: 64px;
-        font-size: 24px;
-    }
-    .profile-card .name {
-        font-size: 20px;
-    }
-    .work-card {
-        flex: 0 0 140px;
-        max-width: 140px;
-    }
-    .modal-close {
-        top: 4px;
-        right: 4px;
-        width: 36px;
-        height: 36px;
-        font-size: 20px;
+    .work-section { padding: 12px 16px; margin-bottom: 12px; }
+    .profile-card .avatar { width: 64px; height: 64px; font-size: 24px; }
+    .profile-card .name { font-size: 20px; }
+    .work-card { flex: 0 0 140px; max-width: 140px; }
+    .modal-close { top: 4px; right: 4px; width: 36px; height: 36px; font-size: 20px; }
+    .fade-up {
+        animation-duration: 0.45s;
+        transform: translateY(18px) scale(0.97);
     }
 }
 @media (max-width: 480px) {
-    .modal-content {
-        padding: 12px;
-        border-radius: 20px;
-    }
-    .profile-card .avatar {
-        width: 52px;
-        height: 52px;
-        font-size: 18px;
-    }
-    .profile-card .name {
-        font-size: 18px;
-    }
-    .work-card {
-        flex: 0 0 120px;
-        max-width: 120px;
+    .modal-content .modal-inner { padding: 12px; }
+    .profile-card .avatar { width: 52px; height: 52px; font-size: 18px; }
+    .profile-card .name { font-size: 18px; }
+    .work-card { flex: 0 0 120px; max-width: 120px; }
+    .fade-up {
+        animation-duration: 0.35s;
+        transform: translateY(12px) scale(0.98);
     }
 }
