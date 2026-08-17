@@ -10,7 +10,9 @@
     <!-- 公共组件样式 -->
     <link rel="stylesheet" href="../assets/css/components.css">
     <style>
-        /* ===== 管理层公示独有样式 ===== */
+        /* ============================================================
+           管理层公示独有样式（继承原始配色，增强交互）
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -53,12 +55,14 @@
             --border-light: #dce6ef;
             --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
             --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
-            --radius: 2px;
+            --radius: 12px;
+            --radius-sm: 8px;
             --green-badge: #16a34a;
             --blue-badge: #1a7fc4;
             --purple-badge: #8b5cf6;
         }
 
+        /* ===== 导航栏（保留原样，增加手机端展开动画） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -105,7 +109,7 @@
             font-size: 15px;
             font-weight: 500;
             color: #222222;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             transition: background 0.2s, color 0.2s;
             position: relative;
         }
@@ -119,7 +123,7 @@
             background: var(--blue-primary);
             transition: width 0.25s ease;
             transform: translateX(-50%);
-            border-radius: var(--radius);
+            border-radius: 2px;
         }
         .nav-links li a:hover {
             background: var(--blue-bg-light);
@@ -146,6 +150,7 @@
             padding: 4px 8px;
         }
 
+        /* ===== 底部 ===== */
         .footer {
             background: #1a2a3a;
             color: rgba(255, 255, 255, 0.55);
@@ -166,6 +171,7 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
+        /* ===== 页面头部 ===== */
         .page-header {
             padding: 24px 0 12px;
             border-bottom: 1px solid var(--border-light);
@@ -182,6 +188,7 @@
             opacity: 0.6;
         }
 
+        /* ===== 搜索栏（保留原样式） ===== */
         .search-bar {
             display: flex;
             gap: 12px;
@@ -194,10 +201,11 @@
             min-width: 180px;
             padding: 8px 14px;
             border: 1px solid var(--border-light);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             font-size: 14px;
             background: var(--white);
             outline: none;
+            transition: border-color 0.2s;
         }
         .search-bar input:focus {
             border-color: var(--blue-primary);
@@ -207,19 +215,31 @@
             color: #fff;
             border: none;
             padding: 8px 20px;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
+            transition: background 0.2s;
         }
         .search-bar .search-btn:hover {
             background: var(--blue-primary-dark);
         }
 
+        /* ===== 成员卡片网格（带过渡动画） ===== */
         .member-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 16px;
+            opacity: 1;
+            transition: opacity 0.25s ease;
+        }
+        .member-grid.fade-out {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .member-grid.fade-in {
+            opacity: 1;
+            transition: opacity 0.35s ease;
         }
 
         .member-card {
@@ -235,11 +255,26 @@
             align-items: center;
             text-align: center;
             position: relative;
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            animation: fadeUp 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            will-change: transform, opacity;
         }
         .member-card:hover {
             box-shadow: var(--shadow-hover);
             border-color: var(--blue-primary);
             transform: translateY(-3px);
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .member-card .avatar {
@@ -257,7 +292,7 @@
             font-weight: 700;
             overflow: hidden;
             flex-shrink: 0;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, transform 0.3s;
         }
         .member-card .avatar img {
             width: 100%;
@@ -266,6 +301,7 @@
         }
         .member-card:hover .avatar {
             border-color: var(--blue-primary);
+            transform: scale(1.04);
         }
 
         .member-card .name {
@@ -296,7 +332,7 @@
             border: 1px solid var(--blue-primary);
             color: var(--blue-primary);
             background: transparent;
-            border-radius: 2px;
+            border-radius: 12px;
             letter-spacing: 0.2px;
         }
 
@@ -323,7 +359,7 @@
             font-weight: 500;
             color: var(--blue-primary);
             border: 1px solid var(--blue-primary);
-            border-radius: var(--radius);
+            border-radius: 20px;
             background: transparent;
             cursor: pointer;
             transition: background 0.25s, color 0.25s;
@@ -374,13 +410,15 @@
             font-size: 28px;
             color: var(--blue-primary);
             margin-bottom: 10px;
+            animation: spin 1.2s linear infinite;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 992px) {
-            .member-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
+        /* ============================================================
+           手机端导航栏展开动画（与成员档案页一致）
+           ============================================================ */
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
@@ -392,20 +430,32 @@
                 display: block;
             }
             .nav-links {
-                display: none;
+                display: block;
                 position: absolute;
                 top: 60px;
                 left: 0;
                 right: 0;
                 flex-direction: column;
                 background: #fff;
-                padding: 12px 24px 20px;
-                gap: 2px;
+                padding: 0 24px;
                 border-top: 1px solid var(--border-light);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                            opacity 0.35s ease,
+                            transform 0.35s ease;
+                padding-top: 0;
+                padding-bottom: 0;
             }
             .nav-links.open {
-                display: flex;
+                max-height: 500px;
+                opacity: 1;
+                transform: translateY(0);
+                padding-top: 12px;
+                padding-bottom: 20px;
             }
             .nav-links li a {
                 padding: 10px 16px;
@@ -430,6 +480,7 @@
                 height: 28px;
             }
         }
+
         @media (max-width: 480px) {
             .member-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -461,6 +512,21 @@
                 padding: 1px 6px;
                 top: 4px;
                 left: 4px;
+            }
+            .search-bar input {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+            .search-bar .search-btn {
+                font-size: 13px;
+                padding: 6px 16px;
+            }
+            .nav-links {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+            .nav-links.open {
+                max-height: 450px;
             }
         }
     </style>
@@ -550,7 +616,30 @@
             }
 
             // ============================================================
-            // 解析工具（使用公共函数）
+            // 头像智能解析（支持QQ号/链接）
+            // ============================================================
+            function resolveAvatarUrl(avatar) {
+                if (!avatar) return null;
+                var trimmed = avatar.trim();
+                if (/^\d{5,11}$/.test(trimmed)) {
+                    return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + trimmed + '&spec=640&t=' + Date.now();
+                }
+                if (/qlogo\.?cn?/.test(trimmed)) {
+                    var match = trimmed.match(/[?&]dst_uin=(\d+)/);
+                    if (!match) match = trimmed.match(/[?&]nk=(\d+)/);
+                    if (match) {
+                        return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + match[1] + '&spec=640&t=' + Date.now();
+                    }
+                    return trimmed + (trimmed.indexOf('?') === -1 ? '?t=' : '&t=') + Date.now();
+                }
+                if (/^https?:\/\//.test(trimmed)) {
+                    return trimmed;
+                }
+                return null;
+            }
+
+            // ============================================================
+            // 解析工具
             // ============================================================
             var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
@@ -572,7 +661,7 @@
             };
 
             // ============================================================
-            // 解析成员Issue（增加荣誉、灵动岛字段）
+            // 解析成员Issue（保留原字段，增加编号为0显示“见习”）
             // ============================================================
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
@@ -603,7 +692,12 @@
                     } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
                         minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
                     } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
-                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
+                        var rawId = trimmed.replace(/^编号[：:]\s*/, '').trim();
+                        if (rawId === '0' || /^0+$/.test(rawId)) {
+                            id = '见习';
+                        } else {
+                            id = rawId || '未知';
+                        }
                     } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
                         var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
                         var parsed = parseDateFromBody(d);
@@ -632,9 +726,8 @@
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['管理层'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
 
-                // 解析成员属性
                 var attrType = '未知';
-                if (id && id.length >= 1) {
+                if (id && id.length >= 1 && id !== '未知' && id !== '见习') {
                     var firstChar = id.charAt(0);
                     if (firstChar === '1') attrType = '正式成员';
                     else if (firstChar === '2') attrType = '外部成员';
@@ -711,12 +804,16 @@
             var searchBtn = document.getElementById('searchBtn');
 
             // ============================================================
-            // 渲染成员卡片
+            // 渲染成员卡片（带索引延迟）
             // ============================================================
-            function renderMemberCard(member) {
-                var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
-                    '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-                    member.name.charAt(0);
+            function renderMemberCard(member, index) {
+                var avatarUrl = resolveAvatarUrl(member.avatar);
+                var avatarHtml;
+                if (avatarUrl) {
+                    avatarHtml = '<img src="' + avatarUrl + '" alt="' + member.name + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">';
+                } else {
+                    avatarHtml = member.name.charAt(0);
+                }
 
                 var groupsHtml = member.groups && member.groups.length ?
                     member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
@@ -730,7 +827,10 @@
                     badgeHtml = '<span class="member-badge ' + badgeClass + '">' + member.attrType + '</span>';
                 }
 
-                return '<div class="member-card" data-name="' + member.name + '" data-role="' + member.role + '">' +
+                var delay = Math.min(index * 0.06, 0.5);
+
+                return '<div class="member-card" data-name="' + member.name + '" data-role="' + member.role +
+                    '" style="animation-delay:' + delay + 's">' +
                     badgeHtml +
                     '<div class="avatar">' + avatarHtml + '</div>' +
                     '<div class="name">' + member.name + '</div>' +
@@ -745,41 +845,53 @@
             }
 
             // ============================================================
-            // 分页渲染
+            // 渲染页面（平滑过渡）
             // ============================================================
             function renderPage() {
                 var total = filteredMembers.length;
                 if (total === 0) {
                     grid.innerHTML = '<div class="empty-placeholder">没有匹配的管理层成员</div>';
+                    grid.classList.remove('fade-out', 'fade-in');
                     return;
                 }
 
-                var html = '';
-                filteredMembers.forEach(function(m) { html += renderMemberCard(m); });
-                grid.innerHTML = html;
+                grid.classList.add('fade-out');
+                grid.classList.remove('fade-in');
 
-                grid.querySelectorAll('.btn-detail').forEach(function(btn) {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var name = this.dataset.name;
-                        var member = allMembers.find(function(m) { return m.name === name; });
-                        if (member) {
-                            // 挂载到全局供弹窗使用
-                            window._memberData = allMembers;
-                            window._mapData = allMaps;
-                            window._blogData = allBlogs;
-                            if (typeof window.openMemberModal === 'function') {
-                                window.openMemberModal(name);
-                            } else {
-                                alert('公共组件未加载，请检查 assets/js/components.js');
-                            }
-                        }
+                setTimeout(function() {
+                    var html = '';
+                    filteredMembers.forEach(function(m, idx) {
+                        html += renderMemberCard(m, idx);
                     });
-                });
+                    grid.innerHTML = html;
+
+                    void grid.offsetHeight;
+
+                    grid.classList.remove('fade-out');
+                    grid.classList.add('fade-in');
+
+                    grid.querySelectorAll('.btn-detail').forEach(function(btn) {
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            var name = this.dataset.name;
+                            var member = allMembers.find(function(m) { return m.name === name; });
+                            if (member) {
+                                window._memberData = allMembers;
+                                window._mapData = allMaps;
+                                window._blogData = allBlogs;
+                                if (typeof window.openMemberModal === 'function') {
+                                    window.openMemberModal(name);
+                                } else {
+                                    alert('公共组件未加载，请检查 assets/js/components.js');
+                                }
+                            }
+                        });
+                    });
+                }, 200);
             }
 
             // ============================================================
-            // 筛选
+            // 筛选逻辑（仅保留搜索，无分类标签）
             // ============================================================
             function applyFilters() {
                 var searchTerm = searchInput.value.trim().toLowerCase();
@@ -847,7 +959,6 @@
                         allMembers = [];
                     }
 
-                    // 挂载到全局供弹窗使用
                     window._memberData = allMembers;
                     window._mapData = allMaps;
                     window._blogData = allBlogs;
