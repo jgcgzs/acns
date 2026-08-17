@@ -1,5 +1,5 @@
 /**
- * 成员档案弹窗
+ * 成员档案弹窗 — 正式版（支持编号为 0 显示“见习”）
  * 依赖：window._memberData, window._mapData, window._blogData
  * 调用：window.openMemberModal(name)
  */
@@ -23,7 +23,7 @@
     var DEFAULT_COLOR = '#1a7fc4';
 
     function parseIdNumber(id) {
-        if (!id || id === '未知' || id.length < 10) return null;
+        if (!id || id === '未知' || id === '见习' || id.length < 10) return null;
         var s = id.trim();
         if (s.length < 10) return null;
         var attr = s.charAt(0), game = s.charAt(1),
@@ -86,7 +86,40 @@
         }
     }
 
-    // ----- 主渲染函数（保留原始逻辑）-----
+    // ----- 头像智能解析（保持不变）-----
+    function resolveAvatarUrl(avatar, name) {
+        if (!avatar) return null;
+        var trimmed = avatar.trim();
+        if (/^\d{5,11}$/.test(trimmed)) {
+            return {
+                url: 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + trimmed + '&spec=640&t=' + Date.now(),
+                isQQ: true,
+                qq: trimmed
+            };
+        }
+        if (/qlogo\.?cn?/.test(trimmed)) {
+            var match = trimmed.match(/[?&]dst_uin=(\d+)/);
+            if (!match) match = trimmed.match(/[?&]nk=(\d+)/);
+            if (match) {
+                var qq = match[1];
+                return {
+                    url: 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + qq + '&spec=640&t=' + Date.now(),
+                    isQQ: true,
+                    qq: qq
+                };
+            }
+            return {
+                url: trimmed + (trimmed.indexOf('?') === -1 ? '?t=' : '&t=') + Date.now(),
+                isQQ: false
+            };
+        }
+        if (/^https?:\/\//.test(trimmed)) {
+            return { url: trimmed, isQQ: false };
+        }
+        return null;
+    }
+
+    // ----- 主渲染函数（修改编号显示逻辑）-----
     function renderMemberModal(member) {
         if (member.groups && typeof member.groups === 'string') {
             member.groups = member.groups.split(/[,，]\s*/).filter(Boolean);
@@ -118,13 +151,18 @@
         var delay = 0.05;
 
         // ----- 左栏 -----
-        var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
-            '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-            member.name.charAt(0);
+        var avatarRes = resolveAvatarUrl(member.avatar, member.name);
+        var avatarHtml;
+        if (avatarRes) {
+            avatarHtml = '<img src="' + avatarRes.url + '" alt="' + member.name + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">';
+        } else {
+            avatarHtml = member.name.charAt(0);
+        }
+
         var groupsHtml = member.groups && member.groups.length ?
             member.groups.map(function(g) { return '<span class="group-tag">' + g + '</span>'; }).join('') : '';
         var attrBadge = '';
-        if (member.id && member.id.length >= 1) {
+        if (member.id && member.id.length >= 1 && member.id !== '未知' && member.id !== '见习') {
             var first = member.id.charAt(0);
             var attrName = '', cls = '';
             if (first === '1') { attrName = '正式成员'; cls = 'green'; }
@@ -142,10 +180,16 @@
         leftHtml.push('</div>');
         delay += 0.06;
 
-        if (member.id && member.id !== '未知' && member.id.length >= 10) {
-            leftHtml.push(renderIdCard(member.id, delay));
+        // ★★★ 编号卡片显示逻辑（修改）★★★
+        var idDisplay = member.id || '未知';
+        // 如果 id 是 "0" 或全零，显示为"见习"（已在 parseMemberIssue 中处理，但这里做双重保险）
+        if (/^0+$/.test(idDisplay)) {
+            idDisplay = '见习';
+        }
+        if (idDisplay === '未知' || idDisplay === '见习') {
+            leftHtml.push('<div class="card id-card fade-up" style="animation-delay:'+delay+'s"><span class="muted">' + idDisplay + '</span></div>');
         } else {
-            leftHtml.push('<div class="card id-card fade-up" style="animation-delay:'+delay+'s"><span class="muted">编号 ' + member.id + '</span></div>');
+            leftHtml.push(renderIdCard(member.id, delay));
         }
         delay += 0.06;
 
@@ -165,7 +209,7 @@
             leftHtml.push('<div class="card days-card fade-up" style="animation-delay:'+delay+'s"><span>入室时间</span><span class="muted">未录入</span></div>');
         }
 
-        // ----- 右栏 -----
+        // ----- 右栏（不变）-----
         var rDelay = 0.06;
 
         rightHtml.push('<div class="honor-section fade-up" style="animation-delay:'+rDelay+'s">');
@@ -198,7 +242,7 @@
         rightHtml.push('</div>');
         rDelay += 0.06;
 
-        // 作品数据
+        // ---- 作品（不变）----
         var allMaps = window._mapData || [];
         var allBlogs = window._blogData || [];
         var memberMaps = allMaps.filter(function(m) { return m.author === member.name || m.author.includes(member.name); });
@@ -263,7 +307,6 @@
         }
         rightHtml.push('</div>');
 
-        // 组装
         var html = '<div class="modal-columns">';
         html += '<div class="column-left">' + leftHtml.join('') + '</div>';
         html += '<div class="column-right">' + rightHtml.join('') + '</div>';
@@ -271,7 +314,7 @@
         modalInner.innerHTML = html;
     }
 
-    // ----- 公共 API -----
+    // ----- 公共 API（保留关闭动画）-----
     window.openMemberModal = function(name) {
         var allMembers = window._memberData || [];
         var member = allMembers.find(function(m) { return m.name === name; });
