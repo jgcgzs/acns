@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>成员档案 - 极光创工作室</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>成员档案 · 极光创工作室</title>
     <meta name="description" content="极光创工作室成员档案">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/components.css">
+
     <style>
-        /* ===== 成员档案独有样式 ===== */
+        /* ============================================================
+           成员档案独有样式（恢复初始配色）
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -20,7 +23,7 @@
         }
         body {
             font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
-            background-color: #f5f9fe;
+            background: #f5f9fe;          /* 初始浅蓝背景 */
             color: #1a2a3a;
             line-height: 1.7;
             font-size: 16px;
@@ -42,7 +45,7 @@
         }
 
         :root {
-            --blue-primary: #1a7fc4;
+            --blue-primary: #1a7fc4;        /* 原始主色 */
             --blue-primary-dark: #0f6aad;
             --blue-bg-light: #ecf5fa;
             --blue-bg-pale: #f5f9fe;
@@ -52,12 +55,14 @@
             --border-light: #dce6ef;
             --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
             --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
-            --radius: 2px;
+            --radius: 12px;
+            --radius-sm: 8px;
             --green-badge: #16a34a;
             --blue-badge: #1a7fc4;
             --purple-badge: #8b5cf6;
         }
 
+        /* ===== 导航栏（完全保持初始样式） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -104,7 +109,7 @@
             font-size: 15px;
             font-weight: 500;
             color: #222222;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             transition: background 0.2s, color 0.2s;
             position: relative;
         }
@@ -118,7 +123,7 @@
             background: var(--blue-primary);
             transition: width 0.25s ease;
             transform: translateX(-50%);
-            border-radius: var(--radius);
+            border-radius: 2px;
         }
         .nav-links li a:hover {
             background: var(--blue-bg-light);
@@ -134,7 +139,6 @@
         .nav-links li a.active::after {
             width: 50%;
         }
-
         .menu-toggle {
             display: none;
             background: none;
@@ -145,6 +149,7 @@
             padding: 4px 8px;
         }
 
+        /* ===== 底部 ===== */
         .footer {
             background: #1a2a3a;
             color: rgba(255, 255, 255, 0.55);
@@ -165,6 +170,7 @@
             color: rgba(255, 255, 255, 0.12);
         }
 
+        /* ===== 页面头部 ===== */
         .page-header {
             padding: 24px 0 12px;
             border-bottom: 1px solid var(--border-light);
@@ -174,6 +180,8 @@
             font-size: 28px;
             font-weight: 700;
             color: var(--text-dark);
+            background: none;
+            -webkit-text-fill-color: initial;
         }
         .page-header .sub {
             font-size: 14px;
@@ -181,6 +189,7 @@
             opacity: 0.6;
         }
 
+        /* ===== 搜索栏（保留原样式） ===== */
         .search-bar {
             display: flex;
             gap: 12px;
@@ -193,10 +202,12 @@
             min-width: 180px;
             padding: 8px 14px;
             border: 1px solid var(--border-light);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             font-size: 14px;
             background: var(--white);
             outline: none;
+            box-shadow: none;
+            transition: border-color 0.2s;
         }
         .search-bar input:focus {
             border-color: var(--blue-primary);
@@ -206,33 +217,45 @@
             color: #fff;
             border: none;
             padding: 8px 20px;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             font-size: 14px;
             font-weight: 500;
             cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: none;
         }
         .search-bar .search-btn:hover {
             background: var(--blue-primary-dark);
+            transform: none;
+            box-shadow: none;
         }
 
-        .tag-bar {
+        /* ===== 分类栏（恢复原样） ===== */
+        .filter-section {
+            margin-bottom: 4px;
+        }
+        .filter-row {
             display: flex;
             flex-wrap: nowrap;
             overflow-x: auto;
             gap: 8px;
             padding: 4px 0 16px;
-            margin-bottom: 8px;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
         }
-        .tag-bar::-webkit-scrollbar {
+        .filter-row::-webkit-scrollbar {
             height: 4px;
             background: var(--border-light);
+            border-radius: 2px;
         }
-        .tag-bar::-webkit-scrollbar-thumb {
+        .filter-row::-webkit-scrollbar-thumb {
             background: var(--blue-primary);
             border-radius: 2px;
         }
-        .tag-item {
+        .filter-label {
+            display: none;  /* 原版没有标签，直接显示分类项 */
+        }
+        .filter-item {
             flex: 0 0 auto;
             padding: 4px 16px;
             border: 1.5px solid var(--border-light);
@@ -244,21 +267,37 @@
             cursor: pointer;
             transition: all 0.2s;
             white-space: nowrap;
+            box-shadow: none;
         }
-        .tag-item:hover {
+        .filter-item:hover {
             border-color: var(--blue-primary);
             color: var(--blue-primary);
+            transform: none;
+            box-shadow: none;
         }
-        .tag-item.active {
+        .filter-item.active {
             border-color: var(--blue-primary);
             color: var(--blue-primary);
             background: var(--blue-bg-light);
+            box-shadow: none;
+            transform: none;
         }
 
+        /* ===== 成员卡片网格 ===== */
         .member-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 16px;
+            opacity: 1;
+            transition: opacity 0.25s ease;
+        }
+        .member-grid.fade-out {
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .member-grid.fade-in {
+            opacity: 1;
+            transition: opacity 0.35s ease;
         }
 
         .member-card {
@@ -274,11 +313,26 @@
             align-items: center;
             text-align: center;
             position: relative;
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            animation: fadeUp 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            will-change: transform, opacity;
         }
         .member-card:hover {
             box-shadow: var(--shadow-hover);
             border-color: var(--blue-primary);
             transform: translateY(-3px);
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .member-card .avatar {
@@ -296,7 +350,7 @@
             font-weight: 700;
             overflow: hidden;
             flex-shrink: 0;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, transform 0.3s;
         }
         .member-card .avatar img {
             width: 100%;
@@ -305,6 +359,7 @@
         }
         .member-card:hover .avatar {
             border-color: var(--blue-primary);
+            transform: scale(1.04);
         }
 
         .member-card .name {
@@ -335,7 +390,7 @@
             border: 1px solid var(--blue-primary);
             color: var(--blue-primary);
             background: transparent;
-            border-radius: 2px;
+            border-radius: 12px;
             letter-spacing: 0.2px;
         }
 
@@ -362,14 +417,17 @@
             font-weight: 500;
             color: var(--blue-primary);
             border: 1px solid var(--blue-primary);
-            border-radius: var(--radius);
+            border-radius: 20px;
             background: transparent;
             cursor: pointer;
             transition: background 0.25s, color 0.25s;
+            box-shadow: none;
         }
         .member-card .btn-detail:hover {
             background: var(--blue-primary);
             color: #fff;
+            transform: none;
+            box-shadow: none;
         }
 
         /* 成员属性徽章 - 左上角 */
@@ -413,13 +471,17 @@
             font-size: 28px;
             color: var(--blue-primary);
             margin-bottom: 10px;
+            animation: spin 1.2s linear infinite;
         }
-
-        @media (max-width: 992px) {
-            .member-grid {
-                grid-template-columns: repeat(3, 1fr);
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
             }
         }
+
+        /* ============================================================
+           手机端导航栏展开动画（保留）
+           ============================================================ */
         @media (max-width: 768px) {
             body {
                 padding-top: 60px;
@@ -431,20 +493,32 @@
                 display: block;
             }
             .nav-links {
-                display: none;
+                display: block;
                 position: absolute;
                 top: 60px;
                 left: 0;
                 right: 0;
                 flex-direction: column;
                 background: #fff;
-                padding: 12px 24px 20px;
-                gap: 2px;
+                padding: 0 24px;
                 border-top: 1px solid var(--border-light);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 0.35s ease,
+                    transform 0.35s ease;
+                padding-top: 0;
+                padding-bottom: 0;
             }
             .nav-links.open {
-                display: flex;
+                max-height: 500px;
+                opacity: 1;
+                transform: translateY(0);
+                padding-top: 12px;
+                padding-bottom: 20px;
             }
             .nav-links li a {
                 padding: 10px 16px;
@@ -462,7 +536,7 @@
             .search-bar input {
                 min-width: 140px;
             }
-            .tag-item {
+            .filter-item {
                 font-size: 12px;
                 padding: 3px 12px;
             }
@@ -473,6 +547,7 @@
                 height: 28px;
             }
         }
+
         @media (max-width: 480px) {
             .member-grid {
                 grid-template-columns: repeat(2, 1fr);
@@ -505,6 +580,30 @@
                 top: 4px;
                 left: 4px;
             }
+            .search-bar input {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+            .search-bar .search-btn {
+                font-size: 13px;
+                padding: 6px 16px;
+            }
+            .filter-item {
+                font-size: 11px;
+                padding: 2px 10px;
+            }
+            .filter-row {
+                gap: 6px;
+                padding: 4px 0 12px;
+            }
+            .nav-links {
+                top: 60px;
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+            .nav-links.open {
+                max-height: 450px;
+            }
         }
     </style>
 </head>
@@ -532,25 +631,31 @@
     <main>
         <div class="container">
             <div class="page-header">
-                <h1>成员档案</h1>
-                <div class="sub">极光创工作室全体成员信息</div>
+                <div>
+                    <h1>成员档案</h1>
+                    <div class="sub">极光创工作室全体成员信息</div>
+                </div>
             </div>
 
+            <!-- 搜索 -->
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="搜索成员姓名、职位..." />
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
-            <!-- ★★★ 标签栏：管理层 → ACCM最高管 ★★★ -->
-            <div class="tag-bar" id="tagBar">
-                <span class="tag-item active" data-tag="全部">全部</span>
-                <span class="tag-item" data-tag="ACCM最高管">ACCM最高管</span>
-                <span class="tag-item" data-tag="建筑组">建筑组</span>
-                <span class="tag-item" data-tag="玩法组">玩法组</span>
-                <span class="tag-item" data-tag="模型组">模型组</span>
-                <span class="tag-item" data-tag="编辑组">编辑组</span>
+            <!-- 分类栏 -->
+            <div class="filter-section">
+                <div class="filter-row" id="tagBar">
+                    <span class="filter-item active" data-tag="全部">全部</span>
+                    <span class="filter-item" data-tag="ACCM最高管">ACCM最高管</span>
+                    <span class="filter-item" data-tag="建筑组">建筑组</span>
+                    <span class="filter-item" data-tag="玩法组">玩法组</span>
+                    <span class="filter-item" data-tag="模型组">模型组</span>
+                    <span class="filter-item" data-tag="编辑组">编辑组</span>
+                </div>
             </div>
 
+            <!-- 成员网格 -->
             <div class="member-grid" id="memberGrid">
                 <div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载成员中...</div>
             </div>
@@ -576,15 +681,15 @@
         </div>
     </footer>
 
-    <!-- 引入公共脚本 -->
+    <!-- 公共脚本 -->
     <script src="../assets/js/components.js"></script>
 
     <script>
         (function() {
 
             // ===== 移动端菜单 =====
-            const toggle = document.getElementById('menuToggle');
-            const navLinks = document.getElementById('navLinks');
+            var toggle = document.getElementById('menuToggle');
+            var navLinks = document.getElementById('navLinks');
             if (toggle && navLinks) {
                 toggle.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -602,9 +707,28 @@
                 });
             }
 
-            // ============================================================
-            // 解析工具（使用公共函数）
-            // ============================================================
+            // ===== 头像智能解析 =====
+            function resolveAvatarUrl(avatar) {
+                if (!avatar) return null;
+                var trimmed = avatar.trim();
+                if (/^\d{5,11}$/.test(trimmed)) {
+                    return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + trimmed + '&spec=640&t=' + Date.now();
+                }
+                if (/qlogo\.?cn?/.test(trimmed)) {
+                    var match = trimmed.match(/[?&]dst_uin=(\d+)/);
+                    if (!match) match = trimmed.match(/[?&]nk=(\d+)/);
+                    if (match) {
+                        return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + match[1] + '&spec=640&t=' + Date.now();
+                    }
+                    return trimmed + (trimmed.indexOf('?') === -1 ? '?t=' : '&t=') + Date.now();
+                }
+                if (/^https?:\/\//.test(trimmed)) {
+                    return trimmed;
+                }
+                return null;
+            }
+
+            // ===== 解析工具 =====
             var parseDateFromBody = window.parseDateFromBody || function(body) {
                 var patterns = [
                     /(\d{4})[-年](\d{1,2})[-月](\d{1,2})[日]?/,
@@ -617,16 +741,15 @@
                             month = parseInt(match[2]),
                             day = parseInt(match[3]);
                         if (year >= 2000 && year <= 2100 && month >= 1 && month <= 12 && day >= 1 && day <= 31) {
-                            return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+                            return year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2,
+                            '0');
                         }
                     }
                 }
                 return null;
             };
 
-            // ============================================================
-            // 解析成员Issue
-            // ============================================================
+            // ===== 解析成员Issue（编号为0显示“见习”） =====
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
@@ -656,7 +779,12 @@
                     } else if (trimmed.match(/^迷你号[：:]\s*(.+)/)) {
                         minid = trimmed.replace(/^迷你号[：:]\s*/, '').trim() || '未知';
                     } else if (trimmed.match(/^编号[：:]\s*(.+)/)) {
-                        id = trimmed.replace(/^编号[：:]\s*/, '').trim() || '未知';
+                        var rawId = trimmed.replace(/^编号[：:]\s*/, '').trim();
+                        if (rawId === '0' || /^0+$/.test(rawId)) {
+                            id = '见习';
+                        } else {
+                            id = rawId || '未知';
+                        }
                     } else if (trimmed.match(/^入室时间[：:]\s*(.+)/)) {
                         var d = trimmed.replace(/^入室时间[：:]\s*/, '').trim();
                         var parsed = parseDateFromBody(d);
@@ -682,12 +810,11 @@
                         liveContent = trimmed.replace(/^灵动岛内容[：:]\s*/, '').trim();
                     }
                 });
-                // ★★★ 室长/副室长自动加入 ACCM最高管 组（兼容旧数据） ★★★
                 if (groups.length === 0 && (role === '室长' || role === '副室长')) groups = ['ACCM最高管'];
                 if (bio) bio = bio.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
 
                 var attrType = '未知';
-                if (id && id.length >= 1) {
+                if (id && id.length >= 1 && id !== '未知' && id !== '见习') {
                     var firstChar = id.charAt(0);
                     if (firstChar === '1') attrType = '正式成员';
                     else if (firstChar === '2') attrType = '外部成员';
@@ -698,9 +825,189 @@
                          attrType, workHonors, gameHonors, liveType, liveContent };
             }
 
-            // ============================================================
-            // 解析地图和博客（用于弹窗关联）
-            // ============================================================
+            // ===== 状态 =====
+            var allMembers = [];
+            var filteredMembers = [];
+            var allMaps = [];
+            var allBlogs = [];
+
+            var grid = document.getElementById('memberGrid');
+            var searchInput = document.getElementById('searchInput');
+            var searchBtn = document.getElementById('searchBtn');
+            var tagBar = document.getElementById('tagBar');
+
+            // ===== 渲染成员卡片（带索引延迟） =====
+            function renderMemberCard(member, index) {
+                var avatarUrl = resolveAvatarUrl(member.avatar);
+                var avatarHtml;
+                if (avatarUrl) {
+                    avatarHtml = '<img src="' + avatarUrl + '" alt="' + member.name + '" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display=\'none\'">';
+                } else {
+                    avatarHtml = member.name.charAt(0);
+                }
+
+                var groupsHtml = member.groups && member.groups.length ?
+                    member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
+
+                var badgeHtml = '';
+                var badgeClass = '';
+                if (member.attrType === '正式成员') badgeClass = 'green';
+                else if (member.attrType === '外部成员') badgeClass = 'blue';
+                else if (member.attrType === '特招成员') badgeClass = 'purple';
+                if (badgeClass) {
+                    badgeHtml = '<span class="member-badge ' + badgeClass + '">' + member.attrType + '</span>';
+                }
+
+                var delay = Math.min(index * 0.06, 0.5);
+
+                return '<div class="member-card" data-name="' + member.name + '" data-role="' + member.role +
+                    '" style="animation-delay:' + delay + 's">' +
+                    badgeHtml +
+                    '<div class="avatar">' + avatarHtml + '</div>' +
+                    '<div class="name">' + member.name + '</div>' +
+                    (member.role ? '<div class="role">' + member.role + '</div>' : '') +
+                    (groupsHtml ? '<div class="groups">' + groupsHtml + '</div>' : '') +
+                    '<div class="info-row">' +
+                    '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>' +
+                    '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>' +
+                    '</div>' +
+                    '<button class="btn-detail" data-name="' + member.name + '">查看详情</button>' +
+                    '</div>';
+            }
+
+            // ===== 渲染页面（平滑过渡） =====
+            function renderPage() {
+                var total = filteredMembers.length;
+                if (total === 0) {
+                    grid.innerHTML = '<div class="empty-placeholder">没有匹配的成员</div>';
+                    grid.classList.remove('fade-out', 'fade-in');
+                    return;
+                }
+
+                grid.classList.add('fade-out');
+                grid.classList.remove('fade-in');
+
+                setTimeout(function() {
+                    var html = '';
+                    filteredMembers.forEach(function(m, idx) {
+                        html += renderMemberCard(m, idx);
+                    });
+                    grid.innerHTML = html;
+
+                    void grid.offsetHeight;
+
+                    grid.classList.remove('fade-out');
+                    grid.classList.add('fade-in');
+
+                    grid.querySelectorAll('.btn-detail').forEach(function(btn) {
+                        btn.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            var name = this.dataset.name;
+                            var member = allMembers.find(function(m) { return m.name === name; });
+                            if (member) {
+                                window._memberData = allMembers;
+                                window._mapData = allMaps;
+                                window._blogData = allBlogs;
+                                if (typeof window.openMemberModal === 'function') {
+                                    window.openMemberModal(name);
+                                } else {
+                                    alert('公共组件未加载，请检查 assets/js/components.js');
+                                }
+                            }
+                        });
+                    });
+                }, 200);
+            }
+
+            // ===== 筛选逻辑 =====
+            function applyFilters() {
+                var searchTerm = searchInput.value.trim().toLowerCase();
+                var activeTag = document.querySelector('.filter-item.active');
+                var tagFilter = activeTag ? activeTag.dataset.tag : '全部';
+
+                filteredMembers = allMembers.filter(function(m) {
+                    if (tagFilter !== '全部') {
+                        if (tagFilter === 'ACCM最高管') {
+                            if (!m.groups || !m.groups.some(function(g) { return g === 'ACCM最高管' || g ===
+                                    '管理层'; })) {
+                                return false;
+                            }
+                        } else {
+                            if (!m.groups || !m.groups.includes(tagFilter)) return false;
+                        }
+                    }
+                    if (searchTerm) {
+                        var inName = m.name.toLowerCase().includes(searchTerm);
+                        var inRole = (m.role || '').toLowerCase().includes(searchTerm);
+                        if (!inName && !inRole) return false;
+                    }
+                    return true;
+                });
+
+                var roleOrder = { '室长': 0, '副室长': 1, '组长': 2, '副组长': 3 };
+                filteredMembers.sort(function(a, b) {
+                    var aOrder = 99,
+                        bOrder = 99;
+                    for (var key in roleOrder) {
+                        if ((a.role || '').includes(key)) aOrder = roleOrder[key];
+                        if ((b.role || '').includes(key)) bOrder = roleOrder[key];
+                    }
+                    if (aOrder !== bOrder) return aOrder - bOrder;
+                    return a.name.localeCompare(b.name);
+                });
+
+                renderPage();
+            }
+
+            // ===== 加载数据 =====
+            function loadMembers() {
+                grid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载成员中...</div>';
+
+                var REPO_OWNER = 'jgcgzs',
+                    REPO_NAME = 'acns';
+                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
+                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
+                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
+                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
+
+                Promise.all([
+                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
+                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
+                ]).then(function(results) {
+                    var memberIssues = results[0] || [];
+                    var mapIssues = results[1] || [];
+                    var blogIssues = results[2] || [];
+
+                    allMaps = mapIssues.map(function(i) { return parseMapForModal(i); });
+                    allBlogs = blogIssues.map(function(i) { return parseBlogForModal(i); });
+
+                    if (memberIssues.length) {
+                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
+                        allMembers = allMembers.filter(function(m) {
+                            if (m.groups && m.groups.length) return true;
+                            if (m.role === '室长' || m.role === '副室长') return true;
+                            return false;
+                        });
+                    } else {
+                        allMembers = [];
+                    }
+
+                    window._memberData = allMembers;
+                    window._mapData = allMaps;
+                    window._blogData = allBlogs;
+
+                    applyFilters();
+                }).catch(function(err) {
+                    console.warn('加载成员失败:', err);
+                    allMembers = [];
+                    applyFilters();
+                });
+            }
+
+            // ===== 辅助解析 =====
             function parseMapForModal(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名地图';
                 var body = issue.body || '';
@@ -751,198 +1058,22 @@
                 return { id: issue.number, title: title, author: author, category: category, date: dateStr };
             }
 
-            // ============================================================
-            // 状态
-            // ============================================================
-            var allMembers = [];
-            var filteredMembers = [];
-            var allMaps = [];
-            var allBlogs = [];
-
-            var grid = document.getElementById('memberGrid');
-            var searchInput = document.getElementById('searchInput');
-            var searchBtn = document.getElementById('searchBtn');
-            var tagBar = document.getElementById('tagBar');
-
-            // ============================================================
-            // 渲染成员卡片
-            // ============================================================
-            function renderMemberCard(member) {
-                var avatarHtml = (member.avatar && member.avatar.trim().startsWith('http')) ?
-                    '<img src="' + member.avatar.trim() + '" alt="' + member.name + '" loading="lazy" onerror="this.style.display=\'none\'">' :
-                    member.name.charAt(0);
-
-                var groupsHtml = member.groups && member.groups.length ?
-                    member.groups.map(function(g) { return '<span class="g">' + g + '</span>'; }).join('') : '';
-
-                var badgeHtml = '';
-                var badgeClass = '';
-                if (member.attrType === '正式成员') badgeClass = 'green';
-                else if (member.attrType === '外部成员') badgeClass = 'blue';
-                else if (member.attrType === '特招成员') badgeClass = 'purple';
-                if (badgeClass) {
-                    badgeHtml = '<span class="member-badge ' + badgeClass + '">' + member.attrType + '</span>';
-                }
-
-                return '<div class="member-card" data-name="' + member.name + '" data-role="' + member.role + '">' +
-                    badgeHtml +
-                    '<div class="avatar">' + avatarHtml + '</div>' +
-                    '<div class="name">' + member.name + '</div>' +
-                    (member.role ? '<div class="role">' + member.role + '</div>' : '') +
-                    (groupsHtml ? '<div class="groups">' + groupsHtml + '</div>' : '') +
-                    '<div class="info-row">' +
-                    '<span><i class="fas fa-id-card"></i> ' + member.id + '</span>' +
-                    '<span><i class="fas fa-gamepad"></i> ' + member.minid + '</span>' +
-                    '</div>' +
-                    '<button class="btn-detail" data-name="' + member.name + '">查看详情</button>' +
-                    '</div>';
-            }
-
-            // ============================================================
-            // 分页渲染
-            // ============================================================
-            function renderPage() {
-                var total = filteredMembers.length;
-                if (total === 0) {
-                    grid.innerHTML = '<div class="empty-placeholder">没有匹配的成员</div>';
-                    return;
-                }
-
-                var html = '';
-                filteredMembers.forEach(function(m) { html += renderMemberCard(m); });
-                grid.innerHTML = html;
-
-                grid.querySelectorAll('.btn-detail').forEach(function(btn) {
-                    btn.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        var name = this.dataset.name;
-                        var member = allMembers.find(function(m) { return m.name === name; });
-                        if (member) {
-                            window._memberData = allMembers;
-                            window._mapData = allMaps;
-                            window._blogData = allBlogs;
-                            if (typeof window.openMemberModal === 'function') {
-                                window.openMemberModal(name);
-                            } else {
-                                alert('公共组件未加载，请检查 assets/js/components.js');
-                            }
-                        }
-                    });
-                });
-            }
-
-            // ============================================================
-            // ★★★ 筛选逻辑（ACCM最高管，兼容旧"管理层"数据） ★★★
-            // ============================================================
-            function applyFilters() {
-                var searchTerm = searchInput.value.trim().toLowerCase();
-                var activeTag = document.querySelector('.tag-item.active');
-                var tagFilter = activeTag ? activeTag.dataset.tag : '全部';
-
-                filteredMembers = allMembers.filter(function(m) {
-                    if (tagFilter !== '全部') {
-                        if (tagFilter === 'ACCM最高管') {
-                            // ★★★ ACCM最高管 筛选：检查 groups 包含 'ACCM最高管' 或 '管理层'（兼容旧数据） ★★★
-                            if (!m.groups || !m.groups.some(function(g) { return g === 'ACCM最高管' || g === '管理层'; })) {
-                                return false;
-                            }
-                        } else {
-                            if (!m.groups || !m.groups.includes(tagFilter)) return false;
-                        }
-                    }
-                    if (searchTerm) {
-                        var inName = m.name.toLowerCase().includes(searchTerm);
-                        var inRole = (m.role || '').toLowerCase().includes(searchTerm);
-                        if (!inName && !inRole) return false;
-                    }
-                    return true;
-                });
-
-                var roleOrder = { '室长': 0, '副室长': 1, '组长': 2, '副组长': 3 };
-                filteredMembers.sort(function(a, b) {
-                    var aOrder = 99,
-                        bOrder = 99;
-                    for (var key in roleOrder) {
-                        if ((a.role || '').includes(key)) aOrder = roleOrder[key];
-                        if ((b.role || '').includes(key)) bOrder = roleOrder[key];
-                    }
-                    if (aOrder !== bOrder) return aOrder - bOrder;
-                    return a.name.localeCompare(b.name);
-                });
-
-                renderPage();
-            }
-
-            // ============================================================
-            // 加载数据
-            // ============================================================
-            function loadMembers() {
-                grid.innerHTML = '<div class="loading-placeholder"><i class="fas fa-spinner fa-pulse"></i>加载成员中...</div>';
-
-                var REPO_OWNER = 'jgcgzs',
-                    REPO_NAME = 'acns';
-                var memberApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=member&state=open&sort=created&direction=desc&per_page=100';
-                var mapApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=map&state=open&sort=created&direction=desc&per_page=100';
-                var blogApi = 'https://api.github.com/repos/' + REPO_OWNER + '/' + REPO_NAME +
-                    '/issues?labels=blog&state=open&sort=created&direction=desc&per_page=100';
-
-                Promise.all([
-                    fetch(memberApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(mapApi).then(function(r) { return r.ok ? r.json() : []; }),
-                    fetch(blogApi).then(function(r) { return r.ok ? r.json() : []; })
-                ]).then(function(results) {
-                    var memberIssues = results[0] || [];
-                    var mapIssues = results[1] || [];
-                    var blogIssues = results[2] || [];
-
-                    allMaps = mapIssues.map(function(i) { return parseMapForModal(i); });
-                    allBlogs = blogIssues.map(function(i) { return parseBlogForModal(i); });
-
-                    if (memberIssues.length) {
-                        allMembers = memberIssues.map(function(i) { return parseMemberIssue(i); });
-                        allMembers = allMembers.filter(function(m) {
-                            if (m.groups && m.groups.length) return true;
-                            if (m.role === '室长' || m.role === '副室长') return true;
-                            return false;
-                        });
-                    } else {
-                        allMembers = [];
-                    }
-
-                    window._memberData = allMembers;
-                    window._mapData = allMaps;
-                    window._blogData = allBlogs;
-
-                    applyFilters();
-                }).catch(function(err) {
-                    console.warn('加载成员失败:', err);
-                    allMembers = [];
-                    applyFilters();
-                });
-            }
-
-            // ============================================================
-            // 标签切换
-            // ============================================================
+            // ===== 标签切换 =====
             tagBar.addEventListener('click', function(e) {
-                var target = e.target.closest('.tag-item');
+                var target = e.target.closest('.filter-item');
                 if (!target) return;
-                document.querySelectorAll('.tag-item').forEach(function(el) { el.classList.remove('active'); });
+                document.querySelectorAll('.filter-item').forEach(function(el) { el.classList.remove('active'); });
                 target.classList.add('active');
                 applyFilters();
             });
 
-            // ============================================================
-            // 搜索事件
-            // ============================================================
+            // ===== 搜索事件 =====
             searchBtn.addEventListener('click', applyFilters);
-            searchInput.addEventListener('keypress', function(e) { if (e.key === 'Enter') applyFilters(); });
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') applyFilters();
+            });
 
-            // ============================================================
-            // 启动
-            // ============================================================
+            // ===== 启动 =====
             loadMembers();
 
         })();
