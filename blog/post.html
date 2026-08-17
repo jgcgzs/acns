@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>文章详情 · 极光创工作室</title>
+    <title>文章详情 - 极光创工作室</title>
     <meta name="description" content="极光创工作室博客文章详情">
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -53,11 +53,12 @@
             --border-light: #dce6ef;
             --shadow-sm: 0 2px 12px rgba(26, 127, 196, 0.07);
             --shadow-hover: 0 8px 28px rgba(26, 127, 196, 0.14);
-            --radius: 2px;
+            --radius: 12px;
+            --radius-sm: 8px;
             --toc-width: 240px;
         }
 
-        /* ===== 导航栏 ===== */
+        /* ===== 导航栏（统一带手机展开动画） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -104,7 +105,7 @@
             font-size: 15px;
             font-weight: 500;
             color: #222222;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             transition: background 0.2s, color 0.2s;
             position: relative;
         }
@@ -118,7 +119,7 @@
             background: var(--blue-primary);
             transition: width 0.25s ease;
             transform: translateX(-50%);
-            border-radius: var(--radius);
+            border-radius: 2px;
         }
         .nav-links li a:hover {
             background: var(--blue-bg-light);
@@ -181,7 +182,7 @@
             color: var(--blue-primary);
             padding: 6px 16px;
             border: 1px solid var(--blue-primary);
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             transition: background 0.25s, color 0.25s;
             cursor: pointer;
             background: transparent;
@@ -245,6 +246,7 @@
             border-radius: 50%;
             border: 1px solid var(--border-light);
             background: var(--blue-bg-pale);
+            object-fit: cover;
         }
         .post-meta .author .name {
             font-weight: 500;
@@ -497,19 +499,33 @@
             .navbar { height: 60px; }
             .menu-toggle { display: block; }
             .nav-links {
-                display: none;
+                display: block;
                 position: absolute;
                 top: 60px;
                 left: 0;
                 right: 0;
                 flex-direction: column;
                 background: #fff;
-                padding: 12px 24px 20px;
-                gap: 2px;
+                padding: 0 24px;
                 border-top: 1px solid var(--border-light);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: max-height 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+                            opacity 0.35s ease,
+                            transform 0.35s ease;
+                padding-top: 0;
+                padding-bottom: 0;
             }
-            .nav-links.open { display: flex; }
+            .nav-links.open {
+                max-height: 500px;
+                opacity: 1;
+                transform: translateY(0);
+                padding-top: 12px;
+                padding-bottom: 20px;
+            }
             .nav-links li a { padding: 10px 16px; font-size: 16px; width: 100%; text-align: center; }
             .post-meta { flex-direction: column; gap: .4rem; }
             .post-body { font-size: .95rem; }
@@ -531,6 +547,8 @@
             .post-body table { font-size: 0.7rem; min-width: 260px; }
             .post-body table th, .post-body table td { padding: 0.2rem 0.4rem; }
             .embed-fullscreen .post-body iframe { height: calc(100vh - 160px); }
+            .nav-links { padding-left: 14px; padding-right: 14px; }
+            .nav-links.open { max-height: 450px; }
         }
         @media (max-width: 360px) {
             .post-body table { min-width: 200px; font-size: 0.65rem; }
@@ -540,7 +558,7 @@
 </head>
 <body>
 
-    <!-- ===== 导航栏 ===== -->
+    <!-- ===== 导航栏（统一版） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -641,6 +659,33 @@
                 }
                 return null;
             };
+
+            // ============================================================
+            // ★★★ 头像智能解析（与成员档案一致） ★★★
+            // ============================================================
+            function resolveAvatarUrl(avatar) {
+                if (!avatar) return null;
+                var trimmed = avatar.trim();
+                // 纯数字（5~11位）→ QQ 号
+                if (/^\d{5,11}$/.test(trimmed)) {
+                    return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + trimmed + '&spec=640&t=' + Date.now();
+                }
+                // 包含 qlogo → 提取 QQ 号
+                if (/qlogo\.?cn?/.test(trimmed)) {
+                    var match = trimmed.match(/[?&]dst_uin=(\d+)/);
+                    if (!match) match = trimmed.match(/[?&]nk=(\d+)/);
+                    if (match) {
+                        return 'https://q2.qlogo.cn/headimg_dl?dst_uin=' + match[1] + '&spec=640&t=' + Date.now();
+                    }
+                    // 无法提取，直接加时间戳
+                    return trimmed + (trimmed.indexOf('?') === -1 ? '?t=' : '&t=') + Date.now();
+                }
+                // 普通 http 链接
+                if (/^https?:\/\//.test(trimmed)) {
+                    return trimmed;
+                }
+                return null;
+            }
 
             // ============================================================
             // 解析元数据（作者、分类、地图）
@@ -871,7 +916,7 @@
             });
 
             // ============================================================
-            // ★★★ 核心：加载成员数据 + 根据作者名字获取头像 ★★★
+            // ★★★ 核心：加载成员数据 + 根据作者名字获取头像（带QQ号解析） ★★★
             // ============================================================
             function loadMemberData() {
                 if (window._memberData && window._memberData.length) {
@@ -958,11 +1003,16 @@
                     });
             }
 
-            // 根据作者名字从成员数据中获取头像
+            // 根据作者名字从成员数据中获取头像（带QQ号解析）
             function getMemberAvatar(authorName) {
                 if (!window._memberData || !window._memberData.length) return null;
                 var member = window._memberData.find(function(m) { return m.name === authorName; });
-                return member ? member.avatar : null;
+                if (!member) return null;
+                var avatar = member.avatar;
+                if (!avatar) return null;
+                // ★ 使用 resolveAvatarUrl 解析 QQ 号或链接
+                var resolved = resolveAvatarUrl(avatar);
+                return resolved || avatar;
             }
 
             // ============================================================
