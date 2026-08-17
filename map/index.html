@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-    <title>地图库 · 极光创工作室</title>
+    <title>地图库 - 极光创工作室</title>
     <link rel="shortcut icon" href="https://user-assets.sxlcdn.com/images/1291382/FuDaZWAs3_92-0wUCjGg2zRMiHe5.png?imageMogr2/strip/auto-orient/thumbnail/64x64>/quality/90!/format/png" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <!-- 公共组件样式（成员档案弹窗依赖） -->
@@ -25,7 +25,7 @@
         img { max-width: 100%; height: auto; display: block; }
         .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
 
-        /* ===== 蔚蓝主题配色 ===== */
+        /* ===== 蔚蓝主题配色（完全保留原始） ===== */
         :root {
             --blue-primary: #4a6cf7;
             --blue-primary-dark: #3651c7;
@@ -42,9 +42,12 @@
             --radius: 12px;
             --radius-sm: 8px;
             --gold: #f5a623;
+            /* 苹果弹性曲线（仅用于导航栏） */
+            --apple-curve: cubic-bezier(0.22, 1, 0.36, 1);
+            --apple-curve-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* ===== 导航栏（保持原样，不改） ===== */
+        /* ===== 导航栏（只改这里） ===== */
         .navbar {
             position: fixed;
             top: 0;
@@ -103,7 +106,7 @@
             width: 0;
             height: 2.5px;
             background: var(--blue-primary);
-            transition: width 0.3s ease;
+            transition: width 0.3s var(--apple-curve);
             transform: translateX(-50%);
             border-radius: 4px;
         }
@@ -127,7 +130,7 @@
             padding: 4px 8px;
         }
 
-        /* ===== 底部 ===== */
+        /* ===== 底部（完全保留原始） ===== */
         .footer {
             background: var(--blue-deep);
             color: rgba(255, 255, 255, 0.4);
@@ -146,7 +149,7 @@
         }
         .footer .sep { color: rgba(255, 255, 255, 0.08); }
 
-        /* ===== 页面头部 ===== */
+        /* ===== 页面头部（完全保留原始） ===== */
         .page-header {
             padding: 18px 0 10px;
             border-bottom: 1px solid var(--blue-border);
@@ -169,7 +172,7 @@
             margin-top: 2px;
         }
 
-        /* ===== 搜索栏 ===== */
+        /* ===== 搜索栏（完全保留原始） ===== */
         .search-bar {
             display: flex;
             gap: 12px;
@@ -212,7 +215,7 @@
         }
         .search-bar .search-btn:active { transform: scale(0.96); }
 
-        /* ===== 分类栏（三行，保持蓝色统一） ===== */
+        /* ===== 分类栏（完全保留原始） ===== */
         .filter-section { margin-bottom: 4px; }
         .filter-row {
             display: flex;
@@ -267,7 +270,7 @@
             border-color: var(--blue-primary-dark);
         }
 
-        /* ===== 预告栏 ===== */
+        /* ===== 预告栏（完全保留原始） ===== */
         .preview-section { margin: 8px 0 24px; }
         .preview-section .preview-header {
             display: flex;
@@ -365,7 +368,7 @@
             opacity: 0.5;
         }
 
-        /* ===== 地图网格 ===== */
+        /* ===== 地图网格（完全保留原始） ===== */
         .map-grid-container { margin-top: 4px; }
         .map-grid {
             display: grid;
@@ -373,7 +376,7 @@
             gap: 20px;
         }
 
-        /* ===== 地图卡片 ===== */
+        /* ===== 地图卡片（完全保留原始） ===== */
         .map-card {
             background: var(--blue-card);
             border: 1px solid var(--blue-border);
@@ -424,7 +427,6 @@
             flex-wrap: wrap;
             margin-bottom: 2px;
         }
-        /* ----- 通用标签基类 ----- */
         .tag-pill {
             font-size: 10px;
             font-weight: 700;
@@ -445,56 +447,51 @@
             border-color: rgba(74, 108, 247, 0.25);
             color: var(--blue-primary);
         }
-        /* ----- 金色精选（独立） ----- */
         .tag-gold {
             background: rgba(245, 166, 35, 0.10);
             border-color: rgba(245, 166, 35, 0.30);
             color: var(--gold);
         }
-        /* ----- 状态标签彩色方案 ----- */
         .tag-status {
-            /* 默认蓝色（fallback） */
             background: rgba(74, 108, 247, 0.08);
             border-color: rgba(74, 108, 247, 0.25);
             color: var(--blue-primary);
         }
-        .tag-status-planning { /* 策划中 */
+        .tag-status-planning {
             background: #e0e7ff;
             border-color: #818cf8;
             color: #4f46e5;
         }
-        .tag-status-making { /* 制作中 */
+        .tag-status-making {
             background: #fed7aa;
             border-color: #fb923c;
             color: #7c2d12;
         }
-        .tag-status-updating { /* 更新中 */
+        .tag-status-updating {
             background: #d1fae5;
             border-color: #34d399;
             color: #065f46;
         }
-        .tag-status-publishing { /* 待发布 */
+        .tag-status-publishing {
             background: #ede9fe;
             border-color: #a78bfa;
             color: #5b21b6;
         }
-        .tag-status-testing { /* 测试中 */
+        .tag-status-testing {
             background: #fef3c7;
             border-color: #f59e0b;
             color: #92400e;
         }
-        .tag-status-finished { /* 已完结 */
+        .tag-status-finished {
             background: #dbeafe;
             border-color: #60a5fa;
             color: #1e40af;
         }
-        .tag-status-stopped { /* 停更（自定义） */
+        .tag-status-stopped {
             background: #fecaca;
             border-color: #f87171;
             color: #991b1b;
         }
-        /* 其他未匹配状态使用默认蓝色 */
-
         .map-card .body .title {
             font-size: 15px;
             font-weight: 700;
@@ -587,7 +584,7 @@
         }
         .map-card .body .btn-detail:active { transform: scale(0.94); }
 
-        /* ===== 分页 ===== */
+        /* ===== 分页（完全保留原始） ===== */
         .pagination {
             display: flex;
             justify-content: center;
@@ -634,7 +631,7 @@
             font-weight: 500;
         }
 
-        /* ===== 加载 & 空状态 ===== */
+        /* ===== 加载 & 空状态（完全保留原始） ===== */
         .loading-placeholder,
         .empty-placeholder {
             text-align: center;
@@ -653,7 +650,7 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* ============================================================
-           详情弹窗（左右分栏，与之前一致）
+           详情弹窗（完全保留原始）
            ============================================================ */
         .detail-overlay {
             position: fixed;
@@ -798,7 +795,6 @@
             gap: 4px;
             margin: 2px 0 2px;
         }
-        /* 详情页内的标签同样应用颜色类 */
         .detail-right .detail-tags .tag-pill {
             font-size: 10px;
             font-weight: 700;
@@ -807,7 +803,6 @@
             letter-spacing: 0.3px;
             border: 1.5px solid transparent;
         }
-        /* 在详情页中，状态标签也使用同样的颜色类，这里不需要额外定义，因为类名相同 */
         .detail-right .detail-meta {
             display: flex;
             flex-wrap: wrap;
@@ -874,7 +869,9 @@
             margin-top: 2px;
         }
 
-        /* ===== 响应式 ===== */
+        /* ============================================================
+           响应式（完全保留原始，只修改导航栏相关部分）
+           ============================================================ */
         @media (max-width: 992px) {
             .map-grid { grid-template-columns: repeat(3, 1fr); }
             .detail-left { flex: 0 0 38%; }
@@ -883,20 +880,36 @@
             body { padding-top: 60px; }
             .navbar { height: 60px; }
             .menu-toggle { display: block; }
+            /* 导航栏手机端展开动画（使用苹果弹性曲线） */
             .nav-links {
-                display: none;
+                display: block;
                 position: absolute;
                 top: 60px;
                 left: 0;
                 right: 0;
                 flex-direction: column;
                 background: #fff;
-                padding: 12px 24px 20px;
-                gap: 2px;
+                padding: 0 24px;
                 border-top: 1px solid var(--blue-border);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-10px) scale(0.98);
+                transition: max-height 0.45s var(--apple-curve),
+                            opacity 0.35s var(--apple-curve),
+                            transform 0.4s var(--apple-curve-bounce),
+                            padding 0.3s ease;
+                padding-top: 0;
+                padding-bottom: 0;
             }
-            .nav-links.open { display: flex; }
+            .nav-links.open {
+                max-height: 500px;
+                opacity: 1;
+                transform: translateY(0) scale(1);
+                padding-top: 12px;
+                padding-bottom: 20px;
+            }
             .nav-links li a {
                 padding: 10px 16px;
                 font-size: 16px;
@@ -955,12 +968,14 @@
             .detail-left .cover-wrap { flex: 0 0 auto; width: 100%; max-height: 140px; }
             .detail-left .left-desc { max-height: 80px; }
             .detail-right .detail-extra .extra-item { font-size: 12px; }
+            .nav-links { padding-left: 14px; padding-right: 14px; }
+            .nav-links.open { max-height: 450px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 导航栏（完全保留原样） ===== -->
+    <!-- ===== 导航栏（已更新：统一版 + 苹果曲线动画） ===== -->
     <header class="navbar" id="navbar">
         <div class="container">
             <div class="navbar-brand">
@@ -978,7 +993,7 @@
         </div>
     </header>
 
-    <!-- ===== 主内容 ===== -->
+    <!-- ===== 主内容（完全保留原始） ===== -->
     <main>
         <div class="container">
             <div class="page-header">
@@ -994,7 +1009,7 @@
                 <button class="search-btn" id="searchBtn"><i class="fas fa-search"></i> 搜索</button>
             </div>
 
-            <!-- ===== 分类栏（三行，全部蓝色） ===== -->
+            <!-- 分类栏 -->
             <div class="filter-section">
                 <div class="filter-row" id="platformRow">
                     <span class="filter-label">平台</span>
@@ -1049,7 +1064,7 @@
         </div>
     </main>
 
-    <!-- ===== 详情弹窗 ===== -->
+    <!-- ===== 详情弹窗（完全保留原始） ===== -->
     <div class="detail-overlay" id="detailOverlay">
         <div class="detail-modal" id="detailModal">
             <button class="detail-close" id="detailClose">&times;</button>
@@ -1081,7 +1096,7 @@
         </div>
     </div>
 
-    <!-- ===== 底部 ===== -->
+    <!-- ===== 底部（完全保留原始） ===== -->
     <footer class="footer">
         <div class="container">
             <span>极光创工作室</span>
@@ -1094,7 +1109,7 @@
     <script src="../assets/js/components.js"></script>
 
     <!-- ============================================================
-    地图库主脚本
+    地图库主脚本（完全保留原始，未改动）
     ============================================================ -->
     <script>
         (function() {
@@ -1189,7 +1204,6 @@
                 var dateStr = parseDateFromBody(body);
                 if (!dateStr) dateStr = '未知';
 
-                // 处理标题前缀
                 var prefixInfo = extractTitlePrefix(title);
                 var displayTitle = title;
                 var isFeatured = false;
@@ -1218,7 +1232,6 @@
                     finalTag = '';
                 }
 
-                // 推断平台和类型
                 if (title.indexOf('迷你世界') > -1) platform = '迷你世界';
                 else if (title.indexOf('我的世界') > -1 || title.indexOf('MC') > -1) platform = '我的世界';
 
@@ -1242,7 +1255,7 @@
                 };
             }
 
-            // ===== 解析成员 Issue（增加荣誉和灵动岛字段） =====
+            // ===== 解析成员 Issue =====
             function parseMemberIssue(issue) {
                 var title = issue.title && issue.title.trim() !== '' ? issue.title.trim() : '未命名成员';
                 var body = issue.body || '';
@@ -1345,7 +1358,7 @@
             }
 
             // ============================================================
-            // 状态颜色映射函数（核心新增）
+            // 状态颜色映射函数
             // ============================================================
             function getStatusClass(status) {
                 if (!status) return 'tag-status';
@@ -1410,7 +1423,6 @@
                     '<img class="cover" src="' + map.cover.trim() + '" alt="' + map.title + '" loading="lazy" onerror="this.style.display=\'none\'">' :
                     '<div class="cover-placeholder"><i class="fas fa-image"></i></div>';
 
-                // 平台、类型（蓝色），状态（彩色），精选（金色）
                 var platformHtml = '<span class="tag-pill tag-platform">' + map.platform + '</span>';
                 var typeHtml = '<span class="tag-pill tag-type">' + map.type + '</span>';
                 var statusClass = getStatusClass(map.tag);
@@ -1521,7 +1533,6 @@
                 detailLeftDesc.textContent = map.desc || '暂无描述';
                 detailTitle.textContent = map.title;
 
-                // 标签：平台、类型、状态（彩色）、精选（金色）
                 var tagsHtml = '';
                 tagsHtml += '<span class="tag-pill tag-platform">' + map.platform + '</span>';
                 tagsHtml += '<span class="tag-pill tag-type">' + map.type + '</span>';
@@ -1563,7 +1574,6 @@
 
                 detailAnnounce.textContent = '📢 ' + (map.announcement || '暂无公告');
 
-                // 重置动画
                 var left = document.querySelector('.detail-left');
                 var right = document.querySelector('.detail-right');
                 left.style.animation = 'none';
