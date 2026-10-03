@@ -217,7 +217,7 @@
         .section-title .view-all:hover { background: var(--blue-primary); color: #fff; transform: translateY(-2px); }
 
         /* ============================================================
-           卡片入场动画
+           卡片入场动画（基础，被下方动画系统覆盖）
            ============================================================ */
         .card-enter {
             opacity: 0;
@@ -230,7 +230,7 @@
             transform: translateY(0) scale(1);
         }
 
-        /* 悬停反馈 */
+        /* 悬停反馈（基础，被下方动画系统覆盖） */
         .notice-card, .map-card, .timeline-item, .join-card, .channel-card, .contact-card {
             transition: transform 0.3s var(--apple-curve), box-shadow 0.3s var(--apple-curve), border-color 0.3s var(--apple-curve);
             will-change: transform;
@@ -568,6 +568,659 @@
             .contact-grid { grid-template-columns: 1fr; gap: 10px; }
             .notice-card { flex: 0 0 150px; max-width: 150px; }
             .map-card { flex: 0 0 130px; max-width: 130px; }
+        }
+
+        /* ============================================================
+           ★★★ 插图氛围层 —— 铺满板块作为背景，不占位、不割裂 ★★★
+           ============================================================ */
+
+        /* ---------- 2. 公告区：喇叭图铺满整个板块做底纹 ---------- */
+        .notice-section { position: relative; overflow: hidden; }
+        .notice-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/FpavjV58xPn217lt1ttU-Wtcjv5Y.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center right / 320px auto no-repeat;
+            opacity: 0.10;
+            pointer-events: none;
+            z-index: 0;
+            -webkit-mask-image: linear-gradient(to left, transparent 0%, #000 40%);
+                    mask-image: linear-gradient(to left, transparent 0%, #000 40%);
+        }
+        .notice-section .container { position: relative; z-index: 1; }
+        .notice-card .cover-placeholder {
+            background:
+                linear-gradient(135deg, rgba(26,127,196,0.35), rgba(245,166,35,0.28)),
+                url('https://user-assets.sxlcdn.com/images/1138507/Fl0fILeEtpXsS39g85wVRLTrVZj4.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center/cover no-repeat;
+            opacity: 1;
+            color: #fff;
+        }
+        .notice-card .cover-placeholder i { color: #fff; opacity: 0.9; }
+
+        /* ---------- 3. 发展历程：极光碎片铺满 timeline ---------- */
+        .timeline { position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/Fl0fILeEtpXsS39g85wVRLTrVZj4.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center/cover no-repeat;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
+            border-radius: var(--radius-sm);
+        }
+        .timeline-item { position: relative; z-index: 1; }
+
+        /* ---------- 4. 地图展示：蓝图手柄图铺满整个板块做底纹 ---------- */
+        .map-section { position: relative; overflow: hidden; }
+        .map-section::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/ltxgYiEsmbmCqER7BAP8YLfRd871.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center/cover no-repeat;
+            opacity: 0.14;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .map-section .container { position: relative; z-index: 1; }
+        .map-card .cover-placeholder {
+            background:
+                linear-gradient(135deg, rgba(26,127,196,0.45), rgba(15,106,173,0.35)),
+                url('https://user-assets.sxlcdn.com/images/1138507/ltxgYiEsmbmCqER7BAP8YLfRd871.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center/cover no-repeat;
+            opacity: 1;
+            color: #fff;
+        }
+        .map-card .cover-placeholder i { color: #fff; opacity: 0.9; }
+
+        /* ---------- 5. 加入工作室：正式/外部成员各自铺满对应卡片 ---------- */
+        .join-card {
+            position: relative;
+            overflow: hidden;
+            background: rgba(255,255,255,0.92);
+        }
+        .join-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/FqcJljV2XzSSKEkYQHR1GGXYCzkv.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center right / cover no-repeat;
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 0;
+            -webkit-mask-image: linear-gradient(to left, #000 0%, transparent 80%);
+                    mask-image: linear-gradient(to left, #000 0%, transparent 80%);
+        }
+        .join-card:nth-child(2)::before {
+            background-image: url('https://user-assets.sxlcdn.com/images/1291382/FkV_TL60sOH7J9GAJRGvei88-WPq.jpg?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/interlace/1/format/jpeg');
+            -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 80%);
+                    mask-image: linear-gradient(to right, #000 0%, transparent 80%);
+            opacity: 0.22;
+        }
+        .join-card h3,
+        .join-card ul { position: relative; z-index: 1; }
+
+        /* ---------- 6. 频道卡片：通讯波图铺满卡片 ---------- */
+        .channel-card { position: relative; overflow: hidden; }
+        .channel-card::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/FtUgTq2vMUe1ZMlKct9gpDeoXt00.png?imageMogr2/strip/auto-orient/thumbnail/!200x200r/gravity/Center/crop/200x200/quality/90!/format/png') center/cover no-repeat;
+            opacity: 0.35;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .channel-card .channel-img,
+        .channel-card .channel-info { position: relative; z-index: 1; }
+
+        /* ---------- 7. 联系区：联系我们图铺满 contact-wrapper ---------- */
+        .contact-wrapper { position: relative; overflow: hidden; }
+        .contact-wrapper::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/FnDZqmmc7DkchjhQ3WIiLKgxJXRr.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center/cover no-repeat;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .contact-wrapper .contact-grid { position: relative; z-index: 1; }
+        .contact-card {
+            background: rgba(236, 245, 250, 0.88);
+            backdrop-filter: blur(4px);
+        }
+
+        /* ---------- 8. 彩蛋弹窗：Q 版图铺满整个弹窗背景 ---------- */
+        .egg-popup { position: fixed; overflow: hidden; }
+        .egg-popup::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: url('https://user-assets.sxlcdn.com/images/1138507/lqFRkpcWadTUr0iDyCs061jnGqbZ.png?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/png') center/cover no-repeat;
+            opacity: 0.18;
+            pointer-events: none;
+            z-index: 0;
+            -webkit-mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
+                    mask-image: radial-gradient(circle at 50% 40%, #000 0%, transparent 75%);
+        }
+        .egg-popup .egg-icon,
+        .egg-popup h2,
+        .egg-popup p,
+        .egg-popup .btn-close-egg {
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-width: 768px) {
+            .notice-section::before { background-size: 220px auto; opacity: 0.08; }
+            .map-section::before { opacity: 0.1; }
+            .join-card::before { opacity: 0.18; }
+            .join-card:nth-child(2)::before { opacity: 0.16; }
+            .contact-wrapper::before { opacity: 0.1; }
+        }
+
+        /* ============================================================
+           ★★★ 高级动画系统 ★★★
+           覆盖上面的基础动画，增强高级感，丰富出入场与微交互
+           ============================================================ */
+
+        :root {
+            --ease-elegant: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-snappy: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        /* ---------- A. 增强入场动画：模糊消散 + 上浮 + 缩放 ---------- */
+        .card-enter {
+            opacity: 0;
+            transform: translateY(56px) scale(0.92);
+            filter: blur(10px);
+            transition:
+                opacity 0.9s var(--ease-elegant),
+                transform 1s var(--ease-spring),
+                filter 0.8s var(--ease-elegant);
+            will-change: transform, opacity, filter;
+        }
+        .card-enter.entered {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+
+        /* 卡片错峰入场（JS 已设置 transitionDelay，这里再加层级级联感） */
+        .notice-card.card-enter:nth-child(2n) { --stagger: 0.08s; }
+        .notice-card.card-enter:nth-child(3n) { --stagger: 0.15s; }
+
+        /* ---------- B. 英雄区文字入场（加载即播） ---------- */
+        .hero-content h1 {
+            animation: heroFadeUp 1s var(--ease-elegant) 0.05s both;
+        }
+        .hero-content .sub {
+            animation: heroFadeUp 1s var(--ease-elegant) 0.2s both;
+        }
+        .hero-content .desc {
+            animation: heroFadeUp 1s var(--ease-elegant) 0.35s both;
+        }
+        .hero-stats .stat {
+            animation: heroFadeUp 0.9s var(--ease-spring) 0.5s both;
+        }
+        .hero-stats .stat:nth-child(2) { animation-delay: 0.6s; }
+        .hero-stats .stat:nth-child(3) { animation-delay: 0.7s; }
+        .hero-actions .btn-primary {
+            animation: heroFadeUp 0.9s var(--ease-spring) 0.85s both;
+        }
+        .hero-actions .btn-outline {
+            animation: heroFadeUp 0.9s var(--ease-spring) 0.95s both;
+        }
+        @keyframes heroFadeUp {
+            0% { opacity: 0; transform: translateY(28px); filter: blur(8px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        /* ---------- C. 导航栏加载渐入 + 下划线流动 ---------- */
+        .navbar {
+            animation: navSlideDown 0.7s var(--ease-elegant) both;
+        }
+        @keyframes navSlideDown {
+            0% { transform: translateY(-100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        .nav-links li a {
+            transition: background 0.25s var(--ease-smooth), color 0.25s var(--ease-smooth), transform 0.3s var(--ease-spring);
+        }
+        .nav-links li a:hover {
+            transform: translateY(-2px);
+        }
+        .nav-links li a::after {
+            background: linear-gradient(90deg, var(--blue-primary), #4facfe);
+            box-shadow: 0 0 8px rgba(26, 127, 196, 0.6);
+            transition: width 0.35s var(--ease-spring);
+        }
+        .navbar-brand .logo {
+            transition: transform 0.4s var(--ease-spring);
+        }
+        .navbar-brand:hover .logo {
+            transform: rotate(-8deg) scale(1.08);
+        }
+
+        /* ---------- D. 卡片悬停升级：3D 倾斜 + 发光边 ---------- */
+        .notice-card, .map-card, .timeline-item, .join-card, .channel-card, .contact-card {
+            position: relative;
+            transition:
+                transform 0.5s var(--ease-spring),
+                box-shadow 0.5s var(--ease-smooth),
+                border-color 0.4s var(--ease-smooth);
+            will-change: transform;
+        }
+        .notice-card:hover,
+        .map-card:hover,
+        .join-card:hover,
+        .channel-card:hover,
+        .contact-card:hover {
+            transform: translateY(-10px) scale(1.025);
+            box-shadow:
+                0 28px 60px rgba(26, 127, 196, 0.22),
+                0 12px 24px rgba(26, 127, 196, 0.12),
+                inset 0 0 0 1px rgba(26, 127, 196, 0.15);
+            border-color: var(--blue-primary);
+        }
+        .timeline-item:hover {
+            transform: translateX(6px);
+            box-shadow:
+                -4px 0 0 0 var(--blue-primary),
+                0 16px 40px rgba(26, 127, 196, 0.15);
+            border-color: var(--blue-primary);
+        }
+
+        /* 卡片内缩略图悬停放大 */
+        .notice-card .cover,
+        .map-card .cover {
+            transition: transform 0.7s var(--ease-elegant), filter 0.5s var(--ease-smooth);
+        }
+        .notice-card:hover .cover,
+        .map-card:hover .cover {
+            transform: scale(1.08);
+            filter: brightness(1.05) saturate(1.1);
+        }
+        /* 缩略图容器裁剪溢出 */
+        .notice-card,
+        .map-card {
+            overflow: hidden;
+        }
+
+        /* 占位符图标微旋转 */
+        .notice-card .cover-placeholder i,
+        .map-card .cover-placeholder i {
+            transition: transform 0.6s var(--ease-spring);
+            display: inline-block;
+        }
+        .notice-card:hover .cover-placeholder i {
+            transform: scale(1.2) rotate(-10deg);
+        }
+        .map-card:hover .cover-placeholder i {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        /* ---------- E. 按钮高级光泽扫过 + 上浮 ---------- */
+        .btn-primary, .btn-outline, .btn-join, .section-title .view-all, .btn-close-egg {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            transition:
+                transform 0.4s var(--ease-spring),
+                box-shadow 0.4s var(--ease-smooth),
+                background 0.3s var(--ease-smooth),
+                color 0.3s var(--ease-smooth);
+        }
+        .btn-primary::before,
+        .btn-join::before,
+        .btn-close-egg::before,
+        .section-title .view-all::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -130%;
+            width: 60%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.5) 50%,
+                transparent 100%
+            );
+            transform: skewX(-22deg);
+            transition: left 0.9s var(--ease-elegant);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .btn-primary:hover::before,
+        .btn-join:hover::before,
+        .btn-close-egg:hover::before,
+        .section-title .view-all:hover::before {
+            left: 130%;
+        }
+        .btn-primary:hover,
+        .btn-join:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow:
+                0 16px 36px rgba(26, 127, 196, 0.35),
+                0 6px 14px rgba(26, 127, 196, 0.2);
+        }
+        .btn-outline:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow:
+                0 16px 36px rgba(26, 127, 196, 0.28),
+                0 6px 14px rgba(26, 127, 196, 0.18);
+        }
+        .section-title .view-all:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 24px rgba(26, 127, 196, 0.25);
+        }
+
+        /* ---------- F. 地图箭头按钮旋转进入 ---------- */
+        .map-arrows button {
+            transition:
+                background 0.3s var(--ease-smooth),
+                transform 0.5s var(--ease-spring),
+                box-shadow 0.4s var(--ease-smooth),
+                color 0.3s var(--ease-smooth);
+        }
+        .map-arrows button:hover:not(:disabled) {
+            transform: scale(1.15) rotate(-6deg);
+            box-shadow:
+                0 14px 30px rgba(26, 127, 196, 0.35),
+                0 0 0 4px rgba(26, 127, 196, 0.12);
+        }
+        #mapNext:hover:not(:disabled) {
+            transform: scale(1.15) rotate(6deg);
+        }
+
+        /* ---------- G. 时间轴年份渐变流动 + 展开动效 ---------- */
+        .timeline-item .tl-header .year {
+            background: linear-gradient(120deg, var(--blue-primary) 0%, #4facfe 40%, var(--blue-primary) 80%);
+            background-size: 220% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: yearFlow 5s ease-in-out infinite;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+        @keyframes yearFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .timeline-item .tl-header .toggle-icon {
+            transition: transform 0.55s var(--ease-spring), color 0.3s;
+        }
+        .timeline-item:hover .tl-header .toggle-icon {
+            color: var(--blue-primary);
+            opacity: 1;
+        }
+        .timeline-item.open .tl-header .toggle-icon {
+            transform: rotate(180deg) scale(1.15);
+            color: var(--blue-primary);
+            opacity: 1;
+        }
+        .timeline-item.open .tl-header {
+            background: linear-gradient(90deg, rgba(26,127,196,0.08), rgba(245,249,254,0.4));
+        }
+        /* 展开时内容渐入 */
+        .timeline-item.open .tl-body .content p {
+            animation: bodySlideIn 0.6s var(--ease-elegant) both;
+        }
+        .timeline-item.open .tl-body .content p:nth-child(1) { animation-delay: 0.05s; }
+        .timeline-item.open .tl-body .content p:nth-child(2) { animation-delay: 0.12s; }
+        .timeline-item.open .tl-body .content p:nth-child(3) { animation-delay: 0.19s; }
+        .timeline-item.open .tl-body .content p:nth-child(4) { animation-delay: 0.26s; }
+        .timeline-item.open .tl-body .content p:nth-child(5) { animation-delay: 0.33s; }
+        .timeline-item.open .tl-body .content p:nth-child(6) { animation-delay: 0.4s; }
+        .timeline-item.open .tl-body .content p:nth-child(7) { animation-delay: 0.47s; }
+        .timeline-item.open .tl-body .content p:nth-child(8) { animation-delay: 0.54s; }
+        @keyframes bodySlideIn {
+            0% { opacity: 0; transform: translateX(-16px); filter: blur(4px); }
+            100% { opacity: 1; transform: translateX(0); filter: blur(0); }
+        }
+
+        /* ---------- H. Section 标题装饰动画 ---------- */
+        .section-title .left .line {
+            animation: linePulse 3.5s ease-in-out infinite;
+            position: relative;
+        }
+        @keyframes linePulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(26, 127, 196, 0.3);
+                opacity: 1;
+                transform: scaleX(1);
+            }
+            50% {
+                box-shadow: 0 0 16px 4px rgba(26, 127, 196, 0.3);
+                opacity: 0.85;
+                transform: scaleX(1.1);
+            }
+        }
+        .section-title .left h2 {
+            position: relative;
+            display: inline-block;
+            transition: transform 0.4s var(--ease-spring);
+        }
+        .section-title:hover .left h2 {
+            transform: translateX(4px);
+        }
+
+        /* ---------- I. 联系卡片图标动画 ---------- */
+        .contact-card {
+            transition:
+                transform 0.5s var(--ease-spring),
+                box-shadow 0.5s var(--ease-smooth),
+                background 0.4s var(--ease-smooth);
+        }
+        .contact-card .icon {
+            transition: transform 0.5s var(--ease-spring), color 0.3s;
+            display: inline-block;
+        }
+        .contact-card:hover .icon {
+            transform: scale(1.25) rotate(-10deg);
+            color: var(--blue-primary-dark);
+        }
+        .contact-card .card-value {
+            transition: color 0.3s, letter-spacing 0.4s var(--ease-smooth);
+        }
+        .contact-card:hover .card-value {
+            letter-spacing: 0.5px;
+            color: var(--blue-primary);
+        }
+
+        /* ---------- J. 频道卡片内部动效 ---------- */
+        .channel-card .channel-img {
+            transition: transform 0.6s var(--ease-spring), box-shadow 0.5s var(--ease-smooth);
+        }
+        .channel-card:hover .channel-img {
+            transform: scale(1.06) rotate(-2deg);
+            box-shadow: 0 14px 32px rgba(26, 127, 196, 0.28);
+        }
+
+        /* ---------- K. 加入工作室卡片高亮扫过 ---------- */
+        .join-card {
+            position: relative;
+            overflow: hidden;
+        }
+        .join-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 60%; height: 100%;
+            background: linear-gradient(120deg,
+                transparent 0%,
+                rgba(26, 127, 196, 0.08) 50%,
+                transparent 100%);
+            transform: skewX(-20deg);
+            transition: left 1.2s var(--ease-elegant);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .join-card:hover::after {
+            left: 200%;
+        }
+        .join-card h3 {
+            transition: color 0.3s, transform 0.4s var(--ease-spring);
+        }
+        .join-card:hover h3 {
+            transform: translateX(3px);
+        }
+        .join-card ul li {
+            transition: transform 0.4s var(--ease-spring), color 0.3s;
+        }
+        .join-card:hover ul li {
+            transform: translateX(3px);
+        }
+        .join-card ul li::before {
+            transition: transform 0.4s var(--ease-spring), color 0.3s;
+            display: inline-block;
+        }
+        .join-card:hover ul li::before {
+            transform: translateX(3px) scale(1.2);
+        }
+
+        /* ---------- L. 弹窗出入场动画升级 ---------- */
+        .egg-popup {
+            transition:
+                opacity 0.6s var(--ease-elegant),
+                transform 0.8s var(--ease-spring),
+                visibility 0.6s,
+                box-shadow 0.5s;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+        .egg-popup.open {
+            transform: translate(-50%, -50%) scale(1);
+            box-shadow:
+                0 30px 80px rgba(26, 127, 196, 0.3),
+                0 0 0 4px rgba(255, 255, 255, 0.3) inset;
+        }
+        .egg-popup.open h2 {
+            animation: popupTitleIn 0.8s var(--ease-spring) 0.1s both;
+        }
+        .egg-popup.open p {
+            animation: popupTitleIn 0.8s var(--ease-elegant) 0.2s both;
+        }
+        .egg-popup.open .btn-close-egg {
+            animation: popupTitleIn 0.8s var(--ease-spring) 0.3s both;
+        }
+        @keyframes popupTitleIn {
+            0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* ---------- M. 页脚呼吸光线 ---------- */
+        .footer {
+            position: relative;
+            overflow: hidden;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(90deg,
+                transparent 0%,
+                rgba(26, 127, 196, 0.7) 50%,
+                transparent 100%);
+            transform: translateX(-50%);
+            animation: footerLine 5s ease-in-out infinite;
+        }
+        @keyframes footerLine {
+            0%, 100% { width: 20%; opacity: 0.4; }
+            50% { width: 80%; opacity: 1; }
+        }
+
+        /* ---------- N. 加载中 spinner 呼吸光 ---------- */
+        .notice-loading i,
+        .map-loading i {
+            animation: spinnerPulse 1.6s ease-in-out infinite;
+        }
+        @keyframes spinnerPulse {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0 rgba(26,127,196,0));
+            }
+            50% {
+                transform: scale(1.15);
+                filter: drop-shadow(0 0 12px rgba(26,127,196,0.6));
+            }
+        }
+
+        /* ---------- O. 数字统计入口动效 ---------- */
+        .hero-stats .stat .num {
+            display: inline-block;
+            transition: transform 0.4s var(--ease-spring), color 0.3s;
+        }
+        .hero-stats .stat:hover .num {
+            transform: scale(1.15);
+            color: var(--blue-primary-dark);
+        }
+
+        /* ---------- P. 全局平滑滚动加速曲线（已由 html 定义，这里保持） ---------- */
+
+        /* ---------- Q. 品牌文字渐变流动 ---------- */
+        .navbar-brand .brand-text {
+            background: linear-gradient(120deg, #1a1a1a 0%, #1a7fc4 50%, #1a1a1a 100%);
+            background-size: 220% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            animation: brandFlow 6s ease-in-out infinite;
+            transition: none;
+        }
+        @keyframes brandFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        /* ---------- R. 地图卡片 "精选" 标签发光 ---------- */
+        .map-card .body .tag-blue {
+            transition: all 0.4s var(--ease-spring);
+        }
+        .map-card:hover .body .tag-blue {
+            transform: translateY(-1px);
+            box-shadow: 0 0 12px rgba(26, 127, 196, 0.35);
+        }
+        .map-card .body .tag-blue[style*="f5a623"]:hover,
+        .map-card:hover .body .tag-blue[style*="f5a623"] {
+            box-shadow: 0 0 14px rgba(245, 166, 35, 0.5);
+        }
+
+        /* ---------- S. 移动端：弱化所有持续动画，保留入场 ---------- */
+        @media (max-width: 768px) {
+            .navbar { animation: none; }
+            .hero-content h1,
+            .hero-content .sub,
+            .hero-content .desc,
+            .hero-stats .stat,
+            .hero-actions .btn-primary,
+            .hero-actions .btn-outline {
+                animation: heroFadeUp 0.7s var(--ease-elegant) both;
+            }
+            .navbar-brand .brand-text {
+                animation: none;
+                background: none;
+                -webkit-text-fill-color: initial;
+                color: #1a1a1a;
+            }
+            .timeline-item .tl-header .year {
+                animation: none;
+                background: none;
+                -webkit-text-fill-color: initial;
+                color: var(--blue-primary);
+            }
+        }
+
+        /* ---------- T. 尊重用户系统的减少动画偏好 ---------- */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
