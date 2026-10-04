@@ -870,6 +870,35 @@
         }
 
         /* ============================================================
+           mj 彩蛋（新增）
+           ============================================================ */
+        .mj-layer{
+            position:fixed;
+            left:0;right:0;top:0;
+            z-index:9500;
+            display:flex;
+            justify-content:center;
+            align-items:flex-start;
+            pointer-events:none;
+            transform:translateY(-100%);
+            will-change:transform;
+        }
+        .mj-layer.in{
+            transform:translateY(0);
+            transition:transform .85s cubic-bezier(.16,1,.3,1);
+        }
+        .mj-layer.out{
+            transform:translateY(-100%);
+            transition:transform .85s cubic-bezier(.7,0,.84,0);
+        }
+        .mj-layer img{
+            display:block;
+            width:min(56vw,360px);
+            height:auto;
+            max-height:none;
+        }
+
+        /* ============================================================
            响应式（完全保留原始，只修改导航栏相关部分）
            ============================================================ */
         @media (max-width: 992px) {
@@ -1109,7 +1138,7 @@
     <script src="../assets/js/components.js"></script>
 
     <!-- ============================================================
-    地图库主脚本（完全保留原始，未改动）
+    地图库主脚本（完全保留原始，仅插入 mj 彩蛋相关代码）
     ============================================================ -->
     <script>
         (function() {
@@ -1414,6 +1443,132 @@
             var detailMeta = document.getElementById('detailMeta');
             var detailExtra = document.getElementById('detailExtra');
             var detailAnnounce = document.getElementById('detailAnnounce');
+
+            // ============================================================
+            // mj 彩蛋（新增）
+            // ============================================================
+            var MJ_IMG_URL = 'https://user-assets.sxlcdn.com/images/1138507/Fo80XP3mV1qLn8AiD-rmi0sh7aan.gif?imageMogr2/strip/auto-orient/thumbnail/1200x9000%3E/quality/90!/format/gif';
+            var MJ_AUDIO_CANDIDATES = [
+                'https://cdn.jsdelivr.net/gh/stellarsage2026/st@main/mj.MP3',
+                'https://raw.githubusercontent.com/stellarsage2026/st/main/mj.MP3',
+                'https://stellarsage2026.github.io/st/mj.MP3'
+            ];
+            var mjAudioEl = null;
+            var mjAudioUnlocked = false;
+            var mjPlaying = false;
+
+            function initMjAudio(){
+                if (mjAudioEl) return mjAudioEl;
+                try {
+                    mjAudioEl = new Audio();
+                    mjAudioEl.preload = 'auto';
+                    mjAudioEl.volume = 1;
+                    mjAudioEl.src = MJ_AUDIO_CANDIDATES[0];
+                    try { mjAudioEl.load(); } catch(e){}
+                } catch(e){
+                    mjAudioEl = null;
+                }
+                return mjAudioEl;
+            }
+            initMjAudio();
+
+            (function unlockMjAudio(){
+                function unlock(){
+                    if (mjAudioUnlocked) return;
+                    mjAudioUnlocked = true;
+                    var a = initMjAudio();
+                    if (!a) return;
+                    try {
+                        a.muted = true;
+                        var p = a.play();
+                        if (p && p.then){
+                            p.then(function(){ try { a.pause(); a.currentTime = 0; a.muted = false; } catch(e){} })
+                             .catch(function(){ try { a.muted = false; } catch(e){} });
+                        } else {
+                            try { a.pause(); a.currentTime = 0; a.muted = false; } catch(e){}
+                        }
+                    } catch(e){ try { a.muted = false; } catch(e){} }
+                    document.removeEventListener('pointerdown', unlock);
+                    document.removeEventListener('touchstart', unlock);
+                    document.removeEventListener('keydown', unlock);
+                }
+                document.addEventListener('pointerdown', unlock);
+                document.addEventListener('touchstart', unlock, { passive: true });
+                document.addEventListener('keydown', unlock);
+            })();
+
+            function tryPlayMjUrl(url, onFail){
+                try {
+                    var a = new Audio();
+                    a.preload = 'auto';
+                    a.volume = 1;
+                    a.src = url;
+                    var p = a.play();
+                    if (p && p.catch) p.catch(function(){ if (onFail) onFail(); });
+                } catch(e){ if (onFail) onFail(); }
+            }
+
+            function playMjAudio(){
+                var a = initMjAudio();
+                if (a){
+                    try { a.pause(); } catch(e){}
+                    try { a.currentTime = 0; } catch(e){}
+                    try { a.muted = false; } catch(e){}
+                    try { a.volume = 1; } catch(e){}
+                    var p = a.play();
+                    if (p && p.catch){
+                        p.catch(function(){
+                            var i = 0;
+                            function next(){
+                                if (i >= MJ_AUDIO_CANDIDATES.length) return;
+                                var url = MJ_AUDIO_CANDIDATES[i++];
+                                tryPlayMjUrl(url, next);
+                            }
+                            next();
+                        });
+                    }
+                    return;
+                }
+                var i = 0;
+                function next(){
+                    if (i >= MJ_AUDIO_CANDIDATES.length) return;
+                    var url = MJ_AUDIO_CANDIDATES[i++];
+                    tryPlayMjUrl(url, next);
+                }
+                next();
+            }
+
+            function triggerMj(){
+                if (mjPlaying) return;
+                mjPlaying = true;
+                var layer = document.createElement('div');
+                layer.className = 'mj-layer';
+                var img = document.createElement('img');
+                img.src = MJ_IMG_URL;
+                img.alt = '';
+                layer.appendChild(img);
+                document.body.appendChild(layer);
+                requestAnimationFrame(function(){
+                    requestAnimationFrame(function(){ layer.classList.add('in'); });
+                });
+                playMjAudio();
+                setTimeout(function(){
+                    layer.classList.remove('in');
+                    layer.classList.add('out');
+                    setTimeout(function(){
+                        if (layer.parentNode) layer.parentNode.removeChild(layer);
+                        mjPlaying = false;
+                    }, 900);
+                }, 2000);
+            }
+
+            // 输入检测：搜索框输入 "mj" 触发
+            if (searchInput){
+                searchInput.addEventListener('input', function(){
+                    var v = searchInput.value;
+                    if (v && v.trim().toLowerCase() === 'mj') triggerMj();
+                });
+            }
 
             // ============================================================
             // 渲染
