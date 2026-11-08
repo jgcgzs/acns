@@ -1315,6 +1315,17 @@
             .cite-box { padding: 18px; border-radius: 16px; }
             .cite-copy { width: 100%; justify-content: center; }
         }
+
+        /* 下载线路选择器 */
+        .dl-lines { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .dl-lines-label { font-size: 12.5px; font-weight: 600; color: var(--text-muted); }
+        .dl-line {
+            font-size: 12px; padding: 6px 14px; border-radius: 999px; cursor: pointer;
+            border: 1px solid var(--border-light); background: #fff; color: var(--text-muted);
+            transition: all .2s var(--apple-curve);
+        }
+        .dl-line:hover { border-color: var(--blue-primary); color: var(--blue-primary); }
+        .dl-line.active { background: var(--blue-primary); border-color: var(--blue-primary); color: #fff; }
     </style>
 </head>
 <body>
@@ -1578,7 +1589,7 @@
                         <p class="dl-desc">安装程序（含卸载功能），安装后自动同步工作室最新内容。</p>
                         <div class="dl-meta">
                             <span class="dl-badge">安装程序 .exe</span>
-                            <span id="dlSizeWin">约 251 MB</span>
+                            <span id="dlSizeWin">约 2 MB</span>
                             <span>Windows 10 / 11（x64）</span>
                         </div>
                     </div>
@@ -1602,9 +1613,11 @@
 
             <div class="dl-note">
                 <i class="fas fa-circle-info"></i>
-                <span>下载源：GitHub 仓库（<code>jgcgzs/acns</code>）<code>raw/main/dl/</code> 直链。
+                <span>下载源：极光创工作室官方文件。若下载缓慢或点击没反应，请在下方切换「下载线路」后重试；
                 安装包仅从工作室官方渠道获取，请勿使用来源不明的修改版。</span>
             </div>
+
+            <div class="dl-lines" id="dlLines"></div>
 
             <div class="cite-box card-enter">
                 <div class="cite-head">
@@ -2333,18 +2346,30 @@
     (function () {
         'use strict';
 
+        /* 下载线路：国内加速优先，GitHub 直连备用。
+           文件在仓库 jgcgzs/acns 的 dl/ 目录（分支 main）。 */
         var CONFIG = {
             version: '1.1.0',
             releaseDate: '2026-11-08',
             repo: 'jgcgzs/acns',
-            rawBase: 'https://github.com/jgcgzs/acns/raw/main/dl/',
+            lines: [
+                { name: '国内加速 A', base: 'https://ghfast.top/https://raw.githubusercontent.com/jgcgzs/acns/main/dl/' },
+                { name: '国内加速 B', base: 'https://raw.gitmirror.com/jgcgzs/acns/main/dl/' },
+                { name: 'GitHub 直连', base: 'https://raw.githubusercontent.com/jgcgzs/acns/main/dl/' }
+            ],
             files: {
-                windows: { name: 'AuroraGlass-Setup-1.1.0.exe', size: '约 251 MB' },
+                windows: { name: 'AuroraGlass-Setup-1.1.0.exe', size: '约 2 MB' },
                 android: { name: 'AuroraGlass-1.1.0.apk', size: '约 5.3 MB' }
             }
         };
 
-        function base() { return CONFIG.rawBase; }
+        var currentLine = 0;
+        try {
+            var savedLine = parseInt(localStorage.getItem('aurora.dl.line'), 10);
+            if (!isNaN(savedLine) && savedLine >= 0 && savedLine < CONFIG.lines.length) currentLine = savedLine;
+        } catch (e) { }
+
+        function base() { return CONFIG.lines[currentLine].base; }
 
         function bindDownload(id, file) {
             var el = document.getElementById(id);
@@ -2354,14 +2379,38 @@
             el.setAttribute('target', '_blank');
         }
 
+        function bindAllDownloads() {
+            bindDownload('dlWin', CONFIG.files.windows.name);
+            bindDownload('dlApk', CONFIG.files.android.name);
+        }
+
+        function renderLines() {
+            var box = document.getElementById('dlLines');
+            if (!box) return;
+            var html = '<span class="dl-lines-label">下载线路：</span>';
+            for (var i = 0; i < CONFIG.lines.length; i++) {
+                html += '<button type="button" class="dl-line' + (i === currentLine ? ' active' : '') +
+                    '" data-line="' + i + '">' + CONFIG.lines[i].name + '</button>';
+            }
+            box.innerHTML = html;
+            box.querySelectorAll('[data-line]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    currentLine = parseInt(btn.getAttribute('data-line'), 10) || 0;
+                    try { localStorage.setItem('aurora.dl.line', String(currentLine)); } catch (e) { }
+                    renderLines();
+                    bindAllDownloads();
+                });
+            });
+        }
+
         function citationText() {
             return '极光创工作室（Aurora Creation Studio, ACNS）．极光创 v' + CONFIG.version +
                 '［CP/OL］．' + CONFIG.releaseDate + '．https://github.com/' + CONFIG.repo + '．';
         }
 
         function init() {
-            bindDownload('dlWin', CONFIG.files.windows.name);
-            bindDownload('dlApk', CONFIG.files.android.name);
+            renderLines();
+            bindAllDownloads();
 
             var v = document.getElementById('dlVersion');
             var d = document.getElementById('dlDate');
