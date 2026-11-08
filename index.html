@@ -1602,7 +1602,7 @@
 
             <div class="dl-note">
                 <i class="fas fa-circle-info"></i>
-                <span>下载源：GitHub Releases（<code>jgcgzs/acns</code>）· 最新版直达；站点镜像路径：<code>/download/</code>。
+                <span>下载源：GitHub 仓库（<code>jgcgzs/acns</code>）<code>raw/main/dl/</code> 直链。
                 安装包仅从工作室官方渠道获取，请勿使用来源不明的修改版。</span>
             </div>
 
@@ -2325,10 +2325,10 @@
     /* ============================================================
        下载与引用板块配置 —— 仓库与下载路径统一在此修改
        ------------------------------------------------------------
-       下载仓库：GitHub  jgcgzs/acns （Releases 资产）
-       最新版路径：https://github.com/jgcgzs/acns/releases/latest/download/
-       站点镜像路径：./download/  （把两个安装包放进网站 download 目录即可）
-       切换镜像：把 useMirror 改为 true
+       下载仓库：GitHub  jgcgzs/acns
+       获取路径：https://github.com/jgcgzs/acns/raw/main/dl/
+                 （把两个安装包放进仓库 acns 的 dl/ 目录，分支 main）
+       如分支不是 main，把下面 rawBase 里的 main 改成对应分支即可
        ============================================================ */
     (function () {
         'use strict';
@@ -2337,23 +2337,21 @@
             version: '1.1.0',
             releaseDate: '2026-11-08',
             repo: 'jgcgzs/acns',
-            releaseBase: 'https://github.com/jgcgzs/acns/releases/latest/download/',
-            mirrorBase: 'download/',
-            useMirror: false,
+            rawBase: 'https://github.com/jgcgzs/acns/raw/main/dl/',
             files: {
                 windows: { name: 'AuroraGlass-Setup-1.1.0.exe', size: '约 251 MB' },
                 android: { name: 'AuroraGlass-1.1.0.apk', size: '约 5.3 MB' }
             }
         };
 
-        function base() { return CONFIG.useMirror ? CONFIG.mirrorBase : CONFIG.releaseBase; }
+        function base() { return CONFIG.rawBase; }
 
         function bindDownload(id, file) {
             var el = document.getElementById(id);
             if (!el) return;
             el.href = base() + encodeURIComponent(file);
             el.setAttribute('download', file);
-            el.setAttribute('target', CONFIG.useMirror ? '_self' : '_blank');
+            el.setAttribute('target', '_blank');
         }
 
         function citationText() {
