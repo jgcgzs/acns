@@ -1222,6 +1222,99 @@
                 scroll-behavior: auto !important;
             }
         }
+
+        /* ============================================================
+           下载与引用板块（新增）
+           ============================================================ */
+        .download-section {
+            background: linear-gradient(180deg, #eef6fc 0%, #f5f9fe 100%);
+            border-top: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
+        }
+        .download-section .section-title .dl-version {
+            font-size: 13px; color: var(--text-muted); background: #fff;
+            border: 1px solid var(--border-light); padding: 6px 14px; border-radius: 999px;
+            align-self: center; white-space: nowrap;
+        }
+        .download-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px; margin-top: 6px;
+        }
+        .download-card {
+            display: flex; flex-wrap: wrap; align-items: flex-start; gap: 18px;
+            background: var(--bg-card); border: 1px solid var(--border-light);
+            border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm);
+            transition: transform .3s var(--apple-curve), box-shadow .3s var(--apple-curve), border-color .3s;
+        }
+        .download-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: #c3ddf1;
+        }
+        .dl-icon {
+            width: 58px; height: 58px; flex: 0 0 auto; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #e8f4fd, #d7ecfb);
+            color: var(--blue-primary); font-size: 26px;
+        }
+        .dl-icon.dl-icon-android { background: linear-gradient(135deg, #e9f9ef, #d8f3e3); color: #2fa36b; }
+        .dl-body { flex: 1; min-width: 200px; }
+        .dl-body h3 { font-size: 20px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+        .dl-desc { font-size: 13px; color: var(--text-muted); line-height: 1.8; }
+        .dl-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 12px; color: var(--text-muted); }
+        .dl-badge {
+            font-size: 11.5px; font-weight: 600; color: var(--blue-primary);
+            background: #eaf5fd; border-radius: 999px; padding: 2px 10px;
+        }
+        .download-card .dl-btn {
+            width: 100%; margin-top: 16px; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: var(--blue-primary); color: #fff; font-size: 14.5px; font-weight: 600;
+            padding: 12px 20px; border-radius: 12px; text-decoration: none;
+            transition: background .25s, transform .2s var(--apple-curve), box-shadow .25s;
+            box-shadow: 0 6px 16px rgba(26, 127, 196, .18);
+        }
+        .download-card .dl-btn:hover { background: var(--blue-primary-dark); transform: translateY(-2px); box-shadow: 0 10px 22px rgba(26, 127, 196, .26); }
+        .download-card .dl-btn.dl-btn-android { background: #2fa36b; box-shadow: 0 6px 16px rgba(47, 163, 107, .18); }
+        .download-card .dl-btn.dl-btn-android:hover { background: #248554; box-shadow: 0 10px 22px rgba(47, 163, 107, .26); }
+        .dl-note {
+            display: flex; align-items: flex-start; gap: 10px; margin-top: 18px;
+            padding: 14px 16px; background: #fff; border: 1px dashed var(--border-light);
+            border-radius: 12px; font-size: 12.5px; color: var(--text-muted); line-height: 1.8;
+        }
+        .dl-note i { color: var(--blue-primary); margin-top: 3px; }
+        .dl-note code {
+            font-family: "JetBrains Mono", Consolas, monospace; font-size: 11.5px;
+            background: #eef6fc; color: var(--blue-primary-dark); padding: 1px 6px; border-radius: 5px;
+        }
+        .cite-box {
+            margin-top: 24px; background: #fff; border: 1px solid var(--border-light);
+            border-radius: 20px; padding: 24px; box-shadow: var(--shadow-sm);
+        }
+        .cite-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+        .cite-head h3 { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-bottom: 6px; }
+        .cite-head p { font-size: 13px; color: var(--text-muted); line-height: 1.8; max-width: 720px; }
+        .cite-copy {
+            display: inline-flex; align-items: center; gap: 7px; flex: 0 0 auto;
+            font-size: 13px; font-weight: 600; color: var(--blue-primary);
+            background: #fff; border: 1px solid var(--blue-primary); border-radius: 10px;
+            padding: 9px 16px; cursor: pointer;
+            transition: background .25s, color .25s, transform .2s;
+        }
+        .cite-copy:hover { background: var(--blue-primary); color: #fff; transform: translateY(-2px); }
+        .cite-format {
+            margin-top: 14px; padding: 14px 16px; background: #f5f9fe;
+            border: 1px solid var(--border-light); border-radius: 12px;
+            font-family: "JetBrains Mono", Consolas, monospace; font-size: 12.5px;
+            color: var(--text-dark); line-height: 1.9; word-break: break-all;
+        }
+        .cite-list { margin: 14px 0 0 18px; padding: 0; font-size: 12.5px; color: var(--text-muted); line-height: 1.9; }
+        @media (max-width: 560px) {
+            .download-grid { grid-template-columns: 1fr; }
+            .download-card { padding: 18px; border-radius: 16px; gap: 14px; }
+            .dl-icon { width: 48px; height: 48px; font-size: 22px; border-radius: 14px; }
+            .cite-box { padding: 18px; border-radius: 16px; }
+            .cite-copy { width: 100%; justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -1251,6 +1344,7 @@
                 <li><a href="./" class="active">主站</a></li>
                 <li><a href="./map/">地图库</a></li>
                 <li><a href="./blog/">极创博客</a></li>
+                <li><a href="#download">下载 App</a></li>
                 <li><a href="./Management/">管理层成员公示</a></li>
                 <li><a href="./Management/member.html">成员档案</a></li>
             </ul>
@@ -1276,6 +1370,7 @@
                 <div class="hero-actions">
                     <a class="btn-primary" href="#history">发展历程</a>
                     <a class="btn-outline" href="#join">加入我们</a>
+                    <a class="btn-outline" href="#download"><i class="fas fa-download"></i> 下载 App</a>
                 </div>
             </div>
         </div>
@@ -1456,6 +1551,75 @@
             <div class="map-arrows" id="mapArrows">
                 <button id="mapPrev" aria-label="上一页"><i class="fas fa-chevron-left"></i></button>
                 <button id="mapNext" aria-label="下一页"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ============================================================
+       下载与引用（新增板块）
+       ============================================================ -->
+    <section id="download" class="section download-section">
+        <div class="container">
+            <div class="section-title">
+                <div class="left">
+                    <h2>下载极光创 App</h2>
+                    <div class="line"></div>
+                    <div class="sub" style="margin-top:12px;font-size:14px;color:var(--text-muted);">工作室官方客户端 · 地图 / 博客 / 成员 / 公告 一站直达</div>
+                </div>
+                <span class="dl-version">v<span id="dlVersion">1.1.0</span> · <span id="dlDate">2026-11-08</span> 更新</span>
+            </div>
+
+            <div class="download-grid">
+                <div class="download-card card-enter">
+                    <div class="dl-icon"><i class="fab fa-windows"></i></div>
+                    <div class="dl-body">
+                        <h3>Windows 版</h3>
+                        <p class="dl-desc">安装程序（含卸载功能），安装后自动同步工作室最新内容。</p>
+                        <div class="dl-meta">
+                            <span class="dl-badge">安装程序 .exe</span>
+                            <span id="dlSizeWin">约 251 MB</span>
+                            <span>Windows 10 / 11（x64）</span>
+                        </div>
+                    </div>
+                    <a class="dl-btn" id="dlWin" href="#" rel="noopener"><i class="fas fa-download"></i> 下载 Windows 版</a>
+                </div>
+
+                <div class="download-card card-enter">
+                    <div class="dl-icon dl-icon-android"><i class="fab fa-android"></i></div>
+                    <div class="dl-body">
+                        <h3>Android 版</h3>
+                        <p class="dl-desc">安装包 .apk，支持 Android 7.0 及以上；底部图标导航，可切换沉浸模式。</p>
+                        <div class="dl-meta">
+                            <span class="dl-badge">安装包 .apk</span>
+                            <span id="dlSizeApk">约 5.3 MB</span>
+                            <span>Android 7.0+</span>
+                        </div>
+                    </div>
+                    <a class="dl-btn dl-btn-android" id="dlApk" href="#" rel="noopener"><i class="fas fa-download"></i> 下载 Android 版</a>
+                </div>
+            </div>
+
+            <div class="dl-note">
+                <i class="fas fa-circle-info"></i>
+                <span>下载源：GitHub Releases（<code>jgcgzs/acns</code>）· 最新版直达；站点镜像路径：<code>/download/</code>。
+                安装包仅从工作室官方渠道获取，请勿使用来源不明的修改版。</span>
+            </div>
+
+            <div class="cite-box card-enter">
+                <div class="cite-head">
+                    <div>
+                        <h3>引用与版权</h3>
+                        <p>本站内容（地图、文章、成员档案及客户端）版权归极光创工作室所有。转载、引用请注明出处，并保留作者与版权信息。</p>
+                    </div>
+                    <button class="cite-copy" id="citeCopy" type="button"><i class="fas fa-copy"></i> 复制引用</button>
+                </div>
+                <div class="cite-format" id="citeFormat">极光创工作室（Aurora Creation Studio, ACNS）．极光创 v1.1.0［CP/OL］．2026-11-08．https://github.com/jgcgzs/acns．</div>
+                <ul class="cite-list">
+                    <li>引用格式：工作室名（英文名）．应用名 版本号［CP/OL］．发布日期．仓库地址．</li>
+                    <li>非商业转载须注明来源为“极光创工作室”，不得删改作者与版权信息。</li>
+                    <li>禁止将本站地图、文章、成员资料用于商业用途或二次售卖。</li>
+                </ul>
             </div>
         </div>
     </section>
@@ -2155,6 +2319,98 @@
             console.log('>> 极光创工作室官网已加载 (使用公共成员弹窗组件)');
 
         })();
+    </script>
+
+    <script>
+    /* ============================================================
+       下载与引用板块配置 —— 仓库与下载路径统一在此修改
+       ------------------------------------------------------------
+       下载仓库：GitHub  jgcgzs/acns （Releases 资产）
+       最新版路径：https://github.com/jgcgzs/acns/releases/latest/download/
+       站点镜像路径：./download/  （把两个安装包放进网站 download 目录即可）
+       切换镜像：把 useMirror 改为 true
+       ============================================================ */
+    (function () {
+        'use strict';
+
+        var CONFIG = {
+            version: '1.1.0',
+            releaseDate: '2026-11-08',
+            repo: 'jgcgzs/acns',
+            releaseBase: 'https://github.com/jgcgzs/acns/releases/latest/download/',
+            mirrorBase: 'download/',
+            useMirror: false,
+            files: {
+                windows: { name: 'AuroraGlass-Setup-1.1.0.exe', size: '约 251 MB' },
+                android: { name: 'AuroraGlass-1.1.0.apk', size: '约 5.3 MB' }
+            }
+        };
+
+        function base() { return CONFIG.useMirror ? CONFIG.mirrorBase : CONFIG.releaseBase; }
+
+        function bindDownload(id, file) {
+            var el = document.getElementById(id);
+            if (!el) return;
+            el.href = base() + encodeURIComponent(file);
+            el.setAttribute('download', file);
+            el.setAttribute('target', CONFIG.useMirror ? '_self' : '_blank');
+        }
+
+        function citationText() {
+            return '极光创工作室（Aurora Creation Studio, ACNS）．极光创 v' + CONFIG.version +
+                '［CP/OL］．' + CONFIG.releaseDate + '．https://github.com/' + CONFIG.repo + '．';
+        }
+
+        function init() {
+            bindDownload('dlWin', CONFIG.files.windows.name);
+            bindDownload('dlApk', CONFIG.files.android.name);
+
+            var v = document.getElementById('dlVersion');
+            var d = document.getElementById('dlDate');
+            var sw = document.getElementById('dlSizeWin');
+            var sa = document.getElementById('dlSizeApk');
+            var cf = document.getElementById('citeFormat');
+            if (v) v.textContent = CONFIG.version;
+            if (d) d.textContent = CONFIG.releaseDate;
+            if (sw) sw.textContent = CONFIG.files.windows.size;
+            if (sa) sa.textContent = CONFIG.files.android.size;
+            if (cf) cf.textContent = citationText();
+
+            var btn = document.getElementById('citeCopy');
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    var text = citationText();
+                    var done = function () {
+                        var old = btn.innerHTML;
+                        btn.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                        setTimeout(function () { btn.innerHTML = old; }, 1600);
+                    };
+                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                        navigator.clipboard.writeText(text).then(done, function () { fallbackCopy(text, done); });
+                    } else {
+                        fallbackCopy(text, done);
+                    }
+                });
+            }
+        }
+
+        function fallbackCopy(text, done) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); done(); } catch (e) { /* ignore */ }
+            document.body.removeChild(ta);
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
     </script>
 
 </body>
